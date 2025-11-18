@@ -1,0 +1,293 @@
+{
+  "id": "register-birth-form",
+  "name": "Register a Birth Form",
+  "description": "Multi-step form for registering a birth in Barbados with conditional flows based on marriage status",
+  "fields": [
+    {
+      "name": "marriageStatus",
+      "type": "string",
+      "required": true,
+      "validations": {
+        "regex": "^(yes|no)$",
+        "message": "Must be 'yes' or 'no'"
+      }
+    },
+    {
+      "name": "includeFatherDetails",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "regex": "^(yes|no)$",
+        "message": "Must be 'yes' or 'no'"
+      }
+    },
+    {
+      "name": "father.firstName",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "min": 1,
+        "max": 100
+      }
+    },
+    {
+      "name": "father.middleName",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "max": 200
+      }
+    },
+    {
+      "name": "father.lastName",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "min": 1,
+        "max": 100
+      }
+    },
+    {
+      "name": "father.hadOtherSurname",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "regex": "^(yes|no)$"
+      }
+    },
+    {
+      "name": "father.otherSurname",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "father.dateOfBirth",
+      "type": "date",
+      "required": false
+    },
+    {
+      "name": "father.address",
+      "type": "textarea",
+      "required": false,
+      "validations": {
+        "max": 500
+      }
+    },
+    {
+      "name": "father.nationalRegistrationNumber",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "regex": "^\\d{6}-\\d{4}$",
+        "message": "Must be in format XXXXXX-XXXX"
+      }
+    },
+    {
+      "name": "father.passportNumber",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "max": 50
+      }
+    },
+    {
+      "name": "father.passportPlaceOfIssue",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "father.occupation",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "mother.firstName",
+      "type": "string",
+      "required": true,
+      "validations": {
+        "min": 1,
+        "max": 100
+      }
+    },
+    {
+      "name": "mother.middleName",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "max": 200
+      }
+    },
+    {
+      "name": "mother.lastName",
+      "type": "string",
+      "required": true,
+      "validations": {
+        "min": 1,
+        "max": 100
+      }
+    },
+    {
+      "name": "mother.hadOtherSurname",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "regex": "^(yes|no)$"
+      }
+    },
+    {
+      "name": "mother.otherSurname",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "mother.dateOfBirth",
+      "type": "date",
+      "required": true
+    },
+    {
+      "name": "mother.address",
+      "type": "textarea",
+      "required": true,
+      "validations": {
+        "min": 5,
+        "max": 500
+      }
+    },
+    {
+      "name": "mother.nationalRegistrationNumber",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "regex": "^\\d{6}-\\d{4}$",
+        "message": "Must be in format XXXXXX-XXXX"
+      }
+    },
+    {
+      "name": "mother.passportNumber",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "max": 50
+      }
+    },
+    {
+      "name": "mother.passportPlaceOfIssue",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "mother.occupation",
+      "type": "string",
+      "required": true,
+      "validations": {
+        "min": 1,
+        "max": 100
+      }
+    },
+    {
+      "name": "child.firstNames",
+      "type": "string",
+      "required": true,
+      "validations": {
+        "min": 1,
+        "max": 100
+      }
+    },
+    {
+      "name": "child.middleNames",
+      "type": "string",
+      "required": false,
+      "validations": {
+        "max": 200
+      }
+    },
+    {
+      "name": "child.lastName",
+      "type": "string",
+      "required": true,
+      "validations": {
+        "min": 1,
+        "max": 100
+      }
+    },
+    {
+      "name": "child.dateOfBirth",
+      "type": "date",
+      "required": true
+    },
+    {
+      "name": "child.sexAtBirth",
+      "type": "string",
+      "required": true,
+      "validations": {
+        "regex": "^(Male|Female)$",
+        "message": "Must be 'Male' or 'Female'"
+      }
+    },
+    {
+      "name": "child.parishOfBirth",
+      "type": "string",
+      "required": true,
+      "validations": {
+        "min": 1,
+        "max": 100
+      }
+    },
+    {
+      "name": "numberOfCertificates",
+      "type": "number",
+      "required": true,
+      "validations": {
+        "min": 0,
+        "max": 20
+      }
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "required": true
+    },
+    {
+      "name": "phoneNumber",
+      "type": "string",
+      "required": true,
+      "validations": {
+        "min": 7,
+        "max": 20
+      }
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:register-birth-form:admin_email}}",
+        "subject": "New Birth Registration - {{formData.child.firstNames}} {{formData.child.lastName}}",
+        "template": "birth-registration"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.email}}",
+        "subject": "Birth Registration Received - Government of Barbados",
+        "template": "birth-registration-receipt"
+      }
+    }
+  ]
+}

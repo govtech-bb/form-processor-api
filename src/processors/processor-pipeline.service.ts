@@ -1,0 +1,53 @@
+import { Injectable, Logger, BadRequestException } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
+import { IProcessor, ProcessorContext } from './interfaces';
+import { ProcessorConfig } from '../forms/interfaces';
+
+@Injectable()
+export class ProcessorPipelineService {
+  private readonly logger = new Logger(ProcessorPipelineService.name);
+  private processors: Map<string, IProcessor> = new Map();
+
+  constructor(private readonly moduleRef: ModuleRef) {}
+
+  registerProcessor(processor: IProcessor): void {
+    this.processors.set(processor.type, processor);
+    this.logger.log(`Registered processor: ${processor.type}`);
+  }
+
+  async execute(
+    processorConfigs: ProcessorConfig[],
+    context: ProcessorContext,
+  ): Promise<void> {
+    this.logger.log(
+      `Executing ${processorConfigs.length} processors for form: ${context.formId}`,
+    );
+
+    // Execute all processors in parallel
+    const promises = processorConfigs.map(async (config) => {
+      const processor = this.processors.get(config.type);
+
+      if (!processor) {
+        this.logger.warn(`Processor not found: ${config.type}`);
+        throw new BadRequestException(
+          `Processor type "${config.type}" not found`,
+        );
+      }
+
+      try {
+        this.logger.log(`Executing processor: ${config.type}`);
+        await processor.execute(config.config, context);
+        this.logger.log(`Processor completed: ${config.type}`);
+      } catch (error) {
+        this.logger.error(
+          `Processor ${config.type} failed: ${error.message}`,
+          error.stack,
+        );
+        throw error;
+      }
+    });
+
+    await Promise.all(promises);
+    this.logger.log('All processors completed successfully');
+  }
+}

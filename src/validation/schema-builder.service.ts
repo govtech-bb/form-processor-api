@@ -1,0 +1,135 @@
+import { Injectable, BadRequestException } from '@nestjs/common';
+import { z, ZodSchema, ZodError } from 'zod';
+import { FormSchema, FormField, FieldValidation } from '../forms/interfaces';
+
+@Injectable()
+export class SchemaBuilderService {
+  buildZodSchema(formSchema: FormSchema): ZodSchema {
+    const shape: Record<string, any> = {};
+
+    for (const field of formSchema.fields) {
+      shape[field.name] = this.buildFieldSchema(field);
+    }
+
+    return z.object(shape);
+  }
+
+  private buildFieldSchema(field: FormField): any {
+    let schema: any;
+
+    // Build base schema based on field type
+    switch (field.type) {
+      case 'string':
+      case 'textarea':
+        schema = z.string();
+        break;
+      case 'email':
+        schema = z.email('Invalid email format');
+        break;
+      case 'number':
+        schema = z.number();
+        break;
+      case 'boolean':
+        schema = z.boolean();
+        break;
+      case 'date':
+        schema = z.iso.datetime();
+        break;
+      case 'select':
+        schema = z.string();
+        break;
+      default:
+        schema = z.any();
+    }
+
+    // Apply validations
+    if (field.validations) {
+      schema = this.applyValidations(schema, field.validations, field.type);
+    }
+
+    // Handle required/optional
+    if (!field.required) {
+      schema = schema.optional();
+    }
+
+    return schema;
+  }
+
+  private applyValidations(
+    schema: any,
+    validations: FieldValidation,
+    fieldType: string,
+  ): any {
+    // Min/Max for strings
+    if (
+      (fieldType === 'string' || fieldType === 'textarea') &&
+      (validations.min !== undefined || validations.max !== undefined)
+    ) {
+      if (validations.min !== undefined) {
+        schema = schema.min(
+          validations.min,
+          validations.message || `Minimum length is ${validations.min}`,
+        );
+      }
+      if (validations.max !== undefined) {
+        schema = schema.max(
+          validations.max,
+          validations.message || `Maximum length is ${validations.max}`,
+        );
+      }
+    }
+
+    // Min/Max for numbers
+    if (
+      fieldType === 'number' &&
+      (validations.min !== undefined || validations.max !== undefined)
+    ) {
+      if (validations.min !== undefined) {
+        schema = schema.min(
+          validations.min,
+          validations.message || `Minimum value is ${validations.min}`,
+        );
+      }
+      if (validations.max !== undefined) {
+        schema = schema.max(
+          validations.max,
+          validations.message || `Maximum value is ${validations.max}`,
+        );
+      }
+    }
+
+    // Regex validation
+    if (validations.regex) {
+      try {
+        const regex = new RegExp(validations.regex);
+        schema = schema.regex(regex, validations.message || 'Invalid format');
+      } catch (error) {
+        throw new BadRequestException(
+          `Invalid regex pattern: ${validations.regex}`,
+        );
+      }
+    }
+
+    return schema;
+  }
+
+  validateData(
+    schema: ZodSchema,
+    data: any,
+  ): { success: boolean; errors?: any[] } {
+    try {
+      schema.parse(data);
+      return { success: true };
+    } catch (error) {
+      if (error instanceof ZodError) {
+        const errors = error.issues.map((err) => ({
+          field: err.path.join('.'),
+          message: err.message,
+          code: err.code,
+        }));
+        return { success: false, errors };
+      }
+      throw error;
+    }
+  }
+}

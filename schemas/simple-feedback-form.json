@@ -1,0 +1,40 @@
+{
+  "id": "simple-feedback-form",
+  "name": "Simple Feedback Form",
+  "description": "Feedback form for alpha.gov.bb allowing users to provide feedback about their visit",
+  "fields": [
+    {
+      "name": "visitReason",
+      "type": "textarea",
+      "required": true,
+      "validations": {
+        "min": 1,
+        "max": 1000
+      }
+    },
+    {
+      "name": "whatWentWrong",
+      "type": "textarea",
+      "required": true,
+      "validations": {
+        "min": 1,
+        "max": 2000
+      }
+    },
+    {
+      "name": "referrer",
+      "type": "string",
+      "required": false
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:simple-feedback-form:admin_email}}",
+        "subject": "New Feedback Submission - alpha.gov.bb",
+        "template": "feedback-submission"
+      }
+    }
+  ]
+}
