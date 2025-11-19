@@ -41,13 +41,90 @@ export class EmailService {
       this.configService.get('email.templatesDir'),
     );
 
+    // Register Handlebars helpers
+    this.registerHandlebarsHelpers();
+
     this.logger.log('EmailService initialized with AWS SES v2');
+  }
+
+  private registerHandlebarsHelpers(): void {
+    // Equality helper
+    Handlebars.registerHelper('eq', function (a, b) {
+      return a === b;
+    });
+
+    // Not equal helper
+    Handlebars.registerHelper('ne', function (a, b) {
+      return a !== b;
+    });
+
+    // Greater than helper
+    Handlebars.registerHelper('gt', function (a, b) {
+      return a > b;
+    });
+
+    // Less than helper
+    Handlebars.registerHelper('lt', function (a, b) {
+      return a < b;
+    });
+
+    // Greater than or equal helper
+    Handlebars.registerHelper('gte', function (a, b) {
+      return a >= b;
+    });
+
+    // Less than or equal helper
+    Handlebars.registerHelper('lte', function (a, b) {
+      return a <= b;
+    });
+
+    // Logical AND helper
+    Handlebars.registerHelper('and', function (...args) {
+      // Remove the last argument which is the options object
+      const values = args.slice(0, -1);
+      return values.every((val) => !!val);
+    });
+
+    // Logical OR helper
+    Handlebars.registerHelper('or', function (...args) {
+      // Remove the last argument which is the options object
+      const values = args.slice(0, -1);
+      return values.some((val) => !!val);
+    });
+
+    this.logger.log('Handlebars helpers registered');
+  }
+
+  private isEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 
   async sendEmail(options: EmailOptions): Promise<void> {
     try {
       const from = options.from || this.defaultFromEmail;
       const to = Array.isArray(options.to) ? options.to : [options.to];
+
+      // Validate from email
+      if (!this.isEmail(from)) {
+        this.logger.warn(`Invalid from email address: ${from}`);
+        throw new Error(`Invalid from email address: ${from}`);
+      }
+
+      // Filter out invalid to email addresses
+      const validToAddresses = to.filter((email) => {
+        const isValid = this.isEmail(email);
+        if (!isValid) {
+          this.logger.warn(`Invalid to email address filtered out: ${email}`);
+        }
+        return isValid;
+      });
+
+      // Check if there are any valid recipients left
+      if (validToAddresses.length === 0) {
+        this.logger.error('No valid recipient email addresses provided');
+        throw new Error('No valid recipient email addresses provided');
+      }
 
       let htmlBody = options.html;
       let textBody = options.text;
@@ -58,6 +135,7 @@ export class EmailService {
           options.template,
           options.data || {},
         );
+
         htmlBody = rendered;
         textBody = textBody || this.stripHtml(rendered);
       }
@@ -76,7 +154,7 @@ export class EmailService {
       const command = new SendEmailCommand({
         FromEmailAddress: from,
         Destination: {
-          ToAddresses: to,
+          ToAddresses: validToAddresses,
         },
         ...(this.configurationSet && {
           ConfigurationSetName:
@@ -108,7 +186,9 @@ export class EmailService {
       });
 
       await this.sesClient.send(command);
-      this.logger.log(`Email sent successfully to ${to.join(', ')}`);
+      this.logger.log(
+        `Email sent successfully to ${validToAddresses.join(', ')}`,
+      );
     } catch (error) {
       this.logger.error(`Failed to send email: ${error.message}`, error.stack);
       throw error;

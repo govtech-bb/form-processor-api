@@ -23,7 +23,6 @@ Each form schema follows this structure:
 - `number` - Numeric input
 - `boolean` - Checkbox/toggle
 - `date` - Date input
-- `textarea` - Multi-line text
 - `select` - Dropdown selection
 
 ### Validations

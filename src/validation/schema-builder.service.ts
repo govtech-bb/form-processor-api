@@ -17,14 +17,28 @@ export class SchemaBuilderService {
   private buildFieldSchema(field: FormField): any {
     let schema: any;
 
+    // Handle nested object type
+    if (field.type === 'object' && field.fields) {
+      const nestedShape: Record<string, any> = {};
+      for (const nestedField of field.fields) {
+        nestedShape[nestedField.name] = this.buildFieldSchema(nestedField);
+      }
+      schema = z.object(nestedShape);
+
+      // Handle required/optional for objects
+      if (!field.required) {
+        schema = schema.optional();
+      }
+      return schema;
+    }
+
     // Build base schema based on field type
     switch (field.type) {
       case 'string':
-      case 'textarea':
         schema = z.string();
         break;
       case 'email':
-        schema = z.email('Invalid email format');
+        schema = z.string().email('Invalid email format');
         break;
       case 'number':
         schema = z.number();
@@ -33,7 +47,7 @@ export class SchemaBuilderService {
         schema = z.boolean();
         break;
       case 'date':
-        schema = z.iso.datetime();
+        schema = z.string().datetime();
         break;
       case 'select':
         schema = z.string();
@@ -62,7 +76,7 @@ export class SchemaBuilderService {
   ): any {
     // Min/Max for strings
     if (
-      (fieldType === 'string' || fieldType === 'textarea') &&
+      fieldType === 'string' &&
       (validations.min !== undefined || validations.max !== undefined)
     ) {
       if (validations.min !== undefined) {

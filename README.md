@@ -110,7 +110,7 @@ Form schemas are JSON files in the `schemas/` directory. Here's a minimal exampl
     },
     {
       "name": "message",
-      "type": "textarea",
+      "type": "string",
       "required": true,
       "validations": {
         "min": 10,

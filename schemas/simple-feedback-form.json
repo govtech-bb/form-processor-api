@@ -5,7 +5,7 @@
   "fields": [
     {
       "name": "visitReason",
-      "type": "textarea",
+      "type": "string",
       "required": true,
       "validations": {
         "min": 1,
@@ -14,7 +14,7 @@
     },
     {
       "name": "whatWentWrong",
-      "type": "textarea",
+      "type": "string",
       "required": true,
       "validations": {
         "min": 1,

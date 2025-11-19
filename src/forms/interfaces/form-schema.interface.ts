@@ -9,12 +9,13 @@ export interface FormSchema {
 export interface FormField {
   name: string;
   type: FieldType;
-  label: string;
-  required: boolean;
+  label?: string;
+  required?: boolean;
   placeholder?: string;
   defaultValue?: any;
   validations?: FieldValidation;
   options?: FieldOption[]; // For select, radio, checkbox
+  fields?: FormField[]; // For nested object structures
 }
 
 export type FieldType =
@@ -24,7 +25,7 @@ export type FieldType =
   | 'boolean'
   | 'date'
   | 'select'
-  | 'textarea';
+  | 'object';
 
 export interface FieldValidation {
   min?: number; // For numbers and string length
