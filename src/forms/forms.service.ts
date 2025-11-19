@@ -27,7 +27,12 @@ export class FormsService {
    * Get a specific form schema
    */
   async getFormSchema(formId: string): Promise<FormSchema> {
-    return this.formUtilsService.getSchema(formId);
+    const formData = this.formUtilsService.getSchema(formId);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { processors, ...schemaWithoutProcessors } = formData;
+
+    return schemaWithoutProcessors as FormSchema;
   }
 
   /**
