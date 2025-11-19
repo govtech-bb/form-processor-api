@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 @Entity('form_configs')
-@Index(['form_id', 'key'], { unique: true })
+@Index(['formId', 'key'], { unique: true })
 export class FormConfig {
   @PrimaryGeneratedColumn('uuid')
   id: string;

@@ -18,7 +18,8 @@ export default () => ({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     ses: {
-      fromEmail: process.env.AWS_SES_FROM_EMAIL || 'noreply@example.com',
+      fromEmail:
+        process.env.AWS_SES_FROM_EMAIL || 'no-reply@notify.dev.alpha.gov.bb',
       configurationSet: process.env.SES_CONFIGURATION_SET,
       tagKey: process.env.SES_TAG_KEY || 'ses:configuration-set',
       tagValue: process.env.SES_TAG_VALUE || 'prod',
