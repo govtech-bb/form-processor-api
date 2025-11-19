@@ -1,461 +1,125 @@
-<!DOCTYPE html>
 <html>
-
-<html>
-
-<head>
-
-    <head>
-        <meta charset='utf-8' />
-
-        <meta charset="utf-8">
-        <style>
-            <style>body {
-                font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-
-                body {
-                    line-height: 1.6;
-                    color: #333;
-                    max-width: 600px;
-                    margin: 0 auto;
-                    padding:
-
-                        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-                    20px;
-                    background-color: #f5f5f5;
-                }
-
-                .container {
-                    background-color: #ffffff;
-
-                    line-height: 1.6;
-                    border-radius: 8px;
-                    overflow: hidden;
-                    box-shadow: 0 2px 4px color: #333;
-                    rgba(0, 0, 0, 0.1);
-                }
-
-                .header {
-                    background-color: #0b0c0c;
-                    color: white;
-
-                    margin: 0;
-                    padding: 30px 20px;
-                    text-align: center;
-                }
-
-                .header h1 {
-                    margin: 0 0 10px 0;
-
-                    padding: 0;
-                    font-size: 24px;
-                    font-weight: bold;
-                }
-
-                .header p {
-                    margin: 0;
-                    font-size:
-
-                }
-
-                16px;
-                opacity: 0.9;
-            }
-
-            .content {
-                padding: 30px 20px;
-            }
-
-            .success-banner {
-
-                .container {
-                    background-color: #00703c;
-                    color: white;
-                    padding: 20px;
-                    margin-bottom:
-
-                        max-width: 600px;
-                    25px;
-                    border-radius: 5px;
-                    text-align: center;
-                }
-
-                .success-banner h2 {
-
-                    margin: 0 auto;
-                    margin: 0 0 10px 0;
-                    font-size: 20px;
-                }
-
-                .success-banner p {
-                    margin: 0;
-
-                    padding: 20px;
-                    font-size: 14px;
-                }
-
-                .info-box {
-                    background-color: #e8f4f8;
-                    border-left: 4px
-                }
-
-                solid #005ea5;
-                padding: 15px;
-                margin-bottom: 20px;
-            }
-
-            .info-box strong {
-
-                h1 {
-                    color: #0b0c0c;
-                }
-
-                .section {
-                    margin-bottom: 25px;
-                }
-
-                .section h3 {
-                    color:
-
-                        color: #003087;
-                    #0b0c0c;
-                    font-size: 18px;
-                    margin-bottom: 15px;
-                    border-bottom: 2px solid border-bottom: 3px solid #FFB71B;
-                    #005ea5;
-                    padding-bottom: 8px;
-                }
-
-                .field-row {
-                    display: flex;
-                    margin-bottom:
-
-                        padding-bottom: 10px;
-                    12px;
-                    padding-bottom: 12px;
-                    border-bottom: 1px solid #e8e8e8;
-                }
-
-                margin-bottom: 20px;
-
-                .field-row:last-child {
-                    border-bottom: none;
-                }
-
-                .field-label {
-                    font-weight:
-
-                        font-size: 24px;
-                    bold;
-                    color: #0b0c0c;
-                    min-width: 180px;
-                    flex-shrink: 0;
-                }
-
-                .field-value {}
-
-                color: #333;
-                flex-grow: 1;
-            }
-
-            .next-steps {
-                background-color: #fff8e6;
-
-                h3 {
-                    border-left: 4px solid: #ffdd00;
-                    padding: 20px;
-                    margin-top: 25px;
-                }
-
-                color: #003087;
-
-                .next-steps h3 {
-                    color: #0b0c0c;
-                    margin-top: 0;
-                    font-size: 18px;
-                }
-
-                font-size: 18px;
-
-                .next-steps ul {
-                    margin: 10px 0 0 0;
-                    padding-left: 20px;
-                }
-
-                .next-steps li margin-top: 20px;
-
-                    {
-                    margin-bottom: 8px;
-                }
-
-                .footer {
-                    background-color: #f8f8f8;
-                    padding:
-
-                        margin-bottom: 10px;
-                    20px;
-                    text-align: center;
-                    color: #666;
-                    font-size: 12px;
-                    border-top: 1px
-                }
-
-                solid #e8e8e8;
-            }
-
-            .footer p {
-                margin: 5px 0;
-            }
-
-            h4 {
-        </style>
-
-        color: #003087;
-    </head>
-
-    font-size: 16px;
-
-<body>
-
-    margin-top: 15px; <div class='container'>
-
-        margin-bottom: 10px; <div class='header'>
-
-            } <h1>🇧🇧 Government of Barbados</h1>
-
-            p { <p>Registry Department - Birth Registration</p>
-
-            margin: 10px 0; </div>
-
-        }
-
-        .info-box { <div class='content'>
-
-            background-color: #f0f7ff; <div class='success-banner'>
-
-                border-left: 4px solid #003087; <h2>✓ Your birth registration has been received</h2>
-
-                padding: 15px; <p>We've successfully received your application</p>
-
-                margin: 20px 0; </div>
-
-            }
-
-            .info-box h3 { <div class='info-box'>
-
-                margin-top: 0; <strong>Submission ID:</strong>
-
-                } {{submissionId}}<br />
-
-                .warning-box { <strong>Submitted on:</strong>
-
-                background-color: #fff9e6; {{processedAt}}<br />
-
-                border-left: 4px solid #FFB71B; <strong>Certificates Requested:</strong>
-
-                padding: 15px; {{numberOfCertificates}}
-
-                margin: 20px 0; </div>
-
-            }
-
-            .warning-box h3 { <div class='section'>
-
-                margin-top: 0; <h3>Child Information</h3>
-
-                } <div class='field-row'>
-
-                    ul, ol { <div class='field-label'>Full Name:</div>
-
-                    margin: 10px 0; <div class='field-value'>{{child.firstNames}}
-
-                        padding-left: 20px; {{#if child.middleNames}}{{child.middleNames}}
-
-                        } {{/if}}{{child.lastName}}</div>
-
-                    li { </div>
-
-                margin-bottom: 5px; <div class='field-row'>
-
-                    } <div class='field-label'>Date of Birth:</div>
-
-                    a { <div class='field-value'>{{child.dateOfBirth}}</div>
-
-                    color: #003087; </div>
-
-                text-decoration: underline; <div class='field-row'>
-
-                    } <div class='field-label'>Place of Birth:</div>
-
-                    .footer { <div class='field-value'>{{child.parishOfBirth}}</div>
-
-                    margin-top: 30px; </div>
-
-                padding-top: 20px; </div>
-
-            border-top: 1px solid #ccc;
-
-            color: #666; <div class='section'>
-
-                font-size: 12px; <h3>Contact Information</h3>
-
-                } <div class='field-row'>
-
-                    .contact-info p { <div class='field-label'>Email:</div>
-
-                    margin: 0; <div class='field-value'>{{email}}</div>
-
-                    } </div>
-
-                </style>
-                <div class='field-row'>
-
-                    </head>
-                    <div class='field-label'>Phone:</div>
-
-                    <body>
-                        <div class='field-value'>{{phoneNumber}}</div>
-
-                        <div class="container"> </div>
-
-                        <h1>We have received your registration details</h1>
-                </div>
-
-
-
-                <p>Dear {{#if mother.firstName}}{{mother.firstName}}{{else}}Parent/Guardian{{/if}},</p>
-                <div class='next-steps'>
-
-                    <h3>What happens next?</h3>
-
-                    <div class="info-box">
-                        <ul>
-
-                            <h3>What we received</h3>
-                            <li>Our registry team will review your application</li>
-
-                            <p><strong>Date submitted:</strong> {{processedAt}}</p>
-                            <li>We'll contact you within 5-7 business days to confirm the
-
-                                {{#if child.dateOfBirth}} registration</li>
-
-                            <p><strong>Child's date of birth:</strong> {{child.dateOfBirth}}</p>
-                            <li>You'll be notified when your birth certificate(s) are ready for
-
-                                {{/if}} collection</li>
-
-                            <p><strong>Certificates requested:</strong> {{numberOfCertificates}}</p>
-                            <li>Please keep your submission ID ({{submissionId}}) for reference</li>
-
-                    </div>
-                    </ul>
-
-                </div>
-
-                <div class="warning-box">
-
-                    <h3>What to do next</h3>
-                    <p <p>To finish registering the birth, you must go to the Registration Department in the district
-                        where the child was born to sign the birth register.</p> style='margin-top: 25px; padding: 15px;
-                    background-color: #f8f8f8; border-radius: 5px; font-size: 14px;'
-
-                    <p>The Registrations team will let you know when you can collect the child's birth certificate if
-                        you have ordered any.</p> >
-
-                    <p><strong>Find out about:</strong></p> <strong>Need help?</strong><br />
-
-                    <ul> If you have any questions about your registration, please contact the
-
-                        <li><a href="https://alpha.gov.bb/register-a-birth#where-to-register">where you need to go to
-                                complete the registration</a></li> Registry Department with your submission ID.
-
-                        <li><a href="https://alpha.gov.bb/register-a-birth#late-registrations">late registration
-                                fees</a></li>
-                        </p>
-
-                    </ul>
-                </div>
-
-            </div>
-
-            <div class='footer'>
-
-                <section>
-                    <p><strong>This is an automated email - please do not reply</strong></p>
-
-                    <h3>Who should go to complete the registration</h3>
-                    <p>© 2025 Government of Barbados - Registry Department</p>
-
-                    <p>If you are:</p>
-                    <p>All rights reserved</p>
-
-                    <ul>
-            </div>
-
-            <li>married to each other, the father must register and the mother can attend</li>
-        </div>
-
-        <li>not married to each other, the mother must register the birth but it is not necessary for the father to
+  <head>
+    <meta charset='utf-8' />
+    <style>
+      body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      "Helvetica Neue", Arial, sans-serif; line-height: 1.6; color: #333; }
+      .container { max-width: 600px; margin: 0 auto; padding: 20px; } h1 {
+      color: #003087; border-bottom: 3px solid #FFB71B; padding-bottom: 10px; }
+      h3 { color: #003087; font-size: 18px; margin-top: 20px; } h4 { color:
+      #003087; font-size: 16px; margin-top: 15px; } p { margin: 10px 0; }
+      .info-box { background-color: #f0f7ff; border-left: 4px solid #003087;
+      padding: 15px; margin: 20px 0; } .warning-box { background-color: #fff9e6;
+      border-left: 4px solid #FFB71B; padding: 15px; margin: 20px 0; } ul, ol {
+      margin: 0; padding-left: 20px; } li { margin-bottom: 5px; } a { color:
+      #003087; text-decoration: underline; } .contact-info p { margin: 0; }
+      .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid #ccc;
+      color: #666; font-size: 12px; }
+    </style>
+  </head>
+  <body>
+    <div class='container'>
+      <h1>We have received your registration details</h1>
+
+      <p>Dear
+        {{#if
+          mother.firstName
+        }}{{mother.firstName}}{{else}}Parent/Guardian{{/if}},</p>
+
+      <div class='info-box'>
+        <h3 style='margin-top: 0;'>What we received</h3>
+        <p><strong>Date submitted:</strong> {{processedAt}}</p>
+        {{#if child.dateOfBirth}}
+          <p><strong>Child's date of birth:</strong> {{child.dateOfBirth}}</p>
+        {{/if}}
+        <p><strong>Certificates requested:</strong> {{numberOfCertificates}}</p>
+      </div>
+
+      <div class='warning-box'>
+        <h3 style='margin-top: 0;'>What to do next</h3>
+        <p>To finish registering the birth, you must go to the Registration
+          Department in the district where the child was born to sign the birth
+          register.</p>
+        <p>The Registrations team will let you know when you can collect the
+          child's birth certificate if you have ordered any.</p>
+        <p><strong>Find out about:</strong></p>
+        <ul>
+          <li><a
+              href='https://alpha.gov.bb/register-a-birth#where-to-register'
+            >where you need to go to complete the registration</a></li>
+          <li><a
+              href='https://alpha.gov.bb/register-a-birth#late-registrations'
+            >late registration fees</a></li>
+        </ul>
+      </div>
+
+      <section>
+        <h3>Who should go to complete the registration</h3>
+        <p>If you are:</p>
+        <ul>
+          <li>married to each other, the father must register and the mother can
             attend</li>
-</body>
+          <li>not married to each other, the mother must register the birth but
+            it is not necessary for the father to attend</li>
+          <li>not married to each other but the father wants to be named on the
+            birth record, both parents must register the birth together</li>
+        </ul>
+        <p>You do not need to take the baby.</p>
+      </section>
 
-<li>not married to each other but the father wants to be named on the birth record, both parents must register the birth
-    together</li>
+      <section>
+        <h3>What to bring</h3>
+        <p>You need to show:</p>
+        <ol>
+          <li>Your child's medical book from the hospital or birthing centre
+            (sometimes called the green book or immunisation book).</li>
+          <li>A valid form of photo identification for each parent who will be
+            named on the birth record.</li>
+          <li>Your Barbados National ID card, valid passport or other
+            government-issued ID if you are a Barbadian citizen. Non-Barbadian
+            nationals must show their valid passport.</li>
+          <li>Your original marriage certificate if you are married to the
+            child's other parent.</li>
+        </ol>
 
-</html>
-</ul>
-<p>You do not need to take the baby.</p>
-</section>
+        <h4>Parents who are minors</h4>
+        <p>If you are a mother or a father and you are under 16 years old, you
+          are considered a minor. You must be accompanied by your parent(s) or
+          guardian(s).</p>
+        <p><strong>If you have a valid passport, you must bring:</strong></p>
+        <ul>
+          <li>your valid passport</li>
+          <li>your original birth certificate</li>
+          <li>the child's medical book (green book)</li>
+        </ul>
+        <p><strong>If you do not have a valid passport, you must bring:</strong></p>
+        <ul>
+          <li>your minor's identification card</li>
+          <li>your original birth certificate</li>
+          <li>the child's medical book (green book)</li>
+          <li>an identification letter signed by a Justice of the Peace</li>
+        </ul>
+      </section>
 
-<section>
-    <h3>What to bring</h3>
-    <p>You need to show:</p>
-    <ol>
-        <li>Your child's medical book from the hospital or birthing centre (sometimes called the green book or
-            immunisation book).</li>
-        <li>A valid form of photo identification for each parent who will be named on the birth record.</li>
-        <li>Your Barbados National ID card, valid passport or other government-issued ID if you are a Barbadian citizen.
-            Non-Barbadian nationals must show their valid passport.</li>
-        <li>Your original marriage certificate if you are married to the child's other parent.</li>
-    </ol>
+      <section>
+        <h3>If you need support</h3>
+        <p>If you need help registering a birth, for example, you are unable to
+          sign the register in person, contact the Registration Department in
+          Bridgetown as soon as possible after the child is born.</p>
+        <p><strong>Registration Department</strong></p>
+        <div class='contact-info'>
+          <p>Supreme Court Complex</p>
+          <p>Whitepark Road</p>
+          <p>St. Michael</p>
+          <p>(246) 535-9700</p>
+        </div>
+      </section>
 
-    <h4>Parents who are minors</h4>
-    <p>If you are a mother or a father and you are under 16 years old, you are considered a minor. You must be
-        accompanied by your parent(s) or guardian(s).</p>
-    <p><strong>If you have a valid passport, you must bring:</strong></p>
-    <ul>
-        <li>your valid passport</li>
-        <li>your original birth certificate</li>
-        <li>the child's medical book (green book)</li>
-    </ul>
-    <p><strong>If you do not have a valid passport, you must bring:</strong></p>
-    <ul>
-        <li>your minor's identification card</li>
-        <li>your original birth certificate</li>
-        <li>the child's medical book (green book)</li>
-        <li>an identification letter signed by a Justice of the Peace</li>
-    </ul>
-</section>
-
-<section>
-    <h3>If you need support</h3>
-    <p>If you need help registering a birth, for example, you are unable to sign the register in person, contact the
-        Registration Department in Bridgetown as soon as possible after the child is born.</p>
-    <p><strong>Registration Department</strong></p>
-    <div class="contact-info">
-        <p>Supreme Court Complex</p>
-        <p>Whitepark Road</p>
-        <p>St. Michael</p>
-        <p>(246) 535-9700</p>
+      <div class='footer'>
+        <p>Government of Barbados - Civil Registration Department<br />
+          This is an automated confirmation email. Please do not reply to this
+          email.</p>
+      </div>
     </div>
-</section>
-
-<hr style="margin: 30px 0; border-top: 1px solid #ccc;">
-<div class="footer">
-    <p>Government of Barbados - Civil Registration Department<br>
-        This is an automated confirmation email. Please do not reply to this email.</p>
-</div>
-</div>
-</body>
-
+  </body>
 </html>
