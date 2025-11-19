@@ -28,19 +28,10 @@ export class EmailService {
 
   constructor(private readonly configService: ConfigService) {
     const region = this.configService.get('aws.region', 'us-east-1');
-    const accessKeyId = this.configService.get('aws.accessKeyId');
-    const secretAccessKey = this.configService.get('aws.secretAccessKey');
 
     // Initialize AWS SES v2 client
     this.sesClient = new SESv2Client({
       region,
-      ...(accessKeyId &&
-        secretAccessKey && {
-          credentials: {
-            accessKeyId,
-            secretAccessKey,
-          },
-        }),
     });
 
     this.defaultFromEmail = this.configService.get('aws.ses.fromEmail');
