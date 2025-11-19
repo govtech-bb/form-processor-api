@@ -178,7 +178,7 @@ export class FormUtilsService implements OnModuleInit {
 
   /**
    * Replace form data patterns in a string
-   * Supports: {{formData.fieldName}}
+   * Supports: {{formData.fieldName}} and nested paths like {{formData.nested.keyName}}
    */
   private replaceFormData(
     value: string,
@@ -189,21 +189,41 @@ export class FormUtilsService implements OnModuleInit {
 
     const matches = value.matchAll(regex);
     for (const match of matches) {
-      const fieldName = match[1];
-      const fieldValue = formData[fieldName];
+      const fieldPath = match[1];
+      const fieldValue = this.getNestedValue(formData, fieldPath);
 
       if (fieldValue !== undefined && fieldValue !== null) {
         // Convert to string and replace
         result = result.replace(match[0], String(fieldValue));
       } else {
         this.logger.warn(
-          `Form data field not found: ${fieldName}, keeping placeholder`,
+          `Form data field not found: ${fieldPath}, removing from string`,
         );
-        // Keep the placeholder if field not found
+        // Remove the placeholder if field not found
+        result = result.replace(match[0], '');
       }
     }
 
     return result;
+  }
+
+  /**
+   * Get a nested value from an object using a dot-separated path
+   * Example: getNestedValue({child: {firstName: 'John'}}, 'child.firstName') => 'John'
+   */
+  private getNestedValue(obj: Record<string, any>, path: string): any {
+    const keys = path.split('.');
+    let current = obj;
+
+    for (const key of keys) {
+      if (current && typeof current === 'object' && key in current) {
+        current = current[key];
+      } else {
+        return undefined;
+      }
+    }
+
+    return current;
   }
 
   /**
