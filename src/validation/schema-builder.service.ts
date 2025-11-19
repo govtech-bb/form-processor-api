@@ -47,7 +47,12 @@ export class SchemaBuilderService {
         schema = z.boolean();
         break;
       case 'date':
-        schema = z.string().datetime();
+        schema = z
+          .string()
+          .regex(
+            /^\d{4}-\d{2}-\d{2}$/,
+            'Invalid date format (expected YYYY-MM-DD)',
+          );
         break;
       case 'select':
         schema = z.string();
