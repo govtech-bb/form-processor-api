@@ -15,13 +15,6 @@ import { ApiResponse } from '../common/dto';
 export class FormsController {
   constructor(private readonly formsService: FormsService) {}
 
-  @Get()
-  @HttpCode(HttpStatus.OK)
-  async getAllForms() {
-    const forms = await this.formsService.getAllForms();
-    return ApiResponse.success(forms, 'Forms retrieved successfully');
-  }
-
   @Get(':formId')
   @HttpCode(HttpStatus.OK)
   async getFormSchema(@Param('formId') formId: string) {

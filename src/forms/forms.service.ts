@@ -17,13 +17,6 @@ export class FormsService {
   ) {}
 
   /**
-   * Get all available forms
-   */
-  async getAllForms(): Promise<FormSchema[]> {
-    return this.formUtilsService.getAllSchemas();
-  }
-
-  /**
    * Get a specific form schema
    */
   async getFormSchema(formId: string): Promise<FormSchema> {
