@@ -16,6 +16,13 @@ export interface FormField {
   validations?: FieldValidation;
   options?: FieldOption[]; // For select, radio, checkbox
   fields?: FormField[]; // For nested object structures
+  items?: ArrayItemSchema; // For array type - defines the structure of array items
+}
+
+export interface ArrayItemSchema {
+  type: 'string' | 'number' | 'boolean' | 'object';
+  properties?: Record<string, { type: string; validations?: FieldValidation }>;
+  validations?: FieldValidation;
 }
 
 export type FieldType =
@@ -25,7 +32,8 @@ export type FieldType =
   | 'boolean'
   | 'date'
   | 'select'
-  | 'object';
+  | 'object'
+  | 'array';
 
 export interface FieldValidation {
   min?: number; // For numbers and string length

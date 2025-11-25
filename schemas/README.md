@@ -24,6 +24,8 @@ Each form schema follows this structure:
 - `boolean` - Checkbox/toggle
 - `date` - Date input
 - `select` - Dropdown selection
+- `object` - Nested object structure
+- `array` - Array of items (can be primitives or objects)
 
 ### Validations
 
@@ -33,6 +35,45 @@ Fields support these validation rules:
 - `max` - Maximum value/length
 - `regex` - Regular expression pattern
 - `message` - Custom error message
+
+### Array Fields
+
+Array fields support arrays of primitives or objects:
+
+```json
+{
+  "name": "organizationNames",
+  "type": "array",
+  "label": "Organization Names",
+  "required": false,
+  "items": {
+    "type": "object",
+    "properties": {
+      "value": {
+        "type": "string"
+      }
+    }
+  }
+}
+```
+
+For primitive arrays:
+
+```json
+{
+  "name": "tags",
+  "type": "array",
+  "label": "Tags",
+  "required": false,
+  "items": {
+    "type": "string",
+    "validations": {
+      "min": 2,
+      "max": 20
+    }
+  }
+}
+```
 
 ### Processors
 
