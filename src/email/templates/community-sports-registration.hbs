@@ -59,6 +59,12 @@
             <span class='field-value'>{{experienceLevel}}</span>
           </div>
         {{/if}}
+        {{#if otherExperienceLevel}}
+          <div class='field'>
+            <span class='field-label'>Other Experience Level:</span>
+            <span class='field-value'>{{otherExperienceLevel}}</span>
+          </div>
+        {{/if}}
         {{#if yearsOfExperience}}
           <div class='field'>
             <span class='field-label'>Years of Experience:</span>
@@ -69,6 +75,16 @@
           <span class='field-label'>Belongs to Organizations:</span>
           <span class='field-value'>{{belongsToOrganizations}}</span>
         </div>
+        {{#if organizationNames}}
+          <div class='field'>
+            <span class='field-label'>Organizations:</span>
+            <span class='field-value'>
+              {{#each organizationNames}}
+                {{#if @index}}, {{/if}}{{this.value}}
+              {{/each}}
+            </span>
+          </div>
+        {{/if}}
       </div>
 
       <div class='section'>
@@ -77,6 +93,24 @@
           <span class='field-label'>Employment Status:</span>
           <span class='field-value'>{{employmentStatus}}</span>
         </div>
+        {{#if institutionName}}
+          <div class='field'>
+            <span class='field-label'>Institution Name:</span>
+            <span class='field-value'>{{institutionName}}</span>
+          </div>
+        {{/if}}
+        {{#if employerName}}
+          <div class='field'>
+            <span class='field-label'>Employer Name:</span>
+            <span class='field-value'>{{employerName}}</span>
+          </div>
+        {{/if}}
+        {{#if otherEmploymentDetails}}
+          <div class='field'>
+            <span class='field-label'>Other Employment Details:</span>
+            <span class='field-value'>{{otherEmploymentDetails}}</span>
+          </div>
+        {{/if}}
         <div class='field'>
           <span class='field-label'>Address:</span>
           <span class='field-value'>{{addressLine1}}{{#if addressLine2}},

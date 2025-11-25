@@ -17,6 +17,40 @@ export class SchemaBuilderService {
   private buildFieldSchema(field: FormField): any {
     let schema: any;
 
+    // Handle array type
+    if (field.type === 'array' && field.items) {
+      let itemSchema: any;
+
+      if (field.items.type === 'object' && field.items.properties) {
+        // Build object schema for array items
+        const objectShape: Record<string, any> = {};
+        for (const [propName, propDef] of Object.entries(
+          field.items.properties,
+        )) {
+          objectShape[propName] = this.buildItemPropertySchema(propDef);
+        }
+        itemSchema = z.object(objectShape);
+      } else {
+        // Build primitive schema for array items
+        itemSchema = this.buildPrimitiveSchema(field.items.type);
+        if (field.items.validations) {
+          itemSchema = this.applyValidations(
+            itemSchema,
+            field.items.validations,
+            field.items.type,
+          );
+        }
+      }
+
+      schema = z.array(itemSchema);
+
+      // Handle required/optional for arrays
+      if (!field.required) {
+        schema = schema.optional();
+      }
+      return schema;
+    }
+
     // Handle nested object type
     if (field.type === 'object' && field.fields) {
       const nestedShape: Record<string, any> = {};
@@ -127,6 +161,32 @@ export class SchemaBuilderService {
           `Invalid regex pattern: ${validations.regex}`,
         );
       }
+    }
+
+    return schema;
+  }
+
+  private buildPrimitiveSchema(type: string): any {
+    switch (type) {
+      case 'string':
+        return z.string();
+      case 'number':
+        return z.number();
+      case 'boolean':
+        return z.boolean();
+      default:
+        return z.any();
+    }
+  }
+
+  private buildItemPropertySchema(propDef: {
+    type: string;
+    validations?: FieldValidation;
+  }): any {
+    let schema = this.buildPrimitiveSchema(propDef.type);
+
+    if (propDef.validations) {
+      schema = this.applyValidations(schema, propDef.validations, propDef.type);
     }
 
     return schema;
