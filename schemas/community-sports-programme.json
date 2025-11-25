@@ -1,0 +1,234 @@
+{
+  "id": "community-sports-programme",
+  "name": "Community Sports Programme Registration",
+  "description": "Register for our community sports programme",
+  "fields": [
+    {
+      "name": "firstName",
+      "type": "string",
+      "label": "First Name",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "max": 50
+      }
+    },
+    {
+      "name": "lastName",
+      "type": "string",
+      "label": "Last Name",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "max": 50
+      }
+    },
+    {
+      "name": "dateOfBirth",
+      "type": "date",
+      "label": "Date of Birth",
+      "required": true,
+      "validations": {
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+        "message": "Date must be in YYYY-MM-DD format"
+      }
+    },
+    {
+      "name": "gender",
+      "type": "string",
+      "label": "Gender",
+      "required": true
+    },
+    {
+      "name": "disciplineOfInterest",
+      "type": "string",
+      "label": "Discipline of Interest",
+      "required": true
+    },
+    {
+      "name": "disciplineExperience",
+      "type": "string",
+      "label": "Do you have experience in this discipline?",
+      "required": true
+    },
+    {
+      "name": "experienceLevel",
+      "type": "string",
+      "label": "Experience Level",
+      "required": false
+    },
+    {
+      "name": "otherExperienceLevel",
+      "type": "string",
+      "label": "Other Experience Level",
+      "required": false
+    },
+    {
+      "name": "yearsOfExperience",
+      "type": "number",
+      "label": "Years of Experience",
+      "required": false,
+      "validations": {
+        "min": 0,
+        "max": 50
+      }
+    },
+    {
+      "name": "employmentStatus",
+      "type": "string",
+      "label": "Employment Status",
+      "required": true
+    },
+    {
+      "name": "institutionName",
+      "type": "string",
+      "label": "Institution Name",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "employerName",
+      "type": "string",
+      "label": "Employer Name",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "otherEmploymentDetails",
+      "type": "string",
+      "label": "Other Employment Details",
+      "required": false,
+      "validations": {
+        "max": 200
+      }
+    },
+    {
+      "name": "belongsToOrganizations",
+      "type": "string",
+      "label": "Do you belong to any sports organizations?",
+      "required": true
+    },
+    {
+      "name": "organizationNames",
+      "type": "array",
+      "label": "Organization Names",
+      "required": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "addressLine1",
+      "type": "string",
+      "label": "Address Line 1",
+      "required": true,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "addressLine2",
+      "type": "string",
+      "label": "Address Line 2",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "parish",
+      "type": "string",
+      "label": "Parish",
+      "required": true
+    },
+    {
+      "name": "telephoneNumber",
+      "type": "string",
+      "label": "Telephone Number",
+      "required": true,
+      "validations": {
+        "regex": "^\\+?[0-9]{10,15}$",
+        "message": "Telephone number must be 10-15 digits"
+      }
+    },
+    {
+      "name": "emergencyFirstName",
+      "type": "string",
+      "label": "Emergency Contact First Name",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "max": 50
+      }
+    },
+    {
+      "name": "emergencyLastName",
+      "type": "string",
+      "label": "Emergency Contact Last Name",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "max": 50
+      }
+    },
+    {
+      "name": "emergencyRelationship",
+      "type": "string",
+      "label": "Relationship to Emergency Contact",
+      "required": true
+    },
+    {
+      "name": "emergencyAddressLine1",
+      "type": "string",
+      "label": "Emergency Contact Address Line 1",
+      "required": true,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "emergencyAddressLine2",
+      "type": "string",
+      "label": "Emergency Contact Address Line 2",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "emergencyParish",
+      "type": "string",
+      "label": "Emergency Contact Parish",
+      "required": true
+    },
+    {
+      "name": "emergencyTelephoneNumber",
+      "type": "string",
+      "label": "Emergency Contact Telephone Number",
+      "required": true,
+      "validations": {
+        "regex": "^\\+?[0-9]{10,15}$",
+        "message": "Telephone number must be 10-15 digits"
+      }
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:community-sports-registration:admin_email}}",
+        "subject": "New Community Sports Programme Registration - ${formData.firstName} ${formData.lastName}",
+        "template": "community-sports-registration"
+      }
+    }
+  ]
+}
