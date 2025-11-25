@@ -226,7 +226,7 @@
       "type": "email",
       "config": {
         "to": "{{db:community-sports-registration:admin_email}}",
-        "subject": "New Community Sports Programme Registration - ${formData.firstName} ${formData.lastName}",
+        "subject": "New Community Sports Programme Registration - {{formData.firstName}} {{formData.lastName}}",
         "template": "community-sports-registration"
       }
     }
