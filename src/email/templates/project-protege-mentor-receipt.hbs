@@ -107,6 +107,32 @@
     <div class='container'>
       <h1>Thank you for your application</h1>
 
+      <p>Dear {{personal.firstName}} {{personal.lastName}},</p>
+      <p>Thank you for submitting your application to become a mentor for the
+        Project Protege programme.</p>
+      <p>Your application has been successfully received on
+        <strong>{{submittedAt}}</strong>.</p>
+
+      <div
+        style='border: 2px solid #ddd; padding: 15px; margin: 20px 0; background-color: #f9f9f9;'
+      >
+        <h3 style='color: #333; margin-top: 0;'>Application Summary</h3>
+        <p><strong>Name:</strong>
+          {{personal.firstName}}
+          {{personal.lastName}}</p>
+        <p><strong>Email:</strong> {{contact.email}}</p>
+        <p><strong>Telephone:</strong> {{contact.telephoneNumber}}</p>
+        <p><strong>Parish:</strong> {{contact.parish}}</p>
+        <p><strong>Employment Status:</strong> {{personal.employmentStatus}}</p>
+        <p><strong>Mentee Gender Preference:</strong>
+          {{preferences.menteeGenderPreference}}</p>
+        {{#if experience.hasMentorExperience}}
+          <p><strong>Previous Mentoring Experience:</strong>
+            {{experience.yearsOfExperience}}
+            years</p>
+        {{/if}}
+      </div>
+
       <div class='section'>
         <p>
           Your information has been sent to the Youth Development Programme,
