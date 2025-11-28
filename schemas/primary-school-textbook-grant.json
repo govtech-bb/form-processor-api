@@ -1,0 +1,321 @@
+{
+  "id": "primary-school-textbook-grant",
+  "name": "Primary School Textbook Grant Application",
+  "description": "Apply for a textbook grant for primary school students",
+  "fields": [
+    {
+      "name": "beneficiaries",
+      "type": "object",
+      "label": "Student Information",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "Student First Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Student Last Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "label": "Student ID Number",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "gender",
+          "type": "string",
+          "label": "Student Gender",
+          "required": true
+        },
+        {
+          "name": "class",
+          "type": "string",
+          "label": "Student Class/Grade",
+          "required": true,
+          "validations": {
+            "regex": "^[1-6]$",
+            "message": "Class must be between 1 and 6"
+          }
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "label": "Student Date of Birth",
+          "required": true,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "schoolName",
+          "type": "string",
+          "label": "School Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100
+          }
+        }
+      ]
+    },
+    {
+      "name": "guardian",
+      "type": "object",
+      "label": "Guardian Information",
+      "required": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "label": "Title",
+          "required": false,
+          "validations": {
+            "max": 10
+          }
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "Guardian First Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "label": "Guardian Middle Name",
+          "required": false,
+          "validations": {
+            "max": 50
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Guardian Last Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "label": "Guardian ID Number",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "gender",
+          "type": "string",
+          "label": "Guardian Gender",
+          "required": true
+        },
+        {
+          "name": "relationship",
+          "type": "string",
+          "label": "Relationship to Student",
+          "required": true,
+          "validations": {
+            "max": 50
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Guardian Email Address",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "contact",
+      "type": "object",
+      "label": "Contact Information",
+      "required": true,
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true,
+          "validations": {
+            "regex": "^\\+?[0-9]{10,15}$",
+            "message": "Telephone number must be 10-15 digits"
+          }
+        }
+      ]
+    },
+    {
+      "name": "bankAccount",
+      "type": "object",
+      "label": "Bank Account Information",
+      "required": true,
+      "fields": [
+        {
+          "name": "bank",
+          "type": "string",
+          "label": "Bank Name",
+          "required": true
+        },
+        {
+          "name": "branch",
+          "type": "string",
+          "label": "Branch Location",
+          "required": true,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "accountType",
+          "type": "string",
+          "label": "Account Type",
+          "required": true
+        },
+        {
+          "name": "nameOnAccount",
+          "type": "string",
+          "label": "Name on Account",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 500
+          }
+        },
+        {
+          "name": "accountNumber",
+          "type": "string",
+          "label": "Account Number",
+          "required": true,
+          "validations": {
+            "regex": "^[0-9]{6,20}$",
+            "message": "Account number must be 6-20 digits"
+          }
+        }
+      ]
+    },
+    {
+      "name": "householdInfo",
+      "type": "object",
+      "label": "Household Information",
+      "required": true,
+      "fields": [
+        {
+          "name": "monthlyIncome",
+          "type": "number",
+          "label": "Total Monthly Household Income (BBD)",
+          "required": true,
+          "validations": {
+            "min": 0,
+            "max": 2000000
+          }
+        },
+        {
+          "name": "householdMembers",
+          "type": "number",
+          "label": "Number of People in Household",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 200
+          }
+        },
+        {
+          "name": "dependentChildren",
+          "type": "number",
+          "label": "Number of Dependent Children",
+          "required": true,
+          "validations": {
+            "min": 0,
+            "max": 150
+          }
+        },
+        {
+          "name": "receivesOtherSupport",
+          "type": "string",
+          "label": "Do you receive other government financial support?",
+          "required": true
+        },
+        {
+          "name": "otherSupportDetails",
+          "type": "string",
+          "label": "Details of Other Government Support",
+          "required": false,
+          "validations": {
+            "max": 2000
+          }
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:primary-school-textbook-grant:admin_email}}",
+        "subject": "New Textbook Grant Application - {{formData.beneficiaries.firstName}} {{formData.beneficiaries.lastName}}",
+        "template": "primary-school-textbook-grant"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.guardian.email}}",
+        "subject": "Textbook Grant Application Received - Government of Barbados",
+        "template": "primary-school-textbook-grant-receipt"
+      }
+    }
+  ]
+}
