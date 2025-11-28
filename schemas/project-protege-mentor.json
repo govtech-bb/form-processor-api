@@ -340,14 +340,14 @@
       "type": "email",
       "config": {
         "to": "{{db:project-protege-mentor:admin_email}}",
-        "subject": "New Project Protege Mentor Registration - {{formData.firstName}} {{formData.lastName}}",
+        "subject": "New Project Protege Mentor Registration - {{formData.personal.firstName}} {{formData.personal.lastName}}",
         "template": "project-protege-mentor"
       }
     },
     {
       "type": "email",
       "config": {
-        "to": "{{formData.email}}",
+        "to": "{{formData.contact.email}}",
         "subject": "Mentor Application Received - Government of Barbados",
         "template": "project-protege-mentor-receipt"
       }
