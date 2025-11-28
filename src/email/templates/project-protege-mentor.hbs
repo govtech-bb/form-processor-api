@@ -1,0 +1,195 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <style>
+      body { font-family: Arial, sans-serif; line-height: 1.6; color: #333;
+      max-width: 800px; margin: 0 auto; padding: 20px; } .header {
+      background-color: #6b46c1; color: white; padding: 20px; text-align:
+      center; border-radius: 5px 5px 0 0; } .content { background-color:
+      #f7fafc; padding: 30px; border: 1px solid #e2e8f0; border-top: none; }
+      .section { margin-bottom: 25px; background-color: white; padding: 20px;
+      border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+      .section-title { color: #6b46c1; font-size: 18px; font-weight: bold;
+      margin-bottom: 15px; border-bottom: 2px solid #6b46c1; padding-bottom:
+      5px; } .field { margin-bottom: 12px; } .field-label { font-weight: bold;
+      color: #4a5568; display: inline-block; width: 200px; } .field-value {
+      color: #1a202c; } .footer { margin-top: 30px; padding: 20px;
+      background-color: #edf2f7; border-radius: 5px; text-align: center;
+      font-size: 14px; color: #718096; } .text-area { background-color: #f8f9fa;
+      padding: 10px; border-radius: 3px; margin-top: 5px; font-style: italic; }
+    </style>
+  </head>
+  <body>
+    <div class='header'>
+      <h1>🤝 Project Protege Mentor Registration</h1>
+    </div>
+
+    <div class='content'>
+      <p>A new mentor registration has been submitted for the Project Protege
+        mentorship program.</p>
+
+      <div class='section'>
+        <div class='section-title'>Personal Information</div>
+        <div class='field'>
+          <span class='field-label'>Name:</span>
+          <span class='field-value'>{{firstName}} {{lastName}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Date of Birth:</span>
+          <span class='field-value'>{{dateOfBirth}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Email:</span>
+          <span class='field-value'>{{email}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Telephone:</span>
+          <span class='field-value'>{{telephoneNumber}}</span>
+        </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Address Information</div>
+        <div class='field'>
+          <span class='field-label'>Address:</span>
+          <span class='field-value'>{{addressLine1}}{{#if addressLine2}},
+              {{addressLine2}}{{/if}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Parish:</span>
+          <span class='field-value'>{{parish}}</span>
+        </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Employment Information</div>
+        <div class='field'>
+          <span class='field-label'>Employment Status:</span>
+          <span class='field-value'>{{employmentStatus}}</span>
+        </div>
+        {{#if institutionName}}
+          <div class='field'>
+            <span class='field-label'>Institution Name:</span>
+            <span class='field-value'>{{institutionName}}</span>
+          </div>
+        {{/if}}
+        {{#if employerName}}
+          <div class='field'>
+            <span class='field-label'>Employer Name:</span>
+            <span class='field-value'>{{employerName}}</span>
+          </div>
+        {{/if}}
+        {{#if otherEmploymentDetails}}
+          <div class='field'>
+            <span class='field-label'>Other Employment Details:</span>
+            <span class='field-value'>{{otherEmploymentDetails}}</span>
+          </div>
+        {{/if}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Mentoring Information</div>
+        <div class='field'>
+          <span class='field-label'>Why do you want to mentor:</span>
+          <div class='text-area'>{{whyMentor}}</div>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Your Strengths:</span>
+          <div class='text-area'>{{strengths}}</div>
+        </div>
+        <div class='field'>
+          <span class='field-label'>What mentee should learn:</span>
+          <div class='text-area'>{{menteeLearn}}</div>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Mentee Gender Preference:</span>
+          <span class='field-value'>{{menteeGenderPreference}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Share Phone Number:</span>
+          <span class='field-value'>{{sharePhoneNumber}}</span>
+        </div>
+        {{#if menteePhoneNumber}}
+          <div class='field'>
+            <span class='field-label'>Mentee Phone Number:</span>
+            <span class='field-value'>{{menteePhoneNumber}}</span>
+          </div>
+        {{/if}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Mentee & Experience Information</div>
+        <div class='field'>
+          <span class='field-label'>Has Specific Mentee in Mind:</span>
+          <span class='field-value'>{{hasMenteeInMind}}</span>
+        </div>
+        {{#if menteeInMindName}}
+          <div class='field'>
+            <span class='field-label'>Mentee Name:</span>
+            <span class='field-value'>{{menteeInMindName}}</span>
+          </div>
+        {{/if}}
+        <div class='field'>
+          <span class='field-label'>Has Previous Mentoring Experience:</span>
+          <span class='field-value'>{{hasMentorExperience}}</span>
+        </div>
+        {{#if yearsOfExperience}}
+          <div class='field'>
+            <span class='field-label'>Years of Experience:</span>
+            <span class='field-value'>{{yearsOfExperience}}</span>
+          </div>
+        {{/if}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Professional Reference</div>
+        <div class='field'>
+          <span class='field-label'>Name:</span>
+          <span class='field-value'>{{professionalRefereeFirstName}}
+            {{professionalRefereeLastName}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Relationship:</span>
+          <span class='field-value'>{{professionalRefereeRelationship}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Email:</span>
+          <span class='field-value'>{{professionalRefereeEmail}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Phone:</span>
+          <span class='field-value'>{{professionalRefereePhone}}</span>
+        </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Personal Reference</div>
+        <div class='field'>
+          <span class='field-label'>Name:</span>
+          <span class='field-value'>{{personalRefereeFirstName}}
+            {{personalRefereeLastName}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Relationship:</span>
+          <span class='field-value'>{{personalRefereeRelationship}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Email:</span>
+          <span class='field-value'>{{personalRefereeEmail}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Phone:</span>
+          <span class='field-value'>{{personalRefereePhone}}</span>
+        </div>
+      </div>
+
+      <div class='footer'>
+        <p><strong>Submission ID:</strong> {{submissionId}}</p>
+        <p>This is an automated notification from the Project Protege Mentor
+          Registration System.</p>
+        <p>Please review this application and follow up with the applicant and
+          their references as needed.</p>
+      </div>
+    </div>
+  </body>
+</html>
