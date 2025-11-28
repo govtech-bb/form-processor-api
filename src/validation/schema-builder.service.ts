@@ -38,6 +38,7 @@ export class SchemaBuilderService {
             itemSchema,
             field.items.validations,
             field.items.type,
+            true, // Array items are always required when present
           );
         }
       }
@@ -97,7 +98,12 @@ export class SchemaBuilderService {
 
     // Apply validations
     if (field.validations) {
-      schema = this.applyValidations(schema, field.validations, field.type);
+      schema = this.applyValidations(
+        schema,
+        field.validations,
+        field.type,
+        field.required,
+      );
     }
 
     // Handle required/optional
@@ -112,6 +118,7 @@ export class SchemaBuilderService {
     schema: any,
     validations: FieldValidation,
     fieldType: string,
+    required = true,
   ): any {
     // Min/Max for strings
     if (
@@ -155,7 +162,15 @@ export class SchemaBuilderService {
     if (validations.regex) {
       try {
         const regex = new RegExp(validations.regex);
-        schema = schema.regex(regex, validations.message || 'Invalid format');
+        if (required) {
+          // For required fields, apply regex directly
+          schema = schema.regex(regex, validations.message || 'Invalid format');
+        } else {
+          // For non-required fields, allow empty strings or strings that match the regex
+          schema = schema.refine((val: string) => !val || regex.test(val), {
+            message: validations.message || 'Invalid format',
+          });
+        }
       } catch (error) {
         throw new BadRequestException(
           `Invalid regex pattern: ${validations.regex}`,
@@ -186,7 +201,12 @@ export class SchemaBuilderService {
     let schema = this.buildPrimitiveSchema(propDef.type);
 
     if (propDef.validations) {
-      schema = this.applyValidations(schema, propDef.validations, propDef.type);
+      schema = this.applyValidations(
+        schema,
+        propDef.validations,
+        propDef.type,
+        true, // Array item properties are typically required when present
+      );
     }
 
     return schema;
