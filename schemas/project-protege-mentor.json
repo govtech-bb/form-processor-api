@@ -1,0 +1,300 @@
+{
+  "id": "project-protege-mentor",
+  "name": "Project Protege Mentor Registration",
+  "description": "Register as a mentor for the Project Protege mentorship program",
+  "fields": [
+    {
+      "name": "firstName",
+      "type": "string",
+      "label": "First Name",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "max": 50
+      }
+    },
+    {
+      "name": "lastName",
+      "type": "string",
+      "label": "Last Name",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "max": 50
+      }
+    },
+    {
+      "name": "dateOfBirth",
+      "type": "date",
+      "label": "Date of Birth",
+      "required": true,
+      "validations": {
+        "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+        "message": "Date must be in YYYY-MM-DD format"
+      }
+    },
+    {
+      "name": "employmentStatus",
+      "type": "string",
+      "label": "Employment Status",
+      "required": true
+    },
+    {
+      "name": "institutionName",
+      "type": "string",
+      "label": "Institution Name",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "employerName",
+      "type": "string",
+      "label": "Employer Name",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "otherEmploymentDetails",
+      "type": "string",
+      "label": "Other Employment Details",
+      "required": false,
+      "validations": {
+        "max": 200
+      }
+    },
+    {
+      "name": "addressLine1",
+      "type": "string",
+      "label": "Address Line 1",
+      "required": true,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "addressLine2",
+      "type": "string",
+      "label": "Address Line 2",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "parish",
+      "type": "string",
+      "label": "Parish",
+      "required": true
+    },
+    {
+      "name": "email",
+      "type": "email",
+      "label": "Email Address",
+      "required": true
+    },
+    {
+      "name": "telephoneNumber",
+      "type": "string",
+      "label": "Telephone Number",
+      "required": true,
+      "validations": {
+        "regex": "^\\+?[0-9]{10,15}$",
+        "message": "Telephone number must be 10-15 digits"
+      }
+    },
+    {
+      "name": "whyMentor",
+      "type": "string",
+      "label": "Why do you want to be a mentor?",
+      "required": true,
+      "validations": {
+        "min": 10,
+        "max": 500
+      }
+    },
+    {
+      "name": "strengths",
+      "type": "string",
+      "label": "What are your strengths that would benefit a mentee?",
+      "required": true,
+      "validations": {
+        "min": 10,
+        "max": 500
+      }
+    },
+    {
+      "name": "menteeLearn",
+      "type": "string",
+      "label": "What would you like your mentee to learn from you?",
+      "required": true,
+      "validations": {
+        "min": 10,
+        "max": 500
+      }
+    },
+    {
+      "name": "menteeGenderPreference",
+      "type": "string",
+      "label": "Mentee Gender Preference",
+      "required": true
+    },
+    {
+      "name": "sharePhoneNumber",
+      "type": "string",
+      "label": "Are you willing to share your phone number with your mentee?",
+      "required": true
+    },
+    {
+      "name": "menteePhoneNumber",
+      "type": "string",
+      "label": "Mentee Phone Number (if applicable)",
+      "required": false,
+      "validations": {
+        "regex": "^\\+?[0-9]{10,15}$",
+        "message": "Telephone number must be 10-15 digits"
+      }
+    },
+    {
+      "name": "hasMenteeInMind",
+      "type": "string",
+      "label": "Do you have a specific mentee in mind?",
+      "required": true
+    },
+    {
+      "name": "menteeInMindName",
+      "type": "string",
+      "label": "Name of Mentee You Have in Mind",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "hasMentorExperience",
+      "type": "string",
+      "label": "Do you have previous mentoring experience?",
+      "required": true
+    },
+    {
+      "name": "yearsOfExperience",
+      "type": "string",
+      "label": "Years of Mentoring Experience",
+      "required": false,
+      "validations": {
+        "max": 50
+      }
+    },
+    {
+      "name": "professionalRefereeFirstName",
+      "type": "string",
+      "label": "Professional Referee First Name",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "max": 50
+      }
+    },
+    {
+      "name": "professionalRefereeLastName",
+      "type": "string",
+      "label": "Professional Referee Last Name",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "max": 50
+      }
+    },
+    {
+      "name": "professionalRefereeRelationship",
+      "type": "string",
+      "label": "Relationship to Professional Referee",
+      "required": true,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "professionalRefereeEmail",
+      "type": "email",
+      "label": "Professional Referee Email",
+      "required": true
+    },
+    {
+      "name": "professionalRefereePhone",
+      "type": "string",
+      "label": "Professional Referee Phone Number",
+      "required": true,
+      "validations": {
+        "regex": "^\\+?[0-9]{10,15}$",
+        "message": "Telephone number must be 10-15 digits"
+      }
+    },
+    {
+      "name": "personalRefereeFirstName",
+      "type": "string",
+      "label": "Personal Referee First Name",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "max": 50
+      }
+    },
+    {
+      "name": "personalRefereeLastName",
+      "type": "string",
+      "label": "Personal Referee Last Name",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "max": 50
+      }
+    },
+    {
+      "name": "personalRefereeRelationship",
+      "type": "string",
+      "label": "Relationship to Personal Referee",
+      "required": true,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "personalRefereeEmail",
+      "type": "email",
+      "label": "Personal Referee Email",
+      "required": true
+    },
+    {
+      "name": "personalRefereePhone",
+      "type": "string",
+      "label": "Personal Referee Phone Number",
+      "required": true,
+      "validations": {
+        "regex": "^\\+?[0-9]{10,15}$",
+        "message": "Telephone number must be 10-15 digits"
+      }
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:project-protege-mentor:admin_email}}",
+        "subject": "New Project Protege Mentor Registration - {{formData.firstName}} {{formData.lastName}}",
+        "template": "project-protege-mentor"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.email}}",
+        "subject": "Mentor Application Received - Government of Barbados",
+        "template": "project-protege-mentor-receipt"
+      }
+    }
+  ]
+}
