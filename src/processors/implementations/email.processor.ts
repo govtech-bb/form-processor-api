@@ -18,17 +18,24 @@ export class EmailProcessor implements IProcessor {
     const { to, from, subject, template, html, text } = config;
 
     if (!to) {
-      throw new Error('Email processor requires "to" field in config');
+      this.logger.warn(
+        `Email processor skipped: "to" field is missing in config for submission: ${context.submissionId}`,
+      );
+      return;
     }
 
     if (!subject) {
-      throw new Error('Email processor requires "subject" field in config');
+      this.logger.warn(
+        `Email processor skipped: "subject" field is missing in config for submission: ${context.submissionId}`,
+      );
+      return;
     }
 
     if (!template && !html && !text) {
-      throw new Error(
-        'Email processor requires either "template", "html", or "text" field in config',
+      this.logger.warn(
+        `Email processor skipped: "template", "html", or "text" field is missing in config for submission: ${context.submissionId}`,
       );
+      return;
     }
 
     await this.emailService.sendEmail({
