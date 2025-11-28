@@ -32,111 +32,115 @@
         <div class='section-title'>Personal Information</div>
         <div class='field'>
           <span class='field-label'>Name:</span>
-          <span class='field-value'>{{firstName}} {{lastName}}</span>
+          <span class='field-value'>{{personal.firstName}}
+            {{personal.lastName}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Date of Birth:</span>
-          <span class='field-value'>{{dateOfBirth}}</span>
+          <span class='field-value'>{{personal.dateOfBirth}}</span>
         </div>
         <div class='field'>
+          <span class='field-label'>Employment Status:</span>
+          <span class='field-value'>{{personal.employmentStatus}}</span>
+        </div>
+        {{#if personal.institutionName}}
+          <div class='field'>
+            <span class='field-label'>Institution Name:</span>
+            <span class='field-value'>{{personal.institutionName}}</span>
+          </div>
+        {{/if}}
+        {{#if personal.employerName}}
+          <div class='field'>
+            <span class='field-label'>Employer Name:</span>
+            <span class='field-value'>{{personal.employerName}}</span>
+          </div>
+        {{/if}}
+        {{#if personal.otherEmploymentDetails}}
+          <div class='field'>
+            <span class='field-label'>Other Employment Details:</span>
+            <span class='field-value'>{{personal.otherEmploymentDetails}}</span>
+          </div>
+        {{/if}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Contact Information</div>
+        <div class='field'>
           <span class='field-label'>Email:</span>
-          <span class='field-value'>{{email}}</span>
+          <span class='field-value'>{{contact.email}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Telephone:</span>
-          <span class='field-value'>{{telephoneNumber}}</span>
+          <span class='field-value'>{{contact.telephoneNumber}}</span>
         </div>
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Address Information</div>
         <div class='field'>
           <span class='field-label'>Address:</span>
-          <span class='field-value'>{{addressLine1}}{{#if addressLine2}},
-              {{addressLine2}}{{/if}}</span>
+          <span class='field-value'>{{contact.addressLine1}}{{#if
+              contact.addressLine2
+            }}, {{contact.addressLine2}}{{/if}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Parish:</span>
-          <span class='field-value'>{{parish}}</span>
+          <span class='field-value'>{{contact.parish}}</span>
         </div>
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Employment Information</div>
-        <div class='field'>
-          <span class='field-label'>Employment Status:</span>
-          <span class='field-value'>{{employmentStatus}}</span>
-        </div>
-        {{#if institutionName}}
-          <div class='field'>
-            <span class='field-label'>Institution Name:</span>
-            <span class='field-value'>{{institutionName}}</span>
-          </div>
-        {{/if}}
-        {{#if employerName}}
-          <div class='field'>
-            <span class='field-label'>Employer Name:</span>
-            <span class='field-value'>{{employerName}}</span>
-          </div>
-        {{/if}}
-        {{#if otherEmploymentDetails}}
-          <div class='field'>
-            <span class='field-label'>Other Employment Details:</span>
-            <span class='field-value'>{{otherEmploymentDetails}}</span>
-          </div>
-        {{/if}}
       </div>
 
       <div class='section'>
         <div class='section-title'>Mentoring Information</div>
         <div class='field'>
           <span class='field-label'>Why do you want to mentor:</span>
-          <div class='text-area'>{{whyMentor}}</div>
+          <div class='text-area'>{{mentorship.whyMentor}}</div>
         </div>
         <div class='field'>
           <span class='field-label'>Your Strengths:</span>
-          <div class='text-area'>{{strengths}}</div>
+          <div class='text-area'>{{mentorship.strengths}}</div>
         </div>
         <div class='field'>
           <span class='field-label'>What mentee should learn:</span>
-          <div class='text-area'>{{menteeLearn}}</div>
+          <div class='text-area'>{{mentorship.menteeLearn}}</div>
         </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Mentee Preferences</div>
         <div class='field'>
           <span class='field-label'>Mentee Gender Preference:</span>
-          <span class='field-value'>{{menteeGenderPreference}}</span>
+          <span
+            class='field-value'
+          >{{preferences.menteeGenderPreference}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Share Phone Number:</span>
-          <span class='field-value'>{{sharePhoneNumber}}</span>
+          <span class='field-value'>{{preferences.sharePhoneNumber}}</span>
         </div>
-        {{#if menteePhoneNumber}}
+        {{#if preferences.menteePhoneNumber}}
           <div class='field'>
             <span class='field-label'>Mentee Phone Number:</span>
-            <span class='field-value'>{{menteePhoneNumber}}</span>
+            <span class='field-value'>{{preferences.menteePhoneNumber}}</span>
+          </div>
+        {{/if}}
+        <div class='field'>
+          <span class='field-label'>Has Specific Mentee in Mind:</span>
+          <span class='field-value'>{{preferences.hasMenteeInMind}}</span>
+        </div>
+        {{#if preferences.menteeInMindName}}
+          <div class='field'>
+            <span class='field-label'>Mentee Name:</span>
+            <span class='field-value'>{{preferences.menteeInMindName}}</span>
           </div>
         {{/if}}
       </div>
 
       <div class='section'>
-        <div class='section-title'>Mentee & Experience Information</div>
-        <div class='field'>
-          <span class='field-label'>Has Specific Mentee in Mind:</span>
-          <span class='field-value'>{{hasMenteeInMind}}</span>
-        </div>
-        {{#if menteeInMindName}}
-          <div class='field'>
-            <span class='field-label'>Mentee Name:</span>
-            <span class='field-value'>{{menteeInMindName}}</span>
-          </div>
-        {{/if}}
+        <div class='section-title'>Mentoring Experience</div>
         <div class='field'>
           <span class='field-label'>Has Previous Mentoring Experience:</span>
-          <span class='field-value'>{{hasMentorExperience}}</span>
+          <span class='field-value'>{{experience.hasMentorExperience}}</span>
         </div>
-        {{#if yearsOfExperience}}
+        {{#if experience.yearsOfExperience}}
           <div class='field'>
             <span class='field-label'>Years of Experience:</span>
-            <span class='field-value'>{{yearsOfExperience}}</span>
+            <span class='field-value'>{{experience.yearsOfExperience}}</span>
           </div>
         {{/if}}
       </div>
@@ -145,20 +149,20 @@
         <div class='section-title'>Professional Reference</div>
         <div class='field'>
           <span class='field-label'>Name:</span>
-          <span class='field-value'>{{professionalRefereeFirstName}}
-            {{professionalRefereeLastName}}</span>
+          <span class='field-value'>{{professionalReferee.firstName}}
+            {{professionalReferee.lastName}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Relationship:</span>
-          <span class='field-value'>{{professionalRefereeRelationship}}</span>
+          <span class='field-value'>{{professionalReferee.relationship}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Email:</span>
-          <span class='field-value'>{{professionalRefereeEmail}}</span>
+          <span class='field-value'>{{professionalReferee.email}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Phone:</span>
-          <span class='field-value'>{{professionalRefereePhone}}</span>
+          <span class='field-value'>{{professionalReferee.phone}}</span>
         </div>
       </div>
 
@@ -166,20 +170,20 @@
         <div class='section-title'>Personal Reference</div>
         <div class='field'>
           <span class='field-label'>Name:</span>
-          <span class='field-value'>{{personalRefereeFirstName}}
-            {{personalRefereeLastName}}</span>
+          <span class='field-value'>{{personalReferee.firstName}}
+            {{personalReferee.lastName}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Relationship:</span>
-          <span class='field-value'>{{personalRefereeRelationship}}</span>
+          <span class='field-value'>{{personalReferee.relationship}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Email:</span>
-          <span class='field-value'>{{personalRefereeEmail}}</span>
+          <span class='field-value'>{{personalReferee.email}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Phone:</span>
-          <span class='field-value'>{{personalRefereePhone}}</span>
+          <span class='field-value'>{{personalReferee.phone}}</span>
         </div>
       </div>
 
