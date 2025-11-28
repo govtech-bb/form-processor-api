@@ -54,26 +54,6 @@
             "regex": "^[1-6]$",
             "message": "Class must be between 1 and 6"
           }
-        },
-        {
-          "name": "dateOfBirth",
-          "type": "date",
-          "label": "Student Date of Birth",
-          "required": true,
-          "validations": {
-            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-            "message": "Date must be in YYYY-MM-DD format"
-          }
-        },
-        {
-          "name": "schoolName",
-          "type": "string",
-          "label": "School Name",
-          "required": true,
-          "validations": {
-            "min": 2,
-            "max": 100
-          }
         }
       ]
     },
@@ -135,7 +115,7 @@
           "name": "gender",
           "type": "string",
           "label": "Guardian Gender",
-          "required": true
+          "required": false
         },
         {
           "name": "relationship",
@@ -242,59 +222,6 @@
           "validations": {
             "regex": "^[0-9]{6,20}$",
             "message": "Account number must be 6-20 digits"
-          }
-        }
-      ]
-    },
-    {
-      "name": "householdInfo",
-      "type": "object",
-      "label": "Household Information",
-      "required": true,
-      "fields": [
-        {
-          "name": "monthlyIncome",
-          "type": "number",
-          "label": "Total Monthly Household Income (BBD)",
-          "required": true,
-          "validations": {
-            "min": 0,
-            "max": 2000000
-          }
-        },
-        {
-          "name": "householdMembers",
-          "type": "number",
-          "label": "Number of People in Household",
-          "required": true,
-          "validations": {
-            "min": 1,
-            "max": 200
-          }
-        },
-        {
-          "name": "dependentChildren",
-          "type": "number",
-          "label": "Number of Dependent Children",
-          "required": true,
-          "validations": {
-            "min": 0,
-            "max": 150
-          }
-        },
-        {
-          "name": "receivesOtherSupport",
-          "type": "string",
-          "label": "Do you receive other government financial support?",
-          "required": true
-        },
-        {
-          "name": "otherSupportDetails",
-          "type": "string",
-          "label": "Details of Other Government Support",
-          "required": false,
-          "validations": {
-            "max": 2000
           }
         }
       ]

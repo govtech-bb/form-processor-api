@@ -47,18 +47,6 @@
           <span class='field-label'>Class/Grade:</span>
           <span class='field-value'>Class {{beneficiaries.class}}</span>
         </div>
-        {{#if beneficiaries.dateOfBirth}}
-          <div class='field'>
-            <span class='field-label'>Date of Birth:</span>
-            <span class='field-value'>{{beneficiaries.dateOfBirth}}</span>
-          </div>
-        {{/if}}
-        {{#if beneficiaries.schoolName}}
-          <div class='field'>
-            <span class='field-label'>School:</span>
-            <span class='field-value'>{{beneficiaries.schoolName}}</span>
-          </div>
-        {{/if}}
       </div>
 
       <div class='section'>
@@ -74,10 +62,12 @@
           <span class='field-label'>Guardian ID:</span>
           <span class='field-value'>{{guardian.idNumber}}</span>
         </div>
-        <div class='field'>
-          <span class='field-label'>Gender:</span>
-          <span class='field-value'>{{guardian.gender}}</span>
-        </div>
+        {{#if guardian.gender}}
+          <div class='field'>
+            <span class='field-label'>Gender:</span>
+            <span class='field-value'>{{guardian.gender}}</span>
+          </div>
+        {{/if}}
         <div class='field'>
           <span class='field-label'>Relationship to Student:</span>
           <span class='field-value'>{{guardian.relationship}}</span>
@@ -131,45 +121,6 @@
           <span class='field-value'>{{bankAccount.accountNumber}}</span>
         </div>
       </div>
-
-      {{#if householdInfo}}
-        <div class='section'>
-          <div class='section-title'>Household & Financial Information</div>
-          <div class='financial-highlight'>
-            <div class='field'>
-              <span class='field-label'>Monthly Income:</span>
-              <span class='field-value'>${{householdInfo.monthlyIncome}}
-                BBD</span>
-            </div>
-            <div class='field'>
-              <span class='field-label'>Household Members:</span>
-              <span
-                class='field-value'
-              >{{householdInfo.householdMembers}}</span>
-            </div>
-            <div class='field'>
-              <span class='field-label'>Dependent Children:</span>
-              <span
-                class='field-value'
-              >{{householdInfo.dependentChildren}}</span>
-            </div>
-          </div>
-          <div class='field'>
-            <span class='field-label'>Receives Other Support:</span>
-            <span
-              class='field-value'
-            >{{householdInfo.receivesOtherSupport}}</span>
-          </div>
-          {{#if householdInfo.otherSupportDetails}}
-            <div class='field'>
-              <span class='field-label'>Support Details:</span>
-              <span
-                class='field-value'
-              >{{householdInfo.otherSupportDetails}}</span>
-            </div>
-          {{/if}}
-        </div>
-      {{/if}}
 
       <div class='footer'>
         <p><strong>Application ID:</strong> {{submissionId}}</p>
