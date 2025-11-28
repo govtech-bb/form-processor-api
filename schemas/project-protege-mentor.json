@@ -134,7 +134,7 @@
           "label": "Why do you want to be a mentor?",
           "required": true,
           "validations": {
-            "min": 10,
+            "min": 5,
             "max": 500
           }
         },
@@ -144,7 +144,7 @@
           "label": "What are your strengths that would benefit a mentee?",
           "required": true,
           "validations": {
-            "min": 10,
+            "min": 5,
             "max": 500
           }
         },
@@ -154,7 +154,7 @@
           "label": "What would you like your mentee to learn from you?",
           "required": true,
           "validations": {
-            "min": 10,
+            "min": 5,
             "max": 500
           }
         }
