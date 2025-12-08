@@ -1,0 +1,240 @@
+{
+  "id": "change-your-postal-address",
+  "name": "Change Your Postal Address",
+  "description": "Form to change your postal address",
+  "fields": [
+    {
+      "name": "personal",
+      "type": "object",
+      "label": "Application Details",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50,
+            "message": "First name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50,
+            "message": "Last name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "label": "Date of Birth",
+          "required": true,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "number",
+          "label": "ID Number",
+          "required": true,
+          "validations": {
+            "min": 100000,
+            "max": 999999999,
+            "message": "ID Number must be a valid number"
+          }
+        }
+      ]
+    },
+    {
+      "name": "oldaddress",
+      "type": "object",
+      "label": "Old Address",
+      "required": true,
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 100,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "message": "Please select a valid parish"
+          }
+        },
+        {
+          "name": "postalCode",
+          "type": "string",
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "max": 10
+          }
+        }
+      ]
+    },
+    {
+      "name": "newAddress",
+      "type": "object",
+      "label": "New Address",
+      "required": true,
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 100,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "message": "Please select a valid parish"
+          }
+        },
+        {
+          "name": "postalCode",
+          "type": "string",
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "max": 10
+          }
+        }
+      ]
+    },
+    {
+      "name": "houseMembers",
+      "type": "object",
+      "label": "House Member Details",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50,
+            "message": "First name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50,
+            "message": "Last name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "number",
+          "label": "ID Number",
+          "required": true,
+          "validations": {
+            "min": 100000,
+            "max": 999999999,
+            "message": "ID Number must be a valid number"
+          }
+        },
+        {
+          "name": "addAnother",
+          "type": "string",
+          "label": "Do you want to add another member?",
+          "required": false,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must be 'yes' or 'no'"
+          }
+        }
+      ]
+    },
+    {
+      "name": "businessInformation",
+      "type": "object",
+      "label": "Business Information",
+      "required": false,
+      "fields": [
+        {
+          "name": "belongsToBusiness",
+          "type": "string",
+          "label": "Is this for a business/company?",
+          "required": true,
+          "validations": {
+            "regex": "^(true|false)$",
+            "message": "Must be 'true' or 'false'"
+          }
+        },
+        {
+          "name": "businessName",
+          "type": "string",
+          "label": "Business Name",
+          "required": false,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Business name must be at least 2 characters"
+          }
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:change-your-postal-address:admin_email}}",
+        "subject": "New Postal Address Change Request - {{formData.personal.firstName}} {{formData.personal.lastName}}",
+        "template": "change-postal-address"
+      }
+    }
+  ]
+}
