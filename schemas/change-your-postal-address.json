@@ -45,10 +45,8 @@
           "name": "idNumber",
           "type": "number",
           "label": "ID Number",
-          "required": true,
+          "required": false,
           "validations": {
-            "min": 100000,
-            "max": 999999999,
             "message": "ID Number must be a valid number"
           }
         }
@@ -178,10 +176,8 @@
           "name": "idNumber",
           "type": "number",
           "label": "ID Number",
-          "required": true,
+          "required": false,
           "validations": {
-            "min": 100000,
-            "max": 999999999,
             "message": "ID Number must be a valid number"
           }
         },
