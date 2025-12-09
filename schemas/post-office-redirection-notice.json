@@ -1,7 +1,7 @@
 {
-  "id": "change-your-postal-address",
-  "name": "Change Your Postal Address",
-  "description": "Form to change your postal address",
+  "id": "post-office-redirection-notice",
+  "name": "Post Office Redirection Notice",
+  "description": "Form to submit a post office redirection notice",
   "fields": [
     {
       "name": "personal",
@@ -227,9 +227,9 @@
     {
       "type": "email",
       "config": {
-        "to": "{{db:change-your-postal-address:admin_email}}",
-        "subject": "New Postal Address Change Request - {{formData.personal.firstName}} {{formData.personal.lastName}}",
-        "template": "change-postal-address"
+        "to": "{{db:post-office-redirection-notice:admin_email}}",
+        "subject": "New Post Office Redirection Notice Request - {{formData.personal.firstName}} {{formData.personal.lastName}}",
+        "template": "post-office-redirection-notice"
       }
     }
   ]
