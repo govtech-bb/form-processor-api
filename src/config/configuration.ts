@@ -30,8 +30,8 @@ export default () => ({
     schemasDir: process.env.FORM_SCHEMAS_DIR || 'schemas',
   },
   ezpay: {
-    apiKey: process.env.EZPAY_API_KEY,
-    baseUrl: process.env.EZPAY_BASE_URL,
+    apiKey: process.env.EZPAY_API_KEY || 'your_ezpay_api_key',
+    baseUrl: process.env.EZPAY_BASE_URL || 'https://ezpay.example.com',
     webhookSecret: process.env.EZPAY_WEBHOOK_SECRET,
   },
 });
