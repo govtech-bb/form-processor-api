@@ -102,6 +102,11 @@ export class EmailService {
 
   async sendEmail(options: EmailOptions): Promise<void> {
     try {
+      if (this.configService.get('app.nodeEnv') === 'local') {
+        this.logger.log('Local env detected, email will not be sent', options);
+        return;
+      }
+
       const from = options.from || this.defaultFromEmail;
       const to = Array.isArray(options.to) ? options.to : [options.to];
 

@@ -52,3 +52,18 @@ export interface ProcessorConfig {
   type: string;
   config: Record<string, any>;
 }
+
+export interface PaymentProcessorConfig extends ProcessorConfig {
+  type: 'payment';
+  config: {
+    provider: 'ezpay';
+    paymentCode: string; // EZPay+ payment code (stored in secrets)
+    amount: number | string; // Fixed amount or formula like "{{formData.calculatedFee}}"
+    description: string;
+    allowCredit?: boolean;
+    allowDebit?: boolean;
+    allowPayce?: boolean;
+    required?: boolean; // Whether payment is mandatory for form submission
+    timing?: 'immediate' | 'after_validation'; // When to create payment
+  };
+}
