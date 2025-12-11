@@ -6,8 +6,5 @@ export interface ProcessorContext {
 
 export interface IProcessor {
   readonly type: string;
-  execute(
-    config: Record<string, any>,
-    context: ProcessorContext,
-  ): Promise<void>;
+  execute(config: Record<string, any>, context: ProcessorContext): Promise<any>;
 }

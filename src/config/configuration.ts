@@ -29,4 +29,9 @@ export default () => ({
   forms: {
     schemasDir: process.env.FORM_SCHEMAS_DIR || 'schemas',
   },
+  ezpay: {
+    apiKey: process.env.EZPAY_API_KEY,
+    baseUrl: process.env.EZPAY_BASE_URL,
+    webhookSecret: process.env.EZPAY_WEBHOOK_SECRET,
+  },
 });
