@@ -67,12 +67,27 @@ export class FormsService {
       data,
     );
 
-    // Execute processor pipeline with form data injected into config
-    await this.processorPipeline.execute(formSchemaWithData.processors, {
-      formId,
-      submissionId,
-      data,
-    });
+    // Check if form has payment processor
+    const hasPayment = formSchemaWithData.processors.some(
+      (processor) => processor.type === 'payment',
+    );
+
+    if (hasPayment) {
+      // Handle payment-enabled form submission
+      return await this.processFormWithPayment(
+        formSchemaWithData,
+        formId,
+        submissionId,
+        data,
+      );
+    }
+
+    // Execute processor pipeline for non-payment forms
+    // await this.processorPipeline.execute(formSchemaWithData.processors, {
+    //   formId,
+    //   submissionId,
+    //   data,
+    // });
 
     const response = new FormSubmissionResponseDto(
       submissionId,
@@ -84,5 +99,95 @@ export class FormsService {
       validationSuccess: true,
       data: response,
     };
+  }
+
+  /**
+   * Process form submission that requires payment
+   */
+  private async processFormWithPayment(
+    formSchema: any,
+    formId: string,
+    submissionId: string,
+    data: Record<string, any>,
+  ): Promise<{
+    validationSuccess: boolean;
+    data?: FormSubmissionResponseDto;
+    errors?: any[];
+  }> {
+    try {
+      // Find payment processor config
+      const paymentProcessor = formSchema.processors.find(
+        (processor: any) => processor.type === 'payment',
+      );
+
+      // Separate payment and non-payment processors
+      const nonPaymentProcessors = formSchema.processors.filter(
+        (processor: any) => processor.type !== 'payment',
+      );
+
+      // Execute payment processor first
+      const paymentResult = await this.processorPipeline.executeProcessor(
+        paymentProcessor,
+        {
+          formId,
+          submissionId,
+          data,
+        },
+      );
+
+      if (!paymentResult.success || !paymentResult.paymentRequired) {
+        // Payment creation failed
+        return {
+          validationSuccess: true,
+          data: new FormSubmissionResponseDto(submissionId, formId, 'failed'),
+        };
+      }
+
+      // Execute non-payment processors (like sending admin notification emails)
+      if (nonPaymentProcessors.length > 0) {
+        await this.processorPipeline.execute(nonPaymentProcessors, {
+          formId,
+          submissionId,
+          data: {
+            ...data,
+            paymentInfo: {
+              paymentId: paymentResult.paymentId,
+              referenceNumber: paymentResult.referenceNumber,
+              amount: paymentProcessor.config.amount,
+            },
+          },
+        });
+      }
+
+      // Return payment response
+      const response = new FormSubmissionResponseDto(
+        submissionId,
+        formId,
+        'payment_required',
+        {
+          paymentRequired: true,
+          paymentUrl: paymentResult.paymentUrl,
+          paymentToken: paymentResult.paymentToken,
+          paymentId: paymentResult.paymentId,
+          referenceNumber: paymentResult.referenceNumber,
+        },
+      );
+
+      return {
+        validationSuccess: true,
+        data: response,
+      };
+    } catch (error) {
+      console.log(error);
+      this.logger.error(
+        `Payment processing failed for ${formId}:${submissionId}`,
+        error,
+      );
+
+      return {
+        validationSuccess: true,
+        data: new FormSubmissionResponseDto(submissionId, formId, 'failed'),
+      };
+    }
   }
 }
