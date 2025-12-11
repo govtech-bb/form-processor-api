@@ -50,4 +50,34 @@ export class ProcessorPipelineService {
     await Promise.all(promises);
     this.logger.log('All processors completed successfully');
   }
+
+  /**
+   * Execute a single processor and return its result
+   */
+  async executeProcessor(
+    processorConfig: ProcessorConfig,
+    context: ProcessorContext,
+  ): Promise<any> {
+    const processor = this.processors.get(processorConfig.type);
+
+    if (!processor) {
+      this.logger.warn(`Processor not found: ${processorConfig.type}`);
+      throw new BadRequestException(
+        `Processor type "${processorConfig.type}" not found`,
+      );
+    }
+
+    try {
+      this.logger.log(`Executing single processor: ${processorConfig.type}`);
+      const result = await processor.execute(processorConfig.config, context);
+      this.logger.log(`Processor completed: ${processorConfig.type}`);
+      return result;
+    } catch (error) {
+      this.logger.error(
+        `Processor ${processorConfig.type} failed: ${error.message}`,
+        error.stack,
+      );
+      throw error;
+    }
+  }
 }
