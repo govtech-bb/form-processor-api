@@ -105,7 +105,6 @@
           "label": "Passport Number",
           "required": false,
           "validations": {
-            "min": 2,
             "message": "Passport number must be at least 6 characters"
           }
         }
