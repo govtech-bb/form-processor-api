@@ -10,23 +10,6 @@ export class CreatePaymentTables1733876400000 implements MigrationInterface {
   name = 'CreatePaymentTables1733876400000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    // Create custom enums first
-    await queryRunner.query(`
-      CREATE TYPE "payment_provider_enum" AS ENUM('ezpay')
-    `);
-
-    await queryRunner.query(`
-      CREATE TYPE "payment_status_enum" AS ENUM('pending', 'initiated', 'success', 'failed', 'cancelled', 'refunded')
-    `);
-
-    await queryRunner.query(`
-      CREATE TYPE "transaction_status_enum" AS ENUM('Initiated', 'Success', 'Failed')
-    `);
-
-    await queryRunner.query(`
-      CREATE TYPE "transaction_processor_enum" AS ENUM('Credit Card', 'Direct Debit', 'Payce', 'mMoney')
-    `);
-
     // Create payments table
     await queryRunner.createTable(
       new Table({
@@ -102,21 +85,6 @@ export class CreatePaymentTables1733876400000 implements MigrationInterface {
             isNullable: true,
           },
           {
-            name: 'allow_credit',
-            type: 'boolean',
-            default: true,
-          },
-          {
-            name: 'allow_debit',
-            type: 'boolean',
-            default: true,
-          },
-          {
-            name: 'allow_payce',
-            type: 'boolean',
-            default: true,
-          },
-          {
             name: 'metadata',
             type: 'jsonb',
             isNullable: true,
@@ -175,7 +143,7 @@ export class CreatePaymentTables1733876400000 implements MigrationInterface {
             isUnique: true,
           },
           {
-            name: 'ezpay_account',
+            name: 'account_code',
             type: 'varchar',
             isNullable: true,
           },
@@ -395,11 +363,5 @@ export class CreatePaymentTables1733876400000 implements MigrationInterface {
 
     // Drop payments table
     await queryRunner.dropTable('payments');
-
-    // Drop custom enums
-    await queryRunner.query(`DROP TYPE "transaction_processor_enum"`);
-    await queryRunner.query(`DROP TYPE "transaction_status_enum"`);
-    await queryRunner.query(`DROP TYPE "payment_status_enum"`);
-    await queryRunner.query(`DROP TYPE "payment_provider_enum"`);
   }
 }

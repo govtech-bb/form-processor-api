@@ -286,9 +286,6 @@ export class PaymentProcessor implements IProcessor {
     paymentCode: string;
     amount: number;
     description: string;
-    allowCredit: boolean;
-    allowDebit: boolean;
-    allowPayce: boolean;
     customerEmail: string;
     customerName: string;
     formId: string;
@@ -304,9 +301,6 @@ export class PaymentProcessor implements IProcessor {
       customerName: data.customerName,
       paymentCode: data.paymentCode,
       description: data.description,
-      allowCredit: data.allowCredit,
-      allowDebit: data.allowDebit,
-      allowPayce: data.allowPayce,
       metadata: {
         formId: data.formId,
         submissionId: data.submissionId,
