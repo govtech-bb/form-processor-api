@@ -83,11 +83,11 @@ export class FormsService {
     }
 
     // Execute processor pipeline for non-payment forms
-    // await this.processorPipeline.execute(formSchemaWithData.processors, {
-    //   formId,
-    //   submissionId,
-    //   data,
-    // });
+    await this.processorPipeline.execute(formSchemaWithData.processors, {
+      formId,
+      submissionId,
+      data,
+    });
 
     const response = new FormSubmissionResponseDto(
       submissionId,
