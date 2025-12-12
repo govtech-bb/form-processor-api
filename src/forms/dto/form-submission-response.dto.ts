@@ -10,6 +10,8 @@ export class FormSubmissionResponseDto {
   paymentToken?: string;
   paymentId?: string;
   referenceNumber?: string;
+  amount?: number;
+  description?: string;
 
   constructor(
     submissionId: string,
@@ -21,6 +23,8 @@ export class FormSubmissionResponseDto {
       paymentToken?: string;
       paymentId?: string;
       referenceNumber?: string;
+      amount?: number;
+      description?: string;
     },
   ) {
     this.submissionId = submissionId;
@@ -34,6 +38,8 @@ export class FormSubmissionResponseDto {
       this.paymentToken = paymentInfo.paymentToken;
       this.paymentId = paymentInfo.paymentId;
       this.referenceNumber = paymentInfo.referenceNumber;
+      this.amount = paymentInfo.amount;
+      this.description = paymentInfo.description;
     }
   }
 }

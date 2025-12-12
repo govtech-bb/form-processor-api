@@ -19,6 +19,8 @@ export interface PaymentProcessorResult {
   paymentToken?: string;
   paymentId?: string;
   referenceNumber?: string;
+  amount?: number;
+  description?: string;
   error?: string;
 }
 
@@ -167,6 +169,8 @@ export class PaymentProcessor implements IProcessor {
         paymentToken: successResult.token,
         paymentId: payment.id,
         referenceNumber: payment.referenceNumber,
+        amount: resolvedConfig.amount,
+        description: resolvedConfig.description,
       };
     } catch (error) {
       this.logger.error(
