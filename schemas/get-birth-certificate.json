@@ -246,6 +246,17 @@
   ],
   "processors": [
     {
+      "type": "payment",
+      "config": {
+        "provider": "ezpay",
+        "paymentCode": "{{db:get-birth-certificate:payment_code}}",
+        "amount": 25.0,
+        "description": "Processing Fee",
+        "required": true,
+        "timing": "after_validation"
+      }
+    },
+    {
       "type": "email",
       "config": {
         "to": "{{db:get-birth-certificate:admin_email}}",
