@@ -7,12 +7,10 @@ import {
   EZPayConfig,
   EZPayTokenResponse,
   EZPayTransaction,
-  EZPayTransactionStatus,
   EZPayVerifyResponse,
   QueryTransactionsResult,
   VerifyPaymentParams,
   VerifyPaymentResult,
-  ChangeStatusResult,
   EZPAY_ERROR_CODES,
 } from './interfaces';
 import {
@@ -312,6 +310,7 @@ export class EZPayService {
   /**
    * Validate webhook signature (if webhook secret is configured)
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   validateWebhookSignature(payload: string, signature: string): boolean {
     const webhookSecret = this.configService.get<string>('ezpay.webhookSecret');
 

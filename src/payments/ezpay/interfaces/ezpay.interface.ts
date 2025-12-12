@@ -140,10 +140,3 @@ export interface QueryTransactionsResult {
   data?: EZPayTransaction[];
   error?: string;
 }
-
-export interface ChangeStatusResult {
-  success: boolean;
-  result?: string;
-  message?: string;
-  error?: string;
-}
