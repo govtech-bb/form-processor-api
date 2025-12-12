@@ -170,6 +170,8 @@ export class FormsService {
           paymentToken: paymentResult.paymentToken,
           paymentId: paymentResult.paymentId,
           referenceNumber: paymentResult.referenceNumber,
+          amount: paymentProcessor.config.amount,
+          description: paymentProcessor.config.description,
         },
       );
 
