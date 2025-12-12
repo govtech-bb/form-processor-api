@@ -231,7 +231,7 @@
       "fields": [
         {
           "name": "numberOfCopies",
-          "type": "string",
+          "type": "number",
           "label": "Number of copies",
           "required": true,
           "validations": {
