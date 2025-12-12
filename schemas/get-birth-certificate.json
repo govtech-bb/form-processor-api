@@ -105,7 +105,7 @@
           "label": "Passport Number",
           "required": false,
           "validations": {
-            "min": 6,
+            "min": 2,
             "message": "Passport number must be at least 6 characters"
           }
         }
@@ -232,12 +232,10 @@
       "fields": [
         {
           "name": "numberOfCopies",
-          "type": "number",
+          "type": "string",
           "label": "Number of copies",
           "required": true,
           "validations": {
-            "min": 1,
-            "max": 10,
             "message": "You must order at least 1 copy and maximum 10 copies"
           }
         }
