@@ -76,7 +76,7 @@ export class SchemaBuilderService {
         schema = z.string().email('Invalid email format');
         break;
       case 'number':
-        schema = z.number();
+        schema = z.coerce.number();
         break;
       case 'boolean':
         schema = z.boolean();
@@ -186,7 +186,7 @@ export class SchemaBuilderService {
       case 'string':
         return z.string();
       case 'number':
-        return z.number();
+        return z.coerce.number();
       case 'boolean':
         return z.boolean();
       default:
