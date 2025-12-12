@@ -70,7 +70,7 @@ export class SchemaBuilderService {
     // Build base schema based on field type
     switch (field.type) {
       case 'string':
-        schema = z.string();
+        schema = z.coerce.string();
         break;
       case 'email':
         schema = z.string().email('Invalid email format');
@@ -184,7 +184,7 @@ export class SchemaBuilderService {
   private buildPrimitiveSchema(type: string): any {
     switch (type) {
       case 'string':
-        return z.string();
+        return z.coerce.string();
       case 'number':
         return z.coerce.number();
       case 'boolean':
