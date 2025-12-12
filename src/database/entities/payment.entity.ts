@@ -62,15 +62,6 @@ export class Payment {
   @Column({ name: 'description', nullable: true })
   description?: string;
 
-  @Column({ name: 'allow_credit', default: true })
-  allowCredit: boolean;
-
-  @Column({ name: 'allow_debit', default: true })
-  allowDebit: boolean;
-
-  @Column({ name: 'allow_payce', default: true })
-  allowPayce: boolean;
-
   @Column({ name: 'metadata', type: 'jsonb', nullable: true })
   metadata?: Record<string, any>;
 

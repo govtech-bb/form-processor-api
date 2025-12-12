@@ -96,43 +96,13 @@ export class PaymentsController {
   @HttpCode(HttpStatus.OK)
   async getTransactionStatus(@Param('reference') reference: string): Promise<{
     success: boolean;
-    payment?: any;
-    verificationResult?: any;
     message: string;
+    data?: any;
   }> {
-    try {
-      this.logger.log(`Getting transaction status for reference: ${reference}`);
+    const result = await this.paymentWebhookService.manualPaymentVerification(
+      reference,
+    );
 
-      // Use the payment webhook service to verify the payment
-      const result = await this.paymentWebhookService.manualPaymentVerification(
-        reference,
-      );
-
-      if (!result.success) {
-        this.logger.warn(
-          `Transaction status retrieval failed: ${result.message}`,
-          {
-            reference,
-          },
-        );
-
-        return {
-          success: false,
-          message: result.message,
-        };
-      }
-
-      return result;
-    } catch (error) {
-      this.logger.error('Failed to get transaction status', {
-        error: error.message,
-        reference,
-      });
-
-      return {
-        success: false,
-        message: `Failed to get transaction status: ${error.message}`,
-      };
-    }
+    return result;
   }
 }

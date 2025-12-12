@@ -238,7 +238,7 @@ export class PaymentWebhookService {
     const transactionData = {
       paymentId,
       transactionNumber: callbackData._transaction_number,
-      ezpayAccount: callbackData._ezpay_account,
+      accountCode: callbackData._ezpay_account,
       processor: this.mapEZPayProcessorToEnum(callbackData._processor),
       status: callbackData._status as TransactionStatus,
       amount: parseFloat(callbackData._amount),
@@ -384,52 +384,103 @@ export class PaymentWebhookService {
   }
 
   /**
+   * Parse and serialize EZPay verification details
+   * Accepts the '_details' field from EZPayVerifyResponse, which is a JSON stringified array.
+   * Returns a normalized object with expected fields.
+   */
+  private serializeVerificationDetails(
+    verifiedData: EZPayVerifyResponse['_details'],
+  ): {
+    AMOUNT_DUE: string;
+    EZPAY_ACCOUNT: string;
+    HEADER: string;
+    ITEMS: string;
+    NAME: string;
+    amount: number;
+    code: string;
+    details: string;
+    reference: string;
+    reference_email: string;
+    reference_name: string;
+    reference_number: string;
+    token: string;
+  } | null {
+    if (!verifiedData) return null;
+    try {
+      // _details is a JSON stringified array, e.g. '["{...}"]'
+      const parseArray = JSON.parse(verifiedData);
+      if (!Array.isArray(parseArray) || !parseArray[0]) return null;
+      const parsedData = JSON.parse(parseArray[0]);
+      return {
+        AMOUNT_DUE: parsedData.AMOUNT_DUE,
+        EZPAY_ACCOUNT: parsedData.EZPAY_ACCOUNT,
+        HEADER: parsedData.HEADER,
+        ITEMS: parsedData.ITEMS,
+        NAME: parsedData.NAME,
+        amount: parsedData.amount,
+        code: parsedData.code,
+        details: parsedData.details,
+        reference: parsedData.reference,
+        reference_email: parsedData.reference_email,
+        reference_name: parsedData.reference_name,
+        reference_number: parsedData.reference_number,
+        token: parsedData.token,
+      };
+    } catch (e) {
+      this.logger.error('Failed to parse EZPay verification details', {
+        error: e.message,
+        verifiedData,
+      });
+      return null;
+    }
+  }
+
+  /**
    * Manually verify and synchronize payment status with EZPay
    * This method can be used for manual verification or periodic reconciliation
    */
-  async manualPaymentVerification(paymentReference: string): Promise<{
+  async manualPaymentVerification(transactionNumber: string): Promise<{
     success: boolean;
-    payment?: Payment;
     message: string;
+    data?: Payment;
   }> {
     try {
-      this.logger.log(`Manual payment verification for: ${paymentReference}`);
+      // Verify with EZPay
+      const verificationResult = await this.verifyPaymentStatus({
+        transactionNumber,
+      });
+
+      if (!verificationResult.success || !verificationResult.data) {
+        return {
+          success: false,
+          message: `EZPay verification failed: ${verificationResult.error}`,
+        };
+      }
+
+      const { data: paymentData } = verificationResult;
+      const serializedDetails = this.serializeVerificationDetails(
+        paymentData._details,
+      );
 
       // Find the payment in our database
       const payment = await this.paymentRepository.findOne({
-        where: { referenceNumber: paymentReference },
+        where: {
+          referenceNumber: serializedDetails.reference,
+        },
         relations: ['formSubmissions'],
       });
 
       if (!payment) {
         return {
           success: false,
-          message: `Payment not found for reference: ${paymentReference}`,
+          message: `Payment not found for reference: ${serializedDetails.reference}`,
         };
       }
-
-      // Verify with EZPay
-      const verificationResult = await this.verifyPaymentStatus({
-        reference: paymentReference,
-      });
-
-      console.log('Verification Result:', verificationResult);
-
-      if (!verificationResult.success || !verificationResult.data) {
-        return {
-          success: false,
-          payment,
-          message: `EZPay verification failed: ${verificationResult.error}`,
-        };
-      }
-
-      const verifiedData = verificationResult.data;
-      console.log('Verified Data:', verifiedData);
 
       // Check if status needs to be updated
       const currentStatus = payment.status;
       const verifiedStatus = this.mapEZPayStatusToPaymentStatus(
-        verifiedData._status,
+        paymentData._status,
       );
 
       if (currentStatus !== verifiedStatus) {
@@ -439,18 +490,18 @@ export class PaymentWebhookService {
         // Update form submission payment status
         await this.updateFormSubmissionPaymentStatus(
           payment,
-          verifiedData._status,
+          paymentData._status,
         );
 
         // Create/update transaction record
         const callbackData: EZPayCallbackDto = {
-          _reference: verifiedData._transaction_number,
-          _status: verifiedData._status as any,
-          _transaction_number: verifiedData._transaction_number,
-          _ezpay_account: verifiedData._ezpay_account,
-          _processor: verifiedData._processor as any,
-          _datesettled: verifiedData._datesettled,
-          _amount: verifiedData._amount,
+          _reference: serializedDetails.reference,
+          _status: paymentData._status as any,
+          _transaction_number: paymentData._transaction_number,
+          _ezpay_account: paymentData._ezpay_account,
+          _processor: paymentData._processor as any,
+          _datesettled: paymentData._datesettled,
+          _amount: paymentData._amount,
           _pcode: '',
         };
 
@@ -460,8 +511,8 @@ export class PaymentWebhookService {
           `Payment status updated from ${currentStatus} to ${verifiedStatus}`,
           {
             paymentId: payment.id,
-            referenceNumber: paymentReference,
-            transactionNumber: verifiedData._transaction_number,
+            referenceNumber: serializedDetails.reference,
+            transactionNumber: paymentData._transaction_number,
           },
         );
 
@@ -481,14 +532,16 @@ export class PaymentWebhookService {
 
       return {
         success: true,
-        payment,
+        data: await this.paymentRepository.findOne({
+          where: { id: payment.id },
+          relations: ['formSubmissions'],
+        }),
         message: 'Payment verification successful',
       };
     } catch (error) {
       this.logger.error('Manual payment verification failed', {
         error: error.message,
         stack: error.stack,
-        paymentReference,
       });
 
       return {

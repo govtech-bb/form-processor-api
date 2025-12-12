@@ -34,8 +34,8 @@ export class PaymentTransaction {
   @Column({ name: 'transaction_number', unique: true })
   transactionNumber: string;
 
-  @Column({ name: 'ezpay_account', nullable: true })
-  ezpayAccount?: string;
+  @Column({ name: 'account_code', nullable: true })
+  accountCode?: string;
 
   @Column({
     name: 'processor',
