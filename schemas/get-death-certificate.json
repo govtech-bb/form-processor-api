@@ -207,7 +207,6 @@
 					"label": "Estimated date of death",
 					"required": false,
 					"validations": {
-						"min": 1,
 						"max": 100,
 						"message": "Estimate is required"
 					}
