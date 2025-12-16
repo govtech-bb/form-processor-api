@@ -1,10 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { EZPayService } from './ezpay/ezpay.service';
+import { DepartmentMappingService } from './department-mapping.service';
 import { EZPayCartItem, CreatePaymentResult } from './ezpay/interfaces';
 
 export interface PaymentIntegrationOptions {
   formId: string;
   submissionId: string;
+  department: string; // Required department for API key selection
   paymentCode: string;
   amount: number;
   description: string;
@@ -17,7 +19,10 @@ export interface PaymentIntegrationOptions {
 export class PaymentIntegrationService {
   private readonly logger = new Logger(PaymentIntegrationService.name);
 
-  constructor(private readonly ezpayService: EZPayService) {}
+  constructor(
+    private readonly ezpayService: EZPayService,
+    private readonly departmentMappingService: DepartmentMappingService,
+  ) {}
 
   /**
    * Create a payment for a form submission
@@ -28,6 +33,7 @@ export class PaymentIntegrationService {
     const {
       formId,
       submissionId,
+      department,
       paymentCode,
       amount,
       description,
@@ -39,9 +45,23 @@ export class PaymentIntegrationService {
     this.logger.log(`Creating payment for form submission`, {
       formId,
       submissionId,
+      department,
       amount,
       customerEmail,
     });
+
+    // Get the correct API key for the department
+    const apiKey = department
+      ? this.departmentMappingService.getApiKeyForDepartment(department)
+      : this.departmentMappingService.getApiKeyForDepartment('default');
+
+    // Create reference number with department prefix - department is required
+    if (!department) {
+      throw new Error('Department is required for payment creation');
+    }
+
+    const referenceNumber =
+      reference || `${department.toUpperCase()}-${formId}-${submissionId}`;
 
     // Create cart item for the form payment
     const cartItems: EZPayCartItem[] = [
@@ -49,21 +69,24 @@ export class PaymentIntegrationService {
         code: paymentCode,
         amount,
         details: description,
-        reference: reference || `${formId}-${submissionId}`,
+        reference: referenceNumber,
       },
     ];
 
     try {
-      const result = await this.ezpayService.createPayment({
-        cartItems,
-        customerEmail,
-        customerName,
-        referenceNumber: reference || `FORM-${formId}-${submissionId}`,
-        processId: this.ezpayService.generateProcessId(),
-        allowCredit: true,
-        allowDebit: true,
-        allowPayce: true,
-      });
+      const result = await this.ezpayService.createPayment(
+        {
+          cartItems,
+          customerEmail,
+          customerName,
+          referenceNumber,
+          processId: this.ezpayService.generateProcessId(),
+          allowCredit: true,
+          allowDebit: true,
+          allowPayce: true,
+        },
+        apiKey,
+      );
 
       if (result.success) {
         this.logger.log(`Payment created for submission ${submissionId}`, {
@@ -109,6 +132,7 @@ export class PaymentIntegrationService {
     });
 
     try {
+      // EZPayService automatically determines the correct API key from the reference
       const result = await this.ezpayService.verifyPayment({
         transactionNumber,
         reference,
@@ -120,9 +144,6 @@ export class PaymentIntegrationService {
           amount: result.data._amount,
           transactionNumber: result.data._transaction_number,
         });
-
-        // Here you could update the form submission status based on payment status
-        // Example: update database record, send confirmation email, etc.
       }
 
       return result;
@@ -148,15 +169,26 @@ export class PaymentIntegrationService {
     });
 
     try {
-      // Extract form ID and submission ID from reference if it follows the pattern
+      // Extract form ID and submission ID from reference
+      // Format: DEPARTMENT-formId-submissionId (e.g., EDUCATION-form123-sub456)
       const referenceParts = callbackData._reference.split('-');
-      if (referenceParts.length >= 3 && referenceParts[0] === 'FORM') {
+
+      if (referenceParts.length >= 3) {
+        const department = referenceParts[0].toLowerCase();
         const formId = referenceParts[1];
         const submissionId = referenceParts[2];
+
+        this.logger.log('Processing callback for department-based reference', {
+          department,
+          formId,
+          submissionId,
+          reference: callbackData._reference,
+        });
 
         this.logger.log('Extracted form info from payment reference', {
           formId,
           submissionId,
+          department,
           reference: callbackData._reference,
         });
 
@@ -168,12 +200,16 @@ export class PaymentIntegrationService {
 
         if (callbackData._status === 'Success') {
           this.logger.log(
-            `Payment successful for form ${formId}, submission ${submissionId}`,
+            `Payment successful for form ${formId}, submission ${submissionId}${
+              department ? ` (department: ${department})` : ''
+            }`,
           );
           // Handle successful payment
         } else if (callbackData._status === 'Failed') {
           this.logger.warn(
-            `Payment failed for form ${formId}, submission ${submissionId}`,
+            `Payment failed for form ${formId}, submission ${submissionId}${
+              department ? ` (department: ${department})` : ''
+            }`,
           );
           // Handle failed payment
         }

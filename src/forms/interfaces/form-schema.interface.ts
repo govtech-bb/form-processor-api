@@ -57,6 +57,7 @@ export interface PaymentProcessorConfig extends ProcessorConfig {
   type: 'payment';
   config: {
     provider: 'ezpay';
+    department: string; // Department name (education, health, social_services, transport, etc.)
     paymentCode: string; // EZPay+ payment code (stored in secrets)
     amount: number | string; // Fixed amount or formula like "{{formData.calculatedFee}}"
     description: string;
