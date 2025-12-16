@@ -232,6 +232,7 @@
       "type": "payment",
       "config": {
         "provider": "ezpay",
+        "department": "education",
         "paymentCode": "{{db:primary-school-textbook-grant:payment_code}}",
         "amount": 25.0,
         "description": "Processing Fee",
