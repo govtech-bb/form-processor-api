@@ -30,8 +30,16 @@ export default () => ({
     schemasDir: process.env.FORM_SCHEMAS_DIR || 'schemas',
   },
   ezpay: {
-    apiKey: process.env.EZPAY_API_KEY || 'HWqgTn5EXIHLAzVjXtGpB2mIjgQgj0Ql',
+    apiKey: process.env.EZPAY_API_KEY || 'HWqgTn5EXIHLAzVjXtGpB2mIjgQgj0Ql', // Default API key for backward compatibility
     baseUrl: process.env.EZPAY_BASE_URL || 'https://test.ezpay.gov.bb',
     webhookSecret: process.env.EZPAY_WEBHOOK_SECRET,
+    // Department-specific API keys
+    departmentApiKeys: {
+      education: process.env.EZPAY_EDUCATION_API_KEY,
+      health: process.env.EZPAY_HEALTH_API_KEY,
+      social_services: process.env.EZPAY_SOCIAL_SERVICES_API_KEY,
+      transport: process.env.EZPAY_TRANSPORT_API_KEY,
+      default: process.env.EZPAY_API_KEY || 'HWqgTn5EXIHLAzVjXtGpB2mIjgQgj0Ql',
+    },
   },
 });
