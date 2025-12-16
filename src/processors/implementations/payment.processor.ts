@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { EZPayService } from '../../payments/ezpay/ezpay.service';
+import { DepartmentMappingService } from '../../payments/department-mapping.service';
 import {
   Payment,
   PaymentStatus,
@@ -35,6 +36,7 @@ export class PaymentProcessor implements IProcessor {
     private formSubmissionPaymentRepository: Repository<FormSubmissionPayment>,
     private ezpayService: EZPayService,
     private configService: ConfigService,
+    private departmentMappingService: DepartmentMappingService,
   ) {}
 
   get type(): string {
@@ -95,23 +97,26 @@ export class PaymentProcessor implements IProcessor {
       });
 
       // Create EZPay payment session
-      const ezpayResult = await this.ezpayService.createPayment({
-        cartItems: [
-          {
-            code: resolvedConfig.paymentCode,
-            amount: resolvedConfig.amount,
-            details: resolvedConfig.description,
-            reference: payment.referenceNumber,
-          },
-        ],
-        customerEmail: customerInfo.email,
-        customerName: customerInfo.name,
-        referenceNumber: payment.referenceNumber,
-        processId: payment.processId,
-        allowCredit: resolvedConfig.allowCredit ?? true,
-        allowDebit: resolvedConfig.allowDebit ?? true,
-        allowPayce: resolvedConfig.allowPayce ?? true,
-      });
+      const ezpayResult = await this.ezpayService.createPayment(
+        {
+          cartItems: [
+            {
+              code: resolvedConfig.paymentCode,
+              amount: resolvedConfig.amount,
+              details: resolvedConfig.description,
+              reference: payment.referenceNumber,
+            },
+          ],
+          customerEmail: customerInfo.email,
+          customerName: customerInfo.name,
+          referenceNumber: payment.referenceNumber,
+          processId: payment.processId,
+          allowCredit: resolvedConfig.allowCredit ?? true,
+          allowDebit: resolvedConfig.allowDebit ?? true,
+          allowPayce: resolvedConfig.allowPayce ?? true,
+        },
+        resolvedConfig.apiKey,
+      );
 
       if (!ezpayResult.success) {
         // Update payment status to failed
@@ -190,12 +195,14 @@ export class PaymentProcessor implements IProcessor {
     config: PaymentProcessorConfig['config'],
     formData: Record<string, any>,
   ): Promise<{
+    department: string;
     paymentCode: string;
     amount: number;
     description: string;
     allowCredit: boolean;
     allowDebit: boolean;
     allowPayce: boolean;
+    apiKey: string;
   }> {
     // Resolve payment code from database secrets
     let paymentCode = config.paymentCode;
@@ -209,13 +216,20 @@ export class PaymentProcessor implements IProcessor {
       amount = this.evaluateAmountFormula(amount, formData);
     }
 
+    // Get the department and corresponding API key
+    const department = config.department || 'default';
+    const apiKey =
+      this.departmentMappingService.getApiKeyForDepartment(department);
+
     return {
+      department,
       paymentCode,
       amount: Number(amount),
       description: config.description,
       allowCredit: config.allowCredit ?? true,
       allowDebit: config.allowDebit ?? true,
       allowPayce: config.allowPayce ?? true,
+      apiKey,
     };
   }
 
@@ -287,6 +301,7 @@ export class PaymentProcessor implements IProcessor {
   }
 
   private async createPaymentRecord(data: {
+    department: string;
     paymentCode: string;
     amount: number;
     description: string;
@@ -295,8 +310,13 @@ export class PaymentProcessor implements IProcessor {
     formId: string;
     submissionId: string;
   }): Promise<Payment> {
+    // Include department in reference number for later API key resolution
+    const referenceNumber = `${data.department.toUpperCase()}-${data.formId}-${
+      data.submissionId
+    }`;
+
     const payment = this.paymentRepository.create({
-      referenceNumber: `${data.formId}-${data.submissionId}`,
+      referenceNumber,
       processId: this.ezpayService.generateProcessId(),
       paymentProvider: PaymentProvider.EZPAY,
       totalAmount: data.amount,

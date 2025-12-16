@@ -439,15 +439,27 @@ export class PaymentWebhookService {
    * Manually verify and synchronize payment status with EZPay
    * This method can be used for manual verification or periodic reconciliation
    */
-  async manualPaymentVerification(transactionNumber: string): Promise<{
+  async manualPaymentVerification(
+    transactionNumber?: string,
+    reference?: string,
+  ): Promise<{
     success: boolean;
     message: string;
     data?: Payment;
   }> {
     try {
+      // Validate that both parameters are provided
+      if (!transactionNumber || !reference) {
+        return {
+          success: false,
+          message: 'Both transactionNumber and reference must be provided',
+        };
+      }
+
       // Verify with EZPay
       const verificationResult = await this.verifyPaymentStatus({
         transactionNumber,
+        reference,
       });
 
       if (!verificationResult.success || !verificationResult.data) {
@@ -463,17 +475,32 @@ export class PaymentWebhookService {
       );
 
       // Find the payment in our database
-      const payment = await this.paymentRepository.findOne({
-        where: {
-          referenceNumber: serializedDetails.reference,
-        },
-        relations: ['formSubmissions'],
-      });
+      let payment: Payment | null = null;
+
+      if (serializedDetails?.reference) {
+        // Use reference from verified data if available
+        payment = await this.paymentRepository.findOne({
+          where: {
+            referenceNumber: serializedDetails.reference,
+          },
+          relations: ['formSubmissions'],
+        });
+      } else if (reference) {
+        // Use provided reference parameter
+        payment = await this.paymentRepository.findOne({
+          where: {
+            referenceNumber: reference,
+          },
+          relations: ['formSubmissions'],
+        });
+      }
 
       if (!payment) {
+        const usedReference =
+          serializedDetails?.reference || reference || 'unknown';
         return {
           success: false,
-          message: `Payment not found for reference: ${serializedDetails.reference}`,
+          message: `Payment not found for reference: ${usedReference}`,
         };
       }
 
@@ -495,7 +522,7 @@ export class PaymentWebhookService {
 
         // Create/update transaction record
         const callbackData: EZPayCallbackDto = {
-          _reference: serializedDetails.reference,
+          _reference: serializedDetails?.reference || reference || '',
           _status: paymentData._status as any,
           _transaction_number: paymentData._transaction_number,
           _ezpay_account: paymentData._ezpay_account,
@@ -511,7 +538,7 @@ export class PaymentWebhookService {
           `Payment status updated from ${currentStatus} to ${verifiedStatus}`,
           {
             paymentId: payment.id,
-            referenceNumber: serializedDetails.reference,
+            referenceNumber: serializedDetails?.reference || reference,
             transactionNumber: paymentData._transaction_number,
           },
         );
@@ -542,6 +569,8 @@ export class PaymentWebhookService {
       this.logger.error('Manual payment verification failed', {
         error: error.message,
         stack: error.stack,
+        transactionNumber,
+        reference,
       });
 
       return {
