@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { DepartmentMappingService } from '../department-mapping.service';
 import {
   CreatePaymentParams,
   CreatePaymentResult,
@@ -23,13 +24,16 @@ import {
 @Injectable()
 export class EZPayService {
   private readonly logger = new Logger(EZPayService.name);
-  private readonly config: EZPayConfig;
+  private readonly defaultConfig: EZPayConfig;
 
-  constructor(private configService: ConfigService) {
-    this.config = this.getConfig();
+  constructor(
+    private configService: ConfigService,
+    private departmentMappingService: DepartmentMappingService,
+  ) {
+    this.defaultConfig = this.getDefaultConfig();
   }
 
-  private getConfig(): EZPayConfig {
+  private getDefaultConfig(): EZPayConfig {
     const apiKey = this.configService.get<string>('ezpay.apiKey');
     const baseUrl = this.configService.get<string>('ezpay.baseUrl');
 
@@ -44,6 +48,49 @@ export class EZPayService {
   }
 
   /**
+   * Get configuration with optional custom API key
+   */
+  private getConfigWithApiKey(customApiKey?: string): EZPayConfig {
+    if (customApiKey) {
+      return {
+        apiKey: customApiKey,
+        baseUrl: this.defaultConfig.baseUrl,
+      };
+    }
+    return this.defaultConfig;
+  }
+
+  /**
+   * Extract department from reference number
+   * Expected format: DEPARTMENT-formId-submissionId (e.g., EDUCATION-form123-sub456)
+   */
+  private extractDepartmentFromReference(reference: string): string | null {
+    // Check if reference follows the department format
+    const match = reference.match(/^([A-Z_]+)-(.+)-(.+)$/);
+    if (match) {
+      return match[1].toLowerCase(); // Convert EDUCATION to education
+    }
+
+    this.logger.warn(
+      `Reference ${reference} does not follow expected format DEPARTMENT-formId-submissionId. Using default API key.`,
+    );
+    return null;
+  }
+
+  /**
+   * Get API key for a reference number by extracting department
+   */
+  private getApiKeyForReference(reference: string): string {
+    const department = this.extractDepartmentFromReference(reference);
+    if (department) {
+      return this.departmentMappingService.getApiKeyForDepartment(department);
+    }
+
+    // Fallback to default API key
+    return this.departmentMappingService.getApiKeyForDepartment('default');
+  }
+
+  /**
    * Generate a unique process ID (20 characters)
    */
   generateProcessId(): string {
@@ -53,8 +100,9 @@ export class EZPayService {
   /**
    * Get the payment page URL for a token
    */
-  getPaymentPageUrl(token: string): string {
-    return `${this.config.baseUrl}/payment_page?token=${token}`;
+  getPaymentPageUrl(token: string, customApiKey?: string): string {
+    const config = this.getConfigWithApiKey(customApiKey);
+    return `${config.baseUrl}/payment_page?token=${token}`;
   }
 
   /**
@@ -136,6 +184,7 @@ export class EZPayService {
    */
   async createPayment(
     params: CreatePaymentParams,
+    customApiKey?: string,
   ): Promise<CreatePaymentResult> {
     const {
       cartItems,
@@ -147,6 +196,8 @@ export class EZPayService {
       allowDebit = true,
       allowPayce = true,
     } = params;
+
+    const config = this.getConfigWithApiKey(customApiKey);
 
     try {
       this.validateCartItems(cartItems);
@@ -165,11 +216,11 @@ export class EZPayService {
       });
 
       const response = await this.makeRequest<EZPayTokenResponse>(
-        `${this.config.baseUrl}/ezpay_receivecart`,
+        `${config.baseUrl}/ezpay_receivecart`,
         {
           method: 'POST',
           headers: {
-            EZPluginKey: this.config.apiKey,
+            EZPluginKey: config.apiKey,
           },
           body: formData,
         },
@@ -224,12 +275,21 @@ export class EZPayService {
    */
   async verifyPayment(
     params: VerifyPaymentParams,
+    customApiKey?: string,
   ): Promise<VerifyPaymentResult> {
     if (!(params.transactionNumber || params.reference)) {
       throw new EZPayValidationException(
         'Either transactionNumber or reference is required',
       );
     }
+
+    // Determine API key: use custom if provided, otherwise extract from reference
+    let apiKey = customApiKey;
+    if (!apiKey && params.reference) {
+      apiKey = this.getApiKeyForReference(params.reference);
+    }
+
+    const config = this.getConfigWithApiKey(apiKey);
 
     try {
       this.logger.log('Verifying payment', params);
@@ -243,11 +303,11 @@ export class EZPayService {
       }
 
       const response = await this.makeRequest<EZPayVerifyResponse>(
-        `${this.config.baseUrl}/check_api`,
+        `${config.baseUrl}/check_api`,
         {
           method: 'POST',
           headers: {
-            EZPluginKey: this.config.apiKey,
+            EZPluginKey: config.apiKey,
           },
           body: formData,
         },
@@ -275,16 +335,19 @@ export class EZPayService {
   async queryTransactions(
     startDate: string,
     endDate: string,
+    customApiKey?: string,
   ): Promise<QueryTransactionsResult> {
+    const config = this.getConfigWithApiKey(customApiKey);
+
     try {
       this.logger.log(`Querying transactions from ${startDate} to ${endDate}`);
 
       const response = await this.makeRequest<EZPayTransaction[]>(
-        `${this.config.baseUrl}/transactions_api`,
+        `${config.baseUrl}/transactions_api`,
         {
           method: 'POST',
           headers: {
-            Apikey: this.config.apiKey,
+            Apikey: config.apiKey,
             Startdate: startDate,
             Enddate: endDate,
           },
