@@ -26,7 +26,7 @@
     "db:migrate": "npm run typeorm migration:run -- -d src/database/datasource.ts",
     "db:revert": "npm run typeorm migration:revert -- -d src/database/datasource.ts",
     "db:drop": "npm run typeorm schema:drop -- -d src/database/datasource.ts",
-    "db:migrate:prod": "node ./node_modules/typeorm/cli migration:run -- -d ./dist/database/datasource.js"
+    "db:migrate:prod": "node ./node_modules/typeorm/cli migration:run -d ./dist/database/datasource.js"
   },
   "dependencies": {
     "@aws-sdk/client-ses": "^3.933.0",
