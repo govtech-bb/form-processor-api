@@ -77,7 +77,7 @@ export class PaymentProcessor implements IProcessor {
       });
 
       // Resolve configuration values
-      const resolvedConfig = await this.resolveConfig(config, formData);
+      const resolvedConfig = await this.resolveConfig(config);
 
       // Validate payment configuration
       if (!resolvedConfig.paymentCode) {
@@ -203,7 +203,6 @@ export class PaymentProcessor implements IProcessor {
 
   private async resolveConfig(
     config: PaymentProcessorConfig['config'],
-    formData: Record<string, any>,
   ): Promise<{
     department: string;
     paymentCode: string;
@@ -214,154 +213,32 @@ export class PaymentProcessor implements IProcessor {
     allowPayce: boolean;
     apiKey: string;
   }> {
-    // Resolve payment code from database secrets
-    let paymentCode = config.paymentCode;
-    if (paymentCode.startsWith('{{db:')) {
-      paymentCode = await this.resolveDbSecret(paymentCode);
-    }
-
-    // Resolve amount (could be dynamic based on form data)
-    let amount = config.amount;
-    if (typeof amount === 'string') {
-      amount = await this.evaluateAmountFormula(amount, formData);
-    }
+    // At this point, all expressions should already be resolved by FormUtilsService
+    const paymentCode = config.paymentCode;
+    const amount = Number(config.amount) || 0;
 
     // Get the department and corresponding API key
     const department = config.department || 'default';
     const apiKey =
       this.departmentMappingService.getApiKeyForDepartment(department);
 
+    this.logger.log(`Resolved payment config:`, {
+      department,
+      paymentCode,
+      amount,
+      description: config.description,
+    });
+
     return {
       department,
       paymentCode,
-      amount: Number(amount),
+      amount,
       description: config.description,
       allowCredit: config.allowCredit ?? true,
       allowDebit: config.allowDebit ?? true,
       allowPayce: config.allowPayce ?? true,
       apiKey,
     };
-  }
-
-  private async resolveDbSecret(secretRef: string): Promise<string> {
-    // Extract secret path from {{db:form-id:secret-key}} format
-    const match = secretRef.match(/\{\{db:([^:]+):([^}]+)\}\}/);
-    if (!match) {
-      throw new Error(`Invalid secret reference format: ${secretRef}`);
-    }
-
-    const [, formId, secretKey] = match;
-
-    // This would typically query your form config or secrets table
-    // For now, using environment variables as fallback
-    const envKey = `${formId
-      .toUpperCase()
-      .replace(/-/g, '_')}_${secretKey.toUpperCase()}`;
-    const value = this.configService.get<string>(envKey);
-
-    if (!value) {
-      throw new Error(`Secret not found: ${secretRef} (tried ${envKey})`);
-    }
-
-    return value;
-  }
-
-  private async evaluateAmountFormula(
-    formula: string,
-    formData: Record<string, any>,
-  ): Promise<number> {
-    // Handle simple field references
-    if (formula.startsWith('{{formData.') && formula.endsWith('}}')) {
-      const path = formula.slice(12, -2); // Remove {{formData. and }}
-
-      // Check if it's a mathematical expression
-      if (
-        path.includes('*') ||
-        path.includes('+') ||
-        path.includes('-') ||
-        path.includes('/')
-      ) {
-        return await this.evaluateMathExpression(path, formData);
-      }
-
-      // Simple field reference
-      const value = this.getNestedValue(formData, path);
-      return Number(value) || 0;
-    }
-
-    // If it's just a number as string
-    return Number(formula) || 0;
-  }
-
-  private async evaluateMathExpression(
-    expression: string,
-    formData: Record<string, any>,
-  ): Promise<number> {
-    // Replace form field references and database references with their values
-    let processedExpression = expression;
-
-    // First, resolve any database references (e.g., db:get-birth-certificate:payment_amount)
-    const dbReferencePattern = /db:[^:]+:[^}\s+\-*/()]+/g;
-    const dbMatches = expression.match(dbReferencePattern);
-
-    if (dbMatches) {
-      for (const dbMatch of dbMatches) {
-        try {
-          const dbValue = await this.resolveDbSecret(`{{${dbMatch}}}`);
-          const numericDbValue = Number(dbValue) || 0;
-          processedExpression = processedExpression.replace(
-            new RegExp(dbMatch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
-            numericDbValue.toString(),
-          );
-        } catch (error) {
-          this.logger.warn(
-            `Failed to resolve database reference: ${dbMatch}`,
-            error,
-          );
-          // Replace with 0 if resolution fails
-          processedExpression = processedExpression.replace(
-            new RegExp(dbMatch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
-            '0',
-          );
-        }
-      }
-    }
-
-    // Then, find all field references in the expression (e.g., order.numberOfCopies)
-    const fieldReferencePattern = /[a-zA-Z][a-zA-Z0-9._]*/g;
-    const matches = processedExpression.match(fieldReferencePattern);
-
-    if (matches) {
-      for (const match of matches) {
-        // Skip if it's a number
-        if (/^\d+\.?\d*$/.test(match)) continue;
-
-        const value = this.getNestedValue(formData, match);
-        const numericValue = Number(value) || 0;
-        processedExpression = processedExpression.replace(
-          new RegExp(`\\b${match}\\b`, 'g'),
-          numericValue.toString(),
-        );
-      }
-    }
-
-    try {
-      // Safely evaluate the mathematical expression
-      // Only allow basic mathematical operators for security
-      if (!/^[\d\s+\-*/.()]+$/.test(processedExpression)) {
-        throw new Error('Invalid mathematical expression');
-      }
-
-      // Use Function constructor for safe evaluation (limited to math operations)
-      const result = new Function('return ' + processedExpression)();
-      return Number(result) || 0;
-    } catch (error) {
-      this.logger.warn(
-        `Failed to evaluate math expression: ${expression}`,
-        error,
-      );
-      return 0;
-    }
   }
 
   private getNestedValue(obj: any, path: string): any {
