@@ -307,7 +307,10 @@
         "amount": "{{formData.order.numberOfCopies * db:get-marriage-certificate:payment_amount}}",
         "description": "Marriage Certificate Processing Fee (per copy)",
         "required": true,
-        "timing": "after_validation"
+        "timing": "after_validation",
+        "responseData": {
+          "include": ["order.numberOfCopies"]
+        }
       }
     },
     {
