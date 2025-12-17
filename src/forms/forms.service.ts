@@ -173,6 +173,7 @@ export class FormsService {
           amount: paymentProcessor.config.amount,
           description: paymentProcessor.config.description,
         },
+        paymentResult.additionalData,
       );
 
       return {

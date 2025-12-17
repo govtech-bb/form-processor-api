@@ -10,7 +10,10 @@ import {
   PaymentProvider,
   FormSubmissionPayment,
 } from '../../database/entities';
-import { PaymentProcessorConfig } from '../../forms/interfaces/form-schema.interface';
+import {
+  PaymentProcessorConfig,
+  ResponseDataConfig,
+} from '../../forms/interfaces/form-schema.interface';
 import { IProcessor } from '../interfaces/processor.interface';
 
 export interface PaymentProcessorResult {
@@ -23,6 +26,7 @@ export interface PaymentProcessorResult {
   amount?: number;
   description?: string;
   error?: string;
+  additionalData?: Record<string, any>;
 }
 
 @Injectable()
@@ -167,6 +171,11 @@ export class PaymentProcessor implements IProcessor {
         },
       );
 
+      // Process additional response data if configured
+      const additionalData = config.responseData
+        ? await this.processResponseData(config.responseData, formData)
+        : undefined;
+
       return {
         success: true,
         paymentRequired: true,
@@ -176,6 +185,7 @@ export class PaymentProcessor implements IProcessor {
         referenceNumber: payment.referenceNumber,
         amount: resolvedConfig.amount,
         description: resolvedConfig.description,
+        additionalData,
       };
     } catch (error) {
       this.logger.error(
@@ -213,7 +223,7 @@ export class PaymentProcessor implements IProcessor {
     // Resolve amount (could be dynamic based on form data)
     let amount = config.amount;
     if (typeof amount === 'string') {
-      amount = this.evaluateAmountFormula(amount, formData);
+      amount = await this.evaluateAmountFormula(amount, formData);
     }
 
     // Get the department and corresponding API key
@@ -256,19 +266,102 @@ export class PaymentProcessor implements IProcessor {
     return value;
   }
 
-  private evaluateAmountFormula(
+  private async evaluateAmountFormula(
     formula: string,
     formData: Record<string, any>,
-  ): number {
-    // Simple formula evaluation (could be extended with a proper expression parser)
+  ): Promise<number> {
+    // Handle simple field references
     if (formula.startsWith('{{formData.') && formula.endsWith('}}')) {
       const path = formula.slice(12, -2); // Remove {{formData. and }}
+
+      // Check if it's a mathematical expression
+      if (
+        path.includes('*') ||
+        path.includes('+') ||
+        path.includes('-') ||
+        path.includes('/')
+      ) {
+        return await this.evaluateMathExpression(path, formData);
+      }
+
+      // Simple field reference
       const value = this.getNestedValue(formData, path);
       return Number(value) || 0;
     }
 
     // If it's just a number as string
     return Number(formula) || 0;
+  }
+
+  private async evaluateMathExpression(
+    expression: string,
+    formData: Record<string, any>,
+  ): Promise<number> {
+    // Replace form field references and database references with their values
+    let processedExpression = expression;
+
+    // First, resolve any database references (e.g., db:get-birth-certificate:payment_amount)
+    const dbReferencePattern = /db:[^:]+:[^}\s+\-*/()]+/g;
+    const dbMatches = expression.match(dbReferencePattern);
+
+    if (dbMatches) {
+      for (const dbMatch of dbMatches) {
+        try {
+          const dbValue = await this.resolveDbSecret(`{{${dbMatch}}}`);
+          const numericDbValue = Number(dbValue) || 0;
+          processedExpression = processedExpression.replace(
+            new RegExp(dbMatch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
+            numericDbValue.toString(),
+          );
+        } catch (error) {
+          this.logger.warn(
+            `Failed to resolve database reference: ${dbMatch}`,
+            error,
+          );
+          // Replace with 0 if resolution fails
+          processedExpression = processedExpression.replace(
+            new RegExp(dbMatch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'),
+            '0',
+          );
+        }
+      }
+    }
+
+    // Then, find all field references in the expression (e.g., order.numberOfCopies)
+    const fieldReferencePattern = /[a-zA-Z][a-zA-Z0-9._]*/g;
+    const matches = processedExpression.match(fieldReferencePattern);
+
+    if (matches) {
+      for (const match of matches) {
+        // Skip if it's a number
+        if (/^\d+\.?\d*$/.test(match)) continue;
+
+        const value = this.getNestedValue(formData, match);
+        const numericValue = Number(value) || 0;
+        processedExpression = processedExpression.replace(
+          new RegExp(`\\b${match}\\b`, 'g'),
+          numericValue.toString(),
+        );
+      }
+    }
+
+    try {
+      // Safely evaluate the mathematical expression
+      // Only allow basic mathematical operators for security
+      if (!/^[\d\s+\-*/.()]+$/.test(processedExpression)) {
+        throw new Error('Invalid mathematical expression');
+      }
+
+      // Use Function constructor for safe evaluation (limited to math operations)
+      const result = new Function('return ' + processedExpression)();
+      return Number(result) || 0;
+    } catch (error) {
+      this.logger.warn(
+        `Failed to evaluate math expression: ${expression}`,
+        error,
+      );
+      return 0;
+    }
   }
 
   private getNestedValue(obj: any, path: string): any {
@@ -417,5 +510,29 @@ export class PaymentProcessor implements IProcessor {
       paymentVerified: formSubmissionPayment.paymentVerified,
       payment: formSubmissionPayment.payment,
     };
+  }
+
+  /**
+   * Process response data configuration to extract additional data from form data
+   */
+  private async processResponseData(
+    responseConfig: ResponseDataConfig,
+    formData: Record<string, any>,
+  ): Promise<Record<string, any>> {
+    const result: Record<string, any> = {};
+
+    // Include specified form fields
+    if (responseConfig.include) {
+      for (const fieldPath of responseConfig.include) {
+        const value = this.getNestedValue(formData, fieldPath);
+        if (value !== undefined) {
+          // Use the last part of the field path as the key (e.g., order.numberOfCopies -> numberOfCopies)
+          const fieldName = fieldPath.split('.').pop() || fieldPath;
+          result[fieldName] = value;
+        }
+      }
+    }
+
+    return result;
   }
 }

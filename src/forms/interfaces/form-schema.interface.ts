@@ -66,5 +66,10 @@ export interface PaymentProcessorConfig extends ProcessorConfig {
     allowPayce?: boolean;
     required?: boolean; // Whether payment is mandatory for form submission
     timing?: 'immediate' | 'after_validation'; // When to create payment
+    responseData?: ResponseDataConfig; // Additional data to include in response
   };
+}
+
+export interface ResponseDataConfig {
+  include?: string[]; // Form field paths to include (e.g., ['order.numberOfCopies', 'applicant.email'])
 }
