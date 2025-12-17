@@ -274,7 +274,10 @@
         "amount": "{{formData.order.numberOfCopies * db:get-death-certificate:payment_amount}}",
         "description": "Death Certificate Processing Fee (per copy)",
         "required": true,
-        "timing": "after_validation"
+        "timing": "after_validation",
+        "responseData": {
+          "include": ["order.numberOfCopies"]
+        }
       }
     },
     {
