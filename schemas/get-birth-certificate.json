@@ -235,6 +235,8 @@
           "label": "Number of copies",
           "required": true,
           "validations": {
+            "min": 1,
+            "max": 10,
             "message": "You must order at least 1 copy and maximum 10 copies"
           }
         }
@@ -247,10 +249,13 @@
       "config": {
         "provider": "ezpay",
         "paymentCode": "{{db:get-birth-certificate:payment_code}}",
-        "amount": 25.0,
-        "description": "Processing Fee",
+        "amount": "{{formData.order.numberOfCopies * db:get-birth-certificate:payment_amount}}",
+        "description": "Birth Certificate Processing Fee (per copy)",
         "required": true,
-        "timing": "after_validation"
+        "timing": "after_validation",
+        "responseData": {
+          "include": ["order.numberOfCopies"]
+        }
       }
     },
     {

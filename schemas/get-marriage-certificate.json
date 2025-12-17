@@ -1,320 +1,322 @@
 {
-	"id": "get-marriage-certificate",
-	"name": "Get Marriage Certificate",
-	"description": "Apply for a copy of your marriage certificate or someone else's marriage certificate",
-	"fields": [
-		{
-			"name": "applicant",
-			"type": "object",
-			"required": true,
-			"fields": [
-				{
-					"name": "title",
-					"type": "string",
-					"label": "Title",
-					"required": true,
-					"validations": {
-						"regex": "^(mr|ms|mrs)$",
-						"message": "Must select a valid title"
-					}
-				},
-				{
-					"name": "firstName",
-					"type": "string",
-					"label": "First name",
-					"required": true,
-					"validations": {
-						"min": 1,
-						"max": 100,
-						"message": "First name is required"
-					}
-				},
-				{
-					"name": "middleName",
-					"type": "string",
-					"label": "Middle name",
-					"required": false,
-					"validations": {
-						"max": 100
-					}
-				},
-				{
-					"name": "lastName",
-					"type": "string",
-					"label": "Last name",
-					"required": true,
-					"validations": {
-						"min": 1,
-						"max": 100,
-						"message": "Last name is required"
-					}
-				},
-				{
-					"name": "addressLine1",
-					"type": "string",
-					"label": "Address Line 1",
-					"required": true,
-					"validations": {
-						"min": 5,
-						"max": 200,
-						"message": "Address must be at least 5 characters"
-					}
-				},
-				{
-					"name": "addressLine2",
-					"type": "string",
-					"label": "Address Line 2",
-					"required": false,
-					"validations": {
-						"max": 200
-					}
-				},
-				{
-					"name": "parish",
-					"type": "string",
-					"label": "Parish",
-					"required": true,
-					"validations": {
-						"regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
-						"message": "Must select a valid parish"
-					}
-				},
-				{
-					"name": "postalCode",
-					"type": "string",
-					"label": "Postal Code",
-					"required": false,
-					"validations": {
-						"regex": "^BB\\d{5}$",
-						"message": "Enter a valid postal code (e.g., BB17004)"
-					}
-				},
-				{
-					"name": "idNumber",
-					"type": "string",
-					"label": "National Identification (ID) Number",
-					"required": false,
-					"validations": {
-						"min": 2,
-						"message": "ID Number must be at least 2 characters"
-					}
-				},
-				{
-					"name": "passportNumber",
-					"type": "string",
-					"label": "Passport Number",
-					"required": false,
-					"validations": {
-						"message": "Passport number must be at least 6 characters"
-					}
-				}
-			]
-		},
-		{
-			"name": "applyingForYourself",
-			"type": "string",
-			"label": "Are you applying for your own marriage certificate?",
-			"required": true,
-			"validations": {
-				"regex": "^(yes|no)$",
-				"message": "Must select an option"
-			}
-		},
-		{
-			"name": "husband",
-			"type": "object",
-			"required": true,
-			"fields": [
-				{
-					"name": "firstName",
-					"type": "string",
-					"required": true,
-					"validations": {
-						"min": 1,
-						"max": 100
-					}
-				},
-				{
-					"name": "middleName",
-					"type": "string",
-					"required": false,
-					"validations": {
-						"max": 200
-					}
-				},
-				{
-					"name": "lastName",
-					"type": "string",
-					"required": true,
-					"validations": {
-						"min": 1,
-						"max": 100
-					}
-				},
-				{
-					"name": "idNumber",
-					"type": "string",
-					"label": "National Identification (ID) Number",
-					"required": false,
-					"validations": {
-						"min": 2,
-						"message": "ID Number must be at least 2 characters"
-					}
-				},
-				{
-					"name": "passportNumber",
-					"type": "string",
-					"label": "Passport Number",
-					"required": false,
-					"validations": {
-						"message": "Passport number must be at least 6 characters"
-					}
-				}
-			]
-		},
-		{
-			"name": "wife",
-			"type": "object",
-			"required": true,
-			"fields": [
-				{
-					"name": "firstName",
-					"type": "string",
-					"required": true,
-					"validations": {
-						"min": 1,
-						"max": 100
-					}
-				},
-				{
-					"name": "middleName",
-					"type": "string",
-					"required": false,
-					"validations": {
-						"max": 200
-					}
-				},
-				{
-					"name": "maidenName",
-					"type": "string",
-					"required": true,
-					"validations": {
-						"min": 1,
-						"max": 100
-					}
-				},
-				{
-					"name": "idNumber",
-					"type": "string",
-					"label": "National Identification (ID) Number",
-					"required": false,
-					"validations": {
-						"min": 2,
-						"message": "ID Number must be at least 2 characters"
-					}
-				},
-				{
-					"name": "passportNumber",
-					"type": "string",
-					"label": "Passport Number",
-					"required": false,
-					"validations": {
-						"message": "Passport number must be at least 6 characters"
-					}
-				}
-			]
-		},
-		{
-			"name": "marriageDetails",
-			"type": "object",
-			"required": true,
-			"fields": [
-				{
-					"name": "dateOfMarriage",
-					"type": "date",
-					"label": "Date of marriage",
-					"required": true,
-					"validations": {
-						"regex": "^\\d{4}-\\d{2}-\\d{2}$",
-						"message": "Date of marriage is required and must be in YYYY-MM-DD format"
-					}
-				},
-				{
-					"name": "placeOfMarriage",
-					"type": "string",
-					"label": "Place of marriage",
-					"required": true,
-					"validations": {
-						"min": 2,
-						"max": 200,
-						"message": "Place of marriage must be at least 2 characters"
-					}
-				}
-			]
-		},
-		{
-			"name": "reason",
-			"type": "object",
-			"label": "Reason for Requesting a Marriage Certificate",
-			"required": false,
-			"fields": [
-				{
-					"name": "relationshipToMarriedPersons",
-					"type": "string",
-					"label": "Relationship",
-					"required": false,
-					"validations": {
-						"max": 100
-					}
-				},
-				{
-					"name": "explanationForRequestingCertificate",
-					"type": "string",
-					"label": "Why are you requesting the marriage certificate?",
-					"required": false,
-					"validations": {
-						"min": 1,
-						"max": 500
-					}
-				}
-			]
-		},
-		{
-			"name": "order",
-			"type": "object",
-			"required": true,
-			"fields": [
-				{
-					"name": "numberOfCopies",
-					"type": "number",
-					"label": "Number of copies",
-					"required": true,
-					"validations": {
-						"message": "You must order at least 1 copy and maximum 10 copies"
-					}
-				}
-			]
-		}
-	],
-	"processors": [
-		{
-			"type": "payment",
-			"config": {
-				"provider": "ezpay",
-				"paymentCode": "{{db:get-marriage-certificate:payment_code}}",
-				"amount": 10.0,
-				"description": "Marriage Certificate Fee",
-				"required": true,
-				"timing": "after_validation"
-			}
-		},
-		{
-			"type": "email",
-			"config": {
-				"to": "{{db:get-marriage-certificate:admin_email}}",
-				"subject": "New Marriage Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-				"template": "marriage-certificate"
-			}
-		}
-	]
+  "id": "get-marriage-certificate",
+  "name": "Get Marriage Certificate",
+  "description": "Apply for a copy of your marriage certificate or someone else's marriage certificate",
+  "fields": [
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "label": "Title",
+          "required": true,
+          "validations": {
+            "regex": "^(mr|ms|mrs)$",
+            "message": "Must select a valid title"
+          }
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postalCode",
+          "type": "string",
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "label": "National Identification (ID) Number",
+          "required": false,
+          "validations": {
+            "min": 2,
+            "message": "ID Number must be at least 2 characters"
+          }
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "label": "Passport Number",
+          "required": false,
+          "validations": {
+            "message": "Passport number must be at least 6 characters"
+          }
+        }
+      ]
+    },
+    {
+      "name": "applyingForYourself",
+      "type": "string",
+      "label": "Are you applying for your own marriage certificate?",
+      "required": true,
+      "validations": {
+        "regex": "^(yes|no)$",
+        "message": "Must select an option"
+      }
+    },
+    {
+      "name": "husband",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "label": "National Identification (ID) Number",
+          "required": false,
+          "validations": {
+            "min": 2,
+            "message": "ID Number must be at least 2 characters"
+          }
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "label": "Passport Number",
+          "required": false,
+          "validations": {
+            "message": "Passport number must be at least 6 characters"
+          }
+        }
+      ]
+    },
+    {
+      "name": "wife",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "maidenName",
+          "type": "string",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "label": "National Identification (ID) Number",
+          "required": false,
+          "validations": {
+            "min": 2,
+            "message": "ID Number must be at least 2 characters"
+          }
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "label": "Passport Number",
+          "required": false,
+          "validations": {
+            "message": "Passport number must be at least 6 characters"
+          }
+        }
+      ]
+    },
+    {
+      "name": "marriageDetails",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "dateOfMarriage",
+          "type": "date",
+          "label": "Date of marriage",
+          "required": true,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date of marriage is required and must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "placeOfMarriage",
+          "type": "string",
+          "label": "Place of marriage",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 200,
+            "message": "Place of marriage must be at least 2 characters"
+          }
+        }
+      ]
+    },
+    {
+      "name": "reason",
+      "type": "object",
+      "label": "Reason for Requesting a Marriage Certificate",
+      "required": false,
+      "fields": [
+        {
+          "name": "relationshipToMarriedPersons",
+          "type": "string",
+          "label": "Relationship",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "explanationForRequestingCertificate",
+          "type": "string",
+          "label": "Why are you requesting the marriage certificate?",
+          "required": false,
+          "validations": {
+            "min": 1,
+            "max": 500
+          }
+        }
+      ]
+    },
+    {
+      "name": "order",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "numberOfCopies",
+          "type": "number",
+          "label": "Number of copies",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 10,
+            "message": "You must order at least 1 copy and maximum 10 copies"
+          }
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "type": "payment",
+      "config": {
+        "provider": "ezpay",
+        "paymentCode": "{{db:get-marriage-certificate:payment_code}}",
+        "amount": "{{formData.order.numberOfCopies * db:get-marriage-certificate:payment_amount}}",
+        "description": "Marriage Certificate Processing Fee (per copy)",
+        "required": true,
+        "timing": "after_validation"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:get-marriage-certificate:admin_email}}",
+        "subject": "New Marriage Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "marriage-certificate"
+      }
+    }
+  ]
 }
