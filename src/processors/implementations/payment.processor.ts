@@ -1,7 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
 import { EZPayService } from '../../payments/ezpay/ezpay.service';
 import { DepartmentMappingService } from '../../payments/department-mapping.service';
 import {
@@ -39,7 +38,6 @@ export class PaymentProcessor implements IProcessor {
     @InjectRepository(FormSubmissionPayment)
     private formSubmissionPaymentRepository: Repository<FormSubmissionPayment>,
     private ezpayService: EZPayService,
-    private configService: ConfigService,
     private departmentMappingService: DepartmentMappingService,
   ) {}
 
@@ -55,7 +53,7 @@ export class PaymentProcessor implements IProcessor {
       data: Record<string, any>;
     },
   ): Promise<any> {
-    const result = await this.process(config, config, context);
+    const result = await this.process(context.data, config, context);
     if (!result.success) {
       throw new Error(result.error || 'Payment processing failed');
     }
