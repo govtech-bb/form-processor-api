@@ -1,270 +1,518 @@
 {
-  "id": "get-birth-certificate",
-  "name": "Get Birth Certificate",
-  "description": "Apply for a copy of your birth certificate or someone else's birth certificate",
-  "fields": [
-    {
-      "name": "applicant",
-      "type": "object",
-      "required": true,
-      "fields": [
-        {
-          "name": "title",
-          "type": "string",
-          "label": "Title",
-          "required": true,
-          "validations": {
-            "regex": "^(mr|ms|mrs)$",
-            "message": "Must select a valid title"
-          }
-        },
-        {
-          "name": "firstName",
-          "type": "string",
-          "label": "First name",
-          "required": true,
-          "validations": {
-            "min": 1,
-            "max": 100,
-            "message": "First name is required"
-          }
-        },
-        {
-          "name": "middleName",
-          "type": "string",
-          "label": "Middle name",
-          "required": false,
-          "validations": {
-            "max": 100
-          }
-        },
-        {
-          "name": "lastName",
-          "type": "string",
-          "label": "Last name",
-          "required": true,
-          "validations": {
-            "min": 1,
-            "max": 100,
-            "message": "Last name is required"
-          }
-        },
-        {
-          "name": "addressLine1",
-          "type": "string",
-          "label": "Address Line 1",
-          "required": true,
-          "validations": {
-            "min": 5,
-            "max": 200,
-            "message": "Address must be at least 5 characters"
-          }
-        },
-        {
-          "name": "addressLine2",
-          "type": "string",
-          "label": "Address Line 2",
-          "required": false,
-          "validations": {
-            "max": 200
-          }
-        },
-        {
-          "name": "parish",
-          "type": "string",
-          "label": "Parish",
-          "required": true,
-          "validations": {
-            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
-            "message": "Must select a valid parish"
-          }
-        },
-        {
-          "name": "postalCode",
-          "type": "string",
-          "label": "Postal Code",
-          "required": false,
-          "validations": {
-            "regex": "^BB\\d{5}$",
-            "message": "Enter a valid postal code (e.g., BB17004)"
-          }
-        },
-        {
-          "name": "idNumber",
-          "type": "string",
-          "label": "National Identification (ID) Number",
-          "required": false,
-          "validations": {
-            "min": 2,
-            "message": "ID Number must be at least 2 characters"
-          }
-        },
-        {
-          "name": "passportNumber",
-          "type": "string",
-          "label": "Passport Number",
-          "required": false,
-          "validations": {
-            "message": "Passport number must be at least 6 characters"
-          }
-        }
-      ]
-    },
-    {
-      "name": "applyingForYourself",
-      "type": "string",
-      "label": "Are you applying for your own birth certificate?",
-      "required": true,
-      "validations": {
-        "regex": "^(yes|no)$",
-        "message": "Must select an option"
-      }
-    },
-    {
-      "name": "birthDetails",
-      "type": "object",
-      "required": true,
-      "fields": [
-        {
-          "name": "dateOfBirth",
-          "type": "date",
-          "label": "Date of birth",
-          "required": true,
-          "validations": {
-            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-            "message": "Date of birth is required and must be in YYYY-MM-DD format"
-          }
-        },
-        {
-          "name": "placeOfBirth",
-          "type": "string",
-          "label": "Place of birth",
-          "required": true,
-          "validations": {
-            "min": 2,
-            "max": 200,
-            "message": "Place of birth must be at least 2 characters"
-          }
-        },
-        {
-          "name": "placeOfBaptism",
-          "type": "string",
-          "label": "Place of baptism",
-          "required": true,
-          "validations": {
-            "min": 2,
-            "max": 200,
-            "message": "Place of baptism must be at least 2 characters"
-          }
-        }
-      ]
-    },
-    {
-      "name": "parents",
-      "type": "object",
-      "required": true,
-      "fields": [
-        {
-          "name": "father",
-          "type": "object",
-          "required": true,
-          "fields": [
-            {
-              "name": "firstName",
-              "type": "string",
-              "label": "Father's first name",
-              "required": true,
-              "validations": {
-                "min": 1,
-                "max": 100,
-                "message": "First name is required"
-              }
-            },
-            {
-              "name": "lastName",
-              "type": "string",
-              "label": "Father's last name",
-              "required": true,
-              "validations": {
-                "min": 1,
-                "max": 100,
-                "message": "Last name is required"
-              }
-            }
-          ]
-        },
-        {
-          "name": "mother",
-          "type": "object",
-          "required": true,
-          "fields": [
-            {
-              "name": "firstName",
-              "type": "string",
-              "label": "Mother's first name",
-              "required": true,
-              "validations": {
-                "min": 1,
-                "max": 100,
-                "message": "First name is required"
-              }
-            },
-            {
-              "name": "lastName",
-              "type": "string",
-              "label": "Mother's last name",
-              "required": true,
-              "validations": {
-                "min": 1,
-                "max": 100,
-                "message": "Last name is required"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "order",
-      "type": "object",
-      "required": true,
-      "fields": [
-        {
-          "name": "numberOfCopies",
-          "type": "number",
-          "label": "Number of copies",
-          "required": true,
-          "validations": {
-            "min": 1,
-            "max": 10,
-            "message": "You must order at least 1 copy and maximum 10 copies"
-          }
-        }
-      ]
-    }
-  ],
-  "processors": [
-    {
-      "type": "payment",
-      "config": {
-        "provider": "ezpay",
-        "paymentCode": "{{db:get-birth-certificate:payment_code}}",
-        "amount": "{{formData.order.numberOfCopies * db:get-birth-certificate:payment_amount}}",
-        "description": "Birth Certificate Processing Fee (per copy)",
-        "required": true,
-        "timing": "after_validation",
-        "responseData": {
-          "include": ["order.numberOfCopies"]
-        }
-      }
-    },
-    {
-      "type": "email",
-      "config": {
-        "to": "{{db:get-birth-certificate:admin_email}}",
-        "subject": "New Birth Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-        "template": "birth-certificate"
-      }
-    }
-  ]
+	"id": "get-birth-certificate",
+	"name": "Get Birth Certificate",
+	"description": "Apply for a copy of your birth certificate or someone else's birth certificate",
+	"fields": [
+		{
+			"name": "applicant",
+			"type": "object",
+			"required": true,
+			"fields": [
+				{
+					"name": "title",
+					"type": "string",
+					"label": "Title",
+					"required": true,
+					"validations": {
+						"regex": "^(mr|ms|mrs)$",
+						"message": "Must select a valid title"
+					}
+				},
+				{
+					"name": "firstName",
+					"type": "string",
+					"label": "First name",
+					"required": true,
+					"validations": {
+						"min": 1,
+						"max": 100,
+						"message": "First name is required"
+					}
+				},
+				{
+					"name": "middleName",
+					"type": "string",
+					"label": "Middle name",
+					"required": false,
+					"validations": {
+						"max": 100
+					}
+				},
+				{
+					"name": "lastName",
+					"type": "string",
+					"label": "Last name",
+					"required": true,
+					"validations": {
+						"min": 1,
+						"max": 100,
+						"message": "Last name is required"
+					}
+				},
+				{
+					"name": "addressLine1",
+					"type": "string",
+					"label": "Address Line 1",
+					"required": true,
+					"validations": {
+						"min": 5,
+						"max": 200,
+						"message": "Address must be at least 5 characters"
+					}
+				},
+				{
+					"name": "addressLine2",
+					"type": "string",
+					"label": "Address Line 2",
+					"required": false,
+					"validations": {
+						"max": 200
+					}
+				},
+				{
+					"name": "parish",
+					"type": "string",
+					"label": "Parish",
+					"required": true,
+					"validations": {
+						"regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+						"message": "Must select a valid parish"
+					}
+				},
+				{
+					"name": "postalCode",
+					"type": "string",
+					"label": "Postal Code",
+					"required": false,
+					"validations": {
+						"regex": "^BB\\d{5}$",
+						"message": "Enter a valid postal code (e.g., BB17004)"
+					}
+				},
+				{
+					"name": "idNumber",
+					"type": "string",
+					"label": "National Identification (ID) Number",
+					"required": false,
+					"validations": {
+						"min": 2,
+						"message": "ID Number must be at least 2 characters"
+					}
+				},
+				{
+					"name": "passportNumber",
+					"type": "string",
+					"label": "Passport Number",
+					"required": false,
+					"validations": {
+						"message": "Passport number must be at least 6 characters"
+					}
+				}
+			]
+		},
+		{
+			"name": "applyingForYourself",
+			"type": "string",
+			"label": "Are you applying for your own birth certificate?",
+			"required": true,
+			"validations": {
+				"regex": "^(yes|no)$",
+				"message": "Must select an option"
+			}
+		},
+		{
+			"name": "relationshipToPerson",
+			"type": "string",
+			"label": "What is your relationship to the person?",
+			"required": false,
+			"validations": {
+				"message": ""
+			}
+		},
+		{
+			"name": "relationshipOtherDescription",
+			"type": "string",
+			"label": "Please describe your relationship",
+			"required": false,
+			"validations": {
+				"message": ""
+			}
+		},
+		{
+			"name": "reasonForOrderingCertificate",
+			"type": "string",
+			"label": "Tell us why you're ordering a birth certificate",
+			"required": false,
+			"validations": {
+				"message": ""
+			}
+		},
+		{
+			"name": "personDeceased",
+			"type": "string",
+			"label": "Is the person deceased?",
+			"required": false,
+			"validations": {
+				"message": ""
+			}
+		},
+		{
+			"name": "dateOfDeath",
+			"type": "string",
+			"label": "Date of death",
+			"required": false,
+			"validations": {
+				"message": ""
+			}
+		},
+		{
+			"name": "person",
+			"type": "object",
+			"required": false,
+			"fields": [
+				{
+					"name": "firstName",
+					"type": "string",
+					"label": "First name",
+					"required": false,
+					"validations": {
+						"min": 1,
+						"max": 100,
+						"message": "First name is required"
+					}
+				},
+				{
+					"name": "middleName",
+					"type": "string",
+					"label": "Middle name",
+					"required": false,
+					"validations": {
+						"max": 100
+					}
+				},
+				{
+					"name": "lastName",
+					"type": "string",
+					"label": "Last name",
+					"required": false,
+					"validations": {
+						"min": 1,
+						"max": 100,
+						"message": "Last name is required"
+					}
+				},
+				{
+					"name": "addressLine1",
+					"type": "string",
+					"label": "Address Line 1",
+					"required": false,
+					"validations": {
+						"min": 5,
+						"max": 200,
+						"message": "Address must be at least 5 characters"
+					}
+				},
+				{
+					"name": "addressLine2",
+					"type": "string",
+					"label": "Address Line 2",
+					"required": false,
+					"validations": {
+						"max": 200
+					}
+				},
+				{
+					"name": "parish",
+					"type": "string",
+					"label": "Parish",
+					"required": false,
+					"validations": {
+						"regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+						"message": "Must select a valid parish"
+					}
+				},
+				{
+					"name": "postalCode",
+					"type": "string",
+					"label": "Postal Code",
+					"required": false,
+					"validations": {
+						"regex": "^BB\\d{5}$",
+						"message": "Enter a valid postal code (e.g., BB17004)"
+					}
+				},
+				{
+					"name": "idNumber",
+					"type": "string",
+					"label": "National Identification (ID) Number",
+					"required": false,
+					"validations": {
+						"min": 2,
+						"message": "ID Number must be at least 2 characters"
+					}
+				},
+				{
+					"name": "passportNumber",
+					"type": "string",
+					"label": "Passport Number",
+					"required": false,
+					"validations": {
+						"message": "Passport number must be at least 6 characters"
+					}
+				}
+			]
+		},
+		{
+			"name": "birthDetails",
+			"type": "object",
+			"required": false,
+			"fields": [
+				{
+					"name": "dateOfBirth",
+					"type": "date",
+					"label": "Date of birth",
+					"required": false,
+					"validations": {
+						"regex": "^\\d{4}-\\d{2}-\\d{2}$",
+						"message": "Date of birth is required and must be in YYYY-MM-DD format"
+					}
+				},
+				{
+					"name": "placeOfBirth",
+					"type": "string",
+					"label": "Place of birth",
+					"required": false,
+					"validations": {
+						"min": 2,
+						"max": 200,
+						"message": "Place of birth must be at least 2 characters"
+					}
+				},
+				{
+					"name": "placeOfBaptism",
+					"type": "string",
+					"label": "Place of baptism",
+					"required": false,
+					"validations": {
+						"min": 2,
+						"max": 200,
+						"message": "Place of baptism must be at least 2 characters"
+					}
+				}
+			]
+		},
+		{
+			"name": "parents",
+			"type": "object",
+			"required": false,
+			"fields": [
+				{
+					"name": "father",
+					"type": "object",
+					"required": false,
+					"fields": [
+						{
+							"name": "firstName",
+							"type": "string",
+							"label": "Father's first name",
+							"required": false,
+							"validations": {
+								"min": 1,
+								"max": 100,
+								"message": "First name is required"
+							}
+						},
+						{
+							"name": "middleName",
+							"type": "string",
+							"label": "Father's middle name",
+							"required": false,
+							"validations": {
+								"max": 100,
+								"message": "Middle name is required"
+							}
+						},
+						{
+							"name": "lastName",
+							"type": "string",
+							"label": "Father's last name",
+							"required": false,
+							"validations": {
+								"min": 1,
+								"max": 100,
+								"message": "Last name is required"
+							}
+						}
+					]
+				},
+				{
+					"name": "mother",
+					"type": "object",
+					"required": false,
+					"fields": [
+						{
+							"name": "firstName",
+							"type": "string",
+							"label": "Mother's first name",
+							"required": false,
+							"validations": {
+								"min": 1,
+								"max": 100,
+								"message": "First name is required"
+							}
+						},
+						{
+							"name": "middleName",
+							"type": "string",
+							"label": "Mother's middle name",
+							"required": false,
+							"validations": {
+								"max": 100,
+								"message": "Middle name is required"
+							}
+						},
+						{
+							"name": "lastName",
+							"type": "string",
+							"label": "Mother's last name",
+							"required": false,
+							"validations": {
+								"min": 1,
+								"max": 100,
+								"message": "Last name is required"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "parentsOther",
+			"type": "object",
+			"required": false,
+			"fields": [
+				{
+					"name": "father",
+					"type": "object",
+					"required": false,
+					"fields": [
+						{
+							"name": "firstName",
+							"type": "string",
+							"label": "Father's first name",
+							"required": false,
+							"validations": {
+								"min": 1,
+								"max": 100,
+								"message": "First name is required"
+							}
+						},
+						{
+							"name": "middleName",
+							"type": "string",
+							"label": "Father's middle name",
+							"required": false,
+							"validations": {
+								"max": 100,
+								"message": "Middle name is required"
+							}
+						},
+						{
+							"name": "lastName",
+							"type": "string",
+							"label": "Father's last name",
+							"required": false,
+							"validations": {
+								"min": 1,
+								"max": 100,
+								"message": "Last name is required"
+							}
+						}
+					]
+				},
+				{
+					"name": "mother",
+					"type": "object",
+					"required": false,
+					"fields": [
+						{
+							"name": "firstName",
+							"type": "string",
+							"label": "Mother's first name",
+							"required": false,
+							"validations": {
+								"min": 1,
+								"max": 100,
+								"message": "First name is required"
+							}
+						},
+						{
+							"name": "middleName",
+							"type": "string",
+							"label": "Mother's middle name",
+							"required": false,
+							"validations": {
+								"max": 100,
+								"message": "Middle name is required"
+							}
+						},
+						{
+							"name": "lastName",
+							"type": "string",
+							"label": "Mother's last name",
+							"required": false,
+							"validations": {
+								"min": 1,
+								"max": 100,
+								"message": "Last name is required"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "order",
+			"type": "object",
+			"required": true,
+			"fields": [
+				{
+					"name": "numberOfCopies",
+					"type": "number",
+					"label": "Number of copies",
+					"required": true,
+					"validations": {
+						"min": 1,
+						"max": 10,
+						"message": "You must order at least 1 copy and maximum 10 copies"
+					}
+				}
+			]
+		}
+	],
+	"processors": [
+		{
+			"type": "payment",
+			"config": {
+				"provider": "ezpay",
+				"department": "revenue_authority",
+				"paymentCode": "{{db:get-birth-certificate:payment_code}}",
+				"amount": "{{formData.order.numberOfCopies * db:get-birth-certificate:payment_amount}}",
+				"description": "Birth Certificate Processing Fee (per copy)",
+				"required": true,
+				"timing": "after_validation",
+				"responseData": {
+					"include": ["order.numberOfCopies"]
+				}
+			}
+		},
+		{
+			"type": "email",
+			"config": {
+				"to": "{{db:get-birth-certificate:admin_email}}",
+				"subject": "New Birth Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+				"template": "birth-certificate"
+			}
+		}
+	]
 }

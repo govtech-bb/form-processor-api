@@ -125,13 +125,15 @@
         </p>
         <p><strong>Class:</strong> Class {{beneficiaries.class}}</p>
         <p>
-          <strong>Guardian:</strong>
-          {{guardian.firstName}}
-          {{guardian.lastName}}
+          <strong>Applicant:</strong>
+          {{applicant.title}}
+          {{applicant.firstName}}
+          {{applicant.lastName}}
         </p>
         <p><strong>Contact:</strong> {{contact.telephoneNumber}}</p>
+        <p><strong>Email:</strong> {{applicant.email}}</p>
         {{#if guardian.email}}
-          <p><strong>Email:</strong> {{guardian.email}}</p>
+          <p><strong>Guardian Email:</strong> {{guardian.email}}</p>
         {{/if}}
       </div>
 
