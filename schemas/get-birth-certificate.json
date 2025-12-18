@@ -248,6 +248,7 @@
       "type": "payment",
       "config": {
         "provider": "ezpay",
+        "department": "revenue_authority",
         "paymentCode": "{{db:get-birth-certificate:payment_code}}",
         "amount": "{{formData.order.numberOfCopies * db:get-birth-certificate:payment_amount}}",
         "description": "Birth Certificate Processing Fee (per copy)",
