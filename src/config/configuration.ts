@@ -35,10 +35,17 @@ export default () => ({
     webhookSecret: process.env.EZPAY_WEBHOOK_SECRET,
     // Department-specific API keys
     departmentApiKeys: {
-      education: process.env.EZPAY_EDUCATION_API_KEY,
-      health: process.env.EZPAY_HEALTH_API_KEY,
-      social_services: process.env.EZPAY_SOCIAL_SERVICES_API_KEY,
-      transport: process.env.EZPAY_TRANSPORT_API_KEY,
+      ministry_of_youth: process.env.EZPAY_MINISTRY_OF_YOUTH_API_KEY,
+      town_and_country: process.env.EZPAY_TOWN_AND_COUNTRY_API_KEY,
+      licensing_authority: process.env.EZPAY_LICENSING_AUTHORITY_API_KEY,
+      immigration_department: process.env.EZPAY_IMMIGRATION_DEPARTMENT_API_KEY,
+      ministry_of_transport_and_works:
+        process.env.EZPAY_MINISTRY_OF_TRANSPORT_AND_WORKS_API_KEY,
+      government_electrical_engineering_department:
+        process.env.EZPAY_GOVERNMENT_ELECTRICAL_ENGINEERING_DEPARTMENT_API_KEY,
+      revenue_authority: process.env.EZPAY_REVENUE_AUTHORITY_API_KEY,
+      ministry_of_agriculture:
+        process.env.EZPAY_MINISTRY_OF_AGRICULTURE_API_KEY,
       default: process.env.EZPAY_API_KEY || 'HWqgTn5EXIHLAzVjXtGpB2mIjgQgj0Ql',
     },
   },
