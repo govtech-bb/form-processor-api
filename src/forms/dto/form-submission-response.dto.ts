@@ -13,6 +13,9 @@ export class FormSubmissionResponseDto {
   amount?: number;
   description?: string;
 
+  // Dynamic additional data
+  [key: string]: any;
+
   constructor(
     submissionId: string,
     formId: string,
@@ -26,6 +29,7 @@ export class FormSubmissionResponseDto {
       amount?: number;
       description?: string;
     },
+    additionalData?: Record<string, any>,
   ) {
     this.submissionId = submissionId;
     this.formId = formId;
@@ -40,6 +44,11 @@ export class FormSubmissionResponseDto {
       this.referenceNumber = paymentInfo.referenceNumber;
       this.amount = paymentInfo.amount;
       this.description = paymentInfo.description;
+    }
+
+    // Add any additional dynamic data
+    if (additionalData) {
+      Object.assign(this, additionalData);
     }
   }
 }

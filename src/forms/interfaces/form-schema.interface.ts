@@ -57,6 +57,7 @@ export interface PaymentProcessorConfig extends ProcessorConfig {
   type: 'payment';
   config: {
     provider: 'ezpay';
+    department: string; // Department name (education, health, social_services, transport, etc.)
     paymentCode: string; // EZPay+ payment code (stored in secrets)
     amount: number | string; // Fixed amount or formula like "{{formData.calculatedFee}}"
     description: string;
@@ -65,5 +66,10 @@ export interface PaymentProcessorConfig extends ProcessorConfig {
     allowPayce?: boolean;
     required?: boolean; // Whether payment is mandatory for form submission
     timing?: 'immediate' | 'after_validation'; // When to create payment
+    responseData?: ResponseDataConfig; // Additional data to include in response
   };
+}
+
+export interface ResponseDataConfig {
+  include?: string[]; // Form field paths to include (e.g., ['order.numberOfCopies', 'applicant.email'])
 }

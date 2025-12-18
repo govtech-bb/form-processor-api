@@ -8,6 +8,7 @@ import {
   Logger,
   Param,
   Post,
+  Query,
   Req,
 } from '@nestjs/common';
 import { Request } from 'express';
@@ -100,6 +101,25 @@ export class PaymentsController {
     data?: any;
   }> {
     const result = await this.paymentWebhookService.manualPaymentVerification(
+      undefined,
+      reference,
+    );
+
+    return result;
+  }
+
+  @Get('verify')
+  @HttpCode(HttpStatus.OK)
+  async verifyPayment(
+    @Query('transactionNumber') transactionNumber?: string,
+    @Query('reference') reference?: string,
+  ): Promise<{
+    success: boolean;
+    message: string;
+    data?: any;
+  }> {
+    const result = await this.paymentWebhookService.manualPaymentVerification(
+      transactionNumber,
       reference,
     );
 

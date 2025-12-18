@@ -6,7 +6,7 @@ import { PaymentsModule } from '../payments/payments.module';
 import { Payment, FormSubmissionPayment } from '../database/entities';
 import { EmailProcessor } from './implementations/email.processor';
 import { PaymentProcessor } from './implementations/payment.processor';
-import { EZPayService } from '../payments';
+import { EZPayService, DepartmentMappingService } from '../payments';
 
 @Module({
   imports: [
@@ -19,6 +19,7 @@ import { EZPayService } from '../payments';
     EmailProcessor,
     PaymentProcessor,
     EZPayService,
+    DepartmentMappingService,
   ],
   exports: [ProcessorPipelineService],
 })
