@@ -375,18 +375,6 @@
 	],
 	"processors": [
 		{
-			"type": "payment",
-			"config": {
-				"provider": "ezpay",
-				"department": "education",
-				"paymentCode": "{{db:primary-school-textbook-grant:payment_code}}",
-				"amount": 25.0,
-				"description": "Processing Fee",
-				"required": true,
-				"timing": "after_validation"
-			}
-		},
-		{
 			"type": "email",
 			"config": {
 				"to": "{{db:primary-school-textbook-grant:admin_email}}",
