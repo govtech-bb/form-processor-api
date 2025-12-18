@@ -1,65 +1,65 @@
 {
-	"id": "exit-survey",
-	"name": "Exit Survey",
-	"description": "Provide feedback on your experience",
-	"fields": [
-		{
-			"name": "difficultyRating",
-			"type": "string",
-			"label": "How easy or difficult was it to complete this form?",
-			"required": true,
-			"validations": {
-				"regex": "^(very-easy|easy|neither|difficult|very-difficult)$",
-				"message": "Must select an option"
-			}
-		},
-		{
-			"name": "clarityRating",
-			"type": "string",
-			"label": "How clear was the information provided?",
-			"required": true,
-			"validations": {
-				"regex": "^(very-clear|clear|neither|unclear|very-unclear)$",
-				"message": "Must select an option"
-			}
-		},
-		{
-			"name": "technicalProblems",
-			"type": "string",
-			"label": "Did you experience any technical problems?",
-			"required": true,
-			"validations": {
-				"regex": "^(yes|no)$",
-				"message": "Must select an option"
-			}
-		},
-		{
-			"name": "technicalProblemsDescription",
-			"type": "string",
-			"label": "Please briefly describe the problem you experienced",
-			"required": false,
-			"validations": {
-				"max": 100
-			}
-		},
-		{
-			"name": "areasForImprovement",
-			"type": "string",
-			"label": "What is one thing we could do to improve this form?",
-			"required": true,
-			"validations": {
-				"max": 500
-			}
-		}
-	],
-	"processors": [
-		{
-			"type": "email",
-			"config": {
-				"to": "{{db:exit-survey:admin_email}}",
-				"subject": "New Exit Survey Submission - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-				"template": "exit-survey"
-			}
-		}
-	]
+  "id": "exit-survey",
+  "name": "Exit Survey",
+  "description": "Provide feedback on your experience",
+  "fields": [
+    {
+      "name": "difficultyRating",
+      "type": "string",
+      "label": "How easy or difficult was it to complete this form?",
+      "required": true,
+      "validations": {
+        "regex": "^(very-easy|easy|neither|difficult|very-difficult)$",
+        "message": "Must select an option"
+      }
+    },
+    {
+      "name": "clarityRating",
+      "type": "string",
+      "label": "How clear was the information provided?",
+      "required": true,
+      "validations": {
+        "regex": "^(very-clear|clear|neither|unclear|very-unclear)$",
+        "message": "Must select an option"
+      }
+    },
+    {
+      "name": "technicalProblems",
+      "type": "string",
+      "label": "Did you experience any technical problems?",
+      "required": true,
+      "validations": {
+        "regex": "^(yes|no)$",
+        "message": "Must select an option"
+      }
+    },
+    {
+      "name": "technicalProblemsDescription",
+      "type": "string",
+      "label": "Please briefly describe the problem you experienced",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "areasForImprovement",
+      "type": "string",
+      "label": "What is one thing we could do to improve this form?",
+      "required": true,
+      "validations": {
+        "max": 500
+      }
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:exit-survey:admin_email}}",
+        "subject": "New Exit Survey Submission - {{formData.difficultyRating}} Experience",
+        "template": "exit-survey"
+      }
+    }
+  ]
 }
