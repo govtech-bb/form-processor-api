@@ -51,6 +51,7 @@ export default () => ({
       revenue_authority: process.env.EZPAY_REVENUE_AUTHORITY_API_KEY,
       ministry_of_agriculture:
         process.env.EZPAY_MINISTRY_OF_AGRICULTURE_API_KEY,
+      oag_registration: process.env.EZPAY_OAG_REGISTRATION_API_KEY,
       default: process.env.EZPAY_API_KEY || 'your_ezpay_api_key',
     },
   },

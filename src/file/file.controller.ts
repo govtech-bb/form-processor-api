@@ -1,4 +1,11 @@
-import { Controller, Post, Query, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Get,
+  Query,
+  UploadedFile,
+  BadRequestException,
+} from '@nestjs/common';
 import { ApiFile } from '../common/decorators';
 import { ParseFile } from '../common/pipes';
 import { ApiResponse } from '../common/dto';
