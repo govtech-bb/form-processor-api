@@ -303,6 +303,7 @@
       "type": "payment",
       "config": {
         "provider": "ezpay",
+        "department": "revenue_authority",
         "paymentCode": "{{db:get-marriage-certificate:payment_code}}",
         "amount": "{{formData.order.numberOfCopies * db:get-marriage-certificate:payment_amount}}",
         "description": "Marriage Certificate Processing Fee (per copy)",
