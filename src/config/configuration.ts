@@ -22,6 +22,11 @@ export default () => ({
       tagKey: process.env.SES_TAG_KEY || 'ses:configuration-set',
       tagValue: process.env.SES_TAG_VALUE || 'prod',
     },
+    s3: {
+      bucketName: process.env.BUCKET_NAME,
+      bucketRegion:
+        process.env.BUCKET_REGION || process.env.AWS_REGION || 'us-east-1',
+    },
   },
   email: {
     templatesDir: process.env.EMAIL_TEMPLATES_DIR || 'src/email/templates',
