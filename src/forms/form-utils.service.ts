@@ -11,6 +11,7 @@ import * as fs from 'fs/promises';
 import * as path from 'path';
 import { FormConfig } from '../database/entities';
 import { FormSchema } from './interfaces';
+import { ExpressionResolverService } from './expression-resolver.service';
 
 @Injectable()
 export class FormUtilsService implements OnModuleInit {
@@ -22,6 +23,7 @@ export class FormUtilsService implements OnModuleInit {
     @InjectRepository(FormConfig)
     private readonly formConfigRepository: Repository<FormConfig>,
     private readonly configService: ConfigService,
+    private readonly expressionResolver: ExpressionResolverService,
   ) {
     this.schemasDir = path.join(
       process.cwd(),
@@ -86,160 +88,21 @@ export class FormUtilsService implements OnModuleInit {
   ): Promise<FormSchema> {
     const schema = this.getSchema(formId);
 
-    // Replace secret variables and form data in processor configs
+    // Use centralized expression resolver for processor configs
+    const context = {
+      formId,
+      formData: formData || {},
+      configRepository: this.formConfigRepository,
+    };
+
     for (const processor of schema.processors) {
-      processor.config = await this.replaceVariables(
-        formId,
+      processor.config = await this.expressionResolver.resolveObjectExpressions(
         processor.config,
-        formData,
+        context,
       );
     }
 
     return schema;
-  }
-
-  /**
-   * Replace all variable patterns (database secrets and form data) in a config object
-   */
-  private async replaceVariables(
-    formId: string,
-    config: Record<string, any>,
-    formData?: Record<string, any>,
-  ): Promise<Record<string, any>> {
-    const result = { ...config };
-
-    for (const [key, value] of Object.entries(result)) {
-      if (typeof value === 'string') {
-        result[key] = await this.replaceVariableValue(formId, value, formData);
-      } else if (typeof value === 'object' && value !== null) {
-        result[key] = await this.replaceVariables(formId, value, formData);
-      }
-    }
-
-    return result;
-  }
-
-  /**
-   * Replace both database secrets and form data variables in a string value
-   * Supports:
-   * - {{db:key}} or {{db:formId:key}} for database secrets
-   * - {{formData.fieldName}} for form field values
-   */
-  private async replaceVariableValue(
-    formId: string,
-    value: string,
-    formData?: Record<string, any>,
-  ): Promise<string> {
-    let result = value;
-
-    // Replace database secrets: {{db:key}} or {{db:formId:key}}
-    result = await this.replaceDbSecrets(formId, result);
-
-    // Replace form data variables: {{formData.fieldName}}
-    if (formData) {
-      result = this.replaceFormData(result, formData);
-    }
-
-    return result;
-  }
-
-  /**
-   * Replace database secret patterns in a string
-   */
-  private async replaceDbSecrets(
-    formId: string,
-    value: string,
-  ): Promise<string> {
-    const regex = /\{\{db:([^}]+)\}\}/g;
-    let result = value;
-
-    const matches = value.matchAll(regex);
-    for (const match of matches) {
-      const parts = match[1].split(':');
-      let targetFormId: string;
-      let targetKey: string;
-
-      if (parts.length === 1) {
-        // Shorthand: {{db:key}} - use current formId
-        targetFormId = formId;
-        targetKey = parts[0];
-      } else {
-        // Full format: {{db:formId:key}}
-        targetFormId = parts[0];
-        targetKey = parts[1];
-      }
-
-      const secretValue = await this.getSecret(targetFormId, targetKey);
-      result = result.replace(match[0], secretValue);
-    }
-
-    return result;
-  }
-
-  /**
-   * Replace form data patterns in a string
-   * Supports: {{formData.fieldName}} and nested paths like {{formData.nested.keyName}}
-   */
-  private replaceFormData(
-    value: string,
-    formData: Record<string, any>,
-  ): string {
-    const regex = /\{\{formData\.([^}]+)\}\}/g;
-    let result = value;
-
-    const matches = value.matchAll(regex);
-    for (const match of matches) {
-      const fieldPath = match[1];
-      const fieldValue = this.getNestedValue(formData, fieldPath);
-
-      if (fieldValue !== undefined && fieldValue !== null) {
-        // Convert to string and replace
-        result = result.replace(match[0], String(fieldValue));
-      } else {
-        this.logger.warn(
-          `Form data field not found: ${fieldPath}, removing from string`,
-        );
-        // Remove the placeholder if field not found
-        result = result.replace(match[0], '');
-      }
-    }
-
-    return result;
-  }
-
-  /**
-   * Get a nested value from an object using a dot-separated path
-   * Example: getNestedValue({child: {firstName: 'John'}}, 'child.firstName') => 'John'
-   */
-  private getNestedValue(obj: Record<string, any>, path: string): any {
-    const keys = path.split('.');
-    let current = obj;
-
-    for (const key of keys) {
-      if (current && typeof current === 'object' && key in current) {
-        current = current[key];
-      } else {
-        return undefined;
-      }
-    }
-
-    return current;
-  }
-
-  /**
-   * Retrieve a secret value from the database
-   */
-  private async getSecret(formId: string, key: string): Promise<string> {
-    const config = await this.formConfigRepository.findOne({
-      where: { formId, key },
-    });
-
-    if (!config) {
-      this.logger.warn(`Secret not found: ${formId}:${key}`);
-      return `{{db:${formId}:${key}}}`; // Return placeholder if not found
-    }
-
-    return config.value;
   }
 
   /**

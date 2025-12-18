@@ -1,15 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ConfigService } from '@nestjs/config';
 import { EZPayService } from '../../payments/ezpay/ezpay.service';
+import { DepartmentMappingService } from '../../payments/department-mapping.service';
 import {
   Payment,
   PaymentStatus,
   PaymentProvider,
   FormSubmissionPayment,
 } from '../../database/entities';
-import { PaymentProcessorConfig } from '../../forms/interfaces/form-schema.interface';
+import {
+  PaymentProcessorConfig,
+  ResponseDataConfig,
+} from '../../forms/interfaces/form-schema.interface';
 import { IProcessor } from '../interfaces/processor.interface';
 
 export interface PaymentProcessorResult {
@@ -22,6 +25,7 @@ export interface PaymentProcessorResult {
   amount?: number;
   description?: string;
   error?: string;
+  additionalData?: Record<string, any>;
 }
 
 @Injectable()
@@ -34,7 +38,7 @@ export class PaymentProcessor implements IProcessor {
     @InjectRepository(FormSubmissionPayment)
     private formSubmissionPaymentRepository: Repository<FormSubmissionPayment>,
     private ezpayService: EZPayService,
-    private configService: ConfigService,
+    private departmentMappingService: DepartmentMappingService,
   ) {}
 
   get type(): string {
@@ -49,7 +53,7 @@ export class PaymentProcessor implements IProcessor {
       data: Record<string, any>;
     },
   ): Promise<any> {
-    const result = await this.process(config, config, context);
+    const result = await this.process(context.data, config, context);
     if (!result.success) {
       throw new Error(result.error || 'Payment processing failed');
     }
@@ -71,7 +75,7 @@ export class PaymentProcessor implements IProcessor {
       });
 
       // Resolve configuration values
-      const resolvedConfig = await this.resolveConfig(config, formData);
+      const resolvedConfig = await this.resolveConfig(config);
 
       // Validate payment configuration
       if (!resolvedConfig.paymentCode) {
@@ -95,23 +99,26 @@ export class PaymentProcessor implements IProcessor {
       });
 
       // Create EZPay payment session
-      const ezpayResult = await this.ezpayService.createPayment({
-        cartItems: [
-          {
-            code: resolvedConfig.paymentCode,
-            amount: resolvedConfig.amount,
-            details: resolvedConfig.description,
-            reference: payment.referenceNumber,
-          },
-        ],
-        customerEmail: customerInfo.email,
-        customerName: customerInfo.name,
-        referenceNumber: payment.referenceNumber,
-        processId: payment.processId,
-        allowCredit: resolvedConfig.allowCredit ?? true,
-        allowDebit: resolvedConfig.allowDebit ?? true,
-        allowPayce: resolvedConfig.allowPayce ?? true,
-      });
+      const ezpayResult = await this.ezpayService.createPayment(
+        {
+          cartItems: [
+            {
+              code: resolvedConfig.paymentCode,
+              amount: resolvedConfig.amount,
+              details: resolvedConfig.description,
+              reference: payment.referenceNumber,
+            },
+          ],
+          customerEmail: customerInfo.email,
+          customerName: customerInfo.name,
+          referenceNumber: payment.referenceNumber,
+          processId: payment.processId,
+          allowCredit: resolvedConfig.allowCredit ?? true,
+          allowDebit: resolvedConfig.allowDebit ?? true,
+          allowPayce: resolvedConfig.allowPayce ?? true,
+        },
+        resolvedConfig.apiKey,
+      );
 
       if (!ezpayResult.success) {
         // Update payment status to failed
@@ -162,6 +169,11 @@ export class PaymentProcessor implements IProcessor {
         },
       );
 
+      // Process additional response data if configured
+      const additionalData = config.responseData
+        ? await this.processResponseData(config.responseData, formData)
+        : undefined;
+
       return {
         success: true,
         paymentRequired: true,
@@ -171,6 +183,7 @@ export class PaymentProcessor implements IProcessor {
         referenceNumber: payment.referenceNumber,
         amount: resolvedConfig.amount,
         description: resolvedConfig.description,
+        additionalData,
       };
     } catch (error) {
       this.logger.error(
@@ -188,73 +201,42 @@ export class PaymentProcessor implements IProcessor {
 
   private async resolveConfig(
     config: PaymentProcessorConfig['config'],
-    formData: Record<string, any>,
   ): Promise<{
+    department: string;
     paymentCode: string;
     amount: number;
     description: string;
     allowCredit: boolean;
     allowDebit: boolean;
     allowPayce: boolean;
+    apiKey: string;
   }> {
-    // Resolve payment code from database secrets
-    let paymentCode = config.paymentCode;
-    if (paymentCode.startsWith('{{db:')) {
-      paymentCode = await this.resolveDbSecret(paymentCode);
-    }
+    // At this point, all expressions should already be resolved by FormUtilsService
+    const paymentCode = config.paymentCode;
+    const amount = Number(config.amount) || 0;
 
-    // Resolve amount (could be dynamic based on form data)
-    let amount = config.amount;
-    if (typeof amount === 'string') {
-      amount = this.evaluateAmountFormula(amount, formData);
-    }
+    // Get the department and corresponding API key
+    const department = config.department || 'default';
+    const apiKey =
+      this.departmentMappingService.getApiKeyForDepartment(department);
+
+    this.logger.log(`Resolved payment config:`, {
+      department,
+      paymentCode,
+      amount,
+      description: config.description,
+    });
 
     return {
+      department,
       paymentCode,
-      amount: Number(amount),
+      amount,
       description: config.description,
       allowCredit: config.allowCredit ?? true,
       allowDebit: config.allowDebit ?? true,
       allowPayce: config.allowPayce ?? true,
+      apiKey,
     };
-  }
-
-  private async resolveDbSecret(secretRef: string): Promise<string> {
-    // Extract secret path from {{db:form-id:secret-key}} format
-    const match = secretRef.match(/\{\{db:([^:]+):([^}]+)\}\}/);
-    if (!match) {
-      throw new Error(`Invalid secret reference format: ${secretRef}`);
-    }
-
-    const [, formId, secretKey] = match;
-
-    // This would typically query your form config or secrets table
-    // For now, using environment variables as fallback
-    const envKey = `${formId
-      .toUpperCase()
-      .replace(/-/g, '_')}_${secretKey.toUpperCase()}`;
-    const value = this.configService.get<string>(envKey);
-
-    if (!value) {
-      throw new Error(`Secret not found: ${secretRef} (tried ${envKey})`);
-    }
-
-    return value;
-  }
-
-  private evaluateAmountFormula(
-    formula: string,
-    formData: Record<string, any>,
-  ): number {
-    // Simple formula evaluation (could be extended with a proper expression parser)
-    if (formula.startsWith('{{formData.') && formula.endsWith('}}')) {
-      const path = formula.slice(12, -2); // Remove {{formData. and }}
-      const value = this.getNestedValue(formData, path);
-      return Number(value) || 0;
-    }
-
-    // If it's just a number as string
-    return Number(formula) || 0;
   }
 
   private getNestedValue(obj: any, path: string): any {
@@ -287,6 +269,7 @@ export class PaymentProcessor implements IProcessor {
   }
 
   private async createPaymentRecord(data: {
+    department: string;
     paymentCode: string;
     amount: number;
     description: string;
@@ -295,8 +278,13 @@ export class PaymentProcessor implements IProcessor {
     formId: string;
     submissionId: string;
   }): Promise<Payment> {
+    // Include department in reference number for later API key resolution
+    const referenceNumber = `${data.department.toUpperCase()}-${data.formId}-${
+      data.submissionId
+    }`;
+
     const payment = this.paymentRepository.create({
-      referenceNumber: `${data.formId}-${data.submissionId}`,
+      referenceNumber,
       processId: this.ezpayService.generateProcessId(),
       paymentProvider: PaymentProvider.EZPAY,
       totalAmount: data.amount,
@@ -397,5 +385,29 @@ export class PaymentProcessor implements IProcessor {
       paymentVerified: formSubmissionPayment.paymentVerified,
       payment: formSubmissionPayment.payment,
     };
+  }
+
+  /**
+   * Process response data configuration to extract additional data from form data
+   */
+  private async processResponseData(
+    responseConfig: ResponseDataConfig,
+    formData: Record<string, any>,
+  ): Promise<Record<string, any>> {
+    const result: Record<string, any> = {};
+
+    // Include specified form fields
+    if (responseConfig.include) {
+      for (const fieldPath of responseConfig.include) {
+        const value = this.getNestedValue(formData, fieldPath);
+        if (value !== undefined) {
+          // Use the last part of the field path as the key (e.g., order.numberOfCopies -> numberOfCopies)
+          const fieldName = fieldPath.split('.').pop() || fieldPath;
+          result[fieldName] = value;
+        }
+      }
+    }
+
+    return result;
   }
 }
