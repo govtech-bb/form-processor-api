@@ -35,26 +35,99 @@
           <span class='field-value'>{{beneficiaries.firstName}}
             {{beneficiaries.lastName}}</span>
         </div>
-        <div class='field'>
-          <span class='field-label'>Student ID:</span>
-          <span class='field-value'>{{beneficiaries.idNumber}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Gender:</span>
-          <span class='field-value'>{{beneficiaries.gender}}</span>
-        </div>
+        {{#if beneficiaries.idNumber}}
+          <div class='field'>
+            <span class='field-label'>Student ID:</span>
+            <span class='field-value'>{{beneficiaries.idNumber}}</span>
+          </div>
+        {{/if}}
+        {{#if beneficiaries.passportNumber}}
+          <div class='field'>
+            <span class='field-label'>Passport Number:</span>
+            <span class='field-value'>{{beneficiaries.passportNumber}}</span>
+          </div>
+        {{/if}}
         <div class='field'>
           <span class='field-label'>Class/Grade:</span>
           <span class='field-value'>Class {{beneficiaries.class}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Relationship to Child:</span>
+          <span class='field-value'>{{beneficiaries.relationshipToChild}}</span>
+        </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Applicant Information</div>
+        <div class='field'>
+          <span class='field-label'>Name:</span>
+          <span class='field-value'>{{applicant.title}}
+            {{applicant.firstName}}
+            {{applicant.lastName}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Address:</span>
+          <span class='field-value'>{{applicant.addressLine1}}{{#if
+              applicant.addressLine2
+            }}, {{applicant.addressLine2}}{{/if}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Parish:</span>
+          <span class='field-value'>{{applicant.parish}}</span>
+        </div>
+        {{#if applicant.postalCode}}
+          <div class='field'>
+            <span class='field-label'>Postal Code:</span>
+            <span class='field-value'>{{applicant.postalCode}}</span>
+          </div>
+        {{/if}}
+        <div class='field'>
+          <span class='field-label'>Email:</span>
+          <span class='field-value'>{{applicant.email}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Phone:</span>
+          <span class='field-value'>{{applicant.telephoneNumber}}</span>
+        </div>
+        {{#if applicant.idNumber}}
+          <div class='field'>
+            <span class='field-label'>ID Number:</span>
+            <span class='field-value'>{{applicant.idNumber}}</span>
+          </div>
+        {{/if}}
+        {{#if applicant.passportNumber}}
+          <div class='field'>
+            <span class='field-label'>Passport Number:</span>
+            <span class='field-value'>{{applicant.passportNumber}}</span>
+          </div>
+        {{/if}}
+        {{#if applicant.tamisNumber}}
+          <div class='field'>
+            <span class='field-label'>TAMIS Number:</span>
+            <span class='field-value'>{{applicant.tamisNumber}}</span>
+          </div>
+        {{/if}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Parent/Guardian Relationship</div>
+        <div class='field'>
+          <span class='field-label'>Are you the parent or guardian?</span>
+          <span class='field-value'>{{guardianOrParentRelationship}}</span>
         </div>
       </div>
 
       <div class='section'>
         <div class='section-title'>Guardian Information</div>
+        {{#if guardian.title}}
+          <div class='field'>
+            <span class='field-label'>Title:</span>
+            <span class='field-value'>{{guardian.title}}</span>
+          </div>
+        {{/if}}
         <div class='field'>
           <span class='field-label'>Guardian Name:</span>
-          <span class='field-value'>{{guardian.title}}
-            {{guardian.firstName}}
+          <span class='field-value'>{{guardian.firstName}}
             {{#if guardian.middleName}}{{guardian.middleName}}
             {{/if}}{{guardian.lastName}}</span>
         </div>
@@ -101,24 +174,24 @@
       <div class='section'>
         <div class='section-title'>Bank Account Information</div>
         <div class='field'>
-          <span class='field-label'>Bank:</span>
-          <span class='field-value'>{{bankAccount.bank}}</span>
+          <span class='field-label'>Account Holder Name:</span>
+          <span class='field-value'>{{bankAccount.accountHolderName}}</span>
         </div>
         <div class='field'>
-          <span class='field-label'>Branch:</span>
-          <span class='field-value'>{{bankAccount.branch}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Account Type:</span>
-          <span class='field-value'>{{bankAccount.accountType}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Name on Account:</span>
-          <span class='field-value'>{{bankAccount.nameOnAccount}}</span>
+          <span class='field-label'>Bank Name:</span>
+          <span class='field-value'>{{bankAccount.bankName}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Account Number:</span>
           <span class='field-value'>{{bankAccount.accountNumber}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Branch Location:</span>
+          <span class='field-value'>{{bankAccount.branchLocation}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Account Type:</span>
+          <span class='field-value'>{{bankAccount.accountType}}</span>
         </div>
       </div>
 
