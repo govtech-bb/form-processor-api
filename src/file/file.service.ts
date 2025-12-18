@@ -6,7 +6,7 @@ import {
   S3Client,
   GetObjectCommand,
 } from '@aws-sdk/client-s3';
-import S3Presigner from '@aws-sdk/s3-request-presigner';
+import * as S3Presigner from '@aws-sdk/s3-request-presigner';
 import { AttachmentDTO } from '../common/dto';
 
 @Injectable()
