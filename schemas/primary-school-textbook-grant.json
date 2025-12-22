@@ -71,20 +71,66 @@
 			]
 		},
 		{
+			"name": "guardian",
+			"type": "object",
+			"label": "Guardian Information",
+			"required": true,
+			"fields": [
+				{
+					"name": "firstName",
+					"type": "string",
+					"label": "Guardian First Name",
+					"required": true,
+					"validations": {
+						"min": 2,
+						"max": 50
+					}
+				},
+				{
+					"name": "lastName",
+					"type": "string",
+					"label": "Guardian Last Name",
+					"required": true,
+					"validations": {
+						"min": 2,
+						"max": 50
+					}
+				},
+				{
+					"name": "idNumber",
+					"type": "string",
+					"label": "Guardian ID Number",
+					"required": true,
+					"validations": {
+						"min": 2,
+						"max": 50
+					}
+				},
+				{
+					"name": "passportNumber",
+					"type": "string",
+					"label": "Passport Number",
+					"required": false,
+					"validations": {
+						"message": "Passport number must be at least 6 characters"
+					}
+				},
+				{
+					"name": "tamisNumber",
+					"type": "string",
+					"label": "TAMIS Number",
+					"required": false,
+					"validations": {
+						"message": "Tamis must be 10-15 digits"
+					}
+				}
+			]
+		},
+		{
 			"name": "applicant",
 			"type": "object",
 			"required": true,
 			"fields": [
-				{
-					"name": "title",
-					"type": "string",
-					"label": "Title",
-					"required": true,
-					"validations": {
-						"regex": "^(mr|ms|mrs)$",
-						"message": "Must select a valid title"
-					}
-				},
 				{
 					"name": "firstName",
 					"type": "string",
@@ -193,136 +239,7 @@
 				}
 			]
 		},
-		{
-			"name": "guardianOrParentRelationship",
-			"type": "string",
-			"label": "Are you the parent or guardian?",
-			"required": true,
-			"validations": {
-				"regex": "^(yes|no)$",
-				"message": "Must select an option"
-			}
-		},
-		{
-			"name": "guardian",
-			"type": "object",
-			"label": "Guardian Information",
-			"required": true,
-			"fields": [
-				{
-					"name": "title",
-					"type": "string",
-					"label": "Title",
-					"required": false,
-					"validations": {
-						"max": 10
-					}
-				},
-				{
-					"name": "firstName",
-					"type": "string",
-					"label": "Guardian First Name",
-					"required": true,
-					"validations": {
-						"min": 2,
-						"max": 50
-					}
-				},
-				{
-					"name": "middleName",
-					"type": "string",
-					"label": "Guardian Middle Name",
-					"required": false,
-					"validations": {
-						"max": 50
-					}
-				},
-				{
-					"name": "lastName",
-					"type": "string",
-					"label": "Guardian Last Name",
-					"required": true,
-					"validations": {
-						"min": 2,
-						"max": 50
-					}
-				},
-				{
-					"name": "idNumber",
-					"type": "string",
-					"label": "Guardian ID Number",
-					"required": true,
-					"validations": {
-						"min": 2,
-						"max": 50
-					}
-				},
-				{
-					"name": "gender",
-					"type": "string",
-					"label": "Guardian Gender",
-					"required": false
-				},
-				{
-					"name": "relationship",
-					"type": "string",
-					"label": "Relationship to Student",
-					"required": true,
-					"validations": {
-						"max": 50
-					}
-				},
-				{
-					"name": "email",
-					"type": "email",
-					"label": "Guardian Email Address",
-					"required": false
-				}
-			]
-		},
-		{
-			"name": "contact",
-			"type": "object",
-			"label": "Contact Information",
-			"required": true,
-			"fields": [
-				{
-					"name": "addressLine1",
-					"type": "string",
-					"label": "Address Line 1",
-					"required": true,
-					"validations": {
-						"min": 5,
-						"max": 200
-					}
-				},
-				{
-					"name": "addressLine2",
-					"type": "string",
-					"label": "Address Line 2",
-					"required": false,
-					"validations": {
-						"max": 200
-					}
-				},
-				{
-					"name": "parish",
-					"type": "string",
-					"label": "Parish",
-					"required": true
-				},
-				{
-					"name": "telephoneNumber",
-					"type": "string",
-					"label": "Telephone Number",
-					"required": true,
-					"validations": {
-						"regex": "^\\+?[0-9]{10,15}$",
-						"message": "Telephone number must be 10-15 digits"
-					}
-				}
-			]
-		},
+
 		{
 			"name": "bankAccount",
 			"type": "object",
@@ -352,9 +269,18 @@
 					}
 				},
 				{
-					"name": "branchLocation",
+					"name": "branchName",
 					"type": "string",
-					"label": "Branch Location",
+					"label": "Branch Name",
+					"required": true,
+					"validations": {
+						"max": 100
+					}
+				},
+				{
+					"name": "branchCode",
+					"type": "string",
+					"label": "Branch Coe",
 					"required": true,
 					"validations": {
 						"max": 100
