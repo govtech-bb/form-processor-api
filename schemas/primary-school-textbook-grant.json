@@ -202,14 +202,6 @@
         "subject": "New Textbook Grant Application - {{formData.beneficiaries.firstName}} {{formData.beneficiaries.lastName}}",
         "template": "primary-school-textbook-grant"
       }
-    },
-    {
-      "type": "email",
-      "config": {
-        "to": "{{formData.guardian.email}}",
-        "subject": "Textbook Grant Application Received - Government of Barbados",
-        "template": "primary-school-textbook-grant-receipt"
-      }
     }
   ]
 }
