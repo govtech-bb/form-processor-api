@@ -82,7 +82,11 @@
         {{#each proposed-names}}
           <div class='field'>
             <span class='field-label'>Option {{@index}}:</span>
-            <span class='field-value'>{{this.value}}</span>
+            <span class='field-value'>{{this.title}}</span>
+          </div>
+          <div class='field'>
+            <span class='field-label'>Explanation:</span>
+            <span class='field-value'>{{this.explanation}}</span>
           </div>
         {{/each}}
       </div>
