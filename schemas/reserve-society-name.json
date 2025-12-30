@@ -38,7 +38,10 @@
       "items": {
         "type": "object",
         "properties": {
-          "value": {
+          "title": {
+            "type": "string"
+          },
+          "explanation": {
             "type": "string"
           }
         }
