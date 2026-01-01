@@ -23,6 +23,20 @@
       }
     },
     {
+      "name": "companiesToBeMerged",
+      "type": "array",
+      "label": "What are the names of the companies being merged?",
+      "required": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
       "name": "companyName",
       "type": "object",
       "required": true,
