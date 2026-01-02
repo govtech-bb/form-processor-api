@@ -217,8 +217,8 @@
       "type": "email",
       "config": {
         "to": "{{db:post-office-redirection-individual:admin_email}}",
-        "subject": "New Request to Redirect Mail for an individual - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-        "template": "post-office-redirection-individual"
+        "subject": "New Request to redirect mail for an individual - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "post-office-redirection-notice"
       }
     }
   ]
