@@ -210,6 +210,33 @@
           }
         }
       ]
+    },
+    {
+      "name": "anyMinorDependents",
+      "type": "string",
+      "label": "Are there any minor dependents?",
+      "required": true,
+      "validations": {
+        "regex": "^(yes|no)$",
+        "message": "Must select an option"
+      }
+    },
+    {
+      "name": "minorDetails",
+      "type": "array",
+      "label": "Tell us about the minor dependents that needs their email sent to the new address",
+      "required": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      }
     }
   ],
   "processors": [
