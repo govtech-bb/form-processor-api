@@ -33,17 +33,42 @@
         <div class='section-title'>Personal Information</div>
         <div class='field'>
           <span class='field-label'>Name:</span>
-          <span class='field-value'>{{personal.firstName}}
-            {{personal.lastName}}</span>
+          <span class='field-value'>{{applicant.title}}
+            {{applicant.firstName}}
+            {{applicant.lastName}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Date of Birth:</span>
-          <span class='field-value'>{{personal.dateOfBirth}}</span>
+          <span class='field-value'>{{applicant.dateOfBirth}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>ID Number:</span>
-          <span class='field-value'>{{personal.idNumber}}</span>
+          <span class='field-value'>{{applicant.idNumber}}</span>
         </div>
+        {{#if applicant.passportNumber}}
+          <div class='field'>
+            <span class='field-label'>Passport Number:</span>
+            <span class='field-value'>{{applicant.passportNumber}}</span>
+          </div>
+        {{/if}}
+        {{#if applicant.email}}
+          <div class='field'>
+            <span class='field-label'>Email:</span>
+            <span class='field-value'>{{applicant.email}}</span>
+          </div>
+        {{/if}}
+        {{#if applicant.email}}
+          <div class='field'>
+            <span class='field-label'>Email:</span>
+            <span class='field-value'>{{applicant.email}}</span>
+          </div>
+        {{/if}}
+        {{#if applicant.telephoneNumber}}
+          <div class='field'>
+            <span class='field-label'>Phone Number:</span>
+            <span class='field-value'>{{applicant.telephoneNumber}}</span>
+          </div>
+        {{/if}}
       </div>
 
       <div class='section'>
@@ -117,26 +142,6 @@
           </div>
         {{/if}}
       </div>
-
-      {{#if businessInformation}}
-        <div class='section'>
-          <div class='section-title'>Business Information</div>
-          <div class='field'>
-            <span class='field-label'>For Business/Company:</span>
-            <span class='field-value'>{{#if
-                (eq businessInformation.belongsToBusiness 'true')
-              }}Yes{{else}}No{{/if}}</span>
-          </div>
-          {{#if businessInformation.businessName}}
-            <div class='field'>
-              <span class='field-label'>Business Name:</span>
-              <span
-                class='field-value'
-              >{{businessInformation.businessName}}</span>
-            </div>
-          {{/if}}
-        </div>
-      {{/if}}
 
       <div class='footer'>
         <p><strong>Submission ID:</strong> {{submissionId}}</p>
