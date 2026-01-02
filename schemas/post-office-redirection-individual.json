@@ -222,7 +222,7 @@
       }
     },
     {
-      "name": "minor-details",
+      "name": "minorDetails",
       "type": "array",
       "label": "Tell us about the minor dependents that needs their email sent to the new address",
       "required": false,
