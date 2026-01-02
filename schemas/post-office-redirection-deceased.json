@@ -226,8 +226,8 @@
       "type": "email",
       "config": {
         "to": "{{db:post-office-redirection-deceased:admin_email}}",
-        "subject": "New Request to Redirect Mail for a Deceased Person - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-        "template": "post-office-redirection-deceased"
+        "subject": "New Request to redirect mail for a Deceased Person - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "post-office-redirection-notice"
       }
     }
   ]

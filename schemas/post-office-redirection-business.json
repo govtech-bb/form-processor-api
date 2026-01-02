@@ -227,7 +227,7 @@
       "config": {
         "to": "{{db:post-office-redirection-business:admin_email}}",
         "subject": "New Request to Redirect Mail for a Business - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-        "template": "post-office-redirection-business"
+        "template": "post-office-redirection-notice"
       }
     }
   ]
