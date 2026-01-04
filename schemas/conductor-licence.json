@@ -238,9 +238,9 @@
     {
       "type": "email",
       "config": {
-        "to": "{{db:post-office-redirection-individual:admin_email}}",
-        "subject": "New Request to redirect mail for an individual - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-        "template": "post-office-redirection-notice"
+        "to": "{{db:apply-for-conductor-licence:admin_email}}",
+        "subject": "Apply for conductor licence - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "apply-for-conductor-licence"
       }
     }
   ]
