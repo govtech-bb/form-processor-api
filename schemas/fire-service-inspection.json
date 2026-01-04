@@ -99,36 +99,6 @@
           }
         },
         {
-          "name": "addressLine1",
-          "type": "string",
-          "label": "Address Line 1",
-          "required": true,
-          "validations": {
-            "min": 5,
-            "max": 200,
-            "message": "Address must be at least 5 characters"
-          }
-        },
-        {
-          "name": "addressLine2",
-          "type": "string",
-          "label": "Address Line 2",
-          "required": false,
-          "validations": {
-            "max": 200
-          }
-        },
-        {
-          "name": "parish",
-          "type": "string",
-          "label": "Parish",
-          "required": true,
-          "validations": {
-            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
-            "message": "Must select a valid parish"
-          }
-        },
-        {
           "name": "email",
           "type": "email",
           "label": "Email Address",
