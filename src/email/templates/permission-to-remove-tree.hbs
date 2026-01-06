@@ -82,11 +82,27 @@
         <div class='section'>
           <div class='section-title'>Trees to remove</div>
           {{#each treesToRemove}}
-            <div class='field'>
-              <span class='field-value'>Type of Protected Tree:
-                {{this.typeOfProtectedTree}}</span>
-              <span class='field-value'>Reason for Removing Tree:
-                {{this.reasonForRemovingTree}}</span>
+            <div>
+              <div class='field'>
+                <span class='field-label'>Type of Protected Tree:</span>
+                <span class='field-value'> {{this.typeOfProtectedTree}}</span>
+              </div>
+              <div class='field'>
+                <span class='field-label'>Reason for Removing Tree:</span>
+                <span class='field-value'> {{this.reasonForRemovingTree}}</span>
+              </div>
+              <div class='field'>
+                <span class='field-label'>Address Line 1:</span>
+                <span class='field-value'> {{this.addressLine1}}</span>
+              </div>
+              <div class='field'>
+                <span class='field-label'>Address Line 2:</span>
+                <span class='field-value'> {{this.addressLine2}}</span>
+              </div>
+              <div class='field'>
+                <span class='field-label'>Parish:</span>
+                <span class='field-value'> {{this.parish}}</span>
+              </div>
             </div>
           {{/each}}
         </div>
