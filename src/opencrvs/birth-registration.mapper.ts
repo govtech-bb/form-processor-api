@@ -481,23 +481,23 @@ export class BirthRegistrationMapper {
     const year = parseInt(nrn.substring(0, 2));
     const month = parseInt(nrn.substring(2, 4)) - 1; // JavaScript months are 0-indexed
     const day = parseInt(nrn.substring(4, 6));
-    
+
     // Handle Y2K: Assume 1900s for years 00-20, 2000s for 21-99
     const fullYear = year <= 20 ? 2000 + year : 1900 + year;
-    
+
     // Create date objects
     const birthDate = new Date(fullYear, month, day);
     const today = new Date();
-    
+
     // Calculate age
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    
+
     // Adjust age if birthday hasn't occurred yet this year
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-    
+
     return {
       age,
       asOfDateRef: 'child.dob'
