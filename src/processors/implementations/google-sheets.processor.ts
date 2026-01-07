@@ -100,6 +100,19 @@ export class GoogleSheetsProcessor implements IProcessor {
   }
 
   /**
+   * Sanitize a string value to prevent XSS attacks by escaping HTML special characters.
+   * This ensures user-submitted data is safe if rendered in a web context.
+   */
+  private sanitizeString(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#x27;');
+  }
+
+  /**
    * Extract a value from the processor context based on field specification
    */
   private extractValue(
@@ -135,24 +148,32 @@ export class GoogleSheetsProcessor implements IProcessor {
       }
     }
 
-    // Handle different value types
+    // Handle different value types with sanitization for user-provided strings
     if (value === null || value === undefined) {
       return null;
     }
-    if (typeof value === 'string' || typeof value === 'number') {
+    if (typeof value === 'string') {
+      return this.sanitizeString(value);
+    }
+    if (typeof value === 'number') {
       return value;
     }
     if (typeof value === 'boolean') {
       return value;
     }
     if (Array.isArray(value)) {
-      return value.join(', ');
+      // Sanitize each array element before joining
+      return value
+        .map((v) => (typeof v === 'string' ? this.sanitizeString(v) : String(v)))
+        .join(', ');
     }
     if (typeof value === 'object') {
-      return JSON.stringify(value);
+      // JSON.stringify output is safe as it escapes special characters,
+      // but we sanitize the result for additional safety
+      return this.sanitizeString(JSON.stringify(value));
     }
 
-    return String(value);
+    return this.sanitizeString(String(value));
   }
 
   /**

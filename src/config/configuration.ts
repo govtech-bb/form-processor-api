@@ -35,7 +35,10 @@ export default () => ({
   forms: {
     schemasDir: process.env.FORM_SCHEMAS_DIR || 'schemas',
   },
-  googleSheets: (() => {
+  googleSheets: {
+    awsSecretName:
+      process.env.GOOGLE_SHEETS_AWS_SECRET_NAME || 'google-service-account-key',
+    ...(() => {
     // Support full service account JSON via GOOGLE_SHEETS_CREDENTIALS
     // Can be raw JSON or base64-encoded JSON
     // Set using: cat service-account.json | jq -c . | base64
@@ -68,6 +71,7 @@ export default () => ({
       privateKey: key ? key.replace(/\\n/g, '\n') : undefined,
     };
   })(),
+  },
   ezpay: {
     apiKey: process.env.EZPAY_API_KEY || 'HWqgTn5EXIHLAzVjXtGpB2mIjgQgj0Ql', // Default API key for backward compatibility
     baseUrl: process.env.EZPAY_BASE_URL || 'https://test.ezpay.gov.bb',
