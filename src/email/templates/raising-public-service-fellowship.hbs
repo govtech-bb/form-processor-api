@@ -1,0 +1,194 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <style>
+      body { font-family: Arial, sans-serif; line-height: 1.6; color: #333;
+      max-width: 800px; margin: 0 auto; padding: 20px; } .header {
+      background-color: #1e40af; color: white; padding: 20px; text-align:
+      center; border-radius: 5px 5px 0 0; } .content { background-color:
+      #f7fafc; padding: 30px; border: 1px solid #e2e8f0; border-top: none; }
+      .section { margin-bottom: 25px; background-color: white; padding: 20px;
+      border-radius: 5px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+      .section-title { color: #1e40af; font-size: 18px; font-weight: bold;
+      margin-bottom: 15px; border-bottom: 2px solid #1e40af; padding-bottom:
+      5px; } .field { margin-bottom: 12px; } .field-label { font-weight: bold;
+      color: #4a5568; display: inline-block; width: 200px; } .field-value {
+      color: #1a202c; } .footer { margin-top: 30px; padding: 20px;
+      background-color: #edf2f7; border-radius: 5px; text-align: center;
+      font-size: 14px; color: #718096; } .text-area { background-color: #f8f9fa;
+      padding: 10px; border-radius: 3px; margin-top: 5px; font-style: italic; }
+      .reference-item { background-color: #f8f9fa; padding: 15px; border-radius:
+      3px; margin-bottom: 15px; border-left: 4px solid #1e40af; }
+    </style>
+  </head>
+  <body>
+    <div class='header'>
+      <h1>🎓 Raising Public Service Fellowship Application</h1>
+    </div>
+
+    <div class='content'>
+      <p>A new fellowship application has been submitted for the Raising Public Service Fellowship Programme.</p>
+
+      <div class='section'>
+        <div class='section-title'>Applicant Information</div>
+        <div class='field'>
+          <span class='field-label'>Name:</span>
+          <span class='field-value'>{{formData.applicant.title}} {{formData.applicant.firstName}}{{#if formData.applicant.middleName}} {{formData.applicant.middleName}}{{/if}} {{formData.applicant.lastName}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Date of Birth:</span>
+          <span class='field-value'>{{formData.applicant.dateOfBirth}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Sex:</span>
+          <span class='field-value'>{{formData.applicant.sex}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>ID Number:</span>
+          <span class='field-value'>{{formData.applicant.idNumber}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Email:</span>
+          <span class='field-value'>{{formData.applicant.email}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Telephone:</span>
+          <span class='field-value'>{{formData.applicant.telephoneNumber}}</span>
+        </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Address Information</div>
+        <div class='field'>
+          <span class='field-label'>Address Line 1:</span>
+          <span class='field-value'>{{formData.address.addressLine1}}</span>
+        </div>
+        {{#if formData.address.addressLine2}}
+          <div class='field'>
+            <span class='field-label'>Address Line 2:</span>
+            <span class='field-value'>{{formData.address.addressLine2}}</span>
+          </div>
+        {{/if}}
+        <div class='field'>
+          <span class='field-label'>Parish:</span>
+          <span class='field-value'>{{formData.address.parish}}</span>
+        </div>
+        {{#if formData.address.postalCode}}
+          <div class='field'>
+            <span class='field-label'>Postal Code:</span>
+            <span class='field-value'>{{formData.address.postalCode}}</span>
+          </div>
+        {{/if}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Employment Details</div>
+        <div class='field'>
+          <span class='field-label'>Employment Status:</span>
+          <span class='field-value'>{{formData.employment.currentEmploymentStatus}}</span>
+        </div>
+        {{#if formData.employment.employerName}}
+          <div class='field'>
+            <span class='field-label'>Employer Name:</span>
+            <span class='field-value'>{{formData.employment.employerName}}</span>
+          </div>
+        {{/if}}
+        {{#if formData.employment.jobTitle}}
+          <div class='field'>
+            <span class='field-label'>Job Title:</span>
+            <span class='field-value'>{{formData.employment.jobTitle}}</span>
+          </div>
+        {{/if}}
+        <div class='field'>
+          <span class='field-label'>Years of Experience:</span>
+          <span class='field-value'>{{formData.employment.yearsOfExperience}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Sector of Work:</span>
+          <span class='field-value'>{{formData.employment.workSector}}</span>
+        </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Educational Background</div>
+        <div class='field'>
+          <span class='field-label'>Highest Qualification:</span>
+          <span class='field-value'>{{formData.education.highestQualification}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Field of Study:</span>
+          <span class='field-value'>{{formData.education.fieldOfStudy}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Institution Name:</span>
+          <span class='field-value'>{{formData.education.institutionName}}</span>
+        </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Fellowship Details</div>
+        <div class='field'>
+          <span class='field-label'>Area of Interest:</span>
+          <div class='text-area'>{{formData.fellowshipDetails.areaOfInterest}}</div>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Why do you want to join this fellowship:</span>
+          <div class='text-area'>{{formData.fellowshipDetails.motivationStatement}}</div>
+        </div>
+        <div class='field'>
+          <span class='field-label'>How will this fellowship support your career goals:</span>
+          <div class='text-area'>{{formData.fellowshipDetails.careerGoals}}</div>
+        </div>
+        <div class='field'>
+          <span class='field-label'>How do you plan to contribute to public service and community development:</span>
+          <div class='text-area'>{{formData.fellowshipDetails.communityImpact}}</div>
+        </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Professional References</div>
+        {{#each formData.references}}
+        <div class='reference-item'>
+          <div class='field'>
+            <span class='field-label'>Name:</span>
+            <span class='field-value'>{{this.referenceName}}</span>
+          </div>
+          <div class='field'>
+            <span class='field-label'>Title/Position:</span>
+            <span class='field-value'>{{this.referenceTitle}}</span>
+          </div>
+          <div class='field'>
+            <span class='field-label'>Email:</span>
+            <span class='field-value'>{{this.referenceEmail}}</span>
+          </div>
+          <div class='field'>
+            <span class='field-label'>Telephone:</span>
+            <span class='field-value'>{{this.referencePhone}}</span>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Uploaded Documents</div>
+        {{#if formData.uploadDocuments}}
+          {{#each formData.uploadDocuments}}
+            <div class='field'>
+              <span class='field-value'><a href='{{this}}' target='_blank'>Document {{@index}}</a></span>
+            </div>
+          {{/each}}
+        {{else}}
+          <div class='field'>
+            <span class='field-value'>No documents uploaded</span>
+          </div>
+        {{/if}}
+      </div>
+
+      <div class='footer'>
+        <p><strong>Submission ID:</strong> {{submissionId}}</p>
+        <p>This is an automated notification from the Raising Public Service Fellowship Application System.</p>
+        <p>Please review this application and follow up with the applicant as necessary.</p>
+      </div>
+    </div>
+  </body>
+</html>

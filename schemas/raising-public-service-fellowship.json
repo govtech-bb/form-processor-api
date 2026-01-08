@@ -1,0 +1,351 @@
+{
+  "id": "raising-public-service-fellowship",
+  "name": "Raising Public Service Fellowship Programme",
+  "description": "Apply for the Raising Public Service Fellowship Programme",
+  "fields": [
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "label": "Title",
+          "required": true,
+          "validations": {
+            "regex": "^(mr|ms|mrs|dr)$",
+            "message": "Must select a valid title"
+          }
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "label": "Date of birth",
+          "required": true,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date of birth must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "sex",
+          "type": "string",
+          "label": "Sex",
+          "required": true,
+          "validations": {
+            "regex": "^(male|female)$",
+            "message": "Must select a valid sex"
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "label": "National Identification (ID) Number",
+          "required": true,
+          "validations": {
+            "regex": "^\\d{6}-\\d{4}$",
+            "message": "Enter a valid ID number (e.g., 850101-0001)"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true,
+          "validations": {
+            "regex": "^\\+?[0-9]{10,15}$",
+            "message": "Telephone number must be 10-15 digits"
+          }
+        }
+      ]
+    },
+    {
+      "name": "address",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postalCode",
+          "type": "string",
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "employment",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "currentEmploymentStatus",
+          "type": "string",
+          "label": "Current Employment Status",
+          "required": true,
+          "validations": {
+            "regex": "^(employed|self-employed|unemployed|student|other)$",
+            "message": "Must select a valid employment status"
+          }
+        },
+        {
+          "name": "employerName",
+          "type": "string",
+          "label": "Employer Name",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "jobTitle",
+          "type": "string",
+          "label": "Job Title",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "yearsOfExperience",
+          "type": "number",
+          "label": "Years of Experience",
+          "required": true,
+          "validations": {
+            "min": 0,
+            "max": 70
+          }
+        },
+        {
+          "name": "workSector",
+          "type": "string",
+          "label": "Sector of Work",
+          "required": true,
+          "validations": {
+            "max": 100
+          }
+        }
+      ]
+    },
+    {
+      "name": "education",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "highestQualification",
+          "type": "string",
+          "label": "Highest Educational Qualification",
+          "required": true,
+          "validations": {
+            "regex": "^(high-school|associate|bachelor|master|doctorate|other)$",
+            "message": "Must select a valid qualification level"
+          }
+        },
+        {
+          "name": "fieldOfStudy",
+          "type": "string",
+          "label": "Field of Study",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100
+          }
+        },
+        {
+          "name": "institutionName",
+          "type": "string",
+          "label": "Name of Institution",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 150
+          }
+        }
+      ]
+    },
+    {
+      "name": "fellowshipDetails",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "areaOfInterest",
+          "type": "string",
+          "label": "Area of Interest for the Fellowship",
+          "required": true,
+          "validations": {
+            "min": 10,
+            "max": 200,
+            "message": "Please describe your area of interest (minimum 10 characters)"
+          }
+        },
+        {
+          "name": "motivationStatement",
+          "type": "string",
+          "label": "Why do you want to join this fellowship?",
+          "required": true,
+          "validations": {
+            "min": 50,
+            "max": 500,
+            "message": "Please provide a statement of at least 50 characters"
+          }
+        },
+        {
+          "name": "careerGoals",
+          "type": "string",
+          "label": "How will this fellowship support your career goals?",
+          "required": true,
+          "validations": {
+            "min": 50,
+            "max": 500,
+            "message": "Please describe your career goals (minimum 50 characters)"
+          }
+        },
+        {
+          "name": "communityImpact",
+          "type": "string",
+          "label": "How do you plan to contribute to public service and community development?",
+          "required": true,
+          "validations": {
+            "min": 50,
+            "max": 500,
+            "message": "Please describe your community impact plans (minimum 50 characters)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "references",
+      "type": "array",
+      "label": "Professional References",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "message": "Please provide at least 2 professional references"
+      },
+      "items": {
+        "type": "object",
+        "properties": {
+          "referenceName": {
+            "type": "string",
+            "label": "Reference Name",
+            "validations": {
+              "min": 2,
+              "max": 100
+            }
+          },
+          "referenceTitle": {
+            "type": "string",
+            "label": "Reference Title",
+            "validations": {
+              "min": 2,
+              "max": 100
+            }
+          },
+          "referenceEmail": {
+            "type": "email",
+            "label": "Reference Email"
+          },
+          "referencePhone": {
+            "type": "string",
+            "label": "Reference Phone Number",
+            "validations": {
+              "regex": "^\\+?[0-9]{10,15}$"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "uploadDocuments",
+      "type": "array",
+      "label": "Uploaded Documents",
+      "required": true,
+      "items": {
+        "type": "string"
+      }
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:raising-public-service-fellowship:admin_email}}",
+        "subject": "New Raising Public Service Fellowship Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "raising-public-service-fellowship"
+      }
+    }
+  ]
+}
