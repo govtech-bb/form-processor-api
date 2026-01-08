@@ -1,0 +1,643 @@
+{
+  "id": "temporary-teacher-application",
+  "name": "Temporary Teacher Application",
+  "description": "Apply to be a temporary teacher",
+  "fields": [
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name(s)",
+          "required": false,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "label": "Date of Birth",
+          "required": true,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "placeOfBirth",
+          "type": "string",
+          "label": "Place of birth",
+          "required": true
+        },
+        {
+          "name": "nationality",
+          "type": "array",
+          "label": "Nationality",
+          "required": true,
+          "items": {
+            "type": "object",
+            "properties": {
+              "value": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        {
+          "name": "sex",
+          "type": "select",
+          "label": "Sex",
+          "required": true,
+          "options": [
+            {
+              "label": "Male",
+              "value": "male"
+            },
+            {
+              "label": "Female",
+              "value": "female"
+            }
+          ],
+          "validations": {
+            "regex": "^(male|female)$",
+            "message": "Must select a valid sex"
+          }
+        },
+        {
+          "name": "martialStatus",
+          "type": "select",
+          "label": "Martial status",
+          "required": true,
+          "options": [
+            {
+              "label": "Single",
+              "value": "single"
+            },
+            {
+              "label": "Married",
+              "value": "married"
+            },
+            {
+              "label": "Divorced",
+              "value": "divorced"
+            }
+          ],
+          "validations": {
+            "regex": "^(male|female)$",
+            "message": "Must select a valid sex"
+          }
+        },
+        {
+          "name": "nationalIdNumber",
+          "type": "string",
+          "label": "National Identification (ID) number",
+          "required": false,
+          "validations": {
+            "regex": "^[0-9]{6}-[0-9]{4}$",
+            "message": "Invalid ID number."
+          }
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "label": "Passport Number (#)",
+          "required": false
+        },
+        {
+          "name": "nationalInsuranceNumber",
+          "type": "string",
+          "label": "National Insurance number (NIS)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "barbadosResidencyDuration",
+      "label": "How long have you lived in Barbados?",
+      "type": "string",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "max": 20
+      }
+    },
+    {
+      "name": "contactDetails",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false
+        },
+        {
+          "name": "country",
+          "type": "select",
+          "label": "Country",
+          "required": true,
+          "options": [
+            {
+              "label": "Barbados",
+              "value": "barbados"
+            }
+          ]
+        },
+        {
+          "name": "parish",
+          "type": "select",
+          "label": "Parish",
+          "required": true,
+          "options": [
+            {
+              "value": "christ-church",
+              "label": "Christ Church"
+            },
+            {
+              "value": "st-andrew",
+              "label": "St Andrew"
+            },
+            {
+              "value": "st-george",
+              "label": "St George"
+            },
+            {
+              "value": "st-james",
+              "label": "St James"
+            },
+            {
+              "value": "st-john",
+              "label": "St John"
+            },
+            {
+              "value": "st-joseph",
+              "label": "St Joseph"
+            },
+            {
+              "value": "st-lucy",
+              "label": "St Lucy"
+            },
+            {
+              "value": "st-michael",
+              "label": "St Michael"
+            },
+            {
+              "value": "st-peter",
+              "label": "St Peter"
+            },
+            {
+              "value": "st-philip",
+              "label": "St Philip"
+            },
+            {
+              "value": "st-thomas",
+              "label": "St Question, so for boolean Thomas"
+            }
+          ]
+        },
+        {
+          "name": "postcode",
+          "type": "string",
+          "label": "Postcode",
+          "required": false
+        },
+        {
+          "name": "emailAddress",
+          "type": "email",
+          "label": "Email address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true,
+          "validations": {
+            "regex": "^\\+?[0-9]{10,15}$",
+            "message": "Telephone number must be 10-15 digits"
+          }
+        }
+      ]
+    },
+    {
+      "name": "applicant-education",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "nameOfInstitution",
+          "type": "string",
+          "label": "Name of Institution",
+          "required": true
+        },
+        {
+          "name": "country",
+          "type": "string",
+          "label": "Country",
+          "required": false
+        },
+        {
+          "name": "startYear",
+          "label": "Start Year",
+          "type": "number",
+          "required": true,
+          "validations": {
+            "min": 1950
+          }
+        },
+        {
+          "name": "endYear",
+          "label": "End Year",
+          "type": "number",
+          "required": true,
+          "validations": {
+            "min": 1950
+          }
+        },
+        {
+          "name": "anotherEducation",
+          "label": "Do you want to add another education experience?",
+          "type": "boolean",
+          "required": true,
+          "options": [
+            {
+              "label": "Yes",
+              "value": "yes"
+            },
+            {
+              "label": "No",
+              "value": "no"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "applicantQualification",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "subject",
+          "label": "Subject",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "examiningBody",
+          "label": "Examining Body",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "year",
+          "label": "Year",
+          "type": "number",
+          "required": true,
+          "validations": {
+            "min": 1950
+          }
+        },
+        {
+          "name": "levelGrade",
+          "label": "Level / Grade Obtained",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "anotherQualification",
+          "label": "Do you want to add another qualification",
+          "type": "boolean",
+          "required": true,
+          "options": [
+            "Yes",
+            "No"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "applicantWorkExperience",
+      "required": true,
+      "type": "object",
+      "fields": [
+        {
+          "name": "employerName",
+          "label": "Name of employer or organization",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "positionHeld",
+          "label": "Position held",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "fromYear",
+          "label": "From (year)",
+          "type": "number",
+          "required": true,
+          "validations": {
+            "min": 1950
+          }
+        },
+        {
+          "name": "toYear",
+          "label": "To (year)",
+          "type": "number",
+          "required": false,
+          "validations": {
+            "min": 1950
+          }
+        },
+        {
+          "name": "currentlyWorking",
+          "label": "I am currently working here",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "name": "tasks",
+          "label": "Your main tasks",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "anotherExperience",
+          "required": true,
+          "type": "boolean",
+          "label": "Do you want to add another experience?",
+          "options": [
+            "Yes",
+            "No"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "skillsAndExperience",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "athleticsGamesCraftSkills",
+          "label": "Athletics, games, or craft skills",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "youthCommunityVolunteerGroups",
+          "label": "Experience in youth, community, or volunteer groups",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "responsibilityPositions",
+          "label": "Positions of responsibility held",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "extraDetails",
+          "label": "Anything else relevant to your application?",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "reference",
+      "required": true,
+      "type": "object",
+      "fields": [
+        {
+          "name": "title",
+          "label": "Title",
+          "required": true,
+          "type": "select",
+          "options": [
+            {
+              "label": "Mr",
+              "value": "mr"
+            },
+            {
+              "label": "Mrs",
+              "value": "mrs"
+            },
+            {
+              "label": "Miss",
+              "value": "miss"
+            }
+          ]
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false
+        },
+        {
+          "name": "country",
+          "type": "select",
+          "label": "Country",
+          "required": true,
+          "options": [
+            {
+              "label": "Barbados",
+              "value": "barbados"
+            }
+          ]
+        },
+        {
+          "name": "parish",
+          "type": "select",
+          "label": "Parish",
+          "required": true,
+          "options": [
+            {
+              "value": "christ-church",
+              "label": "Christ Church"
+            },
+            {
+              "value": "st-andrew",
+              "label": "St Andrew"
+            },
+            {
+              "value": "st-george",
+              "label": "St George"
+            },
+            {
+              "value": "st-james",
+              "label": "St James"
+            },
+            {
+              "value": "st-john",
+              "label": "St John"
+            },
+            {
+              "value": "st-joseph",
+              "label": "St Joseph"
+            },
+            {
+              "value": "st-lucy",
+              "label": "St Lucy"
+            },
+            {
+              "value": "st-michael",
+              "label": "St Michael"
+            },
+            {
+              "value": "st-peter",
+              "label": "St Peter"
+            },
+            {
+              "value": "st-philip",
+              "label": "St Philip"
+            },
+            {
+              "value": "st-thomas",
+              "label": "St Question, so for boolean Thomas"
+            }
+          ]
+        },
+        {
+          "name": "postcode",
+          "type": "string",
+          "label": "Postcode",
+          "required": false
+        },
+        {
+          "name": "occupation",
+          "label": "Occupation",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "emailAddress",
+          "type": "email",
+          "label": "Email address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true,
+          "validations": {
+            "regex": "^\\+?[0-9]{10,15}$",
+            "message": "Telephone number must be 10-15 digits"
+          }
+        },
+        {
+          "name": "anotherReference",
+          "required": true,
+          "type": "boolean",
+          "label": "Do you want to add another reference?",
+          "options": [
+            "Yes",
+            "No"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "documents",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "certificateDiplomaTranscript",
+          "label": "Upload your certificates, diplomas, and transcripts",
+          "required": true,
+          "type": "object"
+        },
+        {
+          "name": "testimonials",
+          "label": "Upload your two testimonials",
+          "required": true,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "file1": {
+                "type": "file"
+              },
+              "file2": {
+                "type": "file"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:temporary-teacher-application:admin_email}}",
+        "subject": "New Temporary Teacher Application - {{formData.firstName}} {{formData.lastName}}",
+        "template": "temporary-teacher-application"
+      }
+    }
+  ]
+}
