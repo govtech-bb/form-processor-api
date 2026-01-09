@@ -1,7 +1,7 @@
 {
-  "id": "raising-public-service-fellowship",
-  "name": "Raising Public Service Fellowship Programme",
-  "description": "Apply for the Raising Public Service Fellowship Programme",
+  "id": "rausing-public-service-fellowship",
+  "name": "Rausing Public Service Fellowship Programme",
+  "description": "Apply for the Rausing Public Service Fellowship Programme",
   "fields": [
     {
       "name": "applicant",
@@ -342,9 +342,9 @@
     {
       "type": "email",
       "config": {
-        "to": "{{db:raising-public-service-fellowship:admin_email}}",
-        "subject": "New Raising Public Service Fellowship Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-        "template": "raising-public-service-fellowship"
+        "to": "{{db:rausing-public-service-fellowship:admin_email}}",
+        "subject": "New Rausing Public Service Fellowship Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "rausing-public-service-fellowship"
       }
     }
   ]
