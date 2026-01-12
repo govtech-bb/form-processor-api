@@ -114,7 +114,7 @@
           "name": "telephoneNumber",
           "type": "string",
           "label": "Telephone Number",
-          "required": true,
+          "required": true
         }
       ]
     },
@@ -178,7 +178,7 @@
           "name": "menteePhoneNumber",
           "type": "string",
           "label": "Mentee Phone Number (if applicable)",
-          "required": false,
+          "required": false
         },
         {
           "name": "hasMenteeInMind",
@@ -265,7 +265,7 @@
           "name": "phone",
           "type": "string",
           "label": "Phone Number",
-          "required": true,
+          "required": true
         }
       ]
     },
@@ -314,7 +314,7 @@
           "name": "phone",
           "type": "string",
           "label": "Phone Number",
-          "required": true,
+          "required": true
         }
       ]
     }
