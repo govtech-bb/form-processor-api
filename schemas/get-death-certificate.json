@@ -228,12 +228,7 @@
           "name": "causeOfDeath",
           "type": "string",
           "label": "Cause of death",
-          "required": true,
-          "validations": {
-            "min": 2,
-            "max": 200,
-            "message": "Cause of death must be at least 2 characters"
-          }
+          "required": false
         }
       ]
     },
