@@ -209,7 +209,6 @@
           "label": "National Identification (ID) Number",
           "required": false,
           "validations": {
-            "min": 2,
             "message": "ID Number must be at least 2 characters"
           }
         },

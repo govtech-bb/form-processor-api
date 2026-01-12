@@ -27,12 +27,8 @@
       <div class='submitted-info'>
         <strong>Application Submitted:</strong>
         {{processedAt}}<br />
-        <strong>Application Type:</strong>
-        {{#if (eq applyingForYourself 'yes')}}
-          Self Application
-        {{else}}
-          Third Party Application
-        {{/if}}
+        <strong>Relationship to Deceased:</strong>
+        {{relationship}}
       </div>
 
       <!-- Applicant Details -->
@@ -74,10 +70,10 @@
                 <td>{{applicant.email}}</td>
               </tr>
             {{/if}}
-            {{#if applicant.phoneNumber}}
+            {{#if applicant.telephoneNumber}}
               <tr>
-                <td>Phone Number:</td>
-                <td>{{applicant.phoneNumber}}</td>
+                <td>Telephone Number:</td>
+                <td>{{applicant.telephoneNumber}}</td>
               </tr>
             {{/if}}
           </tbody>
@@ -116,20 +112,38 @@
         <h3>Identification</h3>
         <table>
           <tbody>
-            {{#if applicant.usePassportInstead}}
-              {{#if applicant.passportNumber}}
-                <tr>
-                  <td>Passport Number:</td>
-                  <td>{{applicant.passportNumber}}</td>
-                </tr>
-              {{/if}}
-            {{else}}
-              {{#if applicant.idNumber}}
-                <tr>
-                  <td>National ID Number:</td>
-                  <td>{{applicant.idNumber}}</td>
-                </tr>
-              {{/if}}
+            {{#if applicant.idNumber}}
+              <tr>
+                <td>National ID Number:</td>
+                <td>{{applicant.idNumber}}</td>
+              </tr>
+            {{/if}}
+            {{#if applicant.passportNumber}}
+              <tr>
+                <td>Passport Number:</td>
+                <td>{{applicant.passportNumber}}</td>
+              </tr>
+            {{/if}}
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Application Details -->
+      <section class='section'>
+        <h2>Application Details</h2>
+        <table>
+          <tbody>
+            {{#if relationship}}
+              <tr>
+                <td>Relationship to Deceased:</td>
+                <td>{{relationship}}</td>
+              </tr>
+            {{/if}}
+            {{#if reasonForRequest}}
+              <tr>
+                <td>Reason for Request:</td>
+                <td>{{reasonForRequest}}</td>
+              </tr>
             {{/if}}
           </tbody>
         </table>
@@ -158,10 +172,30 @@
                 <td>{{deceased.lastName}}</td>
               </tr>
             {{/if}}
-            {{#if deceased.dateOfBirth}}
+            {{#if deceased.idNumber}}
               <tr>
-                <td>Date of Birth:</td>
-                <td>{{deceased.dateOfBirth}}</td>
+                <td>National ID Number:</td>
+                <td>{{deceased.idNumber}}</td>
+              </tr>
+            {{/if}}
+            {{#if deceased.knownDateOfDeath}}
+              <tr>
+                <td>Known Date of Death:</td>
+                <td>{{#if
+                    (eq deceased.knownDateOfDeath 'yes')
+                  }}Yes{{else}}No{{/if}}</td>
+              </tr>
+            {{/if}}
+            {{#if deceased.dateOfDeath}}
+              <tr>
+                <td>Date of Death:</td>
+                <td>{{deceased.dateOfDeath}}</td>
+              </tr>
+            {{/if}}
+            {{#if deceased.estimatedDateOfDeath}}
+              <tr>
+                <td>Estimated Date of Death:</td>
+                <td>{{deceased.estimatedDateOfDeath}}</td>
               </tr>
             {{/if}}
             {{#if deceased.placeOfDeath}}
@@ -194,13 +228,12 @@
         <p>
           This is an automated email from the Government of Barbados Forms
           Processing System.<br />
-          Birth Certificate applications are processed during regular business
+          Death Certificate applications are processed during regular business
           hours.<br />
           Please allow 5-10 business days for processing.<br /><br />
 
           <strong>Important:</strong>
-          If this application is for someone other than yourself, additional
-          documentation may be required for verification.
+          Additional documentation may be required for verification purposes.
         </p>
       </div>
     </div>

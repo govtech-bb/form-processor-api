@@ -1,0 +1,243 @@
+{
+  "id": "apply-for-conductor-licence",
+  "name": "Conductor Licence Application",
+  "description": "Conductor Licence Application",
+  "fields": [
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "label": "Title",
+          "required": true,
+          "validations": {
+            "regex": "^(mr|ms|mrs)$",
+            "message": "Must select a valid title"
+          }
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name",
+          "required": false,
+          "validations": {
+            "max": 100,
+            "message": "Middle name is required"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "label": "Date of birth",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date of birth is required and must be in YYYY-MM-DD format"
+          }
+        }
+      ]
+    },
+    {
+      "name": "contactDetails",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postalCode",
+          "type": "string",
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "licenceHistory",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "hasPreviousLicence",
+          "type": "string",
+          "label": "Do you have any previous licence(s)?",
+          "required": true,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
+        },
+        {
+          "name": "licenceNumber",
+          "type": "string",
+          "label": "Provide your licence number",
+          "required": false
+        },
+        {
+          "name": "dateOfIssue",
+          "type": "date",
+          "label": "Date of issue",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date of issue is required and must be in YYYY-MM-DD format"
+          }
+        }
+      ]
+    },
+    {
+      "name": "hasEndorsements",
+      "type": "string",
+      "label": "Do you have any endorsements?",
+      "required": true,
+      "validations": {
+        "regex": "^(yes|no)$",
+        "message": "Must select an option"
+      }
+    },
+    {
+      "name": "endorsementDetails",
+      "type": "array",
+      "label": "Your endorsements",
+      "required": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "typeOfEndorsement": {
+            "type": "string"
+          },
+          "dateOfEndorsement": {
+            "type": "date"
+          },
+          "duration": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "disqualifications",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "hasDisqualifications",
+          "type": "string",
+          "label": "Have you ever been disqualified?",
+          "required": true,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
+        },
+        {
+          "name": "courtName",
+          "type": "string",
+          "label": "Court name",
+          "required": false
+        },
+        {
+          "name": "dateOfDisqualification",
+          "type": "string",
+          "label": "Date of disqualification",
+          "required": false
+        },
+        {
+          "name": "lengthOfDisqualification",
+          "type": "string",
+          "label": "Length of disqualification",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "hasCriminalConvictions",
+      "type": "string",
+      "label": "Have you ever had any criminal convictions?",
+      "required": true,
+      "validations": {
+        "regex": "^(yes|no)$",
+        "message": "Must select an option"
+      }
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:apply-for-conductor-licence:admin_email}}",
+        "subject": "Apply for conductor licence - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "apply-for-conductor-licence"
+      }
+    }
+  ]
+}

@@ -23,11 +23,12 @@
   </head>
   <body>
     <div class='header'>
-      <h1>📮 Post Office Redirection Notice Request</h1>
+      <h1>Request to sell goods or services at a beach or park</h1>
     </div>
 
     <div class='content'>
-      <p>A new post office redirection notice request has been submitted.</p>
+      <p>A new request to sell goods or services at a beach or park has been
+        submitted.</p>
 
       <div class='section'>
         <div class='section-title'>Personal Information</div>
@@ -71,82 +72,9 @@
         {{/if}}
       </div>
 
-      <div class='section'>
-        <div class='section-title'>Address Redirection Details</div>
-        <div class='address-comparison'>
-          <div class='address-box old-address'>
-            <h4>Old Address</h4>
-            <div class='field'>
-              <span class='field-label'>Address Line 1:</span>
-              <span class='field-value'>{{oldaddress.addressLine1}}</span>
-            </div>
-            {{#if oldaddress.addressLine2}}
-              <div class='field'>
-                <span class='field-label'>Address Line 2:</span>
-                <span class='field-value'>{{oldaddress.addressLine2}}</span>
-              </div>
-            {{/if}}
-            <div class='field'>
-              <span class='field-label'>Parish:</span>
-              <span class='field-value'>{{oldaddress.parish}}</span>
-            </div>
-            {{#if oldaddress.postalCode}}
-              <div class='field'>
-                <span class='field-label'>Postal Code:</span>
-                <span class='field-value'>{{oldaddress.postalCode}}</span>
-              </div>
-            {{/if}}
-          </div>
-
-          <div class='address-box new-address'>
-            <h4>New Address</h4>
-            <div class='field'>
-              <span class='field-label'>Address Line 1:</span>
-              <span class='field-value'>{{newAddress.addressLine1}}</span>
-            </div>
-            {{#if newAddress.addressLine2}}
-              <div class='field'>
-                <span class='field-label'>Address Line 2:</span>
-                <span class='field-value'>{{newAddress.addressLine2}}</span>
-              </div>
-            {{/if}}
-            <div class='field'>
-              <span class='field-label'>Parish:</span>
-              <span class='field-value'>{{newAddress.parish}}</span>
-            </div>
-            {{#if newAddress.postalCode}}
-              <div class='field'>
-                <span class='field-label'>Postal Code:</span>
-                <span class='field-value'>{{newAddress.postalCode}}</span>
-              </div>
-            {{/if}}
-          </div>
-        </div>
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>House Member Information</div>
-        <div class='field'>
-          <span class='field-label'>Member Name:</span>
-          <span class='field-value'>{{houseMembers.firstName}}
-            {{houseMembers.lastName}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Member ID Number:</span>
-          <span class='field-value'>{{houseMembers.idNumber}}</span>
-        </div>
-        {{#if houseMembers.addAnother}}
-          <div class='field'>
-            <span class='field-label'>Add Another Member:</span>
-            <span class='field-value'>{{houseMembers.addAnother}}</span>
-          </div>
-        {{/if}}
-      </div>
-
       <div class='footer'>
         <p><strong>Submission ID:</strong> {{submissionId}}</p>
-        <p>This is an automated notification from the Postal Address Change
-          System.</p>
+        <p>This is an automated notification from the System.</p>
         <p><em>Please review and process this address change request.</em></p>
       </div>
     </div>

@@ -28,10 +28,12 @@ export class EmailService {
 
   constructor(private readonly configService: ConfigService) {
     const region = this.configService.get('aws.region', 'us-east-1');
+    const sesEndpoint = this.configService.get<string>('aws.ses.endpoint');
 
-    // Initialize AWS SES v2 client
+    // Initialize AWS SES v2 client (with optional custom endpoint for local development)
     this.sesClient = new SESv2Client({
       region,
+      ...(sesEndpoint && { endpoint: sesEndpoint }),
     });
 
     this.defaultFromEmail = this.configService.get('aws.ses.fromEmail');
@@ -44,7 +46,13 @@ export class EmailService {
     // Register Handlebars helpers
     this.registerHandlebarsHelpers();
 
-    this.logger.log('EmailService initialized with AWS SES v2');
+    if (sesEndpoint) {
+      this.logger.log(
+        `EmailService initialized with AWS SES v2 (custom endpoint: ${sesEndpoint})`,
+      );
+    } else {
+      this.logger.log('EmailService initialized with AWS SES v2');
+    }
   }
 
   private registerHandlebarsHelpers(): void {
@@ -102,11 +110,6 @@ export class EmailService {
 
   async sendEmail(options: EmailOptions): Promise<void> {
     try {
-      if (this.configService.get('app.nodeEnv') === 'local') {
-        this.logger.log('Local env detected, email will not be sent', options);
-        return;
-      }
-
       const from = options.from || this.defaultFromEmail;
       const to = Array.isArray(options.to) ? options.to : [options.to];
 

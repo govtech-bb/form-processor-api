@@ -57,67 +57,46 @@
             <span class='field-value'>{{applicant.email}}</span>
           </div>
         {{/if}}
-        {{#if applicant.email}}
-          <div class='field'>
-            <span class='field-label'>Email:</span>
-            <span class='field-value'>{{applicant.email}}</span>
-          </div>
-        {{/if}}
-        {{#if applicant.telephoneNumber}}
-          <div class='field'>
-            <span class='field-label'>Phone Number:</span>
-            <span class='field-value'>{{applicant.telephoneNumber}}</span>
-          </div>
-        {{/if}}
+
       </div>
 
       <div class='section'>
-        <div class='section-title'>Address Redirection Details</div>
+        <div class='section-title'>Contact Details</div>
         <div class='address-comparison'>
-          <div class='address-box old-address'>
-            <h4>Old Address</h4>
+          <div class='address-box'>
             <div class='field'>
               <span class='field-label'>Address Line 1:</span>
-              <span class='field-value'>{{oldaddress.addressLine1}}</span>
+              <span class='field-value'>{{contactDetails.addressLine1}}</span>
             </div>
-            {{#if oldaddress.addressLine2}}
+            {{#if contactDetails.addressLine2}}
               <div class='field'>
                 <span class='field-label'>Address Line 2:</span>
-                <span class='field-value'>{{oldaddress.addressLine2}}</span>
+                <span class='field-value'>{{contactDetails.addressLine2}}</span>
               </div>
             {{/if}}
             <div class='field'>
               <span class='field-label'>Parish:</span>
-              <span class='field-value'>{{oldaddress.parish}}</span>
+              <span class='field-value'>{{contactDetails.parish}}</span>
             </div>
-            {{#if oldaddress.postalCode}}
+            {{#if contactDetails.postalCode}}
               <div class='field'>
                 <span class='field-label'>Postal Code:</span>
-                <span class='field-value'>{{oldaddress.postalCode}}</span>
+                <span class='field-value'>{{contactDetails.postalCode}}</span>
               </div>
             {{/if}}
-          </div>
 
-          <div class='address-box new-address'>
-            <h4>New Address</h4>
-            <div class='field'>
-              <span class='field-label'>Address Line 1:</span>
-              <span class='field-value'>{{newAddress.addressLine1}}</span>
-            </div>
-            {{#if newAddress.addressLine2}}
+            {{#if contactDetails.email}}
               <div class='field'>
-                <span class='field-label'>Address Line 2:</span>
-                <span class='field-value'>{{newAddress.addressLine2}}</span>
+                <span class='field-label'>Email:</span>
+                <span class='field-value'>{{contactDetails.email}}</span>
               </div>
             {{/if}}
-            <div class='field'>
-              <span class='field-label'>Parish:</span>
-              <span class='field-value'>{{newAddress.parish}}</span>
-            </div>
-            {{#if newAddress.postalCode}}
+            {{#if contactDetails.telephoneNumber}}
               <div class='field'>
-                <span class='field-label'>Postal Code:</span>
-                <span class='field-value'>{{newAddress.postalCode}}</span>
+                <span class='field-label'>Phone Number:</span>
+                <span
+                  class='field-value'
+                >{{contactDetails.telephoneNumber}}</span>
               </div>
             {{/if}}
           </div>

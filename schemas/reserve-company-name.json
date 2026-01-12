@@ -1,0 +1,181 @@
+{
+  "id": "reserve-company-name",
+  "name": "Reserve Company Name Application",
+  "description": "Request to reserve company name",
+  "fields": [
+    {
+      "name": "purposeOfNewCompanyName",
+      "type": "string",
+      "label": "What will this name be used for?",
+      "required": true,
+      "validations": {
+        "regex": "^(newCompany|nameChange|merger)$",
+        "message": "Must select an option"
+      }
+    },
+    {
+      "name": "companyPresentName",
+      "type": "string",
+      "label": "What is the present name of the company?",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "companyName",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstChoice",
+          "type": "string",
+          "label": "First choice",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "First choice is required"
+          }
+        },
+        {
+          "name": "secondChoice",
+          "type": "string",
+          "label": "Second choice",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Second choice is required"
+          }
+        },
+        {
+          "name": "thirdChoice",
+          "type": "string",
+          "label": "Third choice",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Third choice is required"
+          }
+        },
+        {
+          "name": "reserveFirstAvailableName",
+          "type": "string",
+          "label": "Reserve First Available Name",
+          "required": false,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
+        }
+      ]
+    },
+    {
+      "name": "businessActivity",
+      "type": "array",
+      "label": "What type of business will use this name?",
+      "required": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postalCode",
+          "type": "string",
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:reserve-company-name:admin_email}}",
+        "subject": "New Request to Reserve Society Name - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "reserve-company-name"
+      }
+    }
+  ]
+}

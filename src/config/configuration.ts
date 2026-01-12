@@ -21,6 +21,7 @@ export default () => ({
       configurationSet: process.env.SES_CONFIGURATION_SET,
       tagKey: process.env.SES_TAG_KEY || 'ses:configuration-set',
       tagValue: process.env.SES_TAG_VALUE || 'prod',
+      endpoint: process.env.AWS_SES_ENDPOINT, // Custom endpoint for local development (e.g., aws-ses-v2-local)
     },
     s3: {
       bucketName: process.env.BUCKET_NAME,

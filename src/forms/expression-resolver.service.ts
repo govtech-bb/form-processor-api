@@ -22,6 +22,7 @@ export class ExpressionResolverService {
    * - Form data references: {{formData.path}}
    * - Mathematical expressions: {{formData.field * db:form-id:amount}}
    * - Simple values: direct strings or numbers
+   * - Multiple expressions in a string: "Hello {{formData.name}} from {{formData.city}}"
    */
   async resolveExpression(
     expression: string | number,
@@ -37,13 +38,21 @@ export class ExpressionResolverService {
       return expression;
     }
 
-    // Handle complex expressions (mathematical operations)
-    if (this.isMathematicalExpression(expression)) {
-      return await this.resolveMathematicalExpression(expression, context);
+    // Check if the entire string is a single expression (no braces in the middle)
+    const isSingleExpression = /^\{\{[^{}]+\}\}$/.test(expression);
+
+    if (isSingleExpression) {
+      // Handle complex expressions (mathematical operations)
+      if (this.isMathematicalExpression(expression)) {
+        return await this.resolveMathematicalExpression(expression, context);
+      }
+
+      // Handle simple variable replacement
+      return await this.resolveSimpleExpression(expression, context);
     }
 
-    // Handle simple variable replacement
-    return await this.resolveSimpleExpression(expression, context);
+    // Handle strings with multiple embedded expressions
+    return await this.resolveEmbeddedExpressions(expression, context);
   }
 
   /**
@@ -128,6 +137,64 @@ export class ExpressionResolverService {
   }
 
   /**
+   * Resolve strings with multiple embedded expressions
+   * Example: "Hello {{formData.name}} from {{formData.city}}"
+   */
+  private async resolveEmbeddedExpressions(
+    expression: string,
+    context: ExpressionContext,
+  ): Promise<string> {
+    let result = expression;
+
+    // Find all {{...}} patterns in the string (non-greedy match until }})
+    const expressionPattern = /\{\{(.*?)\}\}/g;
+    const matches = [...expression.matchAll(expressionPattern)];
+
+    // Create a map of replacements to avoid issues with overlapping matches
+    const replacements: Map<string, string> = new Map();
+
+    // Process each expression found
+    for (const match of matches) {
+      const [fullMatch, innerExpression] = match;
+
+      // Skip if already processed
+      if (replacements.has(fullMatch)) {
+        continue;
+      }
+
+      try {
+        // Resolve database references
+        let resolved = await this.replaceDatabaseReferences(
+          innerExpression,
+          context,
+        );
+
+        // Resolve form data references
+        resolved = this.replaceFormDataReferences(resolved, context);
+
+        replacements.set(fullMatch, resolved);
+      } catch (error) {
+        this.logger.warn(
+          `Failed to resolve embedded expression ${fullMatch}:`,
+          error.message,
+        );
+        // Leave the expression as-is if it fails to resolve
+      }
+    }
+
+    // Apply all replacements
+    for (const [pattern, value] of replacements) {
+      // Escape special regex characters in the pattern
+      const escapedPattern = pattern.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      // Create a global regex to replace all occurrences
+      const regex = new RegExp(escapedPattern, 'g');
+      result = result.replace(regex, value);
+    }
+
+    return result;
+  }
+
+  /**
    * Replace database references in expression
    */
   private async replaceDatabaseReferences(
@@ -181,10 +248,6 @@ export class ExpressionResolverService {
     expression: string,
     context: ExpressionContext,
   ): string {
-    if (!context.formData) {
-      return expression;
-    }
-
     // Match patterns like formData.field.path
     const formDataPattern = /formData\.([a-zA-Z0-9._]+)/g;
     let result = expression;
@@ -192,7 +255,11 @@ export class ExpressionResolverService {
     const matches = [...expression.matchAll(formDataPattern)];
     for (const match of matches) {
       const [fullMatch, fieldPath] = match;
-      const value = this.getNestedValue(context.formData, fieldPath);
+
+      // Get the value, returns undefined if formData doesn't exist or field not found
+      const value = context.formData
+        ? this.getNestedValue(context.formData, fieldPath)
+        : undefined;
 
       if (value !== undefined && value !== null) {
         result = result.replace(fullMatch, String(value));
