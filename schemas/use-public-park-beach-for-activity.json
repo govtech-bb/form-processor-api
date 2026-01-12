@@ -1,0 +1,254 @@
+{
+  "id": "use-public-park-beach-for-activity",
+  "name": "Use Public Park or Beach for Activity",
+  "description": "Use Public Park or Beach for Activity",
+  "fields": [
+    {
+      "name": "isIndividualOrBusiness",
+      "type": "string",
+      "label": "Is the applicant an individual or business?",
+      "required": true,
+      "validations": {
+        "regex": "^(individual|business)$",
+        "message": "Must select an option"
+      }
+    },
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": false,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name",
+          "required": false
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postcode",
+          "type": "string",
+          "label": "Post code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "mobilePhoneNumber",
+          "type": "string",
+          "label": "Mobile Number",
+          "required": true,
+          "validations": {
+            "regex": "^\\+?[0-9]{10,15}$",
+            "message": "Mobile number must be 10-15 digits"
+          }
+        },
+        {
+          "name": "workPhoneNumber",
+          "type": "string",
+          "label": "Work phone number",
+          "required": true,
+          "validations": {
+            "regex": "^\\+?[0-9]{10,15}$",
+            "message": "Work phone number must be 10-15 digits"
+          }
+        },
+        {
+          "name": "homePhoneNumber",
+          "type": "string",
+          "label": "Home phone number",
+          "required": true,
+          "validations": {
+            "regex": "^\\+?[0-9]{10,15}$",
+            "message": "Home phone number must be 10-15 digits"
+          }
+        }
+      ]
+    },
+    {
+      "name": "business",
+      "type": "object",
+      "required": false,
+      "fields": [
+        {
+          "name": "businessName",
+          "type": "string",
+          "label": "Name of business",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "businessGeneralName",
+          "type": "string",
+          "label": "General name of business",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": false,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postcode",
+          "type": "string",
+          "label": "Post code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "activity",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "startDate",
+          "type": "date",
+          "label": "Start date",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Start date is required and must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "startTime",
+          "type": "date",
+          "label": "Start time",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{1,2}:\\d{2} (AM|PM|am|pm)$",
+            "message": "Start time is required and must be in hh:mm AM/PM format"
+          }
+        },
+        {
+          "name": "endDate",
+          "type": "date",
+          "label": "End date",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "End date is required and must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "endTime",
+          "type": "date",
+          "label": "End time",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{1,2}:\\d{2} (AM|PM|am|pm)$",
+            "message": "End time is required and must be in hh:mm AM/PM format"
+          }
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:use-public-park-beach-for-activity:admin_email}}",
+        "subject": "Use Public Park or Beach for Activity - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "use-public-park-beach-for-activity-notice"
+      }
+    }
+  ]
+}
