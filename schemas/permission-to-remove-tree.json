@@ -101,20 +101,12 @@
           "type": "string",
           "label": "Mobile number",
           "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Mobile number must be 10-15 digits"
-          }
         },
         {
           "name": "homeNumber",
           "type": "string",
           "label": "Home number",
           "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Home number must be 10-15 digits"
-          }
         }
       ]
     },
