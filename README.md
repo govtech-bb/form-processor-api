@@ -144,6 +144,22 @@ npm run test:e2e
 npm run test:cov
 ```
 
+### Testing Emails (Locally)
+
+Start mock server
+
+```
+npx aws-ses-v2-local@latest --port 8005
+```
+
+Update .env file
+
+```
+NODE_ENV=development
+AWS_SES_ENDPOINT=http://localhost:8005
+AWS_SES_FROM_EMAIL=test@example.com
+```
+
 ## 🚀 Deployment
 
 ### Build for Production

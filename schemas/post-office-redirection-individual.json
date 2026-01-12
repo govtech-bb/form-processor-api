@@ -1,0 +1,248 @@
+{
+  "id": "post-office-redirection-individual",
+  "name": "Post Office Redirection for an Individual",
+  "description": "Change where your mail is sent (individual)",
+  "fields": [
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "label": "Title",
+          "required": true,
+          "validations": {
+            "regex": "^(mr|ms|mrs)$",
+            "message": "Must select a valid title"
+          }
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "label": "Date of birth",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date of birth is required and must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "label": "National Identification (ID) Number",
+          "required": false,
+          "validations": {
+            "min": 2,
+            "message": "ID Number must be at least 2 characters"
+          }
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "label": "Passport Number",
+          "required": false,
+          "validations": {
+            "message": "Passport number must be at least 6 characters"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "oldAddress",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postalCode",
+          "type": "string",
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "newAddress",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postalCode",
+          "type": "string",
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        },
+        {
+          "name": "isMovingPermanent",
+          "type": "string",
+          "label": "Are you moving permanently?",
+          "required": true,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
+        },
+        {
+          "name": "redirectionStartDate",
+          "type": "date",
+          "label": "Redirection Start Date",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Redirection Start Date is required and must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "redirectionEndDate",
+          "type": "date",
+          "label": "Redirection End Date",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Redirection End Date is required and must be in YYYY-MM-DD format"
+          }
+        }
+      ]
+    },
+    {
+      "name": "anyMinorDependents",
+      "type": "string",
+      "label": "Are there any minor dependents?",
+      "required": true,
+      "validations": {
+        "regex": "^(yes|no)$",
+        "message": "Must select an option"
+      }
+    },
+    {
+      "name": "minorDetails",
+      "type": "array",
+      "label": "Tell us about the minor dependents that needs their email sent to the new address",
+      "required": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:post-office-redirection-individual:admin_email}}",
+        "subject": "New Request to redirect mail for an individual - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "post-office-redirection-notice"
+      }
+    }
+  ]
+}

@@ -1,0 +1,387 @@
+{
+  "id": "sell-goods-services-beach-park",
+  "name": "Apply for a licence to sell goods or services at a beach or park",
+  "description": "Apply for a licence to sell goods or services at a beach or park",
+  "fields": [
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "label": "Title",
+          "required": true,
+          "validations": {
+            "regex": "^(mr|ms|mrs)$",
+            "message": "Must select a valid title"
+          }
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name",
+          "required": false,
+          "validations": {
+            "max": 100,
+            "message": "Middle name is required"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "label": "Date of birth",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date of birth is required and must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "label": "National Identification (ID) Number",
+          "required": false,
+          "validations": {
+            "min": 2,
+            "message": "ID Number must be at least 2 characters"
+          }
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "label": "Passport Number",
+          "required": false,
+          "validations": {
+            "message": "Passport number must be at least 6 characters"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true,
+          "validations": {
+            "regex": "^\\+?[0-9]{10,15}$",
+            "message": "Telephone number must be 10-15 digits"
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postalCode",
+          "type": "string",
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "selling",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "goodsOrServices",
+          "type": "string",
+          "required": true,
+          "validations": {
+            "regex": "^(goods|services)$",
+            "message": "Must be 'goods' or 'services'"
+          }
+        },
+        {
+          "name": "manufacturingLocation",
+          "type": "string",
+          "required": false,
+          "validations": {
+            "max": 100,
+            "message": "Location is required"
+          }
+        }
+      ]
+    },
+    {
+      "name": "business",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "descriptionOfGoodsOrServices",
+          "type": "string",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Description is required"
+          }
+        },
+        {
+          "name": "intendedPlaceOfDoingBusiness",
+          "type": "string",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Place of doing business is required"
+          }
+        }
+      ]
+    },
+    {
+      "name": "professionalReferee",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "relationship",
+          "type": "string",
+          "label": "Relationship",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Relationship is required"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone number",
+          "required": true
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postcode",
+          "type": "string",
+          "label": "Post code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "personalReferee",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "relationship",
+          "type": "string",
+          "label": "Relationship",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Relationship is required"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone number",
+          "required": true
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postcode",
+          "type": "string",
+          "label": "Post code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:sell-goods-services-beach-park:admin_email}}",
+        "subject": "New Request to sell good or services at a beach or park - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "sell-goods-services-beach-park-notice"
+      }
+    }
+  ]
+}

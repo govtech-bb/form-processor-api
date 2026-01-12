@@ -1,0 +1,503 @@
+{
+  "id": "jobstart-plus-programme",
+  "name": "Apply to JobStart Plus Programme",
+  "description": "Registering for JobStart Plus Programme",
+  "fields": [
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "label": "Title",
+          "required": true,
+          "validations": {
+            "regex": "^(mr|ms|mrs)$",
+            "message": "Must select a valid title"
+          }
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "label": "Date of birth",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date of birth is required and must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "sex",
+          "type": "string",
+          "label": "Sex",
+          "required": true,
+          "validations": {
+            "regex": "^(male|female)$",
+            "message": "Must select a valid sex"
+          }
+        },
+        {
+          "name": "sex",
+          "type": "string",
+          "label": "Sex",
+          "required": true,
+          "validations": {
+            "regex": "^(male|female)$",
+            "message": "Must select a valid sex"
+          }
+        },
+        {
+          "name": "maritalStatus",
+          "type": "string",
+          "label": "Marital Status",
+          "required": true,
+          "validations": {
+            "regex": "^(single|married|divorced)$",
+            "message": "Must select a valid marital status"
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "label": "National Identification (ID) Number",
+          "required": false,
+          "validations": {
+            "min": 2,
+            "message": "ID Number must be at least 2 characters"
+          }
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "label": "Passport Number",
+          "required": false,
+          "validations": {
+            "message": "Passport number must be at least 6 characters"
+          }
+        },
+        {
+          "name": "hasNisNumber",
+          "type": "string",
+          "label": "Do you have a National Insurance number (NIS)?",
+          "required": false,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
+        },
+        {
+          "name": "nisNumber",
+          "type": "string",
+          "label": "Provide your National insurance number (NIS)",
+          "required": false,
+          "validations": {
+            "message": "National insurance number must be at least 6 characters"
+          }
+        },
+        {
+          "name": "hasDisability",
+          "type": "string",
+          "label": "Do you have a disability?",
+          "required": true,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
+        },
+        {
+          "name": "disabilityDetails",
+          "type": "string",
+          "label": "What is your disability?",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "contactDetails",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postalCode",
+          "type": "string",
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "emergency",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "label": "Title",
+          "required": true,
+          "validations": {
+            "regex": "^(mr|ms|mrs)$",
+            "message": "Must select a valid title"
+          }
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "relationship",
+          "type": "string",
+          "label": "Relationship",
+          "required": true,
+          "validations": {
+            "regex": "^(mother|father|grandmother|grandfather|aunt|uncle|legal_guardian|other)$",
+            "message": "Relationship is required"
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postalCode",
+          "type": "string",
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "primaryEducation",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "schoolName",
+          "type": "string",
+          "label": "Name of primary school",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "School name must be at least 5 characters"
+          }
+        },
+        {
+          "name": "startYear",
+          "type": "string",
+          "label": "Start year",
+          "required": true,
+          "validations": {
+            "min": 4,
+            "max": 4,
+            "message": "Start year must be 4 characters"
+          }
+        },
+        {
+          "name": "endYear",
+          "type": "string",
+          "label": "End year",
+          "required": true,
+          "validations": {
+            "min": 4,
+            "max": 4,
+            "message": "End year must be 4 characters"
+          }
+        }
+      ]
+    },
+    {
+      "name": "secondaryEducation",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "schoolName",
+          "type": "string",
+          "label": "Name of secondary school",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "School name must be at least 5 characters"
+          }
+        },
+        {
+          "name": "startYear",
+          "type": "string",
+          "label": "Start year",
+          "required": true,
+          "validations": {
+            "min": 4,
+            "max": 4,
+            "message": "Start year must be 4 characters"
+          }
+        },
+        {
+          "name": "endYear",
+          "type": "string",
+          "label": "End year",
+          "required": true,
+          "validations": {
+            "min": 4,
+            "max": 4,
+            "message": "End year must be 4 characters"
+          }
+        }
+      ]
+    },
+    {
+      "name": "postSecondaryEducation",
+      "type": "array",
+      "label": "Post-secondary and tertiary training",
+      "required": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "institutionName": {
+            "type": "string"
+          },
+          "qualificationsObtained": {
+            "type": "string"
+          },
+          "coursesOrSubjects": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "hasPreviousPaidJob",
+      "type": "string",
+      "label": "Have you had a paid job?",
+      "required": true,
+      "validations": {
+        "regex": "^(yes|no)$",
+        "message": "Must select an option"
+      }
+    },
+    {
+      "name": "employmentHistory",
+      "type": "array",
+      "label": "Tell us about your previous job",
+      "required": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "employerName": {
+            "type": "string"
+          },
+          "occupation": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string"
+          },
+          "endDate": {
+            "type": "string"
+          },
+          "currentlyWorkingHere": {
+            "type": "string"
+          },
+          "mainTasks": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    {
+      "name": "eligibility",
+      "type": "object",
+      "required": false,
+      "fields": [
+        {
+          "name": "interests",
+          "type": "string",
+          "label": "What types of jobs or trades are you interested in?",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 500,
+            "message": "This must be at least 5 characters"
+          }
+        },
+        {
+          "name": "areYouOver18",
+          "type": "string",
+          "label": "Are you 18 and over?",
+          "required": true,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
+        },
+        {
+          "name": "shortTermGoals",
+          "type": "string",
+          "label": "Tell us about your short-term goals",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 500,
+            "message": "This must be at least 5 characters"
+          }
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:jobstart-plus-programme:admin_email}}",
+        "subject": "New JobStart Plus Programme Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "jobstart-plus-programme"
+      }
+    }
+  ]
+}

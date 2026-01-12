@@ -1,0 +1,126 @@
+{
+  "id": "request-a-fire-service-inspection",
+  "name": "Request a fire service inspection",
+  "description": "Request a fire service inspection",
+  "fields": [
+    {
+      "name": "premises",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "typeOfPremises",
+          "type": "string",
+          "label": "Type of premises",
+          "required": true,
+          "validations": {
+            "regex": "^(hotel|daycare|placeOfEntertainment)$",
+            "message": "Must select a valid title"
+          }
+        },
+        {
+          "name": "nameOfPremises",
+          "type": "string",
+          "label": "Name of Premises",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Name of Premises is required"
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        }
+      ]
+    },
+    {
+      "name": "purposeOfCertificate",
+      "type": "string",
+      "label": "Who is the certificate for?",
+      "required": true,
+      "validations": {
+        "regex": "^(barbados-tourism-authority|child-care-board|treasury)$",
+        "message": "Must select an option"
+      }
+    },
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:request-a-fire-service-inspection:admin_email}}",
+        "subject": "New Birth Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "request-a-fire-service-inspection"
+      }
+    }
+  ]
+}
