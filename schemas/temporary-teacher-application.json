@@ -108,8 +108,8 @@
             }
           ],
           "validations": {
-            "regex": "^(male|female)$",
-            "message": "Must select a valid sex"
+            "regex": "^(single|married|divorced)$",
+            "message": "Must select a martial status"
           }
         },
         {
