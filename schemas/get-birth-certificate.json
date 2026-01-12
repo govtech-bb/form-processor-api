@@ -271,11 +271,7 @@
 					"name": "dateOfBirth",
 					"type": "date",
 					"label": "Date of birth",
-					"required": false,
-					"validations": {
-						"regex": "^\\d{4}-\\d{2}-\\d{2}$",
-						"message": "Date of birth is required and must be in YYYY-MM-DD format"
-					}
+					"required": false
 				},
 				{
 					"name": "placeOfBirth",
