@@ -56,17 +56,9 @@
         },
         {
           "name": "nationality",
-          "type": "array",
+          "type": "string",
           "label": "Nationality",
-          "required": true,
-          "items": {
-            "type": "object",
-            "properties": {
-              "value": {
-                "type": "string"
-              }
-            }
-          }
+          "required": true
         },
         {
           "name": "sex",
@@ -274,7 +266,7 @@
           "type": "number",
           "required": true,
           "validations": {
-            "min": 1950
+            "min": 1930
           }
         },
         {
@@ -283,7 +275,7 @@
           "type": "number",
           "required": true,
           "validations": {
-            "min": 1950
+            "min": 1930
           }
         },
         {
@@ -327,7 +319,7 @@
           "type": "number",
           "required": true,
           "validations": {
-            "min": 1950
+            "min": 1930
           }
         },
         {
@@ -371,7 +363,7 @@
           "type": "number",
           "required": true,
           "validations": {
-            "min": 1950
+            "min": 1930
           }
         },
         {
@@ -380,7 +372,7 @@
           "type": "number",
           "required": false,
           "validations": {
-            "min": 1950
+            "min": 1930
           }
         },
         {
