@@ -195,11 +195,7 @@
           "name": "dateOfDeath",
           "type": "date",
           "label": "Date of death",
-          "required": false,
-          "validations": {
-            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-            "message": "Date of death is required and must be in YYYY-MM-DD format"
-          }
+          "required": false
         },
         {
           "name": "estimatedDateOfDeath",
