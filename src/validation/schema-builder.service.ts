@@ -82,12 +82,23 @@ export class SchemaBuilderService {
         schema = z.boolean();
         break;
       case 'date':
-        schema = z
-          .string()
-          .regex(
-            /^\d{4}-\d{2}-\d{2}$/,
-            'Invalid date format (expected YYYY-MM-DD)',
-          );
+        // For optional date fields, allow empty strings or valid dates
+        if (!field.required) {
+          schema = z
+            .string()
+            .refine(
+              (val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val),
+              'Invalid date format (expected YYYY-MM-DD)',
+            );
+        } else {
+          // For required date fields, enforce the regex
+          schema = z
+            .string()
+            .regex(
+              /^\d{4}-\d{2}-\d{2}$/,
+              'Invalid date format (expected YYYY-MM-DD)',
+            );
+        }
         break;
       case 'select':
         schema = z.string();
@@ -126,10 +137,22 @@ export class SchemaBuilderService {
       (validations.min !== undefined || validations.max !== undefined)
     ) {
       if (validations.min !== undefined) {
-        schema = schema.min(
-          validations.min,
-          validations.message || `Minimum length is ${validations.min}`,
-        );
+        const minLength = validations.min;
+        if (!required) {
+          // For optional fields, allow empty strings or strings that meet min length
+          schema = schema.refine(
+            (val: string) => !val || val.length >= minLength,
+            {
+              message:
+                validations.message || `Minimum length is ${minLength}`,
+            },
+          );
+        } else {
+          schema = schema.min(
+            minLength,
+            validations.message || `Minimum length is ${minLength}`,
+          );
+        }
       }
       if (validations.max !== undefined) {
         schema = schema.max(

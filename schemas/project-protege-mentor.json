@@ -114,11 +114,7 @@
           "name": "telephoneNumber",
           "type": "string",
           "label": "Telephone Number",
-          "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
-          }
+          "required": true
         }
       ]
     },
@@ -182,11 +178,7 @@
           "name": "menteePhoneNumber",
           "type": "string",
           "label": "Mentee Phone Number (if applicable)",
-          "required": false,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
-          }
+          "required": false
         },
         {
           "name": "hasMenteeInMind",
@@ -273,11 +265,7 @@
           "name": "phone",
           "type": "string",
           "label": "Phone Number",
-          "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
-          }
+          "required": true
         }
       ]
     },
@@ -326,11 +314,7 @@
           "name": "phone",
           "type": "string",
           "label": "Phone Number",
-          "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
-          }
+          "required": true
         }
       ]
     }
