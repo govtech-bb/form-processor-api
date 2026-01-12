@@ -9,24 +9,13 @@
       "required": true,
       "fields": [
         {
-          "name": "title",
-          "type": "string",
-          "label": "Title",
-          "required": true,
-          "validations": {
-            "regex": "^(mr|ms|mrs|dr)$",
-            "message": "Must select a valid title"
-          }
-        },
-        {
           "name": "firstName",
           "type": "string",
           "label": "First name",
           "required": true,
           "validations": {
             "min": 2,
-            "max": 100,
-            "message": "First name is required"
+            "message": "First name must be at least 2 characters"
           }
         },
         {
@@ -35,7 +24,8 @@
           "label": "Middle name",
           "required": false,
           "validations": {
-            "max": 100
+            "min": 2,
+            "message": "Middle name must be at least 2 characters"
           }
         },
         {
@@ -45,19 +35,14 @@
           "required": true,
           "validations": {
             "min": 2,
-            "max": 100,
-            "message": "Last name is required"
+            "message": "Last name must be at least 2 characters"
           }
         },
         {
           "name": "dateOfBirth",
           "type": "date",
           "label": "Date of birth",
-          "required": true,
-          "validations": {
-            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-            "message": "Date of birth must be in YYYY-MM-DD format"
-          }
+          "required": true
         },
         {
           "name": "sex",
@@ -66,80 +51,101 @@
           "required": true,
           "validations": {
             "regex": "^(male|female)$",
-            "message": "Must select a valid sex"
+            "message": "Sex is required"
+          }
+        },
+        {
+          "name": "maritalStatus",
+          "type": "string",
+          "label": "Marital status",
+          "required": true,
+          "validations": {
+            "regex": "^(single|married|divorced)$",
+            "message": "Marital Status is required"
           }
         },
         {
           "name": "idNumber",
           "type": "string",
-          "label": "National Identification (ID) Number",
-          "required": true,
+          "label": "National Identification (ID) number",
+          "required": false,
           "validations": {
             "regex": "^\\d{6}-\\d{4}$",
             "message": "Enter a valid ID number (e.g., 850101-0001)"
           }
         },
         {
-          "name": "email",
-          "type": "email",
-          "label": "Email Address",
-          "required": true
+          "name": "usePassportInstead",
+          "type": "boolean",
+          "label": "Use passport number instead",
+          "required": false
         },
         {
-          "name": "telephoneNumber",
+          "name": "passportNumber",
           "type": "string",
-          "label": "Telephone Number",
+          "label": "Passport number",
+          "required": false,
+          "validations": {
+            "min": 6,
+            "message": "Passport number must be at least 6 characters"
+          }
+        },
+        {
+          "name": "nisNumber",
+          "type": "string",
+          "label": "National insurance number (NIS)",
           "required": true,
           "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
+            "min": 2,
+            "message": "NIS Number must be at least 2 characters"
           }
-        }
-      ]
-    },
-    {
-      "name": "address",
-      "type": "object",
-      "required": true,
-      "fields": [
+        },
         {
           "name": "addressLine1",
           "type": "string",
-          "label": "Address Line 1",
+          "label": "Address line 1",
           "required": true,
           "validations": {
             "min": 5,
-            "max": 200,
             "message": "Address must be at least 5 characters"
           }
         },
         {
           "name": "addressLine2",
           "type": "string",
-          "label": "Address Line 2",
-          "required": false,
-          "validations": {
-            "max": 200
-          }
+          "label": "Address line 2",
+          "required": false
         },
         {
           "name": "parish",
           "type": "string",
           "label": "Parish",
-          "required": true,
-          "validations": {
-            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
-            "message": "Must select a valid parish"
-          }
+          "required": true
         },
         {
-          "name": "postalCode",
+          "name": "postCode",
           "type": "string",
-          "label": "Postal Code",
+          "label": "Postcode",
           "required": false,
           "validations": {
             "regex": "^BB\\d{5}$",
             "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone number",
+          "required": true,
+          "validations": {
+            "regex": "^\\d{1,2}\\s?\\d{3}\\s?\\d{3}\\s?\\d{4}$",
+            "message": "Please enter a valid phone number (e.g., 1 246 234 5678)"
           }
         }
       ]
@@ -150,192 +156,259 @@
       "required": true,
       "fields": [
         {
-          "name": "currentEmploymentStatus",
-          "type": "string",
-          "label": "Current Employment Status",
-          "required": true,
-          "validations": {
-            "regex": "^(employed|self-employed|unemployed|student|other)$",
-            "message": "Must select a valid employment status"
-          }
-        },
-        {
           "name": "employerName",
           "type": "string",
-          "label": "Employer Name",
-          "required": false,
+          "label": "Name of employer or organization",
+          "required": true,
           "validations": {
-            "max": 100
+            "min": 2,
+            "message": "Employer name must be at least 2 characters"
           }
         },
         {
-          "name": "jobTitle",
+          "name": "occupation",
           "type": "string",
-          "label": "Job Title",
-          "required": false,
+          "label": "Occupation",
+          "required": true,
           "validations": {
-            "max": 100
+            "min": 2,
+            "message": "Occupation must be at least 2 characters"
           }
         },
         {
-          "name": "yearsOfExperience",
+          "name": "yearsOfEmployment",
           "type": "number",
-          "label": "Years of Experience",
-          "required": true,
-          "validations": {
-            "min": 0,
-            "max": 70
-          }
-        },
-        {
-          "name": "workSector",
-          "type": "string",
-          "label": "Sector of Work",
-          "required": true,
-          "validations": {
-            "max": 100
-          }
+          "label": "Years of employment",
+          "required": true
         }
       ]
     },
     {
-      "name": "education",
+      "name": "emergency",
       "type": "object",
       "required": true,
       "fields": [
         {
-          "name": "highestQualification",
+          "name": "firstName",
           "type": "string",
-          "label": "Highest Educational Qualification",
+          "label": "First name",
+          "required": true
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone number",
           "required": true,
           "validations": {
-            "regex": "^(high-school|associate|bachelor|master|doctorate|other)$",
-            "message": "Must select a valid qualification level"
+            "regex": "^\\d{1,2}\\s?\\d{3}\\s?\\d{3}\\s?\\d{4}$",
+            "message": "Please enter a valid phone number (e.g. 1 246 234 5678)"
           }
         },
         {
-          "name": "fieldOfStudy",
+          "name": "isAddressTheSame",
+          "type": "boolean",
+          "label": "Address is the same as my address provided",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
           "type": "string",
-          "label": "Field of Study",
+          "label": "Address line 1",
           "required": true,
           "validations": {
-            "min": 2,
-            "max": 100
+            "min": 5,
+            "message": "Address must be at least 5 characters"
           }
         },
         {
-          "name": "institutionName",
+          "name": "addressLine2",
           "type": "string",
-          "label": "Name of Institution",
-          "required": true,
+          "label": "Address line 2",
+          "required": false
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "string",
+          "label": "Postcode",
+          "required": false,
           "validations": {
-            "min": 2,
-            "max": 150
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
           }
         }
       ]
     },
     {
-      "name": "fellowshipDetails",
+      "name": "study",
       "type": "object",
       "required": true,
       "fields": [
         {
-          "name": "areaOfInterest",
+          "name": "programmeName",
           "type": "string",
-          "label": "Area of Interest for the Fellowship",
+          "label": "The programme you plan to study",
           "required": true,
           "validations": {
-            "min": 10,
-            "max": 200,
-            "message": "Please describe your area of interest (minimum 10 characters)"
+            "min": 2,
+            "message": "Programme name must be at least 2 characters"
           }
         },
         {
-          "name": "motivationStatement",
+          "name": "reasonForApplying",
           "type": "string",
-          "label": "Why do you want to join this fellowship?",
+          "label": "Why do you want to attend this programme",
           "required": true,
           "validations": {
-            "min": 50,
-            "max": 500,
-            "message": "Please provide a statement of at least 50 characters"
+            "min": 2,
+            "message": "Why you want to attend must be at least 2 characters"
           }
         },
         {
-          "name": "careerGoals",
+          "name": "benefitForNationalDevelopment",
           "type": "string",
-          "label": "How will this fellowship support your career goals?",
+          "label": "How this programme will benefit national development",
           "required": true,
           "validations": {
-            "min": 50,
-            "max": 500,
-            "message": "Please describe your career goals (minimum 50 characters)"
-          }
-        },
-        {
-          "name": "communityImpact",
-          "type": "string",
-          "label": "How do you plan to contribute to public service and community development?",
-          "required": true,
-          "validations": {
-            "min": 50,
-            "max": 500,
-            "message": "Please describe your community impact plans (minimum 50 characters)"
+            "min": 2,
+            "message": "Benefit for national development must be at least 2 characters"
           }
         }
       ]
     },
     {
-      "name": "references",
+      "name": "educationQualifications",
       "type": "array",
-      "label": "Professional References",
+      "label": "Educational Qualifications",
       "required": true,
-      "validations": {
-        "min": 2,
-        "message": "Please provide at least 2 professional references"
-      },
       "items": {
         "type": "object",
         "properties": {
-          "referenceName": {
+          "institutionName": {
             "type": "string",
-            "label": "Reference Name",
             "validations": {
               "min": 2,
-              "max": 100
+              "message": "Name of institution must be at least 2 characters"
             }
           },
-          "referenceTitle": {
+          "institutionLocation": {
             "type": "string",
-            "label": "Reference Title",
             "validations": {
               "min": 2,
-              "max": 100
+              "message": "Location of institution must be at least 2 characters"
             }
           },
-          "referenceEmail": {
-            "type": "email",
-            "label": "Reference Email"
-          },
-          "referencePhone": {
+          "awardEarned": {
             "type": "string",
-            "label": "Reference Phone Number",
             "validations": {
-              "regex": "^\\+?[0-9]{10,15}$"
+              "min": 2,
+              "message": "Award earned must be at least 2 characters"
+            }
+          },
+          "areaOfStudy": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Area of study must be at least 2 characters"
+            }
+          },
+          "yearAwarded": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Year awarded must be at least 2 characters"
             }
           }
         }
       }
     },
     {
-      "name": "uploadDocuments",
+      "name": "professionalQualifications",
       "type": "array",
-      "label": "Uploaded Documents",
+      "label": "Professional Qualifications",
       "required": true,
       "items": {
-        "type": "string"
+        "type": "object",
+        "properties": {
+          "institutionName": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Name of institution must be at least 2 characters"
+            }
+          },
+          "institutionLocation": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Location of institution must be at least 2 characters"
+            }
+          },
+          "awardEarned": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Award earned must be at least 2 characters"
+            }
+          },
+          "areaOfStudy": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Area of study must be at least 2 characters"
+            }
+          },
+          "yearAwarded": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Year awarded must be at least 2 characters"
+            }
+          }
+        }
       }
+    },
+    {
+      "name": "uploadDocument",
+      "type": "string",
+      "label": "Upload your degrees/diplomas",
+      "required": true
+    },
+    {
+      "name": "declaration",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "confirmed",
+          "type": "boolean",
+          "label": "All information is correct and true",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "dateOfDeclaration",
+      "type": "date",
+      "label": "Date of declaration",
+      "required": true
     }
   ],
   "processors": [

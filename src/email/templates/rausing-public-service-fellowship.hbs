@@ -33,7 +33,7 @@
         <div class='section-title'>Applicant Information</div>
         <div class='field'>
           <span class='field-label'>Name:</span>
-          <span class='field-value'>{{formData.applicant.title}} {{formData.applicant.firstName}}{{#if formData.applicant.middleName}} {{formData.applicant.middleName}}{{/if}} {{formData.applicant.lastName}}</span>
+          <span class='field-value'>{{formData.applicant.firstName}}{{#if formData.applicant.middleName}} {{formData.applicant.middleName}}{{/if}} {{formData.applicant.lastName}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Date of Birth:</span>
@@ -44,8 +44,24 @@
           <span class='field-value'>{{formData.applicant.sex}}</span>
         </div>
         <div class='field'>
-          <span class='field-label'>ID Number:</span>
-          <span class='field-value'>{{formData.applicant.idNumber}}</span>
+          <span class='field-label'>Marital Status:</span>
+          <span class='field-value'>{{formData.applicant.maritalStatus}}</span>
+        </div>
+        {{#if formData.applicant.idNumber}}
+          <div class='field'>
+            <span class='field-label'>ID Number:</span>
+            <span class='field-value'>{{formData.applicant.idNumber}}</span>
+          </div>
+        {{/if}}
+        {{#if formData.applicant.passportNumber}}
+          <div class='field'>
+            <span class='field-label'>Passport Number:</span>
+            <span class='field-value'>{{formData.applicant.passportNumber}}</span>
+          </div>
+        {{/if}}
+        <div class='field'>
+          <span class='field-label'>NIS Number:</span>
+          <span class='field-value'>{{formData.applicant.nisNumber}}</span>
         </div>
         <div class='field'>
           <span class='field-label'>Email:</span>
@@ -61,22 +77,22 @@
         <div class='section-title'>Address Information</div>
         <div class='field'>
           <span class='field-label'>Address Line 1:</span>
-          <span class='field-value'>{{formData.address.addressLine1}}</span>
+          <span class='field-value'>{{formData.applicant.addressLine1}}</span>
         </div>
-        {{#if formData.address.addressLine2}}
+        {{#if formData.applicant.addressLine2}}
           <div class='field'>
             <span class='field-label'>Address Line 2:</span>
-            <span class='field-value'>{{formData.address.addressLine2}}</span>
+            <span class='field-value'>{{formData.applicant.addressLine2}}</span>
           </div>
         {{/if}}
         <div class='field'>
           <span class='field-label'>Parish:</span>
-          <span class='field-value'>{{formData.address.parish}}</span>
+          <span class='field-value'>{{formData.applicant.parish}}</span>
         </div>
-        {{#if formData.address.postalCode}}
+        {{#if formData.applicant.postCode}}
           <div class='field'>
             <span class='field-label'>Postal Code:</span>
-            <span class='field-value'>{{formData.address.postalCode}}</span>
+            <span class='field-value'>{{formData.applicant.postCode}}</span>
           </div>
         {{/if}}
       </div>
@@ -84,86 +100,124 @@
       <div class='section'>
         <div class='section-title'>Employment Details</div>
         <div class='field'>
-          <span class='field-label'>Employment Status:</span>
-          <span class='field-value'>{{formData.employment.currentEmploymentStatus}}</span>
+          <span class='field-label'>Employer Name:</span>
+          <span class='field-value'>{{formData.employment.employerName}}</span>
         </div>
-        {{#if formData.employment.employerName}}
+        <div class='field'>
+          <span class='field-label'>Occupation:</span>
+          <span class='field-value'>{{formData.employment.occupation}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Years of Employment:</span>
+          <span class='field-value'>{{formData.employment.yearsOfEmployment}}</span>
+        </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Emergency Contact Details</div>
+        <div class='field'>
+          <span class='field-label'>Name:</span>
+          <span class='field-value'>{{formData.emergency.firstName}} {{formData.emergency.lastName}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Email:</span>
+          <span class='field-value'>{{formData.emergency.email}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Telephone:</span>
+          <span class='field-value'>{{formData.emergency.telephoneNumber}}</span>
+        </div>
+        {{#unless formData.emergency.isAddressTheSame}}
           <div class='field'>
-            <span class='field-label'>Employer Name:</span>
-            <span class='field-value'>{{formData.employment.employerName}}</span>
+            <span class='field-label'>Address Line 1:</span>
+            <span class='field-value'>{{formData.emergency.addressLine1}}</span>
           </div>
-        {{/if}}
-        {{#if formData.employment.jobTitle}}
+          {{#if formData.emergency.addressLine2}}
+            <div class='field'>
+              <span class='field-label'>Address Line 2:</span>
+              <span class='field-value'>{{formData.emergency.addressLine2}}</span>
+            </div>
+          {{/if}}
           <div class='field'>
-            <span class='field-label'>Job Title:</span>
-            <span class='field-value'>{{formData.employment.jobTitle}}</span>
+            <span class='field-label'>Parish:</span>
+            <span class='field-value'>{{formData.emergency.parish}}</span>
           </div>
-        {{/if}}
+          {{#if formData.emergency.postCode}}
+            <div class='field'>
+              <span class='field-label'>Postal Code:</span>
+              <span class='field-value'>{{formData.emergency.postCode}}</span>
+            </div>
+          {{/if}}
+        {{/unless}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Proposed Programme of Study</div>
         <div class='field'>
-          <span class='field-label'>Years of Experience:</span>
-          <span class='field-value'>{{formData.employment.yearsOfExperience}}</span>
+          <span class='field-label'>Programme Name:</span>
+          <div class='text-area'>{{formData.study.programmeName}}</div>
         </div>
         <div class='field'>
-          <span class='field-label'>Sector of Work:</span>
-          <span class='field-value'>{{formData.employment.workSector}}</span>
+          <span class='field-label'>Reason for Applying:</span>
+          <div class='text-area'>{{formData.study.reasonForApplying}}</div>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Benefit for National Development:</span>
+          <div class='text-area'>{{formData.study.benefitForNationalDevelopment}}</div>
         </div>
       </div>
 
       <div class='section'>
-        <div class='section-title'>Educational Background</div>
-        <div class='field'>
-          <span class='field-label'>Highest Qualification:</span>
-          <span class='field-value'>{{formData.education.highestQualification}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Field of Study:</span>
-          <span class='field-value'>{{formData.education.fieldOfStudy}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Institution Name:</span>
-          <span class='field-value'>{{formData.education.institutionName}}</span>
-        </div>
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Fellowship Details</div>
-        <div class='field'>
-          <span class='field-label'>Area of Interest:</span>
-          <div class='text-area'>{{formData.fellowshipDetails.areaOfInterest}}</div>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Why do you want to join this fellowship:</span>
-          <div class='text-area'>{{formData.fellowshipDetails.motivationStatement}}</div>
-        </div>
-        <div class='field'>
-          <span class='field-label'>How will this fellowship support your career goals:</span>
-          <div class='text-area'>{{formData.fellowshipDetails.careerGoals}}</div>
-        </div>
-        <div class='field'>
-          <span class='field-label'>How do you plan to contribute to public service and community development:</span>
-          <div class='text-area'>{{formData.fellowshipDetails.communityImpact}}</div>
-        </div>
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Professional References</div>
-        {{#each formData.references}}
+        <div class='section-title'>Educational Qualifications</div>
+        {{#each formData.educationQualifications}}
         <div class='reference-item'>
           <div class='field'>
-            <span class='field-label'>Name:</span>
-            <span class='field-value'>{{this.referenceName}}</span>
+            <span class='field-label'>Institution Name:</span>
+            <span class='field-value'>{{this.institutionName}}</span>
           </div>
           <div class='field'>
-            <span class='field-label'>Title/Position:</span>
-            <span class='field-value'>{{this.referenceTitle}}</span>
+            <span class='field-label'>Institution Location:</span>
+            <span class='field-value'>{{this.institutionLocation}}</span>
           </div>
           <div class='field'>
-            <span class='field-label'>Email:</span>
-            <span class='field-value'>{{this.referenceEmail}}</span>
+            <span class='field-label'>Award Earned:</span>
+            <span class='field-value'>{{this.awardEarned}}</span>
           </div>
           <div class='field'>
-            <span class='field-label'>Telephone:</span>
-            <span class='field-value'>{{this.referencePhone}}</span>
+            <span class='field-label'>Area of Study:</span>
+            <span class='field-value'>{{this.areaOfStudy}}</span>
+          </div>
+          <div class='field'>
+            <span class='field-label'>Year Awarded:</span>
+            <span class='field-value'>{{this.yearAwarded}}</span>
+          </div>
+        </div>
+        {{/each}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Professional Qualifications</div>
+        {{#each formData.professionalQualifications}}
+        <div class='reference-item'>
+          <div class='field'>
+            <span class='field-label'>Institution Name:</span>
+            <span class='field-value'>{{this.institutionName}}</span>
+          </div>
+          <div class='field'>
+            <span class='field-label'>Institution Location:</span>
+            <span class='field-value'>{{this.institutionLocation}}</span>
+          </div>
+          <div class='field'>
+            <span class='field-label'>Award Earned:</span>
+            <span class='field-value'>{{this.awardEarned}}</span>
+          </div>
+          <div class='field'>
+            <span class='field-label'>Area of Study:</span>
+            <span class='field-value'>{{this.areaOfStudy}}</span>
+          </div>
+          <div class='field'>
+            <span class='field-label'>Year Awarded:</span>
+            <span class='field-value'>{{this.yearAwarded}}</span>
           </div>
         </div>
         {{/each}}
@@ -171,17 +225,27 @@
 
       <div class='section'>
         <div class='section-title'>Uploaded Documents</div>
-        {{#if formData.uploadDocuments}}
-          {{#each formData.uploadDocuments}}
-            <div class='field'>
-              <span class='field-value'><a href='{{this}}' target='_blank'>Document {{@index}}</a></span>
-            </div>
-          {{/each}}
+        {{#if formData.uploadDocument}}
+          <div class='field'>
+            <span class='field-value'><a href='{{formData.uploadDocument}}' target='_blank'>View Uploaded Document</a></span>
+          </div>
         {{else}}
           <div class='field'>
             <span class='field-value'>No documents uploaded</span>
           </div>
         {{/if}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Declaration</div>
+        <div class='field'>
+          <span class='field-label'>Declaration Confirmed:</span>
+          <span class='field-value'>{{#if formData.declaration.confirmed}}Yes{{else}}No{{/if}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Date of Declaration:</span>
+          <span class='field-value'>{{formData.dateOfDeclaration}}</span>
+        </div>
       </div>
 
       <div class='footer'>
