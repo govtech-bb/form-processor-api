@@ -130,13 +130,20 @@
     },
     {
       "name": "barbadosResidencyDuration",
-      "label": "How long have you lived in Barbados?",
-      "type": "string",
-      "required": true,
-      "validations": {
-        "min": 2,
-        "max": 20
-      }
+      "type": "object",
+      "required": false,
+      "fields": [
+        {
+          "name": "residencyDuration",
+          "label": "How long have you lived in Barbados?",
+          "type": "number",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 20
+          }
+        }
+      ]
     },
     {
       "name": "contactDetails",
