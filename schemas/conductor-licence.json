@@ -206,6 +206,12 @@
           "required": false
         },
         {
+          "name": "reasonForDisqualification",
+          "type": "string",
+          "label": "Court's reason for disqualification",
+          "required": false
+        },
+        {
           "name": "dateOfDisqualification",
           "type": "string",
           "label": "Date of disqualification",
