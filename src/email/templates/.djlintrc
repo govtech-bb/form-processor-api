@@ -1,0 +1,8 @@
+{
+	"extension": "html.hbs",
+	"indent": "2",
+	"format_css": true,
+	"css": {
+		"indent_size": 4
+	}
+}
