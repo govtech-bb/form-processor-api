@@ -477,6 +477,16 @@
           }
         },
         {
+          "name": "willingToWorkAtNight",
+          "type": "string",
+          "label": "Are you willing to work at night?",
+          "required": true,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
+        },
+        {
           "name": "shortTermGoals",
           "type": "string",
           "label": "Tell us about your short-term goals",
