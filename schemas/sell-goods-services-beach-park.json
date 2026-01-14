@@ -61,6 +61,15 @@
           }
         },
         {
+          "name": "nationality",
+          "type": "string",
+          "label": "Nationality",
+          "required": true,
+          "validations": {
+            "message": "Must select a nationality"
+          }
+        },
+        {
           "name": "idNumber",
           "type": "string",
           "label": "National Identification (ID) Number",
