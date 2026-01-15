@@ -35,6 +35,8 @@ export type BirthRegistrationFormData = {
 
   birth: {
     placeOfBirth: 'health-facility' | 'residential' | 'other';
+    parish: string;
+    streetAddress: string;
     numberOfBirths: 'single' | 'twins' | 'triplets' | 'more-than-triplets';
     attendantAtBirth: 'doctor' | 'midwife' | 'nurse' | 'relative' | 'none';
     liveBorn?: string;
@@ -116,9 +118,12 @@ export class BirthRegistrationMapper {
       ),
 
       // Set birth location for health facility births
-      ...(openCRVSPlaceOfBirth === 'HEALTH_FACILITY' &&
+      ...(openCRVSPlaceOfBirth === 'HEALTH_FACILITY' ?
         config.healthFacilityId && {
           'child.birthLocation': config.healthFacilityId,
+        } : {
+          'child.parish': data.birth.parish,
+          'child.streetAddress': data.birth.streetAddress,
         }),
 
       // Mother information (always provided)

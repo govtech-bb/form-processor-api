@@ -118,6 +118,8 @@ export type BirthDeclaration = {
   'child.birthLocation'?: string; // Hospital/facility ID when placeOfBirth = HEALTH_FACILITY
   'child.birthType'?: BirthType;
   'child.attendantAtBirth'?: AttendantAtBirth;
+  'child.parish'?: string;
+  'child.streetAddress'?: string;
   'child.reason'?: string; // Reason for delayed registration
 
   // Mother information
