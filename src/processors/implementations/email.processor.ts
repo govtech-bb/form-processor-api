@@ -38,22 +38,29 @@ export class EmailProcessor implements IProcessor {
       return;
     }
 
-    await this.emailService.sendEmail({
-      to,
-      from,
-      subject,
-      template,
-      html,
-      text,
-      data: {
-        formId: context.formId,
-        submissionId: context.submissionId,
-        ...context.data,
-      },
-    });
+    try {
+      await this.emailService.sendEmail({
+        to,
+        from,
+        subject,
+        template,
+        html,
+        text,
+        data: {
+          formId: context.formId,
+          submissionId: context.submissionId,
+          ...context.data,
+        },
+      });
 
-    this.logger.log(
-      `Email sent successfully for submission: ${context.submissionId}`,
-    );
+      this.logger.log(
+        `Email sent successfully for submission: ${context.submissionId}`,
+      );
+    } catch (error) {
+      this.logger.warn(
+        `Email processor encountered an error but continuing (email service may be unavailable): ${error.message}`,
+      );
+      // Continue without throwing - email failures should not block form submission
+    }
   }
 }
