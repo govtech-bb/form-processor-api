@@ -251,7 +251,7 @@
       ]
     },
     {
-      "name": "applicant-education",
+      "name": "applicantEducation",
       "type": "object",
       "required": true,
       "fields": [
