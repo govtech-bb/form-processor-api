@@ -70,7 +70,13 @@ export class SchemaBuilderService {
     // Build base schema based on field type
     switch (field.type) {
       case 'string':
-        schema = z.coerce.string();
+        // For required strings, use z.string().min(1) to reject empty strings
+        // For optional strings, use z.coerce.string() but allow empty
+        if (field.required) {
+          schema = z.string().min(1, 'This field is required');
+        } else {
+          schema = z.coerce.string();
+        }
         break;
       case 'email':
         schema = z.string().email('Invalid email format');
@@ -138,21 +144,15 @@ export class SchemaBuilderService {
     ) {
       if (validations.min !== undefined) {
         const minLength = validations.min;
-        if (!required) {
-          // For optional fields, allow empty strings or strings that meet min length
-          schema = schema.refine(
-            (val: string) => !val || val.length >= minLength,
-            {
-              message:
-                validations.message || `Minimum length is ${minLength}`,
-            },
-          );
-        } else {
-          schema = schema.min(
-            minLength,
-            validations.message || `Minimum length is ${minLength}`,
-          );
-        }
+        // Always enforce minimum length (use max(1, minLength) for required fields)
+        const effectiveMin = required ? Math.max(1, minLength) : minLength;
+        schema = schema.min(
+          effectiveMin,
+          validations.message || `Minimum length is ${effectiveMin}`,
+        );
+      } else if (required) {
+        // If no min specified but field is required, enforce min length of 1
+        schema = schema.min(1, validations.message || 'This field is required');
       }
       if (validations.max !== undefined) {
         schema = schema.max(
@@ -160,6 +160,9 @@ export class SchemaBuilderService {
           validations.message || `Maximum length is ${validations.max}`,
         );
       }
+    } else if (fieldType === 'string' && required) {
+      // If no validations but field is required, enforce non-empty string
+      schema = schema.min(1, 'This field is required');
     }
 
     // Min/Max for numbers
