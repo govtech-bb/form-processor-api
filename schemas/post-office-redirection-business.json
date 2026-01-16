@@ -131,7 +131,7 @@
       }
     },
     {
-      "name": "newBusinessAddress",
+      "name": "newAddress",
       "type": "object",
       "required": true,
       "fields": [
