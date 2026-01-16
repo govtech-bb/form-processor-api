@@ -120,8 +120,6 @@ export type BirthDeclaration = {
   'child.birthLocation.privateHome'?: DomesticAddress; // Address for private home births
   'child.birthType'?: BirthType;
   'child.attendantAtBirth'?: AttendantAtBirth;
-  'child.parish'?: string;
-  'child.streetAddress'?: string;
   'child.reason'?: string; // Reason for delayed registration
 
   // Mother information
