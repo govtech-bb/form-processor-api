@@ -198,8 +198,10 @@ export class EmailService {
         `Email sent successfully to ${validToAddresses.join(', ')}`,
       );
     } catch (error) {
-      this.logger.error(`Failed to send email: ${error.message}`, error.stack);
-      throw error;
+      this.logger.warn(
+        `Failed to send email (continuing silently): ${error.message}`,
+      );
+      // Silently fail - do not throw the error
     }
   }
 
