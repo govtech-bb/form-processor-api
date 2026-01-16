@@ -61,12 +61,17 @@
           }
         },
         {
+          "name": "nationality",
+          "type": "string",
+          "label": "Nationality",
+          "required": true
+        },
+        {
           "name": "idNumber",
           "type": "string",
           "label": "National Identification (ID) Number",
           "required": false,
           "validations": {
-            "min": 2,
             "message": "ID Number must be at least 2 characters"
           }
         },
@@ -89,11 +94,7 @@
           "name": "telephoneNumber",
           "type": "string",
           "label": "Telephone Number",
-          "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
-          }
+          "required": true
         },
         {
           "name": "addressLine1",
