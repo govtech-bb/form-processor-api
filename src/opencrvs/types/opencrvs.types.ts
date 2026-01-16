@@ -116,10 +116,9 @@ export type BirthDeclaration = {
   'child.dob': string; // YYYY-MM-DD
   'child.placeOfBirth': PlaceOfBirth;
   'child.birthLocation'?: string; // Hospital/facility ID when placeOfBirth = HEALTH_FACILITY
+  'child.birthLocation.privateHome'?: DomesticAddress; // Address for private home births
   'child.birthType'?: BirthType;
   'child.attendantAtBirth'?: AttendantAtBirth;
-  'child.parish'?: string;
-  'child.streetAddress'?: string;
   'child.reason'?: string; // Reason for delayed registration
 
   // Mother information

@@ -117,14 +117,21 @@ export class BirthRegistrationMapper {
         data.birth.attendantAtBirth,
       ),
 
-      // Set birth location for health facility births
-      ...(openCRVSPlaceOfBirth === 'HEALTH_FACILITY' ?
-        config.healthFacilityId && {
-          'child.birthLocation': config.healthFacilityId,
-        } : {
-          'child.parish': data.birth.parish,
-          'child.streetAddress': data.birth.streetAddress,
-        }),
+      // Set birth location based on place of birth
+      ...(openCRVSPlaceOfBirth === 'HEALTH_FACILITY'
+        ? config.healthFacilityId && {
+            'child.birthLocation': config.healthFacilityId,
+          }
+        : {
+            'child.birthLocation.privateHome': {
+              addressType: 'DOMESTIC',
+              country: 'BRB',
+              administrativeArea: config.parishId,
+              streetLevelDetails: {
+                street: data.birth.streetAddress || 'sample address',
+              },
+            },
+          }),
 
       // Mother information (always provided)
       'mother.detailsNotAvailable': false,
