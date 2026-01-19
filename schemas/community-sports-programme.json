@@ -4,219 +4,290 @@
   "description": "Register for our community sports programme",
   "fields": [
     {
-      "name": "firstName",
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "label": "Date of birth",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date of birth is required and must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "sex",
+          "type": "string",
+          "label": "Sex",
+          "required": true,
+          "validations": {
+            "regex": "^(male|female)$",
+            "message": "Must select a valid sex"
+          }
+        }
+      ]
+    },
+    {
+      "name": "discipline",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "areaOfInterest",
+          "type": "string",
+          "label": "Discipline of Interest",
+          "required": true
+        },
+        {
+          "name": "hasExperience",
+          "type": "string",
+          "label": "Do you have experience in this discipline?",
+          "required": true,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select a valid option"
+          }
+        }
+      ]
+    },
+    {
+      "name": "experience",
+      "type": "object",
+      "fields": [
+        {
+          "name": "levelOfExperience",
+          "type": "string",
+          "label": "Experience Level",
+          "required": false
+        },
+        {
+          "name": "otherExperience",
+          "type": "string",
+          "label": "Other Experience Level",
+          "required": false
+        },
+        {
+          "name": "yearsOfExperience",
+          "type": "number",
+          "label": "Years of Experience",
+          "required": false,
+          "validations": {
+            "min": 0,
+            "max": 50
+          }
+        }
+      ]
+    },
+    {
+      "name": "employment",
+      "type": "object",
+      "fields": [
+        {
+          "name": "status",
+          "type": "string",
+          "label": "Employment Status",
+          "required": true
+        },
+        {
+          "name": "institutionName",
+          "type": "string",
+          "label": "Institution Name",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "companyName",
+          "type": "string",
+          "label": "Company or organisation name is require",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "otherDetails",
+          "type": "string",
+          "label": "Other Employment Details",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        }
+      ]
+    },
+    {
+      "name": "belongsToOrganisations",
       "type": "string",
-      "label": "First Name",
+      "label": "Do you belong to any organisations?",
       "required": true,
       "validations": {
-        "min": 2,
-        "max": 50
+        "regex": "^(yes|no)$",
+        "message": "Must select an option"
       }
     },
     {
-      "name": "lastName",
-      "type": "string",
-      "label": "Last Name",
-      "required": true,
-      "validations": {
-        "min": 2,
-        "max": 50
-      }
-    },
-    {
-      "name": "dateOfBirth",
-      "type": "date",
-      "label": "Date of Birth",
-      "required": true,
-      "validations": {
-        "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-        "message": "Date must be in YYYY-MM-DD format"
-      }
-    },
-    {
-      "name": "gender",
-      "type": "string",
-      "label": "Gender",
-      "required": true
-    },
-    {
-      "name": "disciplineOfInterest",
-      "type": "string",
-      "label": "Discipline of Interest",
-      "required": true
-    },
-    {
-      "name": "disciplineExperience",
-      "type": "string",
-      "label": "Do you have experience in this discipline?",
-      "required": true
-    },
-    {
-      "name": "experienceLevel",
-      "type": "string",
-      "label": "Experience Level",
-      "required": false
-    },
-    {
-      "name": "otherExperienceLevel",
-      "type": "string",
-      "label": "Other Experience Level",
-      "required": false
-    },
-    {
-      "name": "yearsOfExperience",
-      "type": "number",
-      "label": "Years of Experience",
-      "required": false,
-      "validations": {
-        "min": 0,
-        "max": 50
-      }
-    },
-    {
-      "name": "employmentStatus",
-      "type": "string",
-      "label": "Employment Status",
-      "required": true
-    },
-    {
-      "name": "institutionName",
-      "type": "string",
-      "label": "Institution Name",
-      "required": false,
-      "validations": {
-        "max": 100
-      }
-    },
-    {
-      "name": "employerName",
-      "type": "string",
-      "label": "Employer Name",
-      "required": false,
-      "validations": {
-        "max": 100
-      }
-    },
-    {
-      "name": "otherEmploymentDetails",
-      "type": "string",
-      "label": "Other Employment Details",
-      "required": false,
-      "validations": {
-        "max": 200
-      }
-    },
-    {
-      "name": "belongsToOrganizations",
-      "type": "string",
-      "label": "Do you belong to any sports organizations?",
-      "required": true
-    },
-    {
-      "name": "organizationNames",
+      "name": "organizationDetails",
       "type": "array",
-      "label": "Organization Names",
+      "label": "Organization Details",
       "required": false,
       "items": {
         "type": "object",
         "properties": {
-          "value": {
+          "organizationName": {
+            "type": "string"
+          },
+          "hasSignificantPosition": {
             "type": "string"
           }
         }
       }
     },
     {
-      "name": "addressLine1",
-      "type": "string",
-      "label": "Address Line 1",
+      "name": "contact",
+      "type": "object",
+      "label": "Contact Information",
       "required": true,
-      "validations": {
-        "max": 100
-      }
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true
+        }
+      ]
     },
     {
-      "name": "addressLine2",
-      "type": "string",
-      "label": "Address Line 2",
-      "required": false,
-      "validations": {
-        "max": 100
-      }
-    },
-    {
-      "name": "email",
-      "type": "string",
-      "label": "Email address",
-      "required": true
-    },
-    {
-      "name": "parish",
-      "type": "string",
-      "label": "Parish",
-      "required": true
-    },
-    {
-      "name": "telephoneNumber",
-      "type": "string",
-      "label": "Telephone Number",
-      "required": true
-    },
-    {
-      "name": "emergencyFirstName",
-      "type": "string",
-      "label": "Emergency Contact First Name",
+      "name": "emergency",
+      "type": "object",
+      "label": "Contact Information",
       "required": true,
-      "validations": {
-        "min": 2,
-        "max": 50
-      }
-    },
-    {
-      "name": "emergencyLastName",
-      "type": "string",
-      "label": "Emergency Contact Last Name",
-      "required": true,
-      "validations": {
-        "min": 2,
-        "max": 50
-      }
-    },
-    {
-      "name": "emergencyRelationship",
-      "type": "string",
-      "label": "Relationship to Emergency Contact",
-      "required": true
-    },
-    {
-      "name": "emergencyAddressLine1",
-      "type": "string",
-      "label": "Emergency Contact Address Line 1",
-      "required": true,
-      "validations": {
-        "max": 100
-      }
-    },
-    {
-      "name": "emergencyAddressLine2",
-      "type": "string",
-      "label": "Emergency Contact Address Line 2",
-      "required": false,
-      "validations": {
-        "max": 100
-      }
-    },
-    {
-      "name": "emergencyParish",
-      "type": "string",
-      "label": "Emergency Contact Parish",
-      "required": true
-    },
-    {
-      "name": "emergencyTelephoneNumber",
-      "type": "string",
-      "label": "Emergency Contact Telephone Number",
-      "required": true
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "relationship",
+          "type": "string",
+          "label": "Relationship",
+          "required": false,
+          "validations": {
+            "max": 100,
+            "message": "Relationship is required"
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address line 1",
+          "required": true,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address line 2",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true
+        }
+      ]
     }
   ],
   "processors": [
@@ -224,7 +295,7 @@
       "type": "email",
       "config": {
         "to": "{{db:community-sports-registration:admin_email}}",
-        "subject": "New Community Sports Programme Registration - {{formData.firstName}} {{formData.lastName}}",
+        "subject": "New Community Sports Programme Registration - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "community-sports-registration"
       }
     }
