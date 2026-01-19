@@ -145,6 +145,14 @@
         "subject": "New Request to remove protected tree - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "permission-to-remove-tree"
       }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Permission to Remove Tree - Submission Received",
+        "template": "permission-to-remove-tree-receipt"
+      }
     }
   ]
 }

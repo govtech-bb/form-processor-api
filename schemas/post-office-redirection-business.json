@@ -217,6 +217,14 @@
         "subject": "New Request to Redirect my business mail - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "post-office-redirection-notice"
       }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Business Mail Redirection - Submission Received",
+        "template": "post-office-redirection-business-receipt"
+      }
     }
   ]
 }

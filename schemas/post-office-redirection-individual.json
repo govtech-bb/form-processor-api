@@ -256,6 +256,14 @@
         "subject": "New Request to redirect mail for an individual - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "post-office-redirection-notice"
       }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Mail Redirection - Submission Received",
+        "template": "post-office-redirection-individual-receipt"
+      }
     }
   ]
 }
