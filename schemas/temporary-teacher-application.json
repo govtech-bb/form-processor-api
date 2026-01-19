@@ -71,13 +71,13 @@
           }
         },
         {
-          "name": "martialStatus",
+          "name": "maritalStatus",
           "type": "string",
-          "label": "Martial status",
+          "label": "Marital status",
           "required": true,
           "validations": {
             "regex": "^(single|married|divorced)$",
-            "message": "Must select a martial status"
+            "message": "Must select a marital status"
           }
         },
         {
@@ -122,7 +122,7 @@
       ]
     },
     {
-      "name": "contactDetails",
+      "name": "contact",
       "type": "object",
       "required": true,
       "fields": [
@@ -496,8 +496,16 @@
       "type": "email",
       "config": {
         "to": "{{db:temporary-teacher-application:admin_email}}",
-        "subject": "New Temporary Teacher Application - {{formData.firstName}} {{formData.lastName}}",
+        "subject": "New Temporary Teacher Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "temporary-teacher-application"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.contact.emailAddress}}",
+        "subject": "Application Received - Government of Barbados",
+        "template": "temporary-teacher-application-receipt"
       }
     }
   ]
