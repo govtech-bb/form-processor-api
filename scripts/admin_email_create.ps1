@@ -5,6 +5,12 @@ param (
 	[string]$FormId
 )
 
+# Constants
+
+$schemaLocations = "./schemas" # Start location is where `npm run` is executed
+$templateFile = "./scripts/templates/admin_email_template.tmp"
+$outputDir = "./src/email/templates/"
+
 # Functions
 
 function ConvertFrom-Field-To-HBS
@@ -15,7 +21,6 @@ function ConvertFrom-Field-To-HBS
 		[string] $SectionName,
 		[Parameter(Mandatory, ValueFromPipelineByPropertyName)]
 		[PsCustomObject]$Field
-
 	)
 
 	process
@@ -79,12 +84,6 @@ function ConvertFrom-Section-To-HBS
 		return $sectionStr
 	}
 }
-
-# Constants
-
-$schemaLocations = "."
-$templateFile = "./admin-email-template.tmp"
-$outputDir = "."
 
 
 # Obtain title from FormId
