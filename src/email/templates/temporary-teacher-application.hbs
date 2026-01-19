@@ -1,122 +1,285 @@
 <html>
   <head>
     <meta charset='utf-8' />
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            background-color: #2c5282;
-            color: white;
-            padding: 20px;
-            text-align: center;
-            border-radius: 5px 5px 0 0;
-        }
-
-        .content {
-            background-color: #f7fafc;
-            padding: 30px;
-            border: 1px solid #e2e8f0;
-            border-top: none;
-        }
-
-        .section {
-            margin-bottom: 25px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-
-        .section-title {
-            color: #2c5282;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #2c5282;
-            padding-bottom: 5px;
-        }
-
-        .field {
-            margin-bottom: 12px;
-        }
-
-        .field-label {
-            font-weight: bold;
-            color: #4a5568;
-            display: inline-block;
-            width: 200px;
-        }
-
-        .field-value {
-            color: #1a202c;
-        }
-
-        .address-comparison {
-            display: flex;
-            gap: 20px;
-        }
-
-        .address-box {
-            flex: 1;
-            border: 1px solid #e2e8f0;
-            padding: 15px;
-            border-radius: 5px;
-        }
-
-        .old-address {
-            background-color: #fed7d7;
-        }
-
-        .new-address {
-            background-color: #c6f6d5;
-        }
-
-        .footer {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #edf2f7;
-            border-radius: 5px;
-            text-align: center;
-            font-size: 14px;
-            color: #718096;
-        }
-    </style>
   </head>
   <body>
     <div class='header'>
-      <h1>Application Submitted: Temporary Teacher</h1>
+      <h1>Temporary Teacher Application</h1>
     </div>
     <div class='content'>
+      <p>A new Temporary Teacher Application has been submitted.</p>
       <div class='section'>
-        <p>
-          Dear applicant,
-          <br>
-          Your application to be a temporary teacher has been submitted.
-          <br>
-          Your application reference number is {{ referenceNumber }}.
-        </p>
-        <p>
-          We will review your application.
-          <br>
-          If we need more information or supporting documents, we will contact you using the details you provided.
-        </p>
+        <div class='section-title'>Applicant</div>
+        <div class="field">
+          <span class="field-label">Name:</span>
+          <span class='field-value'>{{ applicant.firstName }}
+            {{#if applicant.middleName}}
+              {{ applicant.middleName }}
+            {{/if}}
+          {{ applicant.lastName }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Date of Birth:</span>
+          <span class='field-value'>{{ applicant.dateOfBirth }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Place of birth:</span>
+          <span class='field-value'>{{ applicant.placeOfBirth }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Nationality:</span>
+          <span class='field-value'>{{ applicant.nationality }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Sex:</span>
+          <span class='field-value'>{{ applicant.sex }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Marital Status:</span>
+          <span class='field-value'>{{ applicant.maritalStatus }}</span>
+        </div>
+        {{#if applicant.nationalIdNumber}}
+          <div class="field">
+            <span class="field-label">National Identification (ID) Number:</span>
+            <span class='field-value'>{{ applicant.nationalIdNumber }}</span>
+          </div>
+        {{/if}}
+        {{#if applicant.passportNumber}}
+          <div class="field">
+            <span class="field-label">Passport Number (#):</span>
+            <span class='field-value'>{{ applicant.passportNumber }}</span>
+          </div>
+        {{/if}}
+        {{#if applicant.nationalInsuranceNumber}}
+          <div class="field">
+            <span class="field-label">National Insurance Number (NIS):</span>
+            <span class='field-value'>{{ applicant.nationalInsuranceNumber }}</span>
+          </div>
+        {{/if}}
       </div>
-    </div>
-    <div class='footer'>
-      <p>
-        Kind regards,
-        <br>
-        Ministry of Education, Technological and Vocational Training
-        <br>
-        Government of Barbados
-      </p>
+      <div class='section'>
+        <div class='section-title'>Barbados Residency Duration</div>
+        <div class="field">
+          <span class="field-label">How long have you lived in Barbados?:</span>
+          <span class='field-value'>{{ barbadosResidencyDuration.residencyDuration }}</span>
+        </div>
+      </div>
+      <div class='section'>
+        <div class='section-title'>Contact</div>
+        <div class="field">
+          <span class="field-label">Address:</span>
+          <span class='field-value'>{{ contact.addressLine1 }}
+            {{#if contact.addressLine2}}
+              {{ contact.addressLine2 }}
+            {{/if}}
+          </span>
+        </div>
+        <div class="field">
+          <span class="field-label">Country:</span>
+          <span class='field-value'>{{ contact.country }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Parish:</span>
+          <span class='field-value'>{{ contact.parish }}</span>
+        </div>
+        {{#if contact.postalCode}}
+          <div class="field">
+            <span class="field-label">Postal Code:</span>
+            <span class='field-value'>{{ contact.postalCode }}</span>
+          </div>
+        {{/if}}
+        <div class="field">
+          <span class="field-label">Email address:</span>
+          <span class='field-value'>{{ contact.emailAddress }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Telephone Number:</span>
+          <span class='field-value'>{{ contact.telephoneNumber }}</span>
+        </div>
+      </div>
+      <div class='section'>
+        <div class='section-title'>Applicant Education</div>
+        <div class="field">
+          <span class="field-label">Name of Institution:</span>
+          <span class='field-value'>{{ applicantEducation.nameOfInstitution }}</span>
+        </div>
+        {{#if applicantEducation.country}}
+          <div class="field">
+            <span class="field-label">Country:</span>
+            <span class='field-value'>{{ applicantEducation.country }}</span>
+          </div>
+        {{/if}}
+        <div class="field">
+          <span class="field-label">Start Year:</span>
+          <span class='field-value'>{{ applicantEducation.startYear }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">End Year:</span>
+          <span class='field-value'>{{ applicantEducation.endYear }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Do you want to add another education experience?:</span>
+          <span class='field-value'>{{ applicantEducation.anotherEducation }}</span>
+        </div>
+      </div>
+      <div class='section'>
+        <div class='section-title'>Applicant Qualification</div>
+        <div class="field">
+          <span class="field-label">Subject:</span>
+          <span class='field-value'>{{ applicantQualification.subject }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Examining Body:</span>
+          <span class='field-value'>{{ applicantQualification.examiningBody }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Year:</span>
+          <span class='field-value'>{{ applicantQualification.year }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Level / Grade Obtained:</span>
+          <span class='field-value'>{{ applicantQualification.levelGrade }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Do you want to add another qualification:</span>
+          <span class='field-value'>{{ applicantQualification.anotherQualification }}</span>
+        </div>
+      </div>
+      <div class='section'>
+        <div class='section-title'>Applicant Work Experience</div>
+        <div class="field">
+          <span class="field-label">Name of employer or organization:</span>
+          <span class='field-value'>{{ applicantWorkExperience.employerName }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Position held:</span>
+          <span class='field-value'>{{ applicantWorkExperience.positionHeld }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">From (year):</span>
+          <span class='field-value'>{{ applicantWorkExperience.fromYear }}</span>
+        </div>
+        {{#if applicantWorkExperience.toYear}}
+          <div class="field">
+            <span class="field-label">To (year):</span>
+            <span class='field-value'>{{ applicantWorkExperience.toYear }}</span>
+          </div>
+        {{/if}}
+        {{#if applicantWorkExperience.currentlyWorking}}
+          <div class="field">
+            <span class="field-label">I am currently working here:</span>
+            <span class='field-value'>{{ applicantWorkExperience.currentlyWorking }}</span>
+          </div>
+        {{/if}}
+        <div class="field">
+          <span class="field-label">Your main tasks:</span>
+          <span class='field-value'>{{ applicantWorkExperience.tasks }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Do you want to add another experience?:</span>
+          <span class='field-value'>{{ applicantWorkExperience.anotherExperience }}</span>
+        </div>
+      </div>
+      <div class='section'>
+        <div class='section-title'>Skills And Experience</div>
+        {{#if skillsAndExperience.athleticsGamesCraftSkills}}
+          <div class="field">
+            <span class="field-label">Athletics, games, or craft skills:</span>
+            <span class='field-value'>{{ skillsAndExperience.athleticsGamesCraftSkills }}</span>
+          </div>
+        {{/if}}
+        {{#if skillsAndExperience.youthCommunityVolunteerGroups}}
+          <div class="field">
+            <span class="field-label">Experience in youth, community, or volunteer groups:</span>
+            <span class='field-value'>{{ skillsAndExperience.youthCommunityVolunteerGroups }}</span>
+          </div>
+        {{/if}}
+        {{#if skillsAndExperience.responsibilityPositions}}
+          <div class="field">
+            <span class="field-label">Positions of responsibility held:</span>
+            <span class='field-value'>{{ skillsAndExperience.responsibilityPositions }}</span>
+          </div>
+        {{/if}}
+        {{#if skillsAndExperience.extraDetails}}
+          <div class="field">
+            <span class="field-label">Anything else relevant to your application?:</span>
+            <span class='field-value'>{{ skillsAndExperience.extraDetails }}</span>
+          </div>
+        {{/if}}
+      </div>
+      <div class='section'>
+        <div class='section-title'>Reference</div>
+        <div class="field">
+          <span class="field-label">Title:</span>
+          <span class='field-value'>{{ reference.title }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">First Name:</span>
+          <span class='field-value'>{{ reference.firstName }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Last Name:</span>
+          <span class='field-value'>{{ reference.lastName }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Address Line 1:</span>
+          <span class='field-value'>{{ reference.addressLine1 }}</span>
+        </div>
+        {{#if reference.addressLine2}}
+          <div class="field">
+            <span class="field-label">Address Line 2:</span>
+            <span class='field-value'>{{ reference.addressLine2 }}</span>
+          </div>
+        {{/if}}
+        <div class="field">
+          <span class="field-label">Country:</span>
+          <span class='field-value'>{{ reference.country }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Parish:</span>
+          <span class='field-value'>{{ reference.parish }}</span>
+        </div>
+        {{#if reference.postalCode}}
+          <div class="field">
+            <span class="field-label">Postal code:</span>
+            <span class='field-value'>{{ reference.postalCode }}</span>
+          </div>
+        {{/if}}
+        <div class="field">
+          <span class="field-label">Occupation:</span>
+          <span class='field-value'>{{ reference.occupation }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Email address:</span>
+          <span class='field-value'>{{ reference.emailAddress }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Telephone Number:</span>
+          <span class='field-value'>{{ reference.telephoneNumber }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Do you want to add another reference?:</span>
+          <span class='field-value'>{{ reference.anotherReference }}</span>
+        </div>
+      </div>
+      <div class='section'>
+        <div class='section-title'>Documents</div>
+        <div class="field">
+          <span class="field-label">Upload your certificates, diplomas, and transcripts:</span>
+          <span class='field-value'>{{ documents.certificateDiplomaTranscript }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Upload your two testimonials:</span>
+          <span class='field-value'>{{ documents.testimonials }}</span>
+        </div>
+      </div>
+      <div class="footer">
+        <p>
+          <strong>Application ID:</strong> {{ submissionId }}
+        </p>
+        <p>{{ Additional Information }}</p>
+        <p>Please review this application and follow up as necessary.</p>
+      </div>
     </div>
   </body>
 </html>
