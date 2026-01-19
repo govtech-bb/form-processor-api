@@ -139,6 +139,11 @@ export type BirthDeclaration = {
   'mother.stillborn'?: number;
   'mother.stillAlive'?: number;
 
+  // Informant information
+  'informant.relation'?: 'PARENT' | InformantRelation;
+  'informant.parentsMarried'?: 'YES' | 'NO';
+  'informant.phoneNo'?: string;
+
   // Father information
   'father.detailsNotAvailable'?: boolean;
   'father.reason'?: string;

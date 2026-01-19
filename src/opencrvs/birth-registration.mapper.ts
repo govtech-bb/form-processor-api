@@ -42,6 +42,8 @@ export type BirthRegistrationFormData = {
     liveBorn?: string;
     stillBorn?: string;
     totalStillAlive?: string;
+    bornAlive?: string;
+    stillborn?: string;
   };
 
   mother: {
@@ -55,6 +57,7 @@ export type BirthRegistrationFormData = {
     idNumber?: string; // National ID in format XXXXXX-XXXX
     passportNumber?: string;
     occupation: string;
+    telephoneNumber?: string;
   };
 
   child: {
@@ -63,9 +66,6 @@ export type BirthRegistrationFormData = {
     lastName: string;
     dateOfBirth: string;
     sexAtBirth: 'male' | 'female';
-    bornAlive?: string;
-    stillborn?: string;
-    totalStillAlive?: string;
   };
 
   order: {
@@ -149,9 +149,14 @@ export class BirthRegistrationMapper {
         config.parishId,
       ),
       'mother.occupation': data.mother.occupation,
-      'mother.bornAlive': Number(data.child.bornAlive),
-      'mother.stillborn': Number(data.child.stillborn),
-      'mother.stillAlive': Number(data.child.totalStillAlive),
+      'mother.bornAlive': Number(data.birth.bornAlive),
+      'mother.stillborn': Number(data.birth.stillborn),
+      'mother.stillAlive': Number(data.birth.totalStillAlive),
+
+      // Informant information
+      'informant.relation': (data.marriageStatus === 'yes') ? 'PARENT' : 'OTHER',
+      'informant.parentsMarried': (data.marriageStatus === 'yes') ? 'YES' : 'NO',
+      'informant.phoneNo': data.mother.telephoneNumber,
 
       // Father information (conditional)
       ...this.mapFatherDetails(data, config),
@@ -362,16 +367,16 @@ export class BirthRegistrationMapper {
     'mother.passport'?: string;
     'mother.nationalRegistrationNumber'?: string;
   } {
-    if (mother.passportNumber) {
-      return {
-        'mother.idType': 'PASSPORT',
-        'mother.passport': mother.passportNumber,
-      };
-    }
     if (mother.idNumber) {
       return {
         'mother.idType': 'NATIONAL_REGISTRATION_NUMBER',
         'mother.nationalRegistrationNumber': mother.idNumber,
+      };
+    }
+    if (mother.passportNumber) {
+      return {
+        'mother.idType': 'PASSPORT',
+        'mother.passport': mother.passportNumber,
       };
     }
 
@@ -393,16 +398,16 @@ export class BirthRegistrationMapper {
     'father.passport'?: string;
     'father.nationalRegistrationNumber'?: string;
   } {
-    if (father.passportNumber) {
-      return {
-        'father.idType': 'PASSPORT',
-        'father.passport': father.passportNumber,
-      };
-    }
     if (father.idNumber) {
       return {
         'father.idType': 'NATIONAL_REGISTRATION_NUMBER',
         'father.nationalRegistrationNumber': father.idNumber,
+      };
+    }
+    if (father.passportNumber) {
+      return {
+        'father.idType': 'PASSPORT',
+        'father.passport': father.passportNumber,
       };
     }
 
