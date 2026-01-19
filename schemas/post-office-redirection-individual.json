@@ -208,14 +208,27 @@
       ]
     },
     {
-      "name": "anyMinorDependents",
-      "type": "string",
-      "label": "Are there any minor dependents?",
+      "name": "dependents",
+      "type": "object",
       "required": true,
-      "validations": {
-        "regex": "^(yes|no)$",
-        "message": "Must select an option"
-      }
+      "fields": [
+        {
+          "name": "anyMinorDependents",
+          "type": "string",
+          "label": "Are there any minor dependents?",
+          "required": true,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
+        },
+        {
+          "name": "numberOfMinors",
+          "type": "string",
+          "label": "How many minor dependents need their mail sent to the new address?",
+          "required": false
+        }
+      ]
     },
     {
       "name": "minorDetails",
