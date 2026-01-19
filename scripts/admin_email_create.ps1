@@ -36,7 +36,7 @@ function ConvertFrom-Field-To-HBS
 
 		$fieldHbs = @"
 			<div class="field">
-				<span class="field-label"> $($fieldInfo.label) </span>
+				<span class="field-label"> $($fieldInfo.label): </span>
 				<span class='field-value'> {{$fieldValue}} </span>
 			</div>
 "@
