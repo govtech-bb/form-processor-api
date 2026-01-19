@@ -62,19 +62,9 @@
         },
         {
           "name": "sex",
-          "type": "select",
+          "type": "string",
           "label": "Sex",
           "required": true,
-          "options": [
-            {
-              "label": "Male",
-              "value": "male"
-            },
-            {
-              "label": "Female",
-              "value": "female"
-            }
-          ],
           "validations": {
             "regex": "^(male|female)$",
             "message": "Must select a valid sex"
@@ -82,23 +72,9 @@
         },
         {
           "name": "martialStatus",
-          "type": "select",
+          "type": "string",
           "label": "Martial status",
           "required": true,
-          "options": [
-            {
-              "label": "Single",
-              "value": "single"
-            },
-            {
-              "label": "Married",
-              "value": "married"
-            },
-            {
-              "label": "Divorced",
-              "value": "divorced"
-            }
-          ],
           "validations": {
             "regex": "^(single|married|divorced)$",
             "message": "Must select a martial status"
@@ -167,70 +143,29 @@
           "type": "select",
           "label": "Country",
           "required": true,
-          "options": [
-            {
-              "label": "Barbados",
-              "value": "barbados"
-            }
-          ]
+          "validations": {
+            "regex": "^barbados$"
+          }
         },
         {
           "name": "parish",
-          "type": "select",
+          "type": "string",
           "label": "Parish",
           "required": true,
-          "options": [
-            {
-              "value": "christ-church",
-              "label": "Christ Church"
-            },
-            {
-              "value": "st-andrew",
-              "label": "St Andrew"
-            },
-            {
-              "value": "st-george",
-              "label": "St George"
-            },
-            {
-              "value": "st-james",
-              "label": "St James"
-            },
-            {
-              "value": "st-john",
-              "label": "St John"
-            },
-            {
-              "value": "st-joseph",
-              "label": "St Joseph"
-            },
-            {
-              "value": "st-lucy",
-              "label": "St Lucy"
-            },
-            {
-              "value": "st-michael",
-              "label": "St Michael"
-            },
-            {
-              "value": "st-peter",
-              "label": "St Peter"
-            },
-            {
-              "value": "st-philip",
-              "label": "St Philip"
-            },
-            {
-              "value": "st-thomas",
-              "label": "St Question, so for boolean Thomas"
-            }
-          ]
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
         },
         {
-          "name": "postcode",
+          "name": "postalCode",
           "type": "string",
-          "label": "Postcode",
-          "required": false
+          "label": "Postal Code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
         },
         {
           "name": "emailAddress",
@@ -242,11 +177,7 @@
           "name": "telephoneNumber",
           "type": "string",
           "label": "Telephone Number",
-          "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
-          }
+          "required": true
         }
       ]
     },
@@ -288,18 +219,12 @@
         {
           "name": "anotherEducation",
           "label": "Do you want to add another education experience?",
-          "type": "boolean",
+          "type": "string",
           "required": true,
-          "options": [
-            {
-              "label": "Yes",
-              "value": "yes"
-            },
-            {
-              "label": "No",
-              "value": "no"
-            }
-          ]
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
         }
       ]
     },
@@ -338,12 +263,11 @@
         {
           "name": "anotherQualification",
           "label": "Do you want to add another qualification",
-          "type": "boolean",
+          "type": "string",
           "required": true,
-          "options": [
-            "Yes",
-            "No"
-          ]
+          "validations": {
+            "regex": "^(yes|no)$"
+          }
         }
       ]
     },
@@ -397,12 +321,12 @@
         {
           "name": "anotherExperience",
           "required": true,
-          "type": "boolean",
+          "type": "string",
           "label": "Do you want to add another experience?",
-          "options": [
-            "Yes",
-            "No"
-          ]
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
         }
       ]
     },
@@ -446,21 +370,11 @@
           "name": "title",
           "label": "Title",
           "required": true,
-          "type": "select",
-          "options": [
-            {
-              "label": "Mr",
-              "value": "mr"
-            },
-            {
-              "label": "Mrs",
-              "value": "mrs"
-            },
-            {
-              "label": "Miss",
-              "value": "miss"
-            }
-          ]
+          "type": "string",
+          "validations": {
+            "regex": "^(mr|ms|mrs)$",
+            "message": "Must select a valid title"
+          }
         },
         {
           "name": "firstName",
@@ -496,73 +410,33 @@
         },
         {
           "name": "country",
-          "type": "select",
+          "type": "string",
           "label": "Country",
           "required": true,
-          "options": [
-            {
-              "label": "Barbados",
-              "value": "barbados"
-            }
-          ]
+          "validations": {
+            "regex": "^(barbados)$",
+            "message": "Must select an option"
+          }
         },
         {
           "name": "parish",
           "type": "select",
           "label": "Parish",
           "required": true,
-          "options": [
-            {
-              "value": "christ-church",
-              "label": "Christ Church"
-            },
-            {
-              "value": "st-andrew",
-              "label": "St Andrew"
-            },
-            {
-              "value": "st-george",
-              "label": "St George"
-            },
-            {
-              "value": "st-james",
-              "label": "St James"
-            },
-            {
-              "value": "st-john",
-              "label": "St John"
-            },
-            {
-              "value": "st-joseph",
-              "label": "St Joseph"
-            },
-            {
-              "value": "st-lucy",
-              "label": "St Lucy"
-            },
-            {
-              "value": "st-michael",
-              "label": "St Michael"
-            },
-            {
-              "value": "st-peter",
-              "label": "St Peter"
-            },
-            {
-              "value": "st-philip",
-              "label": "St Philip"
-            },
-            {
-              "value": "st-thomas",
-              "label": "St Question, so for boolean Thomas"
-            }
-          ]
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
         },
         {
-          "name": "postcode",
+          "name": "postalCode",
           "type": "string",
-          "label": "Postcode",
-          "required": false
+          "label": "Postal code",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
         },
         {
           "name": "occupation",
@@ -580,21 +454,17 @@
           "name": "telephoneNumber",
           "type": "string",
           "label": "Telephone Number",
-          "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
-          }
+          "required": true
         },
         {
           "name": "anotherReference",
           "required": true,
-          "type": "boolean",
+          "type": "string",
           "label": "Do you want to add another reference?",
-          "options": [
-            "Yes",
-            "No"
-          ]
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select a valid option"
+          }
         }
       ]
     },
@@ -607,7 +477,7 @@
           "name": "certificateDiplomaTranscript",
           "label": "Upload your certificates, diplomas, and transcripts",
           "required": true,
-          "type": "object"
+          "type": "string"
         },
         {
           "name": "testimonials",
@@ -615,15 +485,7 @@
           "required": true,
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "file1": {
-                "type": "file"
-              },
-              "file2": {
-                "type": "file"
-              }
-            }
+            "type": "string"
           }
         }
       ]
