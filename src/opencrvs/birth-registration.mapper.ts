@@ -63,6 +63,9 @@ export type BirthRegistrationFormData = {
     lastName: string;
     dateOfBirth: string;
     sexAtBirth: 'male' | 'female';
+    bornAlive?: string;
+    stillborn?: string;
+    totalStillAlive?: string;
   };
 
   order: {
@@ -136,7 +139,7 @@ export class BirthRegistrationMapper {
       // Mother information (always provided)
       'mother.detailsNotAvailable': false,
       'mother.name': this.mapMotherName(data.mother),
-      'mother.age': this.calculateAge(data.mother, data.child.dateOfBirth),
+      'mother.age': data.mother.idNumber ? this.calculateAgeFromNRN(data.mother.idNumber) : this.calculateAge(data.mother, data.child.dateOfBirth),
       'mother.maritalStatus': this.mapMaritalStatus(data.marriageStatus),
       'mother.nationality': config.defaultNationality ?? 'BRB',
       ...this.mapMotherId(data.mother),
@@ -146,6 +149,9 @@ export class BirthRegistrationMapper {
         config.parishId,
       ),
       'mother.occupation': data.mother.occupation,
+      'mother.bornAlive': Number(data.child.bornAlive),
+      'mother.stillborn': Number(data.child.stillborn),
+      'mother.stillAlive': Number(data.child.totalStillAlive),
 
       // Father information (conditional)
       ...this.mapFatherDetails(data, config),
@@ -354,11 +360,18 @@ export class BirthRegistrationMapper {
   private mapMotherId(mother: BirthRegistrationFormData['mother']): {
     'mother.idType'?: IdType;
     'mother.passport'?: string;
+    'mother.nationalRegistrationNumber'?: string;
   } {
     if (mother.passportNumber) {
       return {
         'mother.idType': 'PASSPORT',
         'mother.passport': mother.passportNumber,
+      };
+    }
+    if (mother.idNumber) {
+      return {
+        'mother.idType': 'NATIONAL_REGISTRATION_NUMBER',
+        'mother.nationalRegistrationNumber': mother.idNumber,
       };
     }
 
@@ -378,11 +391,18 @@ export class BirthRegistrationMapper {
   ): {
     'father.idType'?: IdType;
     'father.passport'?: string;
+    'father.nationalRegistrationNumber'?: string;
   } {
     if (father.passportNumber) {
       return {
         'father.idType': 'PASSPORT',
         'father.passport': father.passportNumber,
+      };
+    }
+    if (father.idNumber) {
+      return {
+        'father.idType': 'NATIONAL_REGISTRATION_NUMBER',
+        'father.nationalRegistrationNumber': father.idNumber,
       };
     }
 
@@ -430,7 +450,7 @@ export class BirthRegistrationMapper {
     return {
       'father.detailsNotAvailable': false,
       'father.name': this.mapFatherName(father),
-      'father.age': this.calculateAge(father, formData.child.dateOfBirth),
+      'father.age': father.idNumber ? this.calculateAgeFromNRN(father.idNumber) : this.calculateAge(father, formData.child.dateOfBirth),
       'father.nationality': config.defaultNationality ?? 'BRB',
       ...this.mapFatherId(father),
       'father.occupation': father.occupation,
@@ -445,6 +465,40 @@ export class BirthRegistrationMapper {
           }),
     };
   }
+
+  /**
+   * Calculates age from a National Registration Number (NRN) in format YYMMDD-XXXX
+   * @param nrn The National Registration Number (e.g., "920320-0016")
+   * @returns The age in years
+  */
+  private calculateAgeFromNRN(nrn: string): { age: number; asOfDateRef: string } {
+    // Extract the date parts from NRN
+    const year = parseInt(nrn.substring(0, 2));
+    const month = parseInt(nrn.substring(2, 4)) - 1; // JavaScript months are 0-indexed
+    const day = parseInt(nrn.substring(4, 6));
+    
+    // Handle Y2K: Assume 1900s for years 00-20, 2000s for 21-99
+    const fullYear = year <= 20 ? 2000 + year : 1900 + year;
+    
+    // Create date objects
+    const birthDate = new Date(fullYear, month, day);
+    const today = new Date();
+    
+    // Calculate age
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    // Adjust age if birthday hasn't occurred yet this year
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    
+    return {
+      age,
+      asOfDateRef: 'child.dob'
+    };
+  }
+
 
   /**
    * Create annotation object for OpenCRVS

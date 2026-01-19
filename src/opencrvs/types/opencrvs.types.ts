@@ -72,6 +72,7 @@ export type IdType =
   | 'NATIONAL_ID'
   | 'PASSPORT'
   | 'BIRTH_REGISTRATION_NUMBER'
+  | 'NATIONAL_REGISTRATION_NUMBER'
   | 'NONE';
 
 /**
@@ -134,6 +135,9 @@ export type BirthDeclaration = {
   'mother.brn'?: string;
   'mother.address'?: DomesticAddress;
   'mother.occupation'?: string;
+  'mother.bornAlive'?: number
+  'mother.stillborn'?: number;
+  'mother.stillAlive'?: number;
 
   // Father information
   'father.detailsNotAvailable'?: boolean;

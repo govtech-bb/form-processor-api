@@ -55,9 +55,25 @@
         {
           "name": "age",
           "type": "string",
-          "required": true,
+          "required": {
+            "field": "idNumber",
+            "value": [null, ""],
+            "message": "Age is required when no ID number is provided"
+          },
           "validations": {
-            "min": 1
+            "condition": {
+              "field": "idNumber",
+              "operator": "notIn",
+              "value": [null, ""],
+              "then": {
+                "min": 0,
+                "message": "Age not required"
+              },
+              "else": {
+                "min": 1,
+                "message": "Age is required"
+              }
+            }
           }
         },
         {
@@ -132,21 +148,43 @@
           "name": "parish",
           "type": "string",
           "label": "Parish",
-          "required": true,
+          "required": {
+            "field": "birth.placeOfBirth",
+            "value": ["residential", "other"],
+            "message": "Parish is required for residential/other birth locations"
+          },
           "validations": {
-            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
-            "message": "Must select a valid parish"
+            "condition": {
+              "field": "birth.placeOfBirth",
+              "operator": "in",
+              "value": ["residential", "other"],
+              "then": {
+                "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+                "message": "Must select a valid parish"
+              }
+            }
           }
         },
         {
           "name": "streetAddress",
           "type": "string",
           "label": "Street Address",
-          "required": true,
+          "required": {
+            "field": "birth.placeOfBirth",
+            "value": ["residential", "other"],
+            "message": "Street address is required for residential/other birth locations"
+          },
           "validations": {
-            "min": 5,
-            "max": 200,
-            "message": "Address must be at least 5 characters"
+            "condition": {
+              "field": "birth.placeOfBirth",
+              "operator": "in",
+              "value": ["residential", "other"],
+              "then": {
+                "min": 5,
+                "max": 200,
+                "message": "Address must be at least 5 characters"
+              }
+            }
           }
         },
         {
