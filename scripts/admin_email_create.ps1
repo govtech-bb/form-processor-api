@@ -89,6 +89,7 @@ function ConvertFrom-Section-To-HBS
 # Obtain title from FormId
 
 $title = $FormId.Replace("-", " ")
+$title = $title.Replace(" application", "")
 $title = (Get-Culture).TextInfo.ToTitleCase($title)
 
 # Set files
