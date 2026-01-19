@@ -66,6 +66,9 @@ export type BirthRegistrationFormData = {
     lastName: string;
     dateOfBirth: string;
     sexAtBirth: 'male' | 'female';
+    bornAlive?: string;
+    stillborn?: string;
+    totalStillAlive?: string;
   };
 
   order: {
@@ -379,6 +382,12 @@ export class BirthRegistrationMapper {
         'mother.passport': mother.passportNumber,
       };
     }
+    if (mother.idNumber) {
+      return {
+        'mother.idType': 'NATIONAL_REGISTRATION_NUMBER',
+        'mother.nationalRegistrationNumber': mother.idNumber,
+      };
+    }
 
     // OpenCRVS Barbados doesn't support national ID (nid field)
     // so we set idType to NONE if no passport is provided
@@ -408,6 +417,12 @@ export class BirthRegistrationMapper {
       return {
         'father.idType': 'PASSPORT',
         'father.passport': father.passportNumber,
+      };
+    }
+    if (father.idNumber) {
+      return {
+        'father.idType': 'NATIONAL_REGISTRATION_NUMBER',
+        'father.nationalRegistrationNumber': father.idNumber,
       };
     }
 
@@ -497,7 +512,6 @@ export class BirthRegistrationMapper {
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
       age--;
     }
-
     return {
       age,
       asOfDateRef: 'child.dob'
