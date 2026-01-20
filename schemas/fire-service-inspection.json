@@ -118,8 +118,16 @@
       "type": "email",
       "config": {
         "to": "{{db:request-a-fire-service-inspection:admin_email}}",
-        "subject": "New Birth Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "subject": "New Fire Service Inspection Request - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "request-a-fire-service-inspection"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Fire Service Inspection Request - Submission Received",
+        "template": "fire-service-inspection-receipt"
       }
     }
   ]

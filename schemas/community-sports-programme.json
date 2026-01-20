@@ -298,6 +298,14 @@
         "subject": "New Community Sports Programme Registration - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "community-sports-registration"
       }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.email}}",
+        "subject": "Community Sports Programme Registration - Submission Received",
+        "template": "community-sports-programme-receipt"
+      }
     }
   ]
 }

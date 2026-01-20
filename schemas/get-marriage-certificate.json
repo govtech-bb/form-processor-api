@@ -343,6 +343,14 @@
         "subject": "New Marriage Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "marriage-certificate"
       }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Marriage Certificate Application - Submission Received",
+        "template": "marriage-certificate-receipt"
+      }
     }
   ]
 }

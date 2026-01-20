@@ -151,6 +151,14 @@
         "subject": "New Request to Reserve Society Name - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "reserve-society-name"
       }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Reserve Society Name - Submission Received",
+        "template": "reserve-society-name-receipt"
+      }
     }
   ]
 }
