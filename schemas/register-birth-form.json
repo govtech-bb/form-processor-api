@@ -55,25 +55,9 @@
         {
           "name": "age",
           "type": "string",
-          "required": {
-            "field": "idNumber",
-            "value": [null, ""],
-            "message": "Age is required when no ID number is provided"
-          },
+          "required": false,
           "validations": {
-            "condition": {
-              "field": "idNumber",
-              "operator": "notIn",
-              "value": [null, ""],
-              "then": {
-                "min": 0,
-                "message": "Age not required"
-              },
-              "else": {
-                "min": 1,
-                "message": "Age is required"
-              }
-            }
+            "max": 3
           }
         },
         {
@@ -88,9 +72,8 @@
         {
           "name": "addressLine1",
           "type": "string",
-          "required": true,
+          "required": false,
           "validations": {
-            "min": 2,
             "max": 500
           }
         },
@@ -278,9 +261,8 @@
         {
           "name": "addressLine1",
           "type": "string",
-          "required": true,
+          "required": false,
           "validations": {
-            "min": 2,
             "max": 500
           }
         },
