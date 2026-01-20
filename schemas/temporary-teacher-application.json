@@ -183,152 +183,99 @@
     },
     {
       "name": "applicantEducation",
-      "type": "object",
+      "type": "array",
+      "label": "Applicant Information",
       "required": true,
-      "fields": [
-        {
-          "name": "nameOfInstitution",
-          "type": "string",
-          "label": "Name of Institution",
-          "required": true
-        },
-        {
-          "name": "country",
-          "type": "string",
-          "label": "Country",
-          "required": false
-        },
-        {
-          "name": "startYear",
-          "label": "Start Year",
-          "type": "number",
-          "required": true,
-          "validations": {
-            "min": 1930
-          }
-        },
-        {
-          "name": "endYear",
-          "label": "End Year",
-          "type": "number",
-          "required": true,
-          "validations": {
-            "min": 1930
-          }
-        },
-        {
-          "name": "anotherEducation",
-          "label": "Do you want to add another education experience?",
-          "type": "string",
-          "required": true,
-          "validations": {
-            "regex": "^(yes|no)$",
-            "message": "Must select an option"
+      "items": {
+        "type": "object",
+        "properties": {
+          "nameOfInstitution": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string",
+            "required": false
+          },
+          "startYear": {
+            "type": "number",
+            "validations": {
+              "min": 1930
+            }
+          },
+          "endYear": {
+            "type": "number",
+            "validations": {
+              "min": 1930
+            }
           }
         }
-      ]
+      }
     },
     {
-      "name": "applicantQualification",
-      "type": "object",
+      "name": "qualifications",
+      "type": "array",
+      "label": "Applicant Qualifications",
       "required": true,
-      "fields": [
-        {
-          "name": "subject",
-          "label": "Subject",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "examiningBody",
-          "label": "Examining Body",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "year",
-          "label": "Year",
-          "type": "number",
-          "required": true,
-          "validations": {
-            "min": 1930
-          }
-        },
-        {
-          "name": "levelGrade",
-          "label": "Level / Grade Obtained",
-          "type": "string",
-          "required": true
-        },
-        {
-          "name": "anotherQualification",
-          "label": "Do you want to add another qualification",
-          "type": "string",
-          "required": true,
-          "validations": {
-            "regex": "^(yes|no)$"
+      "items": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string"
+          },
+          "examiningBody": {
+            "type": "string",
+            "required": true
+          },
+          "year": {
+            "type": "number",
+            "validations": {
+              "min": 1930
+            }
+          },
+          "levelGrade": {
+            "type": "string",
+            "required": true
           }
         }
-      ]
+      }
     },
     {
-      "name": "applicantWorkExperience",
+      "name": "workExperiences",
       "required": true,
-      "type": "object",
-      "fields": [
-        {
-          "name": "employerName",
-          "label": "Name of employer or organization",
+      "type": "array",
+      "label": "Applicant Work Experience",
+      "items": {
+        "employerName": {
           "type": "string",
           "required": true
         },
-        {
-          "name": "positionHeld",
-          "label": "Position held",
+        "positionHeld": {
           "type": "string",
           "required": true
         },
-        {
-          "name": "fromYear",
-          "label": "From (year)",
+        "fromYear": {
           "type": "number",
           "required": true,
           "validations": {
             "min": 1930
           }
         },
-        {
-          "name": "toYear",
-          "label": "To (year)",
+        "toYear": {
           "type": "number",
           "required": false,
           "validations": {
             "min": 1930
           }
         },
-        {
-          "name": "currentlyWorking",
-          "label": "I am currently working here",
+        "currentlyWorking": {
           "type": "boolean",
           "required": false
         },
-        {
-          "name": "tasks",
-          "label": "Your main tasks",
+        "tasks": {
           "required": true,
           "type": "string"
-        },
-        {
-          "name": "anotherExperience",
-          "required": true,
-          "type": "string",
-          "label": "Do you want to add another experience?",
-          "validations": {
-            "regex": "^(yes|no)$",
-            "message": "Must select an option"
-          }
         }
-      ]
+      }
     },
     {
       "name": "skillsAndExperience",
@@ -362,13 +309,12 @@
       ]
     },
     {
-      "name": "reference",
+      "name": "references",
       "required": true,
-      "type": "object",
-      "fields": [
-        {
-          "name": "title",
-          "label": "Title",
+      "type": "array",
+      "label": "Tell us about your reference",
+      "items": {
+        "title": {
           "required": true,
           "type": "string",
           "validations": {
@@ -376,97 +322,67 @@
             "message": "Must select a valid title"
           }
         },
-        {
-          "name": "firstName",
+        "firstName": {
           "type": "string",
-          "label": "First Name",
           "required": true,
           "validations": {
             "min": 2,
             "max": 50
           }
         },
-        {
-          "name": "lastName",
+        "lastName": {
           "type": "string",
-          "label": "Last Name",
           "required": true,
           "validations": {
             "min": 2,
             "max": 50
           }
         },
-        {
-          "name": "addressLine1",
+        "addressLine1": {
           "type": "string",
-          "label": "Address Line 1",
           "required": true
         },
-        {
-          "name": "addressLine2",
+        "addressLine2": {
           "type": "string",
-          "label": "Address Line 2",
           "required": false
         },
-        {
-          "name": "country",
+        "country": {
           "type": "string",
-          "label": "Country",
           "required": true,
           "validations": {
             "regex": "^(barbados)$",
             "message": "Must select an option"
           }
         },
-        {
-          "name": "parish",
+        "parish": {
           "type": "select",
-          "label": "Parish",
           "required": true,
           "validations": {
             "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
             "message": "Must select a valid parish"
           }
         },
-        {
-          "name": "postalCode",
+        "postalCode": {
           "type": "string",
-          "label": "Postal code",
           "required": false,
           "validations": {
             "regex": "^BB\\d{5}$",
             "message": "Enter a valid postal code (e.g., BB17004)"
           }
         },
-        {
-          "name": "occupation",
-          "label": "Occupation",
+        "occupation": {
           "required": true,
           "type": "string"
         },
-        {
-          "name": "emailAddress",
+        "emailAddress": {
           "type": "email",
-          "label": "Email address",
           "required": true
         },
-        {
-          "name": "telephoneNumber",
+        "telephoneNumber": {
           "type": "string",
-          "label": "Telephone Number",
           "required": true
-        },
-        {
-          "name": "anotherReference",
-          "required": true,
-          "type": "string",
-          "label": "Do you want to add another reference?",
-          "validations": {
-            "regex": "^(yes|no)$",
-            "message": "Must select a valid option"
-          }
         }
-      ]
+      }
     },
     {
       "name": "documents",
