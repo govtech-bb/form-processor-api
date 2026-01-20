@@ -70,9 +70,9 @@
           }
         },
         {
-          "name": "addressLine1",
+          "name": "streetAddress",
           "type": "string",
-          "required": false,
+          "required": true,
           "validations": {
             "max": 500
           }
@@ -259,10 +259,11 @@
           }
         },
         {
-          "name": "addressLine1",
+          "name": "streetAddress",
           "type": "string",
-          "required": false,
+          "required": true,
           "validations": {
+            "min": 2,
             "max": 500
           }
         },
