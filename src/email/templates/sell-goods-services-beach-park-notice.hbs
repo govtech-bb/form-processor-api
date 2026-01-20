@@ -36,6 +36,7 @@
           <span class='field-label'>Name:</span>
           <span class='field-value'>{{applicant.title}}
             {{applicant.firstName}}
+            {{#if applicant.middleName}}{{applicant.middleName}}{{/if}}
             {{applicant.lastName}}</span>
         </div>
         <div class='field'>
@@ -43,31 +44,159 @@
           <span class='field-value'>{{applicant.dateOfBirth}}</span>
         </div>
         <div class='field'>
-          <span class='field-label'>ID Number:</span>
-          <span class='field-value'>{{applicant.idNumber}}</span>
+          <span class='field-label'>Nationality:</span>
+          <span class='field-value'>{{applicant.nationality}}</span>
         </div>
+        {{#if applicant.idNumber}}
+          <div class='field'>
+            <span class='field-label'>ID Number:</span>
+            <span class='field-value'>{{applicant.idNumber}}</span>
+          </div>
+        {{/if}}
         {{#if applicant.passportNumber}}
           <div class='field'>
             <span class='field-label'>Passport Number:</span>
             <span class='field-value'>{{applicant.passportNumber}}</span>
           </div>
         {{/if}}
-        {{#if applicant.email}}
+        <div class='field'>
+          <span class='field-label'>Email:</span>
+          <span class='field-value'>{{applicant.email}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Phone Number:</span>
+          <span class='field-value'>{{applicant.telephoneNumber}}</span>
+        </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Applicant Address</div>
+        <div class='field'>
+          <span class='field-label'>Address Line 1:</span>
+          <span class='field-value'>{{applicant.addressLine1}}</span>
+        </div>
+        {{#if applicant.addressLine2}}
           <div class='field'>
-            <span class='field-label'>Email:</span>
-            <span class='field-value'>{{applicant.email}}</span>
+            <span class='field-label'>Address Line 2:</span>
+            <span class='field-value'>{{applicant.addressLine2}}</span>
           </div>
         {{/if}}
-        {{#if applicant.email}}
+        <div class='field'>
+          <span class='field-label'>Parish:</span>
+          <span class='field-value'>{{applicant.parish}}</span>
+        </div>
+        {{#if applicant.postalCode}}
           <div class='field'>
-            <span class='field-label'>Email:</span>
-            <span class='field-value'>{{applicant.email}}</span>
+            <span class='field-label'>Postal Code:</span>
+            <span class='field-value'>{{applicant.postalCode}}</span>
           </div>
         {{/if}}
-        {{#if applicant.telephoneNumber}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Selling Details</div>
+        <div class='field'>
+          <span class='field-label'>Selling:</span>
+          <span class='field-value'>{{selling.goodsOrServices}}</span>
+        </div>
+        {{#if selling.manufacturingLocation}}
           <div class='field'>
-            <span class='field-label'>Phone Number:</span>
-            <span class='field-value'>{{applicant.telephoneNumber}}</span>
+            <span class='field-label'>Manufacturing Location:</span>
+            <span class='field-value'>{{selling.manufacturingLocation}}</span>
+          </div>
+        {{/if}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Business Information</div>
+        <div class='field'>
+          <span class='field-label'>Description of Goods/Services:</span>
+          <span class='field-value'>{{business.descriptionOfGoodsOrServices}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Intended Place of Business:</span>
+          <span class='field-value'>{{business.intendedPlaceOfDoingBusiness}}</span>
+        </div>
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Professional Referee</div>
+        <div class='field'>
+          <span class='field-label'>Name:</span>
+          <span class='field-value'>{{professionalReferee.firstName}}
+            {{professionalReferee.lastName}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Relationship:</span>
+          <span class='field-value'>{{professionalReferee.relationship}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Email:</span>
+          <span class='field-value'>{{professionalReferee.email}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Phone Number:</span>
+          <span class='field-value'>{{professionalReferee.telephoneNumber}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Address Line 1:</span>
+          <span class='field-value'>{{professionalReferee.addressLine1}}</span>
+        </div>
+        {{#if professionalReferee.addressLine2}}
+          <div class='field'>
+            <span class='field-label'>Address Line 2:</span>
+            <span class='field-value'>{{professionalReferee.addressLine2}}</span>
+          </div>
+        {{/if}}
+        <div class='field'>
+          <span class='field-label'>Parish:</span>
+          <span class='field-value'>{{professionalReferee.parish}}</span>
+        </div>
+        {{#if professionalReferee.postcode}}
+          <div class='field'>
+            <span class='field-label'>Postcode:</span>
+            <span class='field-value'>{{professionalReferee.postcode}}</span>
+          </div>
+        {{/if}}
+      </div>
+
+      <div class='section'>
+        <div class='section-title'>Personal Referee</div>
+        <div class='field'>
+          <span class='field-label'>Name:</span>
+          <span class='field-value'>{{personalReferee.firstName}}
+            {{personalReferee.lastName}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Relationship:</span>
+          <span class='field-value'>{{personalReferee.relationship}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Email:</span>
+          <span class='field-value'>{{personalReferee.email}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Phone Number:</span>
+          <span class='field-value'>{{personalReferee.telephoneNumber}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>Address Line 1:</span>
+          <span class='field-value'>{{personalReferee.addressLine1}}</span>
+        </div>
+        {{#if personalReferee.addressLine2}}
+          <div class='field'>
+            <span class='field-label'>Address Line 2:</span>
+            <span class='field-value'>{{personalReferee.addressLine2}}</span>
+          </div>
+        {{/if}}
+        <div class='field'>
+          <span class='field-label'>Parish:</span>
+          <span class='field-value'>{{personalReferee.parish}}</span>
+        </div>
+        {{#if personalReferee.postcode}}
+          <div class='field'>
+            <span class='field-label'>Postcode:</span>
+            <span class='field-value'>{{personalReferee.postcode}}</span>
           </div>
         {{/if}}
       </div>
@@ -75,7 +204,7 @@
       <div class='footer'>
         <p><strong>Submission ID:</strong> {{submissionId}}</p>
         <p>This is an automated notification from the System.</p>
-        <p><em>Please review and process this address change request.</em></p>
+        <p><em>Please review and process this request.</em></p>
       </div>
     </div>
   </body>

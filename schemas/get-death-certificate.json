@@ -269,6 +269,14 @@
         "subject": "New Death Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "death-certificate"
       }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Death Certificate Application - Submission Received",
+        "template": "death-certificate-receipt"
+      }
     }
   ]
 }

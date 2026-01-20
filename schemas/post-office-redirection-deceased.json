@@ -263,6 +263,14 @@
         "subject": "New Request to redirect mail for a Deceased Person - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "post-office-redirection-notice"
       }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Deceased Mail Redirection - Submission Received",
+        "template": "post-office-redirection-deceased-receipt"
+      }
     }
   ]
 }

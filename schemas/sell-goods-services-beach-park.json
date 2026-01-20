@@ -383,6 +383,14 @@
         "subject": "New Request to sell good or services at a beach or park - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "sell-goods-services-beach-park-notice"
       }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Sell Goods/Services at Beach or Park - Submission Received",
+        "template": "sell-goods-services-beach-park-receipt"
+      }
     }
   ]
 }
