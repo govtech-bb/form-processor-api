@@ -60,6 +60,31 @@
         "subject": "New Exit Survey Submission - {{formData.difficultyRating}} Experience",
         "template": "exit-survey"
       }
+    },
+    {
+      "type": "google-sheets",
+      "config": {
+        "spreadsheetId": "{{db:exit-survey:spreadsheet_id}}",
+        "sheetName": "Responses",
+        "fields": [
+          "_timestamp",
+          "_submissionId",
+          "difficultyRating",
+          "clarityRating",
+          "technicalProblems",
+          "technicalProblemsDescription",
+          "areasForImprovement"
+        ],
+        "headers": [
+          "Timestamp",
+          "Submission ID",
+          "Difficulty Rating",
+          "Clarity Rating",
+          "Technical Problems",
+          "Technical Problems Description",
+          "Areas for Improvement"
+        ]
+      }
     }
   ]
 }
