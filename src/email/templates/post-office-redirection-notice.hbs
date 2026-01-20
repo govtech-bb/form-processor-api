@@ -325,6 +325,22 @@
         </div>
       {{/if}}
 
+      <!-- Uploaded Documents Section -->
+      {{#if uploadDocumentUrls}}
+        <div class='section'>
+          <div class='section-title'>Uploaded Documents</div>
+          {{#if uploadDocumentUrls.length}}
+            <ul class='document-list'>
+              {{#each uploadDocumentUrls}}
+                <li><a href='{{this}}' target='_blank'>{{this}}</a></li>
+              {{/each}}
+            </ul>
+          {{else}}
+            <p>No documents uploaded.</p>
+          {{/if}}
+        </div>
+      {{/if}}
+
       <div class='footer'>
         <p><strong>Submission ID:</strong> {{submissionId}}</p>
         <p>This is an automated notification from the Post Office Redirection
