@@ -18,10 +18,12 @@ export class ProcessorPipelineService {
   async execute(
     processorConfigs: ProcessorConfig[],
     context: ProcessorContext,
-  ): Promise<void> {
+  ): Promise<Map<string, unknown>> {
     this.logger.log(
       `Executing ${processorConfigs.length} processors for form: ${context.formId}`,
     );
+
+    const results = new Map<string, unknown>();
 
     // Execute all processors in parallel
     const promises = processorConfigs.map(async (config) => {
@@ -36,8 +38,9 @@ export class ProcessorPipelineService {
 
       try {
         this.logger.log(`Executing processor: ${config.type}`);
-        await processor.execute(config.config, context);
+        const result = await processor.execute(config.config, context);
         this.logger.log(`Processor completed: ${config.type}`);
+        return { type: config.type, result };
       } catch (error) {
         this.logger.error(
           `Processor ${config.type} failed: ${error.message}`,
@@ -47,8 +50,15 @@ export class ProcessorPipelineService {
       }
     });
 
-    await Promise.all(promises);
+    const processorResults = await Promise.all(promises);
+
+    // Collect results by processor type
+    for (const { type, result } of processorResults) {
+      results.set(type, result);
+    }
+
     this.logger.log('All processors completed successfully');
+    return results;
   }
 
   /**

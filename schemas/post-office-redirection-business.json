@@ -4,6 +4,63 @@
   "description": "Change where your mail is sent (business)",
   "fields": [
     {
+      "name": "businessName",
+      "type": "string",
+      "label": "Business name",
+      "required": true,
+      "validations": {
+        "min": 2,
+        "message": "Business name is required"
+      }
+    },
+    {
+      "name": "currentAddress",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postcode",
+          "type": "string",
+          "label": "Postcode",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        }
+      ]
+    },
+    {
       "name": "applicant",
       "type": "object",
       "required": true,
@@ -30,6 +87,16 @@
           }
         },
         {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name",
+          "required": false,
+          "validations": {
+            "max": 100,
+            "message": "Middle name is required"
+          }
+        },
+        {
           "name": "lastName",
           "type": "string",
           "label": "Last name",
@@ -38,35 +105,6 @@
             "min": 2,
             "max": 100,
             "message": "Last name is required"
-          }
-        },
-        {
-          "name": "dateOfBirth",
-          "type": "date",
-          "label": "Date of birth",
-          "required": false,
-          "validations": {
-            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-            "message": "Date of birth is required and must be in YYYY-MM-DD format"
-          }
-        },
-        {
-          "name": "idNumber",
-          "type": "string",
-          "label": "National Identification (ID) Number",
-          "required": false,
-          "validations": {
-            "min": 2,
-            "message": "ID Number must be at least 2 characters"
-          }
-        },
-        {
-          "name": "passportNumber",
-          "type": "string",
-          "label": "Passport Number",
-          "required": false,
-          "validations": {
-            "message": "Passport number must be at least 6 characters"
           }
         },
         {
@@ -79,23 +117,28 @@
           "name": "telephoneNumber",
           "type": "string",
           "label": "Telephone Number",
-          "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
-          }
+          "required": true
         }
       ]
     },
     {
-      "name": "oldBusinessAddress",
+      "name": "permissionDetails",
+      "type": "string",
+      "label": "Tell us what permission you have to act for this business",
+      "required": true,
+      "validations": {
+        "message": "Permission details required"
+      }
+    },
+    {
+      "name": "newAddress",
       "type": "object",
       "required": true,
       "fields": [
         {
           "name": "addressLine1",
           "type": "string",
-          "label": "Address Line 1",
+          "label": "Address line 1",
           "required": true,
           "validations": {
             "min": 5,
@@ -106,7 +149,7 @@
         {
           "name": "addressLine2",
           "type": "string",
-          "label": "Address Line 2",
+          "label": "Address line 2",
           "required": false,
           "validations": {
             "max": 200
@@ -123,56 +166,9 @@
           }
         },
         {
-          "name": "postalCode",
+          "name": "postcode",
           "type": "string",
-          "label": "Postal Code",
-          "required": false,
-          "validations": {
-            "regex": "^BB\\d{5}$",
-            "message": "Enter a valid postal code (e.g., BB17004)"
-          }
-        }
-      ]
-    },
-    {
-      "name": "newBusinessAddress",
-      "type": "object",
-      "required": true,
-      "fields": [
-        {
-          "name": "addressLine1",
-          "type": "string",
-          "label": "Address Line 1",
-          "required": true,
-          "validations": {
-            "min": 5,
-            "max": 200,
-            "message": "Address must be at least 5 characters"
-          }
-        },
-        {
-          "name": "addressLine2",
-          "type": "string",
-          "label": "Address Line 2",
-          "required": false,
-          "validations": {
-            "max": 200
-          }
-        },
-        {
-          "name": "parish",
-          "type": "string",
-          "label": "Parish",
-          "required": true,
-          "validations": {
-            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
-            "message": "Must select a valid parish"
-          }
-        },
-        {
-          "name": "postalCode",
-          "type": "string",
-          "label": "Postal Code",
+          "label": "Postcode",
           "required": false,
           "validations": {
             "regex": "^BB\\d{5}$",
@@ -193,21 +189,13 @@
           "name": "redirectionStartDate",
           "type": "date",
           "label": "Redirection Start Date",
-          "required": false,
-          "validations": {
-            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-            "message": "Redirection Start Date is required and must be in YYYY-MM-DD format"
-          }
+          "required": false
         },
         {
           "name": "redirectionEndDate",
           "type": "date",
           "label": "Redirection End Date",
-          "required": false,
-          "validations": {
-            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-            "message": "Redirection End Date is required and must be in YYYY-MM-DD format"
-          }
+          "required": false
         }
       ]
     },
@@ -226,7 +214,7 @@
       "type": "email",
       "config": {
         "to": "{{db:post-office-redirection-business:admin_email}}",
-        "subject": "New Request to Redirect Mail for a Business - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "subject": "New Request to Redirect my business mail - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "post-office-redirection-notice"
       }
     }

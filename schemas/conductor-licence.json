@@ -117,11 +117,7 @@
           "name": "telephoneNumber",
           "type": "string",
           "label": "Telephone Number",
-          "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
-          }
+          "required": true
         }
       ]
     },
@@ -207,6 +203,12 @@
           "name": "courtName",
           "type": "string",
           "label": "Court name",
+          "required": false
+        },
+        {
+          "name": "reasonForDisqualification",
+          "type": "string",
+          "label": "Court's reason for disqualification",
           "required": false
         },
         {

@@ -4,7 +4,7 @@
   "description": "Change where your mail is sent (deceased)",
   "fields": [
     {
-      "name": "applicant",
+      "name": "deceased",
       "type": "object",
       "required": true,
       "fields": [
@@ -30,6 +30,12 @@
           }
         },
         {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name",
+          "required": false
+        },
+        {
           "name": "lastName",
           "type": "string",
           "label": "Last name",
@@ -41,48 +47,13 @@
           }
         },
         {
-          "name": "dateOfBirth",
+          "name": "dateOfDeath",
           "type": "date",
-          "label": "Date of birth",
+          "label": "Date of death",
           "required": false,
           "validations": {
             "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-            "message": "Date of birth is required and must be in YYYY-MM-DD format"
-          }
-        },
-        {
-          "name": "idNumber",
-          "type": "string",
-          "label": "National Identification (ID) Number",
-          "required": false,
-          "validations": {
-            "min": 2,
-            "message": "ID Number must be at least 2 characters"
-          }
-        },
-        {
-          "name": "passportNumber",
-          "type": "string",
-          "label": "Passport Number",
-          "required": false,
-          "validations": {
-            "message": "Passport number must be at least 6 characters"
-          }
-        },
-        {
-          "name": "email",
-          "type": "email",
-          "label": "Email Address",
-          "required": true
-        },
-        {
-          "name": "telephoneNumber",
-          "type": "string",
-          "label": "Telephone Number",
-          "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
+            "message": "Date of death is required and must be in YYYY-MM-DD format"
           }
         }
       ]
@@ -95,7 +66,7 @@
         {
           "name": "addressLine1",
           "type": "string",
-          "label": "Address Line 1",
+          "label": "Address line 1",
           "required": true,
           "validations": {
             "min": 5,
@@ -106,7 +77,7 @@
         {
           "name": "addressLine2",
           "type": "string",
-          "label": "Address Line 2",
+          "label": "Address line 2",
           "required": false,
           "validations": {
             "max": 200
@@ -123,9 +94,9 @@
           }
         },
         {
-          "name": "postalCode",
+          "name": "postcode",
           "type": "string",
-          "label": "Postal Code",
+          "label": "Postcode",
           "required": false,
           "validations": {
             "regex": "^BB\\d{5}$",
@@ -135,6 +106,77 @@
       ]
     },
     {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "label": "Title",
+          "required": true,
+          "validations": {
+            "regex": "^(mr|ms|mrs)$",
+            "message": "Must select a valid title"
+          }
+        },
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "First name is required"
+          }
+        },
+        {
+          "name": "relationshipToDeceased",
+          "type": "string",
+          "label": "What is your relationship to the person?",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Relationship to deceased is required"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Last name is required"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "permissionDetails",
+      "type": "string",
+      "label": "Tell us what permission you have to act on behalf of the estate",
+      "required": true,
+      "validations": {
+        "message": "Permission details required"
+      }
+    },
+    {
       "name": "newAddress",
       "type": "object",
       "required": true,
@@ -142,7 +184,7 @@
         {
           "name": "addressLine1",
           "type": "string",
-          "label": "Address Line 1",
+          "label": "Address line 1",
           "required": true,
           "validations": {
             "min": 5,
@@ -153,7 +195,7 @@
         {
           "name": "addressLine2",
           "type": "string",
-          "label": "Address Line 2",
+          "label": "Address line 2",
           "required": false,
           "validations": {
             "max": 200
@@ -170,9 +212,9 @@
           }
         },
         {
-          "name": "postalCode",
+          "name": "postcode",
           "type": "string",
-          "label": "Postal Code",
+          "label": "Postcode",
           "required": false,
           "validations": {
             "regex": "^BB\\d{5}$",
@@ -180,9 +222,9 @@
           }
         },
         {
-          "name": "isMovingPermanent",
+          "name": "isRedirectPermanent",
           "type": "string",
-          "label": "Are you moving permanently?",
+          "label": "Are you redirecting their mail permanently?",
           "required": true,
           "validations": {
             "regex": "^(yes|no)$",
@@ -191,23 +233,15 @@
         },
         {
           "name": "redirectionStartDate",
-          "type": "date",
+          "type": "string",
           "label": "Redirection Start Date",
-          "required": false,
-          "validations": {
-            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-            "message": "Redirection Start Date is required and must be in YYYY-MM-DD format"
-          }
+          "required": false
         },
         {
           "name": "redirectionEndDate",
-          "type": "date",
+          "type": "string",
           "label": "Redirection End Date",
-          "required": false,
-          "validations": {
-            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-            "message": "Redirection End Date is required and must be in YYYY-MM-DD format"
-          }
+          "required": false
         }
       ]
     },

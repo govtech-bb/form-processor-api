@@ -1,3 +1,13 @@
+type OpenCRVSIntegrationResult = {
+  success: boolean;
+  message: string;
+  trackingId?: string;
+};
+
+type IntegrationsResult = {
+  opencrvs?: OpenCRVSIntegrationResult;
+};
+
 export class FormSubmissionResponseDto {
   submissionId: string;
   formId: string;
@@ -13,8 +23,11 @@ export class FormSubmissionResponseDto {
   amount?: number;
   description?: string;
 
+  // Integration results
+  integrations?: IntegrationsResult;
+
   // Dynamic additional data
-  [key: string]: any;
+  [key: string]: unknown;
 
   constructor(
     submissionId: string,
@@ -29,7 +42,7 @@ export class FormSubmissionResponseDto {
       amount?: number;
       description?: string;
     },
-    additionalData?: Record<string, any>,
+    additionalData?: Record<string, unknown>,
   ) {
     this.submissionId = submissionId;
     this.formId = formId;
@@ -46,7 +59,7 @@ export class FormSubmissionResponseDto {
       this.description = paymentInfo.description;
     }
 
-    // Add any additional dynamic data
+    // Add any additional dynamic data (including integrations)
     if (additionalData) {
       Object.assign(this, additionalData);
     }
