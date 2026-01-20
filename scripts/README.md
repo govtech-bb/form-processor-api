@@ -12,6 +12,7 @@ This folder provides the following structure:
 ## Admin Email Template Creation
 
 This script is called `admin_email_create.ps1`, and is used to quickly scaffold admin email templates, given a schema from `../schemas/`.
+This is a powershell script, and will require Powershell to be installed, along with being able to run the `pwsh` command.
 
 ### Using the Script
 
@@ -31,3 +32,9 @@ The script can also be run manually from this directory by using `pwsh ./admin_e
 
 > [!NOTE]
 > I also have not added error handling to the script. Will have that as a TODO.
+
+### Known Issues
+
+1. Does not yet handle missing files, or any errors resulting from such
+1. You will still need to perform manual edits, such as merging First Name, Last Name, and Middle Names into one field, and fixing the casing for `section-title`s.
+1. Requires Powershell
