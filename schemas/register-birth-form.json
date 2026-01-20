@@ -405,7 +405,7 @@
     {
       "type": "email",
       "config": {
-        "to": "testing@govtech.bb",
+        "to": "{{formData.email}}",
         "subject": "Birth Registration Received - Government of Barbados",
         "template": "birth-registration-receipt"
       }
