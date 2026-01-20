@@ -5,6 +5,7 @@ import { SchemaBuilderService } from '../validation/schema-builder.service';
 import { ProcessorPipelineService } from '../processors/processor-pipeline.service';
 import { FormSubmissionResponseDto } from './dto';
 import { FormUtilsService } from './form-utils.service';
+import { OpenCRVSProcessorResult } from '../opencrvs/types';
 
 @Injectable()
 export class FormsService {
@@ -83,22 +84,60 @@ export class FormsService {
     }
 
     // Execute processor pipeline for non-payment forms
-    await this.processorPipeline.execute(formSchemaWithData.processors, {
-      formId,
-      submissionId,
-      data,
-    });
+    const processorResults = await this.processorPipeline.execute(
+      formSchemaWithData.processors,
+      {
+        formId,
+        submissionId,
+        data,
+      },
+    );
+
+    // Build integrations result from processor results
+    const additionalData = this.buildIntegrationsResult(processorResults);
 
     const response = new FormSubmissionResponseDto(
       submissionId,
       formId,
       'success',
+      undefined,
+      additionalData,
     );
 
     return {
       validationSuccess: true,
       data: response,
     };
+  }
+
+  /**
+   * Build integrations result object from processor results
+   */
+  private buildIntegrationsResult(
+    processorResults: Map<string, unknown>,
+  ): Record<string, unknown> | undefined {
+    const opencrvsResult = processorResults.get(
+      'opencrvs',
+    ) as OpenCRVSProcessorResult | undefined;
+
+    if (!opencrvsResult) {
+      return undefined;
+    }
+
+    const integrations: Record<string, unknown> = {
+      opencrvs: opencrvsResult.success
+        ? {
+            success: true,
+            message: 'Birth registration submitted successfully',
+            trackingId: opencrvsResult.trackingId,
+          }
+        : {
+            success: false,
+            message: opencrvsResult.error ?? 'Birth registration failed',
+          },
+    };
+
+    return { integrations };
   }
 
   /**
