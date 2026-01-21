@@ -83,11 +83,7 @@
           "name": "postalCode",
           "type": "string",
           "label": "Postal Code",
-          "required": false,
-          "validations": {
-            "regex": "^BB\\d{5}$",
-            "message": "Enter a valid postal code (e.g., BB17004)"
-          }
+          "required": false
         },
         {
           "name": "idNumber",
