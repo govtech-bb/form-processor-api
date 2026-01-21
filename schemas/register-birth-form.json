@@ -107,7 +107,7 @@
           "type": "string",
           "required": false,
           "validations": {
-            "regex": "^\\d{6}-\\d{4}$",
+            "regex": "^\\d{6}[-]?\\d{4}$",
             "message": "Must be in format XXXXXX-XXXX"
           }
         },
@@ -297,7 +297,7 @@
           "type": "string",
           "required": false,
           "validations": {
-            "regex": "^\\d{6}-\\d{4}$",
+            "regex": "^\\d{6}[-]?\\d{4}$",
             "message": "Must be in format XXXXXX-XXXX"
           }
         },
