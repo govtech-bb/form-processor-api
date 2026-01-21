@@ -52,7 +52,7 @@
         {
           "name": "addressLine1",
           "type": "string",
-          "label": "Address Line 1",
+          "label": "Address line 1",
           "required": true,
           "validations": {
             "min": 5,
@@ -63,7 +63,7 @@
         {
           "name": "addressLine2",
           "type": "string",
-          "label": "Address Line 2",
+          "label": "Address line 2",
           "required": false,
           "validations": {
             "max": 200
@@ -106,6 +106,28 @@
           "required": false,
           "validations": {
             "message": "Passport number must be at least 6 characters"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email Address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true
+        },
+        {
+          "name": "isBarbadosNational",
+          "type": "string",
+          "label": "Are you a Barbados national?",
+          "required": true,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
           }
         }
       ]

@@ -1,71 +1,23 @@
 {
-  "id": "reserve-society-name",
-  "name": "Reserve Society Name Application",
-  "description": "Request to reserve society name",
+  "id": "permission-to-remove-tree",
+  "name": "Apply for permission to remove a protected tree",
+  "description": "Apply for permission to remove a protected tree",
   "fields": [
-    {
-      "name": "request",
-      "type": "object",
-      "required": true,
-      "fields": [
-        {
-          "name": "purpose",
-          "type": "string",
-          "label": "What do you want to do?",
-          "required": true,
-          "validations": {
-            "regex": "^(request-search|reserve-name|change-name)$",
-            "message": "Must select an option"
-          }
-        },
-        {
-          "name": "currentSocietyName",
-          "type": "string",
-          "label": "What is the current name of the society?",
-          "required": false,
-          "validations": {
-            "max": 100,
-            "message": "Current name of society is required"
-          }
-        }
-      ]
-    },
-    {
-      "name": "proposed-names",
-      "type": "array",
-      "label": "What is the proposed society name?",
-      "required": true,
-      "items": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string"
-          },
-          "explanation": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    {
-      "name": "activities",
-      "type": "array",
-      "label": "What does the society do?",
-      "required": true,
-      "items": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "string"
-          }
-        }
-      }
-    },
     {
       "name": "applicant",
       "type": "object",
       "required": true,
       "fields": [
+        {
+          "name": "title",
+          "type": "string",
+          "label": "Title",
+          "required": true,
+          "validations": {
+            "regex": "^(mr|ms|mrs)$",
+            "message": "Must select a valid title"
+          }
+        },
         {
           "name": "firstName",
           "type": "string",
@@ -75,6 +27,16 @@
             "min": 2,
             "max": 100,
             "message": "First name is required"
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name",
+          "required": false,
+          "validations": {
+            "max": 100,
+            "message": "Middle name is required"
           }
         },
         {
@@ -135,21 +97,53 @@
           "required": true
         },
         {
-          "name": "telephoneNumber",
+          "name": "mobileNumber",
           "type": "string",
-          "label": "Telephone Number",
+          "label": "Mobile number",
+          "required": true
+        },
+        {
+          "name": "homeNumber",
+          "type": "string",
+          "label": "Home number",
           "required": true
         }
       ]
+    },
+    {
+      "name": "treesToRemove",
+      "type": "array",
+      "label": "Tell us about the protected tree you want to remove",
+      "required": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "typeOfProtectedTree": {
+            "type": "string"
+          },
+          "reasonForRemovingTree": {
+            "type": "string"
+          },
+          "addressLine1": {
+            "type": "string"
+          },
+          "addressLine2": {
+            "type": "string"
+          },
+          "parish": {
+            "type": "string"
+          }
+        }
+      }
     }
   ],
   "processors": [
     {
       "type": "email",
       "config": {
-        "to": "{{db:reserve-society-name:admin_email}}",
-        "subject": "New Request to Reserve Society Name - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-        "template": "reserve-society-name"
+        "to": "{{db:permission-to-remove-tree:admin_email}}",
+        "subject": "New Request to remove protected tree - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "permission-to-remove-tree"
       }
     }
   ]

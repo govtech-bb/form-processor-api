@@ -67,10 +67,12 @@
               "value": [null, ""],
               "then": {
                 "min": 0,
+                "max": 3,
                 "message": "Age not required"
               },
               "else": {
                 "min": 1,
+                "max": 3,
                 "message": "Age is required"
               }
             }
@@ -86,11 +88,10 @@
           }
         },
         {
-          "name": "addressLine1",
+          "name": "streetAddress",
           "type": "string",
           "required": true,
           "validations": {
-            "min": 2,
             "max": 500
           }
         },
@@ -276,7 +277,7 @@
           }
         },
         {
-          "name": "addressLine1",
+          "name": "streetAddress",
           "type": "string",
           "required": true,
           "validations": {

@@ -118,11 +118,7 @@
           "name": "telephoneNumber",
           "type": "string",
           "label": "Telephone Number",
-          "required": true,
-          "validations": {
-            "regex": "^\\+?[0-9]{10,15}$",
-            "message": "Telephone number must be 10-15 digits"
-          }
+          "required": true
         }
       ]
     },
@@ -195,11 +191,7 @@
           "name": "dateOfDeath",
           "type": "date",
           "label": "Date of death",
-          "required": false,
-          "validations": {
-            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
-            "message": "Date of death is required and must be in YYYY-MM-DD format"
-          }
+          "required": false
         },
         {
           "name": "estimatedDateOfDeath",
@@ -224,22 +216,13 @@
           "name": "placeOfDeath",
           "type": "string",
           "label": "Place of death",
-          "required": true,
-          "validations": {
-            "min": 2,
-            "max": 200,
-            "message": "Place of death must be at least 2 characters"
-          }
+          "required": false
         },
         {
           "name": "causeOfDeath",
           "type": "string",
           "label": "Cause of death",
-          "required": false,
-          "validations": {
-            "max": 200,
-            "message": "Cause of death must be at least 2 characters"
-          }
+          "required": false
         }
       ]
     },

@@ -46,9 +46,15 @@ export class FormUtilsService implements OnModuleInit {
       for (const file of jsonFiles) {
         const filePath = path.join(this.schemasDir, file);
         const content = await fs.readFile(filePath, 'utf-8');
-        const schema: FormSchema = JSON.parse(content);
-        this.formSchemas.set(schema.id, schema);
-        this.logger.log(`Loaded form schema: ${schema.id}`);
+
+        try {
+          const schema: FormSchema = JSON.parse(content);
+          this.formSchemas.set(schema.id, schema);
+          this.logger.log(`Loaded form schema: ${schema.id} (${file})`);
+        } catch (parseError) {
+          this.logger.error(`Failed to parse schema file: ${file}`, parseError);
+          throw parseError;
+        }
       }
 
       this.logger.log(`Total form schemas loaded: ${this.formSchemas.size}`);
