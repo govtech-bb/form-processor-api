@@ -62,17 +62,17 @@ export class EZPayService {
 
   /**
    * Extract department from reference number
-   * Expected format: DEPARTMENT-formId-submissionId (e.g., EDUCATION-form123-sub456)
+   * Expected format: DEPARTMENT_formId_submissionId (e.g., EDUCATION_form123_sub456)
    */
   private extractDepartmentFromReference(reference: string): string | null {
     // Check if reference follows the department format
-    const match = reference.match(/^([A-Z_]+)-(.+)-(.+)$/);
+    const match = reference.match(/^([A-Z_]+)_(.+)_(.+)$/);
     if (match) {
       return match[1].toLowerCase(); // Convert EDUCATION to education
     }
 
     this.logger.warn(
-      `Reference ${reference} does not follow expected format DEPARTMENT-formId-submissionId. Using default API key.`,
+      `Reference ${reference} does not follow expected format DEPARTMENT_formId_submissionId. Using default API key.`,
     );
     return null;
   }
