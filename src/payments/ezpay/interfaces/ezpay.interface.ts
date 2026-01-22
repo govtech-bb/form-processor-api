@@ -1,9 +1,23 @@
-// Cart item structure for EZPay+
+// Cart item structure for EZPay+ (request payload)
 export interface EZPayCartItem {
   code: string; // Payment Code from EZPay+
   amount: number; // Individual cost of item
   details: string; // Description of item/service
   reference: string; // Internal reference to link with EZPay+ transaction
+}
+
+// Extended cart item from transaction response
+export interface EZPayTransactionCartItem extends EZPayCartItem {
+  HEADER: string;
+  NAME: string;
+  EZPAY_ACCOUNT: string;
+  reference_number: string;
+  reference_name: string;
+  reference_email: string;
+  token: string;
+  ITEMS: string;
+  AMOUNT_DUE: string;
+  CartID: string;
 }
 
 // Configuration interface
@@ -66,6 +80,7 @@ export interface EZPayVerifyResponse {
 
 // Query transactions response
 export interface EZPayTransaction {
+  id: string;
   Date: string;
   TransactionCode: string;
   Account: string;
@@ -77,9 +92,9 @@ export interface EZPayTransaction {
   Status: EZPayTransactionStatus;
   DateInitiated: string;
   DateSettled: string;
-  Details: string;
+  Details: string; // JSON stringified array
   Total: string;
-  Cart: unknown[];
+  Cart: EZPayTransactionCartItem[][]; // Nested array structure
 }
 
 // Create payment params
