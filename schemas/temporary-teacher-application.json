@@ -362,7 +362,7 @@
             "message": "Must select a valid parish"
           }
         },
-        "postalCode": {
+        "postcode": {
           "type": "string",
           "required": false,
           "validations": {
