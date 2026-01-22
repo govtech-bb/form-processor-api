@@ -108,13 +108,13 @@
           "name": "email",
           "type": "email",
           "label": "Email address",
-          "required": false
+          "required": true
         },
         {
           "name": "telephoneNumber",
           "type": "string",
           "label": "Telephone number",
-          "required": false
+          "required": true
         }
       ]
     },
