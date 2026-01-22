@@ -287,7 +287,7 @@ export class PaymentProcessor implements IProcessor {
     formName?: string;
   }): Promise<Payment> {
     // Include department in reference number for later API key resolution
-    const referenceNumber = `${data.department.toUpperCase()}_${data.formId}_${
+    const referenceNumber = `${data.department.toUpperCase()}|${data.formId}|${
       data.submissionId
     }`;
 
