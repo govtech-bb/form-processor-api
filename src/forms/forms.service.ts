@@ -1,11 +1,11 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
 import { FormSchema } from './interfaces';
 import { SchemaBuilderService } from '../validation/schema-builder.service';
 import { ProcessorPipelineService } from '../processors/processor-pipeline.service';
 import { FormSubmissionResponseDto } from './dto';
 import { FormUtilsService } from './form-utils.service';
 import { OpenCRVSProcessorResult } from '../opencrvs/types';
+import { generateReferenceCode } from '../common/utils';
 
 @Injectable()
 export class FormsService {
@@ -58,7 +58,7 @@ export class FormsService {
     }
 
     // Generate submission ID
-    const submissionId = uuidv4();
+    const submissionId = generateReferenceCode(formId);
 
     this.logger.log(`Processing form submission: ${formId} (${submissionId})`);
 
@@ -116,9 +116,9 @@ export class FormsService {
   private buildIntegrationsResult(
     processorResults: Map<string, unknown>,
   ): Record<string, unknown> | undefined {
-    const opencrvsResult = processorResults.get(
-      'opencrvs',
-    ) as OpenCRVSProcessorResult | undefined;
+    const opencrvsResult = processorResults.get('opencrvs') as
+      | OpenCRVSProcessorResult
+      | undefined;
 
     if (!opencrvsResult) {
       return undefined;

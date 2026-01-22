@@ -108,13 +108,13 @@
           "name": "email",
           "type": "email",
           "label": "Email address",
-          "required": false
+          "required": true
         },
         {
           "name": "telephoneNumber",
           "type": "string",
           "label": "Telephone number",
-          "required": false
+          "required": true
         }
       ]
     },
@@ -487,11 +487,11 @@
       "type": "payment",
       "config": {
         "provider": "ezpay",
-        "department": "revenue_authority",
+        "department": "oag_registration",
         "paymentCode": "{{db:get-birth-certificate:payment_code}}",
         "amount": "{{formData.order.numberOfCopies * db:get-birth-certificate:payment_amount}}",
         "description": "Birth Certificate Processing Fee (per copy)",
-        "confirmationEmailTo": ["{{db:primary-school-textbook-grant:admin_email}}"],
+        "confirmationEmailTo": ["{{db:get-birth-certificate:admin_email}}"],
         "customerEmail": "{{formData.applicant.email}}",
         "required": true,
         "timing": "after_validation",
