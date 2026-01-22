@@ -38,11 +38,15 @@ export class PaymentWebhookService {
    */
   async verifyPaymentStatus(
     params: VerifyPaymentParams,
+    options?: { apiKey?: string },
   ): Promise<VerifyPaymentResult> {
     try {
       this.logger.log('Verifying payment status via EZPay API', params);
 
-      const result = await this.ezpayService.verifyPayment(params);
+      const result = await this.ezpayService.verifyPayment(
+        params,
+        options?.apiKey,
+      );
 
       if (result.success && result.data) {
         this.logger.log('Payment verification successful', {
@@ -516,6 +520,7 @@ export class PaymentWebhookService {
   async manualPaymentVerification(
     transactionNumber?: string,
     reference?: string,
+    apiKey?: string,
   ): Promise<{
     success: boolean;
     message: string;
@@ -531,10 +536,13 @@ export class PaymentWebhookService {
       }
 
       // Verify with EZPay
-      const verificationResult = await this.verifyPaymentStatus({
-        transactionNumber,
-        reference,
-      });
+      const verificationResult = await this.verifyPaymentStatus(
+        {
+          transactionNumber,
+          reference,
+        },
+        { apiKey },
+      );
 
       if (!verificationResult.success || !verificationResult.data) {
         return {
