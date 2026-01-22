@@ -303,9 +303,11 @@
       "type": "payment",
       "config": {
         "provider": "ezpay",
-        "department": "revenue_authority",
+        "department": "oag_registration",
         "paymentCode": "{{db:get-marriage-certificate:payment_code}}",
         "amount": "{{formData.order.numberOfCopies * db:get-marriage-certificate:payment_amount}}",
+        "confirmationEmailTo": ["{{db:get-marriage-certificate:admin_email}}"],
+        "customerEmail": "{{formData.applicant.email}}",
         "description": "Marriage Certificate Processing Fee (per copy)",
         "required": true,
         "timing": "after_validation",

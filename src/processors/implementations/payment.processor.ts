@@ -51,6 +51,7 @@ export class PaymentProcessor implements IProcessor {
       formId: string;
       submissionId: string;
       data: Record<string, any>;
+      formName?: string;
     },
   ): Promise<any> {
     const result = await this.process(context.data, config, context);
@@ -66,6 +67,7 @@ export class PaymentProcessor implements IProcessor {
     context: {
       formId: string;
       submissionId: string;
+      formName?: string;
     },
   ): Promise<PaymentProcessorResult> {
     try {
@@ -96,6 +98,9 @@ export class PaymentProcessor implements IProcessor {
         customerName: customerInfo.name,
         formId: context.formId,
         submissionId: context.submissionId,
+        confirmationEmailTo: config.confirmationEmailTo,
+        configCustomerEmail: config.customerEmail,
+        formName: context.formName,
       });
 
       // Create EZPay payment session
@@ -277,9 +282,12 @@ export class PaymentProcessor implements IProcessor {
     customerName: string;
     formId: string;
     submissionId: string;
+    confirmationEmailTo?: string[];
+    configCustomerEmail?: string;
+    formName?: string;
   }): Promise<Payment> {
     // Include department in reference number for later API key resolution
-    const referenceNumber = `${data.department.toUpperCase()}-${data.formId}-${
+    const referenceNumber = `${data.department.toUpperCase()}|${data.formId}|${
       data.submissionId
     }`;
 
@@ -296,6 +304,9 @@ export class PaymentProcessor implements IProcessor {
       metadata: {
         formId: data.formId,
         submissionId: data.submissionId,
+        confirmationEmailTo: data.confirmationEmailTo,
+        configCustomerEmail: data.configCustomerEmail,
+        formName: data.formName,
       },
     });
 
