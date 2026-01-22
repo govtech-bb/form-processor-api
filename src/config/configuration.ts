@@ -53,6 +53,7 @@ export default () => ({
       ministry_of_agriculture:
         process.env.EZPAY_MINISTRY_OF_AGRICULTURE_API_KEY,
       oag_registration: process.env.EZPAY_OAG_REGISTRATION_API_KEY,
+      post_office: process.env.EZPAY_OAG_REGISTRATION_API_KEY, //TODO: Update when we get the correct API key
       default: process.env.EZPAY_API_KEY || 'HWqgTn5EXIHLAzVjXtGpB2mIjgQgj0Ql',
     },
   },
