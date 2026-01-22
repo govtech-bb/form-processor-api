@@ -79,7 +79,7 @@ export interface EZPayTransaction {
   DateSettled: string;
   Details: string;
   Total: string;
-  Cart: unknown[];
+  Cart: EZPayCartItem[];
 }
 
 // Create payment params

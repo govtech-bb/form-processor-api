@@ -16,6 +16,7 @@ import {
   VerifyPaymentResult,
   EZPayVerifyResponse,
 } from './ezpay/interfaces';
+import { EmailService } from '../email/email.service';
 
 @Injectable()
 export class PaymentWebhookService {
@@ -29,6 +30,7 @@ export class PaymentWebhookService {
     @InjectRepository(FormSubmissionPayment)
     private formSubmissionPaymentRepository: Repository<FormSubmissionPayment>,
     private ezpayService: EZPayService,
+    private emailService: EmailService,
   ) {}
 
   /**
@@ -315,18 +317,90 @@ export class PaymentWebhookService {
       },
     );
 
-    // Trigger additional workflows like:
-    // - Send payment confirmation emails
-    // - Update application status
-    // - Trigger document generation
-    // - Send notifications to relevant departments
-    // - Update external systems
+    // Send payment confirmation email if confirmationEmailTo is configured
+    await this.sendPaymentConfirmationEmail(payment, callbackData);
 
-    // For now, we'll just mark notification as needed
+    // Mark notification as sent
     await this.formSubmissionPaymentRepository.update(
       { paymentId: payment.id },
-      { notificationSent: false }, // This can be picked up by a notification job
+      { notificationSent: true },
     );
+  }
+
+  /**
+   * Send payment confirmation emails to admin and customer
+   */
+  private async sendPaymentConfirmationEmail(
+    payment: Payment,
+    callbackData: EZPayCallbackDto,
+  ): Promise<void> {
+    const adminEmails: string[] = payment.metadata?.confirmationEmailTo || [];
+    const customerEmail = payment.metadata?.configCustomerEmail;
+    const formName = payment.metadata?.formName || 'Form Submission';
+    const formId = payment.metadata?.formId || '';
+    const submissionId = payment.metadata?.submissionId || '';
+
+    const emailData = {
+      formName,
+      formId,
+      submissionId,
+      referenceNumber: payment.referenceNumber,
+      transactionNumber: callbackData._transaction_number,
+      amount: callbackData._amount,
+      processor: callbackData._processor,
+      customerName: payment.customerName,
+      customerEmail: payment.customerEmail,
+      description: payment.description,
+    };
+
+    // Send admin emails (using admin template)
+    const uniqueAdminEmails = [...new Set(adminEmails.filter(Boolean))];
+    for (const adminEmail of uniqueAdminEmails) {
+      try {
+        await this.emailService.sendEmail({
+          to: adminEmail,
+          subject: `${formName} payment (reference number: ${submissionId})`,
+          template: 'payment-confirmation',
+          data: emailData,
+        });
+
+        this.logger.log(
+          `Admin payment confirmation email sent to ${adminEmail} for payment ${payment.id}`,
+        );
+      } catch (error) {
+        this.logger.error(
+          `Failed to send admin payment confirmation email to ${adminEmail} for payment ${payment.id}`,
+          { error: error.message },
+        );
+      }
+    }
+
+    // Send customer email (using customer-friendly template)
+    if (customerEmail) {
+      try {
+        await this.emailService.sendEmail({
+          to: customerEmail,
+          subject: `Thank you for your request`,
+          template: 'payment-confirmation-customer',
+          data: emailData,
+        });
+
+        this.logger.log(
+          `Customer payment confirmation email sent to ${customerEmail} for payment ${payment.id}`,
+        );
+      } catch (error) {
+        this.logger.error(
+          `Failed to send customer payment confirmation email to ${customerEmail} for payment ${payment.id}`,
+          { error: error.message },
+        );
+      }
+    }
+
+    if (uniqueAdminEmails.length === 0 && !customerEmail) {
+      this.logger.log(
+        `No email recipients configured for payment ${payment.id}, skipping email`,
+      );
+    }
   }
 
   /**
