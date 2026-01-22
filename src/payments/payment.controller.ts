@@ -16,6 +16,7 @@ import { EZPayService } from './ezpay/ezpay.service';
 import { EZPayCallbackDto } from './ezpay/dto';
 import { EZPayException } from './ezpay/exceptions';
 import { PaymentWebhookService } from './payment-webhook.service';
+import { PaymentReconciliationService } from './payment-reconciliation.service';
 
 @Controller('payments')
 export class PaymentsController {
@@ -24,6 +25,7 @@ export class PaymentsController {
   constructor(
     private readonly ezpayService: EZPayService,
     private readonly paymentWebhookService: PaymentWebhookService,
+    private readonly reconciliationService: PaymentReconciliationService,
   ) {}
 
   @Post('ezpay/webhook')
@@ -122,6 +124,31 @@ export class PaymentsController {
       transactionNumber,
       reference,
     );
+
+    return result;
+  }
+
+  @Post('reconcile/:department')
+  @HttpCode(HttpStatus.OK)
+  async reconcileDepartment(
+    @Param('department') department: string,
+    @Query('startDate') startDate?: string,
+    @Query('endDate') endDate?: string,
+  ): Promise<{
+    success: boolean;
+    message: string;
+    data?: { reconciled: number; updated: number };
+  }> {
+    this.logger.log(
+      `Manual reconciliation triggered for department: ${department}`,
+    );
+
+    const result =
+      await this.reconciliationService.triggerDepartmentReconciliation(
+        department,
+        startDate,
+        endDate,
+      );
 
     return result;
   }
