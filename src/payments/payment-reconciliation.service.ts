@@ -298,4 +298,63 @@ export class PaymentReconciliationService {
       message: 'Reconciliation job triggered',
     };
   }
+
+  /**
+   * Manual trigger for department-specific reconciliation
+   */
+  async triggerDepartmentReconciliation(
+    department: string,
+    startDate?: string,
+    endDate?: string,
+  ): Promise<{
+    success: boolean;
+    message: string;
+    data?: { reconciled: number; updated: number };
+  }> {
+    try {
+      // Get API key for department
+      const apiKey =
+        this.departmentMappingService.getApiKeyForDepartment(department);
+
+      if (!apiKey) {
+        return {
+          success: false,
+          message: `No API key configured for department: ${department}`,
+        };
+      }
+
+      // Use provided dates or default to today
+      const dates =
+        startDate && endDate
+          ? { startDate, endDate }
+          : this.getTodayDateRange();
+
+      this.logger.log(
+        `Manually triggering reconciliation for department: ${department}`,
+        {
+          startDate: dates.startDate,
+          endDate: dates.endDate,
+        },
+      );
+
+      const result = await this.reconcileDepartmentTransactions(
+        dates.startDate,
+        dates.endDate,
+        apiKey,
+        department,
+      );
+
+      return {
+        success: true,
+        message: `Reconciliation completed for ${department}`,
+        data: result,
+      };
+    } catch (error) {
+      this.logger.error(`Failed to reconcile department ${department}`, error);
+      return {
+        success: false,
+        message: error.message || 'Reconciliation failed',
+      };
+    }
+  }
 }
