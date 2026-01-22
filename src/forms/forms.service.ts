@@ -132,6 +132,7 @@ export class FormsService {
           formId,
           submissionId,
           data,
+          formName: formSchema.name,
         },
       );
 

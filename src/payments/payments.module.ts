@@ -9,6 +9,7 @@ import {
   FormSubmissionPayment,
 } from '../database/entities';
 import { EZPayService, PaymentsController } from './ezpay';
+import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { EZPayService, PaymentsController } from './ezpay';
       PaymentTransaction,
       FormSubmissionPayment,
     ]),
+    EmailModule,
   ],
   providers: [
     PaymentIntegrationService,
