@@ -8,9 +8,10 @@
 export function generateReferenceCode(formId: string, length = 6): string {
   const prefix = generatePrefix(formId);
   const dateStr = formatDate(new Date());
+  const timeStr = formatTime(new Date());
   const randomPart = generateRandomString(length);
 
-  return `${prefix}-${dateStr}-${randomPart}`;
+  return `${prefix}-${dateStr}-${timeStr}-${randomPart}`;
 }
 
 /**
@@ -22,6 +23,17 @@ function generatePrefix(formId: string): string {
     .split('-')
     .map((word) => word.charAt(0).toUpperCase())
     .join('');
+}
+
+/**
+ * Formats a time as HHMMSS
+ */
+function formatTime(date: Date): string {
+  const pad = (n: number) => n.toString().padStart(2, '0');
+
+  return `${pad(date.getHours())}${pad(date.getMinutes())}${pad(
+    date.getSeconds(),
+  )}`;
 }
 
 /**
