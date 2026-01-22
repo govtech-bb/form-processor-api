@@ -24,7 +24,6 @@
           "label": "Middle name(s)",
           "required": false,
           "validations": {
-            "min": 2,
             "max": 50
           }
         },
@@ -112,11 +111,12 @@
         {
           "name": "residencyDuration",
           "label": "How long have you lived in Barbados?",
-          "type": "number",
+          "type": "string",
           "required": true,
           "validations": {
             "min": 2,
-            "max": 20
+            "max": 20,
+            "message": "Input must be between 2 and 20 characters"
           }
         }
       ]
@@ -140,7 +140,7 @@
         },
         {
           "name": "country",
-          "type": "select",
+          "type": "string",
           "label": "Country",
           "required": true,
           "validations": {
@@ -158,9 +158,9 @@
           }
         },
         {
-          "name": "postalCode",
+          "name": "postcode",
           "type": "string",
-          "label": "Postal Code",
+          "label": "Postcode",
           "required": false,
           "validations": {
             "regex": "^BB\\d{5}$",
@@ -197,15 +197,15 @@
             "required": false
           },
           "startYear": {
-            "type": "number",
+            "type": "string",
             "validations": {
-              "min": 1930
+              "regex": "^[0-9]{4}$"
             }
           },
           "endYear": {
-            "type": "number",
+            "type": "string",
             "validations": {
-              "min": 1930
+              "regex": "^[0-9]{4}$"
             }
           }
         }
@@ -227,9 +227,9 @@
             "required": true
           },
           "year": {
-            "type": "number",
+            "type": "string",
             "validations": {
-              "min": 1930
+              "regex": "^[0-9]{4}$"
             }
           },
           "levelGrade": {
@@ -254,17 +254,17 @@
           "required": true
         },
         "fromYear": {
-          "type": "number",
+          "type": "string",
           "required": true,
           "validations": {
-            "min": 1930
+            "regex": "^[0-9]{4}$"
           }
         },
         "toYear": {
-          "type": "number",
+          "type": "string",
           "required": false,
           "validations": {
-            "min": 1930
+            "regex": "^[0-9]{4}$"
           }
         },
         "currentlyWorking": {
@@ -355,7 +355,7 @@
           }
         },
         "parish": {
-          "type": "select",
+          "type": "string",
           "required": true,
           "validations": {
             "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
@@ -392,17 +392,14 @@
         {
           "name": "certificateDiplomaTranscript",
           "label": "Upload your certificates, diplomas, and transcripts",
-          "required": true,
+          "required": false,
           "type": "string"
         },
         {
           "name": "testimonials",
           "label": "Upload your two testimonials",
-          "required": true,
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
+          "required": false,
+          "type": "string"
         }
       ]
     }
