@@ -494,7 +494,7 @@
 				"department": "revenue_authority",
 				"paymentCode": "{{db:get-birth-certificate:payment_code}}",
 				"amount": "{{formData.order.numberOfCopies * db:get-birth-certificate:payment_amount}}",
-        "confirmationEmailTo": ["{{db:primary-school-textbook-grant:admin_email}}"],
+        "confirmationEmailTo": ["{{db:get-birth-certificate:admin_email}}"],
         "customerEmail": "{{formData.applicant.email}}",
 				"description": "Birth Certificate Processing Fee (per copy)",
 				"required": true,
