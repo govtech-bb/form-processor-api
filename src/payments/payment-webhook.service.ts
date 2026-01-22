@@ -359,7 +359,7 @@ export class PaymentWebhookService {
       try {
         await this.emailService.sendEmail({
           to: adminEmail,
-          subject: `Payment Confirmation - ${formName} - ${submissionId}`,
+          subject: `${formName} payment (reference number: ${submissionId})`,
           template: 'payment-confirmation',
           data: emailData,
         });
@@ -380,7 +380,7 @@ export class PaymentWebhookService {
       try {
         await this.emailService.sendEmail({
           to: customerEmail,
-          subject: `Payment Received - ${formName} - ${submissionId}`,
+          subject: `Thank you for your request`,
           template: 'payment-confirmation-customer',
           data: emailData,
         });
