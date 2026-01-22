@@ -235,28 +235,14 @@ export class PaymentReconciliationService {
 
   /**
    * Extract reference number from EZPay transaction
-   * The reference is typically stored in the Cart items as JSON strings
+   * The reference is stored in the Cart items (nested array structure)
    */
   private extractReferenceFromTransaction(
     transaction: EZPayTransaction,
   ): string | null {
-    // Try to extract from Cart items if available
-    if (transaction.Cart && Array.isArray(transaction.Cart)) {
-      for (const item of transaction.Cart) {
-        try {
-          // Cart items may be JSON strings that need parsing
-          const cartItem = typeof item === 'string' ? JSON.parse(item) : item;
-          if (cartItem.reference && typeof cartItem.reference === 'string') {
-            return cartItem.reference;
-          }
-        } catch {
-          // Skip items that can't be parsed
-          continue;
-        }
-      }
-    }
-
-    return null;
+    // Cart is a nested array: EZPayTransactionCartItem[][]
+    // There's always one cart item at Cart[0][0]
+    return transaction.Cart?.[0]?.[0]?.reference || null;
   }
 
   /**
