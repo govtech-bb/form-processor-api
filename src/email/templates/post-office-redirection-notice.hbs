@@ -49,10 +49,20 @@
           submitted.</p>
       {{/if}}
 
-      <!-- Deceased Information Section (only for deceased form) -->
-      {{#if deceased}}
-        <div class='section'>
-          <div class='section-title'>Deceased Person Information</div>
+      <p><strong>Reference:</strong> {{submissionId}}</p>
+
+      <!-- Deceased Information Section -->
+      <div class='section'>
+        <div class='section-title'>Deceased Person Information</div>
+        <div class='field'>
+          <span class='field-label'>Title:</span>
+          <span class='field-value'>{{deceased.title}}</span>
+        </div>
+        <div class='field'>
+          <span class='field-label'>First Name:</span>
+          <span class='field-value'>{{deceased.firstName}}</span>
+        </div>
+        {{#if deceased.middleName}}
           <div class='field'>
             <span class='field-label'>Title:</span>
             <span class='field-value'>{{deceased.title}}</span>
