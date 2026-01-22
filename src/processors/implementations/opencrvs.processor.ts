@@ -45,9 +45,27 @@ export class OpenCRVSProcessor implements IProcessor {
         );
       }
 
+      const healthFacilityList = [{
+        label: "Queen Elizabeth Hospital",
+        value: "3d5cd721-df37-493c-86c0-41b8aa42e27d",
+      },
+      {
+        label: "Bayview Hospital",
+        value: "9ddfdd4a-4219-4ca0-ad34-5a9fc1071225",
+      },
+      {
+        label: "MD Alliance Surgery and Birthing Centre",
+        value: "a1abb507-4a25-4795-a280-c99226cb916f",
+      }];
+
+      const healthFacilityName = healthFacilityList.find(hf => hf.value === context?.data?.birth?.healthFacility)?.label || '';
+
       // Resolve location IDs
       const { officeId, healthFacilityId, parishId } =
-        await this.resolveLocations(processorConfig, context.data);
+        await this.resolveLocations({
+          ...processorConfig,
+          healthFacilityName,
+        }, context.data);
 
       // Map form data to OpenCRVS declaration format
       // Note: Informant fields are not required per OpenCRVS Barbados configuration
