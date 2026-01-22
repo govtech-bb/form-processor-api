@@ -144,7 +144,7 @@ export class PaymentReconciliationService {
       reconciled++;
 
       try {
-        const wasUpdated = await this.processTransaction(transaction);
+        const wasUpdated = await this.processTransaction(transaction, apiKey);
         if (wasUpdated) {
           updated++;
         }
@@ -165,6 +165,7 @@ export class PaymentReconciliationService {
    */
   private async processTransaction(
     transaction: EZPayTransaction,
+    apiKey: string,
   ): Promise<boolean> {
     const transactionNumber = transaction.TransactionCode;
     const ezpayStatus = transaction.Status;
@@ -220,6 +221,7 @@ export class PaymentReconciliationService {
     const result = await this.paymentWebhookService.manualPaymentVerification(
       transactionNumber,
       reference,
+      apiKey,
     );
 
     if (result.success) {
