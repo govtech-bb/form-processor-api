@@ -67,6 +67,8 @@ export interface PaymentProcessorConfig extends ProcessorConfig {
     required?: boolean; // Whether payment is mandatory for form submission
     timing?: 'immediate' | 'after_validation'; // When to create payment
     responseData?: ResponseDataConfig; // Additional data to include in response
+    confirmationEmailTo?: string[]; // Email addresses to send payment confirmation to (supports expressions)
+    customerEmail?: string; // Customer email expression to send payment confirmation to (supports expressions)
   };
 }
 

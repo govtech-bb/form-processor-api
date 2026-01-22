@@ -2,6 +2,7 @@ export interface ProcessorContext {
   formId: string;
   submissionId: string;
   data: Record<string, any>;
+  formName?: string;
 }
 
 export interface IProcessor {
