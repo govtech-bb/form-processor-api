@@ -251,7 +251,7 @@
       "type": "payment",
       "config": {
         "provider": "ezpay",
-        "department": "revenue_authority",
+        "department": "oag_registration",
         "paymentCode": "{{db:get-death-certificate:payment_code}}",
         "amount": "{{formData.order.numberOfCopies * db:get-death-certificate:payment_amount}}",
         "confirmationEmailTo": ["{{db:get-death-certificate:admin_email}}"],
