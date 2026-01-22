@@ -491,7 +491,7 @@
 			"type": "payment",
 			"config": {
 				"provider": "ezpay",
-				"department": "revenue_authority",
+				"department": "oag_registration",
 				"paymentCode": "{{db:get-birth-certificate:payment_code}}",
 				"amount": "{{formData.order.numberOfCopies * db:get-birth-certificate:payment_amount}}",
         "confirmationEmailTo": ["{{db:get-birth-certificate:admin_email}}"],

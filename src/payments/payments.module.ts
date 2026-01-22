@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ScheduleModule } from '@nestjs/schedule';
 import { PaymentIntegrationService } from './payment-integration.service';
 import { PaymentWebhookService } from './payment-webhook.service';
+import { PaymentReconciliationService } from './payment-reconciliation.service';
 import { DepartmentMappingService } from './department-mapping.service';
 import {
   Payment,
@@ -18,11 +20,13 @@ import { EmailModule } from '../email/email.module';
       PaymentTransaction,
       FormSubmissionPayment,
     ]),
+    ScheduleModule.forRoot(),
     EmailModule,
   ],
   providers: [
     PaymentIntegrationService,
     PaymentWebhookService,
+    PaymentReconciliationService,
     EZPayService,
     DepartmentMappingService,
   ],
@@ -30,6 +34,7 @@ import { EmailModule } from '../email/email.module';
   exports: [
     PaymentIntegrationService,
     PaymentWebhookService,
+    PaymentReconciliationService,
     DepartmentMappingService,
   ],
 })
