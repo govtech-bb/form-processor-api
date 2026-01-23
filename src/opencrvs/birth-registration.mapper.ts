@@ -139,7 +139,9 @@ export class BirthRegistrationMapper {
       // Mother information (always provided)
       'mother.detailsNotAvailable': false,
       'mother.name': this.mapMotherName(data.mother),
-      'mother.age': data.mother.idNumber ? this.calculateAgeFromNRN(data.mother.idNumber) : this.calculateAge(data.mother, data.child.dateOfBirth),
+      'mother.age': data.mother.idNumber
+        ? this.calculateAgeFromNRN(data.mother.idNumber)
+        : this.calculateAge(data.mother, data.child.dateOfBirth),
       'mother.maritalStatus': this.mapMaritalStatus(data.marriageStatus),
       'mother.nationality': config.defaultNationality ?? 'BRB',
       ...this.mapMotherId(data.mother),
@@ -154,9 +156,11 @@ export class BirthRegistrationMapper {
       'mother.stillAlive': Number(data.birth.totalStillAlive),
 
       // Informant information
-      'informant.relation': (data.marriageStatus === 'yes') ? 'PARENT' : 'OTHER',
-      'informant.parentsMarried': (data.marriageStatus === 'yes') ? 'YES' : 'NO',
-      'informant.phoneNo': data.mother.telephoneNumber,
+      'informant.relation': data.marriageStatus === 'yes' ? 'PARENT' : 'OTHER',
+      'informant.parentsMarried': data.marriageStatus === 'yes' ? 'YES' : 'NO',
+      'informant.phoneNo': this.sanitizePhoneNumber(
+        data.mother.telephoneNumber,
+      ),
 
       // Father information (conditional)
       ...this.mapFatherDetails(data, config),
@@ -455,7 +459,9 @@ export class BirthRegistrationMapper {
     return {
       'father.detailsNotAvailable': false,
       'father.name': this.mapFatherName(father),
-      'father.age': father.idNumber ? this.calculateAgeFromNRN(father.idNumber) : this.calculateAge(father, formData.child.dateOfBirth),
+      'father.age': father.idNumber
+        ? this.calculateAgeFromNRN(father.idNumber)
+        : this.calculateAge(father, formData.child.dateOfBirth),
       'father.nationality': config.defaultNationality ?? 'BRB',
       ...this.mapFatherId(father),
       'father.occupation': father.occupation,
@@ -475,35 +481,52 @@ export class BirthRegistrationMapper {
    * Calculates age from a National Registration Number (NRN) in format YYMMDD-XXXX
    * @param nrn The National Registration Number (e.g., "920320-0016")
    * @returns The age in years
-  */
-  private calculateAgeFromNRN(nrn: string): { age: number; asOfDateRef: string } {
+   */
+  private calculateAgeFromNRN(nrn: string): {
+    age: number;
+    asOfDateRef: string;
+  } {
     // Extract the date parts from NRN
     const year = parseInt(nrn.substring(0, 2));
     const month = parseInt(nrn.substring(2, 4)) - 1; // JavaScript months are 0-indexed
     const day = parseInt(nrn.substring(4, 6));
-    
+
     // Handle Y2K: Assume 1900s for years 00-20, 2000s for 21-99
     const fullYear = year <= 20 ? 2000 + year : 1900 + year;
-    
+
     // Create date objects
     const birthDate = new Date(fullYear, month, day);
     const today = new Date();
-    
+
     // Calculate age
     let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
-    
+
     // Adjust age if birthday hasn't occurred yet this year
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
       age--;
     }
-    
+
+    age = Math.max(12, Math.min(120, age));
+
     return {
       age,
-      asOfDateRef: 'child.dob'
+      asOfDateRef: 'child.dob',
     };
   }
 
+  /**
+   * Sanitize phone number by removing all non-digit characters
+   */
+  private sanitizePhoneNumber(phone: string | undefined): string | undefined {
+    if (!phone) {
+      return undefined;
+    }
+    return phone.replace(/\D/g, '');
+  }
 
   /**
    * Create annotation object for OpenCRVS
