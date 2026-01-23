@@ -211,6 +211,22 @@
   ],
   "processors": [
     {
+      "type": "payment",
+      "config": {
+        "provider": "ezpay",
+        "department": "post_office",
+        "paymentCode": "{{db:post-office-redirection-business:payment_code}}",
+        "amount": "{{db:post-office-redirection-business:payment_amount}}",
+        "description": "Application Fee",
+        "confirmationEmailTo": [
+          "{{db:post-office-redirection-business:admin_email}}"
+        ],
+        "customerEmail": "{{formData.applicant.email}}",
+        "required": true,
+        "timing": "after_validation"
+      }
+    },
+    {
       "type": "email",
       "config": {
         "to": "{{db:post-office-redirection-business:admin_email}}",
