@@ -507,14 +507,6 @@
         "subject": "New Birth Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "birth-certificate"
       }
-    },
-    {
-      "type": "email",
-      "config": {
-        "to": "{{formData.applicant.email}}",
-        "subject": "Birth Certificate Application - Submission Received",
-        "template": "birth-certificate-receipt"
-      }
     }
   ]
 }
