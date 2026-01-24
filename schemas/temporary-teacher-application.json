@@ -142,16 +142,13 @@
           "name": "country",
           "type": "string",
           "label": "Country",
-          "required": true,
-          "validations": {
-            "regex": "^barbados$"
-          }
+          "required": true
         },
         {
           "name": "parish",
           "type": "string",
           "label": "Parish",
-          "required": true,
+          "required": false,
           "validations": {
             "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
             "message": "Must select a valid parish"
@@ -390,13 +387,13 @@
       "required": true,
       "fields": [
         {
-          "name": "certificateDiplomaTranscript",
+          "name": "certificateDiplomaTranscriptUrls",
           "label": "Upload your certificates, diplomas, and transcripts",
           "required": false,
           "type": "string"
         },
         {
-          "name": "testimonials",
+          "name": "testimonialsUrls",
           "label": "Upload your two testimonials",
           "required": false,
           "type": "string"
