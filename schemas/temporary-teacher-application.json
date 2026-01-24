@@ -1,0 +1,425 @@
+{
+  "id": "temporary-teacher-application",
+  "name": "Temporary Teacher Application",
+  "description": "Apply to be a temporary teacher",
+  "fields": [
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name(s)",
+          "required": false,
+          "validations": {
+            "max": 50
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last Name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "label": "Date of Birth",
+          "required": true,
+          "validations": {
+            "regex": "^\\d{4}-\\d{2}-\\d{2}$",
+            "message": "Date must be in YYYY-MM-DD format"
+          }
+        },
+        {
+          "name": "placeOfBirth",
+          "type": "string",
+          "label": "Place of birth",
+          "required": true
+        },
+        {
+          "name": "nationality",
+          "type": "string",
+          "label": "Nationality",
+          "required": true
+        },
+        {
+          "name": "sex",
+          "type": "string",
+          "label": "Sex",
+          "required": true,
+          "validations": {
+            "regex": "^(male|female)$",
+            "message": "Must select a valid sex"
+          }
+        },
+        {
+          "name": "maritalStatus",
+          "type": "string",
+          "label": "Marital status",
+          "required": true,
+          "validations": {
+            "regex": "^(single|married|divorced)$",
+            "message": "Must select a marital status"
+          }
+        },
+        {
+          "name": "nationalIdNumber",
+          "type": "string",
+          "label": "National Identification (ID) number",
+          "required": false,
+          "validations": {
+            "regex": "^[0-9]{6}-[0-9]{4}$",
+            "message": "Invalid ID number."
+          }
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "label": "Passport Number (#)",
+          "required": false
+        },
+        {
+          "name": "nationalInsuranceNumber",
+          "type": "string",
+          "label": "National Insurance number (NIS)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "barbadosResidencyDuration",
+      "type": "object",
+      "required": false,
+      "fields": [
+        {
+          "name": "residencyDuration",
+          "label": "How long have you lived in Barbados?",
+          "type": "string",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 20,
+            "message": "Input must be between 2 and 20 characters"
+          }
+        }
+      ]
+    },
+    {
+      "name": "contact",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address Line 1",
+          "required": true
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address Line 2",
+          "required": false
+        },
+        {
+          "name": "country",
+          "type": "string",
+          "label": "Country",
+          "required": true,
+          "validations": {
+            "regex": "^barbados$"
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "postcode",
+          "type": "string",
+          "label": "Postcode",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        },
+        {
+          "name": "emailAddress",
+          "type": "email",
+          "label": "Email address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone Number",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "applicantEducation",
+      "type": "array",
+      "label": "Applicant Information",
+      "required": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "nameOfInstitution": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string",
+            "required": false
+          },
+          "startYear": {
+            "type": "string",
+            "validations": {
+              "regex": "^[0-9]{4}$"
+            }
+          },
+          "endYear": {
+            "type": "string",
+            "validations": {
+              "regex": "^[0-9]{4}$"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "qualifications",
+      "type": "array",
+      "label": "Applicant Qualifications",
+      "required": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string"
+          },
+          "examiningBody": {
+            "type": "string",
+            "required": true
+          },
+          "year": {
+            "type": "string",
+            "validations": {
+              "regex": "^[0-9]{4}$"
+            }
+          },
+          "levelGrade": {
+            "type": "string",
+            "required": true
+          }
+        }
+      }
+    },
+    {
+      "name": "workExperiences",
+      "required": true,
+      "type": "array",
+      "label": "Applicant Work Experience",
+      "items": {
+        "employerName": {
+          "type": "string",
+          "required": true
+        },
+        "positionHeld": {
+          "type": "string",
+          "required": true
+        },
+        "fromYear": {
+          "type": "string",
+          "required": true,
+          "validations": {
+            "regex": "^[0-9]{4}$"
+          }
+        },
+        "toYear": {
+          "type": "string",
+          "required": false,
+          "validations": {
+            "regex": "^[0-9]{4}$"
+          }
+        },
+        "currentlyWorking": {
+          "type": "boolean",
+          "required": false
+        },
+        "tasks": {
+          "required": true,
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "skillsAndExperience",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "athleticsGamesCraftSkills",
+          "label": "Athletics, games, or craft skills",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "youthCommunityVolunteerGroups",
+          "label": "Experience in youth, community, or volunteer groups",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "responsibilityPositions",
+          "label": "Positions of responsibility held",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "extraDetails",
+          "label": "Anything else relevant to your application?",
+          "type": "string",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "references",
+      "required": true,
+      "type": "array",
+      "label": "Tell us about your reference",
+      "items": {
+        "title": {
+          "required": true,
+          "type": "string",
+          "validations": {
+            "regex": "^(mr|ms|mrs)$",
+            "message": "Must select a valid title"
+          }
+        },
+        "firstName": {
+          "type": "string",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        "lastName": {
+          "type": "string",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 50
+          }
+        },
+        "addressLine1": {
+          "type": "string",
+          "required": true
+        },
+        "addressLine2": {
+          "type": "string",
+          "required": false
+        },
+        "country": {
+          "type": "string",
+          "required": true,
+          "validations": {
+            "regex": "^(barbados)$",
+            "message": "Must select an option"
+          }
+        },
+        "parish": {
+          "type": "string",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        "postcode": {
+          "type": "string",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        },
+        "occupation": {
+          "required": true,
+          "type": "string"
+        },
+        "emailAddress": {
+          "type": "email",
+          "required": true
+        },
+        "telephoneNumber": {
+          "type": "string",
+          "required": true
+        }
+      }
+    },
+    {
+      "name": "documents",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "certificateDiplomaTranscript",
+          "label": "Upload your certificates, diplomas, and transcripts",
+          "required": false,
+          "type": "string"
+        },
+        {
+          "name": "testimonials",
+          "label": "Upload your two testimonials",
+          "required": false,
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:temporary-teacher-application:admin_email}}",
+        "subject": "New Temporary Teacher Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "temporary-teacher-application"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.contact.emailAddress}}",
+        "subject": "Application Received - Government of Barbados",
+        "template": "temporary-teacher-application-receipt"
+      }
+    }
+  ]
+}
