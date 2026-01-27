@@ -53,6 +53,33 @@
           }
         },
         {
+          "name": "age",
+          "type": "string",
+          "required": {
+            "when": {
+              "all": [{ "field": "father.idNumber", "operator": "empty" }]
+            },
+            "message": "Age is required when no ID number is provided"
+          },
+          "validations": {
+            "condition": {
+              "field": "father.idNumber",
+              "operator": "notIn",
+              "value": [null, ""],
+              "then": {
+                "min": 0,
+                "max": 3,
+                "message": "Age should be between 0 and 3 digits"
+              },
+              "else": {
+                "min": 1,
+                "max": 3,
+                "message": "Age should be between 1 and 3 digits"
+              }
+            }
+          }
+        },
+        {
           "name": "parish",
           "type": "string",
           "required": true,
@@ -124,13 +151,58 @@
           "name": "parish",
           "type": "string",
           "label": "Parish",
-          "required": false
+          "required": {
+            "when": {
+              "all": [
+                {
+                  "field": "birth.placeOfBirth",
+                  "operator": "in",
+                  "value": ["residential", "other"]
+                }
+              ]
+            },
+            "message": "Parish is required for residential/other birth locations"
+          },
+          "validations": {
+            "condition": {
+              "field": "birth.placeOfBirth",
+              "operator": "in",
+              "value": ["residential", "other"],
+              "then": {
+                "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+                "message": "Must select a valid parish"
+              }
+            }
+          }
         },
         {
           "name": "streetAddress",
           "type": "string",
           "label": "Street Address",
-          "required": false
+          "required": {
+            "when": {
+              "all": [
+                {
+                  "field": "birth.placeOfBirth",
+                  "operator": "in",
+                  "value": ["residential", "other"]
+                }
+              ]
+            },
+            "message": "Street address is required for residential/other birth locations"
+          },
+          "validations": {
+            "condition": {
+              "field": "birth.placeOfBirth",
+              "operator": "in",
+              "value": ["residential", "other"],
+              "then": {
+                "min": 5,
+                "max": 200,
+                "message": "Address must be at least 5 characters"
+              }
+            }
+          }
         },
         {
           "name": "numberOfBirths",
@@ -201,6 +273,33 @@
           "validations": {
             "min": 1,
             "max": 100
+          }
+        },
+        {
+          "name": "age",
+          "type": "string",
+          "required": {
+            "when": {
+              "all": [{ "field": "mother.idNumber", "operator": "empty" }]
+            },
+            "message": "Age is required when no ID number is provided"
+          },
+          "validations": {
+            "condition": {
+              "field": "mother.idNumber",
+              "operator": "notIn",
+              "value": [null, ""],
+              "then": {
+                "min": 0,
+                "max": 3,
+                "message": "Age should be between 0 and 3 digits"
+              },
+              "else": {
+                "min": 1,
+                "max": 3,
+                "message": "Age should be between 1 and 3 digits"
+              }
+            }
           }
         },
         {
