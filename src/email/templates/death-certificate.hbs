@@ -12,10 +12,7 @@
       }
       .header {
         background-color: #ffc726;
-        display: flex;
         padding: var(--xm, 24px) var(--m, 32px);
-        flex-direction: column;
-        align-items: flex-start;
         align-self: stretch;
       }
       .container {
@@ -70,10 +67,7 @@
         text-align: left;
       }
       .submitted-info {
-        display: flex;
         padding: var(--s, 16px);
-        flex-direction: column;
-        align-items: flex-start;
         align-self: stretch;
         border-radius: var(--xxs, 4px);
         background: var(--blue-10, #e5e9f2);
@@ -151,22 +145,31 @@
                 </ol>
                 <p>Here is the data from this request:</p>
             </div>
-            {{!-- Declaration Details --}}
             <section class="section">
                 <h2>Declaration</h2>
-                <blockquote>
+                <p>
                     "I confirm that my information is correct and I am happy for it to be
                     verified. I understand that false details may lead to my application
                     being rejected, and that the Government of Barbados will keep my
-                    information confidential.",
-                </blockquote>
-                <p>
-                    {{ applicant.firstName }}
-                    {{#if applicant.middleName}}
-                        {{
-                        applicant.middleName }} {{/if}} {{ applicant.lastName }}
-                    </p>
-                    <p>{{ today }}</p>
+                    information confidential."
+                </p>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>Name</td>
+                            <td>
+                                {{ applicant.firstName }}
+                                {{#if applicant.middleName}}
+                                    {{
+                                    applicant.middleName }} {{/if}} {{ applicant.lastName }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Date</td>
+                                <td>{{ today }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </section>
                 <!-- Applicant Details -->
                 <section class="section">
@@ -175,7 +178,7 @@
                         <tbody>
                             {{#if applicant.title}}
                                 <tr>
-                                    <td>Title:</td>
+                                    <td>Title</td>
                                     <td>
                                         {{#if (eq applicant.title 'mr')}}
                                             Mr{{else if (eq
@@ -186,77 +189,67 @@
                                 {{/if}}
                                 {{#if applicant.firstName}}
                                     <tr>
-                                        <td>First Name:</td>
+                                        <td>First Name</td>
                                         <td>{{ applicant.firstName }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.middleName}}
                                     <tr>
-                                        <td>Middle Name:</td>
+                                        <td>Middle Name</td>
                                         <td>{{ applicant.middleName }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.lastName}}
                                     <tr>
-                                        <td>Last Name:</td>
+                                        <td>Last Name</td>
                                         <td>{{ applicant.lastName }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.email}}
                                     <tr>
-                                        <td>Email:</td>
+                                        <td>Email</td>
                                         <td>{{ applicant.email }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.telephoneNumber}}
                                     <tr>
-                                        <td>Telephone Number:</td>
+                                        <td>Telephone Number</td>
                                         <td>{{ applicant.telephoneNumber }}</td>
                                     </tr>
                                 {{/if}}
-                            </tbody>
-                        </table>
-                        <h3>Address</h3>
-                        <table>
-                            <tbody>
                                 {{#if applicant.addressLine1}}
                                     <tr>
-                                        <td>Address Line 1:</td>
+                                        <td>Address Line 1</td>
                                         <td>{{ applicant.addressLine1 }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.addressLine2}}
                                     <tr>
-                                        <td>Address Line 2:</td>
+                                        <td>Address Line 2</td>
                                         <td>{{ applicant.addressLine2 }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.parish}}
                                     <tr>
-                                        <td>Parish:</td>
+                                        <td>Parish</td>
                                         <td>{{ applicant.parish }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.postalCode}}
                                     <tr>
-                                        <td>Postal Code:</td>
+                                        <td>Postal Code</td>
                                         <td>{{ applicant.postalCode }}</td>
                                     </tr>
                                 {{/if}}
-                            </tbody>
-                        </table>
-                        <h3>Identification</h3>
-                        <table>
-                            <tbody>
                                 {{#if applicant.idNumber}}
                                     <tr>
-                                        <td>National ID Number:</td>
+                                        <td>National ID Number</td>
                                         <td>{{ applicant.idNumber }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.passportNumber}}
                                     <tr>
-                                        <td>Passport Number:</td>
+                                        <td>Passport Number</td>
                                         <td>{{ applicant.passportNumber }}</td>
                                     </tr>
                                 {{/if}}
@@ -270,13 +263,13 @@
                             <tbody>
                                 {{#if relationship}}
                                     <tr>
-                                        <td>Relationship to Deceased:</td>
+                                        <td>Relationship to Deceased</td>
                                         <td>{{ relationship }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if reasonForRequest}}
                                     <tr>
-                                        <td>Reason for Request:</td>
+                                        <td>Reason for Request</td>
                                         <td>{{ reasonForRequest }}</td>
                                     </tr>
                                 {{/if}}
@@ -286,7 +279,7 @@
                                 </tr>
                                 {{#if deceased.causeOfDeath}}
                                     <tr>
-                                        <td>Cause of Death:</td>
+                                        <td>Cause of Death</td>
                                         <td>{{ deceased.causeOfDeath }}</td>
                                     </tr>
                                 {{/if}}
@@ -300,25 +293,25 @@
                             <tbody>
                                 {{#if deceased.lastName}}
                                     <tr>
-                                        <td>Last Name:</td>
+                                        <td>Last Name</td>
                                         <td>{{ deceased.lastName }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if deceased.firstName}}
                                     <tr>
-                                        <td>First Name:</td>
+                                        <td>First Name</td>
                                         <td>{{ deceased.firstName }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if deceased.middleName}}
                                     <tr>
-                                        <td>Middle Name(s):</td>
+                                        <td>Middle Name(s)</td>
                                         <td>{{ deceased.middleName }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if deceased.knownDateOfDeath}}
                                     <tr>
-                                        <td>Known Date of Death:</td>
+                                        <td>Known Date of Death</td>
                                         <td>
                                             {{#if (eq deceased.knownDateOfDeath 'yes') }}
                                                 Yes{{ else
@@ -328,25 +321,25 @@
                                     {{/if}}
                                     {{#if deceased.dateOfDeath}}
                                         <tr>
-                                            <td>Date of Death:</td>
+                                            <td>Date of Death</td>
                                             <td>{{ deceased.dateOfDeath }}</td>
                                         </tr>
                                     {{/if}}
                                     {{#if deceased.estimatedDateOfDeath}}
                                         <tr>
-                                            <td>Estimated Date of Death:</td>
+                                            <td>Estimated Date of Death</td>
                                             <td>{{ deceased.estimatedDateOfDeath }}</td>
                                         </tr>
                                     {{/if}}
                                     {{#if deceased.idNumber}}
                                         <tr>
-                                            <td>National ID Number:</td>
+                                            <td>National ID Number</td>
                                             <td>{{ deceased.idNumber }}</td>
                                         </tr>
                                     {{/if}}
                                     {{#if deceased.placeOfDeath}}
                                         <tr>
-                                            <td>Place of Death:</td>
+                                            <td>Place of Death</td>
                                             <td>{{ deceased.placeOfDeath }}</td>
                                         </tr>
                                     {{/if}}
