@@ -57,47 +57,63 @@ export class EmailService {
 
   private registerHandlebarsHelpers(): void {
     // Equality helper
-    Handlebars.registerHelper('eq', function (a, b) {
+    Handlebars.registerHelper('eq', function(a, b) {
       return a === b;
     });
 
     // Not equal helper
-    Handlebars.registerHelper('ne', function (a, b) {
+    Handlebars.registerHelper('ne', function(a, b) {
       return a !== b;
     });
 
     // Greater than helper
-    Handlebars.registerHelper('gt', function (a, b) {
+    Handlebars.registerHelper('gt', function(a, b) {
       return a > b;
     });
 
     // Less than helper
-    Handlebars.registerHelper('lt', function (a, b) {
+    Handlebars.registerHelper('lt', function(a, b) {
       return a < b;
     });
 
     // Greater than or equal helper
-    Handlebars.registerHelper('gte', function (a, b) {
+    Handlebars.registerHelper('gte', function(a, b) {
       return a >= b;
     });
 
     // Less than or equal helper
-    Handlebars.registerHelper('lte', function (a, b) {
+    Handlebars.registerHelper('lte', function(a, b) {
       return a <= b;
     });
 
     // Logical AND helper
-    Handlebars.registerHelper('and', function (...args) {
+    Handlebars.registerHelper('and', function(...args) {
       // Remove the last argument which is the options object
       const values = args.slice(0, -1);
       return values.every((val) => !!val);
     });
 
     // Logical OR helper
-    Handlebars.registerHelper('or', function (...args) {
+    Handlebars.registerHelper('or', function(...args) {
       // Remove the last argument which is the options object
       const values = args.slice(0, -1);
       return values.some((val) => !!val);
+    });
+
+    Handlebars.registerHelper('today', function(...args) {
+      const currentDate = new Date();
+      return currentDate.toDateString();
+    });
+
+    Handlebars.registerHelper('titleCase', function(...args) {
+      const values = args.slice(0, -1);
+      const titled = values
+        .filter(v => typeof v === 'string')
+        .map(str => str.toLowerCase()
+          .replace(/\b\w/g, (char: string) => char.toUpperCase()))
+        .join(" ");
+
+      return Handlebars.escapeExpression(titled);
     });
 
     this.logger.log('Handlebars helpers registered');
