@@ -105,6 +105,15 @@ export class EmailService {
       return currentDate.toDateString();
     });
 
+    Handlebars.registerHelper('titleCase', function(...args) {
+      const values = args.slice(0, -1);
+      const titled = values.map(str => str.toLowerCase()
+        .replace(/\b\w/g, (char: string) => char.toUpperCase()))
+        .join(" ");
+
+      return titled;
+    });
+
     this.logger.log('Handlebars helpers registered');
   }
 

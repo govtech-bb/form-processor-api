@@ -164,232 +164,227 @@
                             {{#if applicant.title}}
                                 <tr>
                                     <td>Title</td>
+                                    <td>{{ titleCase applicant.title }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.firstName}}
+                                <tr>
+                                    <td>First name</td>
+                                    <td>{{ applicant.firstName }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.middleName}}
+                                <tr>
+                                    <td>Middle name(s)</td>
+                                    <td>{{ applicant.middleName }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.lastName}}
+                                <tr>
+                                    <td>Last name</td>
+                                    <td>{{ applicant.lastName }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.email}}
+                                <tr>
+                                    <td>Email</td>
+                                    <td>{{ applicant.email }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.phoneNumber}}
+                                <tr>
+                                    <td>Phone number</td>
+                                    <td>{{ applicant.phoneNumber }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.addressLine1}}
+                                <tr>
+                                    <td>Address line 1</td>
+                                    <td>{{ applicant.addressLine1 }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.addressLine2}}
+                                <tr>
+                                    <td>Address line 2</td>
+                                    <td>{{ applicant.addressLine2 }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.parish}}
+                                <tr>
+                                    <td>Parish</td>
+                                    <td>{{ applicant.parish }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.postalCode}}
+                                <tr>
+                                    <td>Postal Code</td>
+                                    <td>{{ applicant.postalCode }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.usePassportInstead}}
+                                {{#if
+                                    applicant.passportNumber}}
+                                    <tr>
+                                        <td>Passport number</td>
+                                        <td>{{ applicant.passportNumber }}</td>
+                                    </tr>
+                                {{/if}} {{ else }}
+                                {{#if applicant.idNumber}}
+                                    <tr>
+                                        <td>National identification number</td>
+                                        <td>{{ applicant.idNumber }}</td>
+                                    </tr>
+                                {{/if}} {{/if}}
+                            </tbody>
+                        </table>
+                    </section>
+                    <section class="section">
+                        <h2>Relationship to the person named in the certificate</h2>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>Are you applying for your own birth certificate?</td>
+                                    <td>{{ applyingForYourself }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Relationship to the person to whom the certificate relates to</td>
                                     <td>
-                                        {{#if (eq applicant.title 'mr')}}
-                                            Mr{{else if (eq
-                                            applicant.title 'ms') }}Ms{{else if (eq applicant.title 'mrs')
-                                        }}Mrs{{ else }}{{ applicant.title }}{{/if}}
+                                        {{#if relationshipToPerson }}
+                                            {{ relationshipToPerson }} {{ else
+                                            }} {{ relationshipOtherDescription }} {{/if}}
                                         </td>
                                     </tr>
-                                {{/if}}
-                                {{#if applicant.firstName}}
                                     <tr>
-                                        <td>First name</td>
-                                        <td>{{ applicant.firstName }}</td>
+                                        <td>Reason for requesting the certificate</td>
+                                        <td>{{ reasonForOrderingCertificate }}</td>
                                     </tr>
-                                {{/if}}
-                                {{#if applicant.middleName}}
                                     <tr>
-                                        <td>Middle name(s)</td>
-                                        <td>{{ applicant.middleName }}</td>
+                                        <td>Is the person deceased?</td>
+                                        <td>{{ personDeceased }}</td>
                                     </tr>
-                                {{/if}}
-                                {{#if applicant.lastName}}
-                                    <tr>
-                                        <td>Last name</td>
-                                        <td>{{ applicant.lastName }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.email}}
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>{{ applicant.email }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.phoneNumber}}
-                                    <tr>
-                                        <td>Phone number</td>
-                                        <td>{{ applicant.phoneNumber }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.addressLine1}}
-                                    <tr>
-                                        <td>Address line 1</td>
-                                        <td>{{ applicant.addressLine1 }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.addressLine2}}
-                                    <tr>
-                                        <td>Address line 2</td>
-                                        <td>{{ applicant.addressLine2 }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.parish}}
-                                    <tr>
-                                        <td>Parish</td>
-                                        <td>{{ applicant.parish }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.postalCode}}
-                                    <tr>
-                                        <td>Postal Code</td>
-                                        <td>{{ applicant.postalCode }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.usePassportInstead}}
-                                    {{#if
-                                        applicant.passportNumber}}
-                                        <tr>
-                                            <td>Passport number</td>
-                                            <td>{{ applicant.passportNumber }}</td>
-                                        </tr>
-                                    {{/if}} {{ else }}
-                                    {{#if applicant.idNumber}}
-                                        <tr>
-                                            <td>National identification number</td>
-                                            <td>{{ applicant.idNumber }}</td>
-                                        </tr>
-                                    {{/if}} {{/if}}
                                 </tbody>
                             </table>
                         </section>
+                        <!-- Birth Details -->
                         <section class="section">
-                            <h2>Relationship to the person named in the certificate</h2>
+                            <h2>Details of birth certificate required</h2>
                             <table>
                                 <tbody>
-                                    <tr>
-                                        <td>Are you applying for your own birth certificate?</td>
-                                        <td>{{ applyingForYourself }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Relationship to the person to whom the certificate relates to</td>
-                                        <td>
-                                            {{#if relationshipToPerson }}
-                                                {{ relationshipToPerson }} {{ else
-                                                }} {{ relationshipOtherDescription }} {{/if}}
-                                            </td>
-                                        </tr>
+                                    {{#if person.firstName}}
                                         <tr>
-                                            <td>Reason for requesting the certificate</td>
-                                            <td>{{ reasonForOrderingCertificate }}</td>
+                                            <td>First name</td>
+                                            <td>{{ person.firstName }}</td>
                                         </tr>
+                                    {{/if}}
+                                    {{#if person.middleName}}
                                         <tr>
-                                            <td>Is the person deceased?</td>
-                                            <td>{{ personDeceased }}</td>
+                                            <td>Middle name(s)</td>
+                                            <td>{{ person.middleName }}</td>
                                         </tr>
-                                    </tbody>
-                                </table>
-                            </section>
-                            <!-- Birth Details -->
-                            <section class="section">
-                                <h2>Details of birth certificate required</h2>
-                                <table>
-                                    <tbody>
-                                        {{#if person.firstName}}
-                                            <tr>
-                                                <td>First name</td>
-                                                <td>{{ person.firstName }}</td>
-                                            </tr>
-                                        {{/if}}
-                                        {{#if person.middleName}}
-                                            <tr>
-                                                <td>Middle name(s)</td>
-                                                <td>{{ person.middleName }}</td>
-                                            </tr>
-                                        {{/if}}
-                                        {{#if person.lastName}}
-                                            <tr>
-                                                <td>Last name</td>
-                                                <td>{{ person.lastName }}</td>
-                                            </tr>
-                                            {{#if person.usePassportInstead}}
-                                                {{#if person.passportNumber}}
+                                    {{/if}}
+                                    {{#if person.lastName}}
+                                        <tr>
+                                            <td>Last name</td>
+                                            <td>{{ person.lastName }}</td>
+                                        </tr>
+                                        {{#if person.usePassportInstead}}
+                                            {{#if person.passportNumber}}
+                                                <tr>
+                                                    <td>Passport number</td>
+                                                    <td>{{ person.passportNumber }}</td>
+                                                </tr>
+                                            {{/if}} {{ else }}
+                                            {{#if person.idNumber}}
+                                                <tr>
+                                                    <td>National ID number</td>
+                                                    <td>{{ person.idNumber }}</td>
+                                                </tr>
+                                            {{/if}} {{/if}}
+                                            {{#if birthDetails.dateOfBirth}}
+                                                <tr>
+                                                    <td>Date of birth</td>
+                                                    <td>{{ birthDetails.dateOfBirth }}</td>
+                                                </tr>
+                                            {{/if}}
+                                            {{#if birthDetails.placeOfBirth}}
+                                                <tr>
+                                                    <td>Place of birth</td>
+                                                    <td>{{ birthDetails.placeOfBirth }}</td>
+                                                </tr>
+                                            {{/if}}
+                                            {{#if birthDetails.placeOfBaptism}}
+                                                <tr>
+                                                    <td>Place of baptism</td>
+                                                    <td>{{ birthDetails.placeOfBaptism }}</td>
+                                                </tr>
+                                            {{/if}}
+                                        </tbody>
+                                    </table>
+                                </section>
+                                <!-- Parents Details -->
+                                <section class="section">
+                                    <h2>Parents' Details</h2>
+                                    <table>
+                                        <tbody>
+                                            {{#if parents.father}}
+                                                {{#if parents.father.firstName}}
                                                     <tr>
-                                                        <td>Passport number</td>
-                                                        <td>{{ person.passportNumber }}</td>
+                                                        <td>Father's first name</td>
+                                                        <td>{{ parents.father.firstName }}</td>
                                                     </tr>
-                                                {{/if}} {{ else }}
-                                                {{#if person.idNumber}}
+                                                {{/if}}
+                                                {{#if parents.father.middleName}}
                                                     <tr>
-                                                        <td>National ID number</td>
-                                                        <td>{{ person.idNumber }}</td>
+                                                        <td>Father's middle name(s)</td>
+                                                        <td>{{ parents.father.middleName }}</td>
+                                                    </tr>
+                                                {{/if}}
+                                                {{#if parents.father.lastName}}
+                                                    <tr>
+                                                        <td>Father's last name</td>
+                                                        <td>{{ parents.father.lastName }}</td>
                                                     </tr>
                                                 {{/if}} {{/if}}
-                                                {{#if birthDetails.dateOfBirth}}
-                                                    <tr>
-                                                        <td>Date of birth</td>
-                                                        <td>{{ birthDetails.dateOfBirth }}</td>
-                                                    </tr>
-                                                {{/if}}
-                                                {{#if birthDetails.placeOfBirth}}
-                                                    <tr>
-                                                        <td>Place of birth</td>
-                                                        <td>{{ birthDetails.placeOfBirth }}</td>
-                                                    </tr>
-                                                {{/if}}
-                                                {{#if birthDetails.placeOfBaptism}}
-                                                    <tr>
-                                                        <td>Place of baptism</td>
-                                                        <td>{{ birthDetails.placeOfBaptism }}</td>
-                                                    </tr>
-                                                {{/if}}
-                                            </tbody>
-                                        </table>
-                                    </section>
-                                    <!-- Parents Details -->
-                                    <section class="section">
-                                        <h2>Parents' Details</h2>
-                                        <table>
-                                            <tbody>
-                                                {{#if parents.father}}
-                                                    {{#if parents.father.firstName}}
+                                                {{#if parents.mother}}
+                                                    {{#if
+                                                        parents.mother.firstName}}
                                                         <tr>
-                                                            <td>Father's first name</td>
-                                                            <td>{{ parents.father.firstName }}</td>
+                                                            <td>Mother's first name</td>
+                                                            <td>{{ parents.mother.firstName }}</td>
                                                         </tr>
                                                     {{/if}}
-                                                    {{#if parents.father.middleName}}
+                                                    {{#if parents.mother.middleName}}
                                                         <tr>
-                                                            <td>Father's middle name(s)</td>
-                                                            <td>{{ parents.father.middleName }}</td>
+                                                            <td>Mother's middle name(s)</td>
+                                                            <td>{{ parents.mother.middleName }}</td>
                                                         </tr>
                                                     {{/if}}
-                                                    {{#if parents.father.lastName}}
+                                                    {{#if parents.mother.lastName}}
                                                         <tr>
-                                                            <td>Father's last name</td>
-                                                            <td>{{ parents.father.lastName }}</td>
+                                                            <td>Mother's last name</td>
+                                                            <td>{{ parents.mother.lastName }}</td>
                                                         </tr>
-                                                    {{/if}} {{/if}}
-                                                    {{#if parents.mother}}
-                                                        {{#if
-                                                            parents.mother.firstName}}
-                                                            <tr>
-                                                                <td>Mother's first name</td>
-                                                                <td>{{ parents.mother.firstName }}</td>
-                                                            </tr>
-                                                        {{/if}}
-                                                        {{#if parents.mother.middleName}}
-                                                            <tr>
-                                                                <td>Mother's middle name(s)</td>
-                                                                <td>{{ parents.mother.middleName }}</td>
-                                                            </tr>
-                                                        {{/if}}
-                                                        {{#if parents.mother.lastName}}
-                                                            <tr>
-                                                                <td>Mother's last name</td>
-                                                                <td>{{ parents.mother.lastName }}</td>
-                                                            </tr>
-                                                        {{/if}}
-                                                    </tbody>
-                                                </table>
-                                            </section>
-                                            <!-- Footer -->
-                                            <div class="footer">
-                                                <p>
-                                                    This is an automated email from the Government of Barbados Forms
-                                                    Processing System.
-                                                    <br />
-                                                    Birth Certificate applications are processed during regular business
-                                                    hours.
-                                                    <br />
-                                                    Please allow 5-10 business days for processing.
-                                                    <br />
-                                                    <br />
-                                                    <strong>Important:</strong>
-                                                    If this application is for someone other than yourself, additional
-                                                    documentation may be required for verification.
-                                                </p>
-                                            </div>
+                                                    {{/if}}
+                                                </tbody>
+                                            </table>
+                                        </section>
+                                        <!-- Footer -->
+                                        <div class="footer">
+                                            <p>
+                                                This is an automated email from the Government of Barbados Forms
+                                                Processing System.
+                                                <br />
+                                                Birth Certificate applications are processed during regular business
+                                                hours.
+                                                <br />
+                                                Please allow 5-10 business days for processing.
+                                                <br />
+                                                <br />
+                                                <strong>Important:</strong>
+                                                If this application is for someone other than yourself, additional
+                                                documentation may be required for verification.
+                                            </p>
                                         </div>
-                                    </body>
-                                </html>
+                                    </div>
+                                </body>
+                            </html>

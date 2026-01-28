@@ -167,189 +167,184 @@
                             {{#if applicant.title}}
                                 <tr>
                                     <td>Title</td>
+                                    <td>{{ titleCase applicant.title }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.firstName}}
+                                <tr>
+                                    <td>First name</td>
+                                    <td>{{ applicant.firstName }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.middleName}}
+                                <tr>
+                                    <td>Middle name</td>
+                                    <td>{{ applicant.middleName }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.lastName}}
+                                <tr>
+                                    <td>Last name</td>
+                                    <td>{{ applicant.lastName }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.email}}
+                                <tr>
+                                    <td>Email</td>
+                                    <td>{{ applicant.email }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.telephoneNumber}}
+                                <tr>
+                                    <td>Telephone number</td>
+                                    <td>{{ applicant.telephoneNumber }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.addressLine1}}
+                                <tr>
+                                    <td>Address line 1</td>
+                                    <td>{{ applicant.addressLine1 }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.addressLine2}}
+                                <tr>
+                                    <td>Address line 2</td>
+                                    <td>{{ applicant.addressLine2 }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.parish}}
+                                <tr>
+                                    <td>Parish</td>
+                                    <td>{{ applicant.parish }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.postalCode}}
+                                <tr>
+                                    <td>Postal Code</td>
+                                    <td>{{ applicant.postalCode }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.idNumber}}
+                                <tr>
+                                    <td>National ID number</td>
+                                    <td>{{ applicant.idNumber }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if applicant.passportNumber}}
+                                <tr>
+                                    <td>Passport number</td>
+                                    <td>{{ applicant.passportNumber }}</td>
+                                </tr>
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </section>
+                <!-- Application Details -->
+                <section class="section">
+                    <h2>Relationship to the Person Named on the Certificate</h2>
+                    <table>
+                        <tbody>
+                            {{#if relationship}}
+                                <tr>
+                                    <td>Relationship to deceased</td>
+                                    <td>{{ relationship }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if reasonForRequest}}
+                                <tr>
+                                    <td>Reason for request</td>
+                                    <td>{{ reasonForRequest }}</td>
+                                </tr>
+                            {{/if}}
+                            <tr>
+                                <td>Number of copies requested</td>
+                                <td>{{ order.numberOfCopies }}</td>
+                            </tr>
+                            {{#if deceased.causeOfDeath}}
+                                <tr>
+                                    <td>Cause of death</td>
+                                    <td>{{ deceased.causeOfDeath }}</td>
+                                </tr>
+                            {{/if}}
+                        </tbody>
+                    </table>
+                </section>
+                <!-- Deceased Details -->
+                <section class="section">
+                    <h2>Details of Death Certificate Required</h2>
+                    <table>
+                        <tbody>
+                            {{#if deceased.lastName}}
+                                <tr>
+                                    <td>Last name</td>
+                                    <td>{{ deceased.lastName }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if deceased.firstName}}
+                                <tr>
+                                    <td>First name</td>
+                                    <td>{{ deceased.firstName }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if deceased.middleName}}
+                                <tr>
+                                    <td>Middle name(s)</td>
+                                    <td>{{ deceased.middleName }}</td>
+                                </tr>
+                            {{/if}}
+                            {{#if deceased.knownDateOfDeath}}
+                                <tr>
+                                    <td>Known date of death</td>
                                     <td>
-                                        {{#if (eq applicant.title 'mr')}}
-                                            Mr{{else if (eq
-                                            applicant.title 'ms') }}Ms{{else if (eq applicant.title 'mrs')
-                                        }}Mrs{{ else }}{{ applicant.title }}{{/if}}
+                                        {{#if (eq deceased.knownDateOfDeath 'yes') }}
+                                            Yes{{ else
+                                            }}No{{/if}}
                                         </td>
                                     </tr>
                                 {{/if}}
-                                {{#if applicant.firstName}}
+                                {{#if deceased.dateOfDeath}}
                                     <tr>
-                                        <td>First name</td>
-                                        <td>{{ applicant.firstName }}</td>
+                                        <td>Date of death</td>
+                                        <td>{{ deceased.dateOfDeath }}</td>
                                     </tr>
                                 {{/if}}
-                                {{#if applicant.middleName}}
+                                {{#if deceased.estimatedDateOfDeath}}
                                     <tr>
-                                        <td>Middle name</td>
-                                        <td>{{ applicant.middleName }}</td>
+                                        <td>Estimated date of death</td>
+                                        <td>{{ deceased.estimatedDateOfDeath }}</td>
                                     </tr>
                                 {{/if}}
-                                {{#if applicant.lastName}}
-                                    <tr>
-                                        <td>Last name</td>
-                                        <td>{{ applicant.lastName }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.email}}
-                                    <tr>
-                                        <td>Email</td>
-                                        <td>{{ applicant.email }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.telephoneNumber}}
-                                    <tr>
-                                        <td>Telephone number</td>
-                                        <td>{{ applicant.telephoneNumber }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.addressLine1}}
-                                    <tr>
-                                        <td>Address line 1</td>
-                                        <td>{{ applicant.addressLine1 }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.addressLine2}}
-                                    <tr>
-                                        <td>Address line 2</td>
-                                        <td>{{ applicant.addressLine2 }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.parish}}
-                                    <tr>
-                                        <td>Parish</td>
-                                        <td>{{ applicant.parish }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.postalCode}}
-                                    <tr>
-                                        <td>Postal Code</td>
-                                        <td>{{ applicant.postalCode }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if applicant.idNumber}}
+                                {{#if deceased.idNumber}}
                                     <tr>
                                         <td>National ID number</td>
-                                        <td>{{ applicant.idNumber }}</td>
+                                        <td>{{ deceased.idNumber }}</td>
                                     </tr>
                                 {{/if}}
-                                {{#if applicant.passportNumber}}
+                                {{#if deceased.placeOfDeath}}
                                     <tr>
-                                        <td>Passport number</td>
-                                        <td>{{ applicant.passportNumber }}</td>
-                                    </tr>
-                                {{/if}}
-                            </tbody>
-                        </table>
-                    </section>
-                    <!-- Application Details -->
-                    <section class="section">
-                        <h2>Relationship to the Person Named on the Certificate</h2>
-                        <table>
-                            <tbody>
-                                {{#if relationship}}
-                                    <tr>
-                                        <td>Relationship to deceased</td>
-                                        <td>{{ relationship }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if reasonForRequest}}
-                                    <tr>
-                                        <td>Reason for request</td>
-                                        <td>{{ reasonForRequest }}</td>
-                                    </tr>
-                                {{/if}}
-                                <tr>
-                                    <td>Number of copies requested</td>
-                                    <td>{{ order.numberOfCopies }}</td>
-                                </tr>
-                                {{#if deceased.causeOfDeath}}
-                                    <tr>
-                                        <td>Cause of death</td>
-                                        <td>{{ deceased.causeOfDeath }}</td>
+                                        <td>Place of death</td>
+                                        <td>{{ deceased.placeOfDeath }}</td>
                                     </tr>
                                 {{/if}}
                             </tbody>
                         </table>
                     </section>
-                    <!-- Deceased Details -->
-                    <section class="section">
-                        <h2>Details of Death Certificate Required</h2>
-                        <table>
-                            <tbody>
-                                {{#if deceased.lastName}}
-                                    <tr>
-                                        <td>Last name</td>
-                                        <td>{{ deceased.lastName }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if deceased.firstName}}
-                                    <tr>
-                                        <td>First name</td>
-                                        <td>{{ deceased.firstName }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if deceased.middleName}}
-                                    <tr>
-                                        <td>Middle name(s)</td>
-                                        <td>{{ deceased.middleName }}</td>
-                                    </tr>
-                                {{/if}}
-                                {{#if deceased.knownDateOfDeath}}
-                                    <tr>
-                                        <td>Known date of death</td>
-                                        <td>
-                                            {{#if (eq deceased.knownDateOfDeath 'yes') }}
-                                                Yes{{ else
-                                                }}No{{/if}}
-                                            </td>
-                                        </tr>
-                                    {{/if}}
-                                    {{#if deceased.dateOfDeath}}
-                                        <tr>
-                                            <td>Date of death</td>
-                                            <td>{{ deceased.dateOfDeath }}</td>
-                                        </tr>
-                                    {{/if}}
-                                    {{#if deceased.estimatedDateOfDeath}}
-                                        <tr>
-                                            <td>Estimated date of death</td>
-                                            <td>{{ deceased.estimatedDateOfDeath }}</td>
-                                        </tr>
-                                    {{/if}}
-                                    {{#if deceased.idNumber}}
-                                        <tr>
-                                            <td>National ID number</td>
-                                            <td>{{ deceased.idNumber }}</td>
-                                        </tr>
-                                    {{/if}}
-                                    {{#if deceased.placeOfDeath}}
-                                        <tr>
-                                            <td>Place of death</td>
-                                            <td>{{ deceased.placeOfDeath }}</td>
-                                        </tr>
-                                    {{/if}}
-                                </tbody>
-                            </table>
-                        </section>
-                        <!-- Footer -->
-                        <div class="footer">
-                            <p>
-                                This is an automated email from the Government of Barbados Forms
-                                Processing System.
-                                <br />
-                                Death Certificate applications are processed during regular business
-                                hours.
-                                <br />
-                                Please allow 5-10 business days for processing.
-                                <br />
-                                <br />
-                                <strong>Important:</strong>
-                                Additional documentation may be required for verification purposes.
-                            </p>
-                        </div>
+                    <!-- Footer -->
+                    <div class="footer">
+                        <p>
+                            This is an automated email from the Government of Barbados Forms
+                            Processing System.
+                            <br />
+                            Death Certificate applications are processed during regular business
+                            hours.
+                            <br />
+                            Please allow 5-10 business days for processing.
+                            <br />
+                            <br />
+                            <strong>Important:</strong>
+                            Additional documentation may be required for verification purposes.
+                        </p>
                     </div>
-                </body>
-            </html>
+                </div>
+            </body>
+        </html>
