@@ -123,7 +123,7 @@
       ]
     },
     {
-      "name": "relationship",
+      "name": "relationshipToPerson",
       "type": "string",
       "label": "Tell us your relationship with the deceased",
       "required": true,
@@ -132,7 +132,16 @@
       }
     },
     {
-      "name": "reasonForRequest",
+      "name": "relationshipOtherDescription",
+      "type": "string",
+      "label": "Please describe your relationship",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "reasonForCertificate",
       "type": "string",
       "label": "Tell us about why you need this certificate",
       "required": true,
@@ -254,8 +263,6 @@
         "department": "oag_registration",
         "paymentCode": "{{db:get-death-certificate:payment_code}}",
         "amount": "{{formData.order.numberOfCopies * db:get-death-certificate:payment_amount}}",
-        "confirmationEmailTo": ["{{db:get-death-certificate:admin_email}}"],
-        "customerEmail": "{{formData.applicant.email}}",
         "description": "Death Certificate Processing Fee (per copy)",
         "required": true,
         "timing": "after_validation",
@@ -269,7 +276,17 @@
       "config": {
         "to": "{{db:get-death-certificate:admin_email}}",
         "subject": "New Death Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-        "template": "death-certificate"
+        "template": "death-certificate",
+        "recipientType": "admin"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Death Certificate - Submission Received",
+        "template": "death-certificate-receipt",
+        "recipientType": "user"
       }
     }
   ]
