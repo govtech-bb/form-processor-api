@@ -32,11 +32,14 @@ export class FormSubmissionPayment {
   @Column({ name: 'payment_completed', default: false })
   paymentCompleted: boolean;
 
-  @Column({ name: 'payment_verified', default: false })
-  paymentVerified: boolean;
-
   @Column({ name: 'notification_sent', default: false })
   notificationSent: boolean;
+
+  @Column({ name: 'encrypted_form_data', type: 'text', nullable: true })
+  encryptedFormData?: string;
+
+  @Column({ name: 'form_data_deleted', default: false })
+  formDataDeleted: boolean;
 
   @ManyToOne(() => Payment, (payment) => payment.formSubmissions, {
     onDelete: 'CASCADE',

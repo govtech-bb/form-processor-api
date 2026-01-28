@@ -482,31 +482,39 @@
       ]
     }
   ],
-  "processors": [
-    {
-      "type": "payment",
-      "config": {
-        "provider": "ezpay",
-        "department": "oag_registration",
-        "paymentCode": "{{db:get-birth-certificate:payment_code}}",
-        "amount": "{{formData.order.numberOfCopies * db:get-birth-certificate:payment_amount}}",
-        "description": "Birth Certificate Processing Fee (per copy)",
-        "confirmationEmailTo": ["{{db:get-birth-certificate:admin_email}}"],
-        "customerEmail": "{{formData.applicant.email}}",
-        "required": true,
-        "timing": "after_validation",
-        "responseData": {
-          "include": ["order.numberOfCopies"]
-        }
-      }
-    },
-    {
-      "type": "email",
-      "config": {
-        "to": "{{db:get-birth-certificate:admin_email}}",
-        "subject": "New Birth Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-        "template": "birth-certificate"
-      }
-    }
-  ]
+	"processors": [
+		{
+			"type": "payment",
+			"config": {
+				"provider": "ezpay",
+				"department": "oag_registration",
+				"paymentCode": "{{db:get-birth-certificate:payment_code}}",
+				"amount": "{{formData.order.numberOfCopies * db:get-birth-certificate:payment_amount}}",
+				"description": "Birth Certificate Processing Fee (per copy)",
+				"required": true,
+				"timing": "after_validation",
+				"responseData": {
+					"include": ["order.numberOfCopies"]
+				}
+			}
+		},
+		{
+			"type": "email",
+			"config": {
+				"to": "{{db:get-birth-certificate:admin_email}}",
+				"subject": "New Birth Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+				"template": "birth-certificate",
+				"recipientType": "admin"
+			}
+		},
+		{
+			"type": "email",
+			"config": {
+				"to": "{{formData.applicant.email}}",
+				"subject": "Birth Certificate - Submission Received",
+				"template": "birth-certificate-receipt",
+				"recipientType": "user"
+			}
+		}
+	]
 }

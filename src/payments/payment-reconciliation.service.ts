@@ -1,12 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Payment, PaymentStatus } from '../database/entities';
 import { EZPayService } from './ezpay/ezpay.service';
 import { PaymentWebhookService } from './payment-webhook.service';
 import { DepartmentMappingService } from './department-mapping.service';
-import { EZPayTransaction } from './ezpay/interfaces';
+import {
+  EZPayTransaction,
+  mapEZPayStatusToPaymentStatus,
+} from './ezpay/interfaces';
 
 @Injectable()
 export class PaymentReconciliationService {
@@ -194,7 +197,9 @@ export class PaymentReconciliationService {
 
     // Check if status needs to be updated
     const currentStatus = payment.status;
-    const newStatus = this.mapEZPayStatusToPaymentStatus(ezpayStatus);
+    const newStatus = mapEZPayStatusToPaymentStatus(
+      ezpayStatus,
+    ) as PaymentStatus;
 
     // Only process if status is different and payment is not already in final state
     if (currentStatus === newStatus) {
@@ -248,22 +253,6 @@ export class PaymentReconciliationService {
   }
 
   /**
-   * Map EZPay status to internal payment status
-   */
-  private mapEZPayStatusToPaymentStatus(ezpayStatus: string): PaymentStatus {
-    switch (ezpayStatus) {
-      case 'Success':
-        return PaymentStatus.SUCCESS;
-      case 'Failed':
-        return PaymentStatus.FAILED;
-      case 'Initiated':
-        return PaymentStatus.INITIATED;
-      default:
-        return PaymentStatus.PENDING;
-    }
-  }
-
-  /**
    * Get today's date range in YYYY-MM-DD HH:mm format
    */
   private getTodayDateRange(): { startDate: string; endDate: string } {
@@ -275,29 +264,6 @@ export class PaymentReconciliationService {
     return {
       startDate: `${dateStr} 00:00`,
       endDate: `${dateStr} 23:59`,
-    };
-  }
-
-  /**
-   * Manual trigger for reconciliation (can be called via API endpoint)
-   */
-  async triggerReconciliation(): Promise<{
-    success: boolean;
-    message: string;
-  }> {
-    if (this.isRunning) {
-      return {
-        success: false,
-        message: 'Reconciliation job is already running',
-      };
-    }
-
-    // Run in background
-    this.reconcileTransactions();
-
-    return {
-      success: true,
-      message: 'Reconciliation job triggered',
     };
   }
 

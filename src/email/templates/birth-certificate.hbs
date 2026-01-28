@@ -18,6 +18,13 @@
       background-color: #f0f8ff; padding: 15px; border-left: 4px solid #003087;
       } .highlight { background-color: #fff3cd; padding: 10px; border: 1px solid
       #ffeaa7; border-radius: 4px; margin: 10px 0; }
+      .staff-box { background-color: #e9ecef; padding: 15px; border-radius: 4px;
+      margin: 20px 0; border: 1px solid #ced4da; }
+      .staff-box h3 { color: #495057; margin-top: 0; }
+      .staff-box table td { border-bottom: 1px solid #ced4da; }
+      .staff-box td:last-child { min-width: 200px; }
+      .contact-highlight { background-color: #d4edda; padding: 10px; border: 1px solid
+      #c3e6cb; border-radius: 4px; margin: 10px 0; }
     </style>
   </head>
   <body>
@@ -25,16 +32,51 @@
       <h1>New Birth Certificate Application</h1>
 
       <div class='submitted-info'>
-        <strong>Reference:</strong>
+        <strong>Submission ID:</strong>
         {{submissionId}}<br />
-        <strong>Application Submitted:</strong>
-        {{processedAt}}<br />
+        <strong>Submission Date and Time:</strong>
+        {{submittedAt}}<br />
+        {{#if paymentInfo}}
+        <strong>Payment Date and Time:</strong>
+        {{paymentInfo.processedAt}}<br />
+        <strong>EZPay Transaction ID:</strong>
+        {{paymentInfo.transactionNumber}}<br />
+        <strong>Cost of Certificate(s):</strong>
+        ${{paymentInfo.amount}}<br />
+        {{/if}}
         <strong>Application Type:</strong>
         {{#if (eq applyingForYourself 'yes')}}
           Self Application
         {{else}}
           Third Party Application
         {{/if}}
+      </div>
+
+      <!-- Applicant Contact Information -->
+      <div class='contact-highlight'>
+        <strong>Applicant Phone:</strong> {{applicant.phoneNumber}}<br />
+        <strong>Applicant Email:</strong> {{applicant.email}}
+      </div>
+
+      <!-- Staff Processing Section -->
+      <div class='staff-box'>
+        <h3>Staff Use Only</h3>
+        <table>
+          <tbody>
+            <tr>
+              <td>Due Date:</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Reference:</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Officer Assigned:</td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <!-- Applicant Details -->

@@ -159,12 +159,8 @@ export class FormsService {
         (processor: any) => processor.type === 'payment',
       );
 
-      // Separate payment and non-payment processors
-      const nonPaymentProcessors = formSchema.processors.filter(
-        (processor: any) => processor.type !== 'payment',
-      );
-
-      // Execute payment processor first
+      // Execute payment processor only (form data is encrypted and stored here)
+      // No other processors (like email) are executed at submission time
       const paymentResult = await this.processorPipeline.executeProcessor(
         paymentProcessor,
         {
@@ -183,21 +179,9 @@ export class FormsService {
         };
       }
 
-      // Execute non-payment processors (like sending admin notification emails)
-      if (nonPaymentProcessors.length > 0) {
-        await this.processorPipeline.execute(nonPaymentProcessors, {
-          formId,
-          submissionId,
-          data: {
-            ...data,
-            paymentInfo: {
-              paymentId: paymentResult.paymentId,
-              referenceNumber: paymentResult.referenceNumber,
-              amount: paymentProcessor.config.amount,
-            },
-          },
-        });
-      }
+      this.logger.log(
+        `Payment form submitted - awaiting payment confirmation for ${formId}:${submissionId}`,
+      );
 
       // Return payment response
       const response = new FormSubmissionResponseDto(
@@ -221,7 +205,6 @@ export class FormsService {
         data: response,
       };
     } catch (error) {
-      console.log(error);
       this.logger.error(
         `Payment processing failed for ${formId}:${submissionId}`,
         error,
