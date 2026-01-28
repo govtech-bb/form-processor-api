@@ -238,105 +238,104 @@
                         </table>
                     </section>
                     <section class="section">
-                        <h2>
-                            Relationship to Person Named on the Certificate
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td>Are you applying for your own marriage certificate?</td>
-                                        <td>{{ applyingForYourself }}</td>
-                                    </tr>
-                                    {{#if (eq applyingForYourself 'no')}}
-                                        <tr>
-                                            <td>Relationship to the person to whom the certificate relates</td>
-                                            <td>{{ reason.relationshipToMarriedPersons }}</td>
-                                        </tr>
-                                    {{/if}}
-                                    <tr>
-                                        <td>Reason for requesting the certificate</td>
-                                        <td>{{ reason.explanationForRequestingCertificate }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Number of certificates required</td>
-                                        <td>{{ order.numberOfCopies }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </h2>
-                    </section>
-                    <!-- Parents Details -->
-                    <section class="section">
-                        <h2>Details of Marriage Certificate Required</h2>
+                        <h2>Relationship to Person Named on the Certificate</h2>
                         <table>
                             <tbody>
                                 <tr>
-                                    <td>Husband – surname</td>
-                                    <td>{{ husband.lastName }}</td>
+                                    <td>Are you applying for your own marriage certificate?</td>
+                                    <td>{{ applyingForYourself }}</td>
                                 </tr>
-                                <tr>
-                                    <td>Husband – first name</td>
-                                    <td>{{ husband.firstName }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Wife (maiden) – surname</td>
-                                    <td>{{ wife.maidenName }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Wife – first name</td>
-                                    <td>{{ wife.firstName }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Date of marriage</td>
-                                    <td>{{ marriageDetails.dateOfMarriage }}</td>
-                                </tr>
-                                <tr>
-                                    <td>Place of marriage</td>
-                                    <td>{{ marriageDetails.placeOfMarriage }}</td>
-                                </tr>
-                                {{#if husband.idNumber}}
+                                {{#if (eq applyingForYourself 'no')}}
                                     <tr>
-                                        <td>Husband - National registration No.</td>
-                                        <td>{{ husband.idNumber }}</td>
+                                        <td>Relationship to the person to whom the certificate relates</td>
+                                        <td>{{ reason.relationshipToMarriedPersons }}</td>
+                                    </tr>
+                                {{/if}}
+                                <tr>
+                                    <td>Reason for requesting the certificate</td>
+                                    <td>{{ reason.explanationForRequestingCertificate }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Number of certificates required</td>
+                                    <td>{{ order.numberOfCopies }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </h2>
+                </section>
+                <!-- Parents Details -->
+                <section class="section">
+                    <h2>Details of Marriage Certificate Required</h2>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Husband – surname</td>
+                                <td>{{ husband.lastName }}</td>
+                            </tr>
+                            <tr>
+                                <td>Husband – first name</td>
+                                <td>{{ husband.firstName }}</td>
+                            </tr>
+                            <tr>
+                                <td>Wife (maiden) – surname</td>
+                                <td>{{ wife.maidenName }}</td>
+                            </tr>
+                            <tr>
+                                <td>Wife – first name</td>
+                                <td>{{ wife.firstName }}</td>
+                            </tr>
+                            <tr>
+                                <td>Date of marriage</td>
+                                <td>{{ marriageDetails.dateOfMarriage }}</td>
+                            </tr>
+                            <tr>
+                                <td>Place of marriage</td>
+                                <td>{{ marriageDetails.placeOfMarriage }}</td>
+                            </tr>
+                            {{#if husband.idNumber}}
+                                <tr>
+                                    <td>Husband - National registration No.</td>
+                                    <td>{{ husband.idNumber }}</td>
+                                </tr>
+                            {{ else }}
+                                {{#if husband.passportNumber}}
+                                    <tr>
+                                        <td>Husband - Passport number</td>
+                                        <td>{{ husband.passportNumber }}</td>
+                                    </tr>
+                                {{/if}} {{/if}}
+                                {{#if wife.idNumber}}
+                                    <tr>
+                                        <td>Wife - National registration No.</td>
+                                        <td>{{ wife.idNumber }}</td>
                                     </tr>
                                 {{ else }}
-                                    {{#if husband.passportNumber}}
+                                    {{#if wife.passportNumber}}
                                         <tr>
-                                            <td>Husband - Passport number</td>
-                                            <td>{{ husband.passportNumber }}</td>
+                                            <td>Wife - Passport number</td>
+                                            <td>{{ wife.passportNumber }}</td>
                                         </tr>
                                     {{/if}} {{/if}}
-                                    {{#if wife.idNumber}}
-                                        <tr>
-                                            <td>Wife - National registration No.</td>
-                                            <td>{{ wife.idNumber }}</td>
-                                        </tr>
-                                    {{ else }}
-                                        {{#if wife.passportNumber}}
-                                            <tr>
-                                                <td>Wife - Passport number</td>
-                                                <td>{{ wife.passportNumber }}</td>
-                                            </tr>
-                                        {{/if}} {{/if}}
-                                    </tbody>
-                                </table>
-                            </section>
-                            <!-- Footer -->
-                            <div class="footer">
-                                <p>
-                                    This is an automated email from the Government of Barbados Forms
-                                    Processing System.
-                                    <br />
-                                    Birth Certificate applications are processed during regular business
-                                    hours.
-                                    <br />
-                                    Please allow 5-10 business days for processing.
-                                    <br />
-                                    <br />
-                                    <strong>Important:</strong>
-                                    If this application is for someone other than yourself, additional
-                                    documentation may be required for verification.
-                                </p>
-                            </div>
+                                </tbody>
+                            </table>
+                        </section>
+                        <!-- Footer -->
+                        <div class="footer">
+                            <p>
+                                This is an automated email from the Government of Barbados Forms
+                                Processing System.
+                                <br />
+                                Birth Certificate applications are processed during regular business
+                                hours.
+                                <br />
+                                Please allow 5-10 business days for processing.
+                                <br />
+                                <br />
+                                <strong>Important:</strong>
+                                If this application is for someone other than yourself, additional
+                                documentation may be required for verification.
+                            </p>
                         </div>
-                    </body>
-                </html>
+                    </div>
+                </body>
+            </html>
