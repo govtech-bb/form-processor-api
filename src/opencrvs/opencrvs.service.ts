@@ -30,26 +30,18 @@ export class OpenCRVSService {
   private readonly locationCache: Map<string, string> = new Map();
 
   constructor(private readonly configService: ConfigService) {
-    const isLocalhost = this.configService.get<boolean>('opencrvs.localhost');
-
-    if (isLocalhost) {
-      this.authBaseUrl = 'http://localhost:4040';
-      this.eventsBaseUrl = 'http://localhost:3000';
-      this.locationsBaseUrl = 'http://localhost:7070';
-    } else {
-      this.authBaseUrl = this.configService.get<string>(
-        'opencrvs.authBaseUrl',
-        'https://auth.barbados-qa.opencrvs.org',
-      );
-      this.eventsBaseUrl = this.configService.get<string>(
-        'opencrvs.eventsBaseUrl',
-        'https://register.barbados-qa.opencrvs.org',
-      );
-      this.locationsBaseUrl = this.configService.get<string>(
-        'opencrvs.locationsBaseUrl',
-        'https://gateway.barbados-qa.opencrvs.org',
-      );
-    }
+    this.authBaseUrl = this.configService.get<string>(
+      'opencrvs.authBaseUrl',
+      'https://auth.barbados-qa.opencrvs.org',
+    );
+    this.eventsBaseUrl = this.configService.get<string>(
+      'opencrvs.eventsBaseUrl',
+      'https://register.barbados-qa.opencrvs.org',
+    );
+    this.locationsBaseUrl = this.configService.get<string>(
+      'opencrvs.locationsBaseUrl',
+      'https://gateway.barbados-qa.opencrvs.org',
+    );
 
     this.clientId = this.configService.get<string>('opencrvs.clientId', '');
     this.clientSecret = this.configService.get<string>(
