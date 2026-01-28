@@ -155,3 +155,22 @@ export interface QueryTransactionsResult {
   data?: EZPayTransaction[];
   error?: string;
 }
+
+/**
+ * Map EZPay transaction status to internal PaymentStatus
+ * Centralized to avoid duplication across services
+ */
+export function mapEZPayStatusToPaymentStatus(
+  ezpayStatus: EZPayTransactionStatus | string,
+): 'pending' | 'initiated' | 'success' | 'failed' {
+  switch (ezpayStatus) {
+    case 'Success':
+      return 'success';
+    case 'Failed':
+      return 'failed';
+    case 'Initiated':
+      return 'initiated';
+    default:
+      return 'pending';
+  }
+}
