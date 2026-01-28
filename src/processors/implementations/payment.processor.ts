@@ -14,6 +14,7 @@ import {
   ResponseDataConfig,
 } from '../../forms/interfaces/form-schema.interface';
 import { IProcessor } from '../interfaces/processor.interface';
+import { encryptFormData } from '../../common/utils';
 
 export interface PaymentProcessorResult {
   success: boolean;
@@ -98,8 +99,6 @@ export class PaymentProcessor implements IProcessor {
         customerName: customerInfo.name,
         formId: context.formId,
         submissionId: context.submissionId,
-        confirmationEmailTo: config.confirmationEmailTo,
-        configCustomerEmail: config.customerEmail,
         formName: context.formName,
       });
 
@@ -158,11 +157,12 @@ export class PaymentProcessor implements IProcessor {
         successResult.paymentUrl,
       );
 
-      // Create form submission payment link
+      // Create form submission payment link with encrypted form data
       await this.createFormSubmissionPayment(
         context.formId,
         context.submissionId,
         payment.id,
+        formData,
       );
 
       this.logger.log(
@@ -282,8 +282,6 @@ export class PaymentProcessor implements IProcessor {
     customerName: string;
     formId: string;
     submissionId: string;
-    confirmationEmailTo?: string[];
-    configCustomerEmail?: string;
     formName?: string;
   }): Promise<Payment> {
     // Include department in reference number for later API key resolution
@@ -304,8 +302,6 @@ export class PaymentProcessor implements IProcessor {
       metadata: {
         formId: data.formId,
         submissionId: data.submissionId,
-        confirmationEmailTo: data.confirmationEmailTo,
-        configCustomerEmail: data.configCustomerEmail,
         formName: data.formName,
       },
     });
@@ -340,62 +336,23 @@ export class PaymentProcessor implements IProcessor {
     formId: string,
     submissionId: string,
     paymentId: string,
+    formData: Record<string, any>,
   ): Promise<void> {
+    // Encrypt form data before storing
+    const encryptedData = encryptFormData(formData);
+
     const formSubmissionPayment = this.formSubmissionPaymentRepository.create({
       formId,
       submissionId,
       paymentId,
       paymentRequired: true,
       paymentCompleted: false,
-      paymentVerified: false,
       notificationSent: false,
+      encryptedFormData: encryptedData,
+      formDataDeleted: false,
     });
 
     await this.formSubmissionPaymentRepository.save(formSubmissionPayment);
-  }
-
-  /**
-   * Check if a form submission has payment requirements
-   */
-  async hasPaymentProcessor(processors: any[]): Promise<boolean> {
-    return processors.some((processor) => processor.type === 'payment');
-  }
-
-  /**
-   * Get payment status for a form submission
-   */
-  async getPaymentStatus(
-    formId: string,
-    submissionId: string,
-  ): Promise<{
-    hasPayment: boolean;
-    paymentRequired: boolean;
-    paymentCompleted: boolean;
-    paymentVerified: boolean;
-    payment?: Payment;
-  }> {
-    const formSubmissionPayment =
-      await this.formSubmissionPaymentRepository.findOne({
-        where: { formId, submissionId },
-        relations: ['payment'],
-      });
-
-    if (!formSubmissionPayment) {
-      return {
-        hasPayment: false,
-        paymentRequired: false,
-        paymentCompleted: false,
-        paymentVerified: false,
-      };
-    }
-
-    return {
-      hasPayment: true,
-      paymentRequired: formSubmissionPayment.paymentRequired,
-      paymentCompleted: formSubmissionPayment.paymentCompleted,
-      paymentVerified: formSubmissionPayment.paymentVerified,
-      payment: formSubmissionPayment.payment,
-    };
   }
 
   /**

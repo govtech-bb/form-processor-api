@@ -1,10 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ScheduleModule } from '@nestjs/schedule';
-import { PaymentIntegrationService } from './payment-integration.service';
 import { PaymentWebhookService } from './payment-webhook.service';
 import { PaymentReconciliationService } from './payment-reconciliation.service';
 import { DepartmentMappingService } from './department-mapping.service';
+import { AbandonedPaymentCleanupService } from './abandoned-payment-cleanup.service';
 import {
   Payment,
   PaymentTransaction,
@@ -12,6 +12,8 @@ import {
 } from '../database/entities';
 import { EZPayService, PaymentsController } from './ezpay';
 import { EmailModule } from '../email/email.module';
+import { FormsModule } from '../forms/forms.module';
+import { ProcessorsModule } from '../processors/processors.module';
 
 @Module({
   imports: [
@@ -22,17 +24,18 @@ import { EmailModule } from '../email/email.module';
     ]),
     ScheduleModule.forRoot(),
     EmailModule,
+    forwardRef(() => FormsModule),
+    forwardRef(() => ProcessorsModule),
   ],
   providers: [
-    PaymentIntegrationService,
     PaymentWebhookService,
     PaymentReconciliationService,
     EZPayService,
     DepartmentMappingService,
+    AbandonedPaymentCleanupService,
   ],
   controllers: [PaymentsController],
   exports: [
-    PaymentIntegrationService,
     PaymentWebhookService,
     PaymentReconciliationService,
     DepartmentMappingService,

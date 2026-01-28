@@ -15,8 +15,11 @@ import {
   VerifyPaymentParams,
   VerifyPaymentResult,
   EZPayVerifyResponse,
+  mapEZPayStatusToPaymentStatus,
 } from './ezpay/interfaces';
-import { EmailService } from '../email/email.service';
+import { FormUtilsService } from '../forms/form-utils.service';
+import { ProcessorPipelineService } from '../processors/processor-pipeline.service';
+import { decryptFormData, formatDisplayDate } from '../common/utils';
 
 @Injectable()
 export class PaymentWebhookService {
@@ -30,7 +33,8 @@ export class PaymentWebhookService {
     @InjectRepository(FormSubmissionPayment)
     private formSubmissionPaymentRepository: Repository<FormSubmissionPayment>,
     private ezpayService: EZPayService,
-    private emailService: EmailService,
+    private formUtilsService: FormUtilsService,
+    private processorPipelineService: ProcessorPipelineService,
   ) {}
 
   /**
@@ -173,10 +177,10 @@ export class PaymentWebhookService {
       // Use verified data as source of truth
       const finalCallbackData: EZPayCallbackDto = {
         _reference: callbackData._reference,
-        _status: verifiedData._status as any,
+        _status: verifiedData._status,
         _transaction_number: verifiedData._transaction_number,
         _ezpay_account: verifiedData._ezpay_account,
-        _processor: verifiedData._processor as any,
+        _processor: verifiedData._processor,
         _datesettled: verifiedData._datesettled,
         _amount: verifiedData._amount,
         _pcode: callbackData._pcode,
@@ -187,7 +191,9 @@ export class PaymentWebhookService {
       await this.upsertTransaction(payment.id, finalCallbackData);
 
       // Update payment status using verified status
-      const newPaymentStatus = this.mapEZPayStatusToPaymentStatus(finalStatus);
+      const newPaymentStatus = mapEZPayStatusToPaymentStatus(
+        finalStatus,
+      ) as PaymentStatus;
       await this.updatePaymentStatus(payment.id, newPaymentStatus);
 
       // Update form submission payment status using verified status
@@ -272,13 +278,62 @@ export class PaymentWebhookService {
   }
 
   /**
-   * Update payment status
+   * Valid payment status transitions
+   */
+  private readonly validTransitions: Record<PaymentStatus, PaymentStatus[]> = {
+    [PaymentStatus.PENDING]: [
+      PaymentStatus.INITIATED,
+      PaymentStatus.SUCCESS,
+      PaymentStatus.FAILED,
+      PaymentStatus.CANCELLED,
+    ],
+    [PaymentStatus.INITIATED]: [
+      PaymentStatus.SUCCESS,
+      PaymentStatus.FAILED,
+      PaymentStatus.CANCELLED,
+    ],
+    [PaymentStatus.SUCCESS]: [PaymentStatus.REFUNDED],
+    [PaymentStatus.FAILED]: [PaymentStatus.PENDING], // Allow retry
+    [PaymentStatus.CANCELLED]: [],
+    [PaymentStatus.REFUNDED]: [],
+  };
+
+  /**
+   * Check if a status transition is valid
+   */
+  private isValidTransition(
+    currentStatus: PaymentStatus,
+    newStatus: PaymentStatus,
+  ): boolean {
+    if (currentStatus === newStatus) {
+      return true; // No change is always valid
+    }
+    return this.validTransitions[currentStatus]?.includes(newStatus) ?? false;
+  }
+
+  /**
+   * Update payment status with state machine validation
    */
   private async updatePaymentStatus(
     paymentId: string,
-    status: PaymentStatus,
+    newStatus: PaymentStatus,
   ): Promise<void> {
-    await this.paymentRepository.update(paymentId, { status });
+    const payment = await this.paymentRepository.findOne({
+      where: { id: paymentId },
+    });
+
+    if (!payment) {
+      throw new Error(`Payment not found: ${paymentId}`);
+    }
+
+    if (!this.isValidTransition(payment.status, newStatus)) {
+      this.logger.warn(
+        `Invalid status transition for payment ${paymentId}: ${payment.status} -> ${newStatus}`,
+      );
+      return;
+    }
+
+    await this.paymentRepository.update(paymentId, { status: newStatus });
   }
 
   /**
@@ -292,10 +347,8 @@ export class PaymentWebhookService {
 
     if (ezpayStatus === 'Success') {
       updates.paymentCompleted = true;
-      updates.paymentVerified = true;
     } else if (ezpayStatus === 'Failed') {
       updates.paymentCompleted = false;
-      updates.paymentVerified = false;
     }
 
     if (Object.keys(updates).length > 0) {
@@ -308,101 +361,206 @@ export class PaymentWebhookService {
 
   /**
    * Process successful payment workflows
+   *
+   * Workflow:
+   * 1. Check idempotency (skip if already processed)
+   * 2. Retrieve and decrypt form data
+   * 3. Get email processors from form schema (separated by recipientType)
+   * 4. Execute admin emails with full form data + payment info
+   * 5. Execute user emails with payment confirmation only
+   * 6. Delete encrypted form data after successful email delivery
    */
   private async processSuccessfulPayment(
     payment: Payment,
     callbackData: EZPayCallbackDto,
   ): Promise<void> {
+    const formId = payment.metadata?.formId || '';
+    const submissionId = payment.metadata?.submissionId || '';
+    const formName = payment.metadata?.formName || 'Form Submission';
+
     this.logger.log(
       `Processing successful payment workflows for ${payment.id}`,
       {
+        formId,
+        submissionId,
         amount: callbackData._amount,
         transactionNumber: callbackData._transaction_number,
       },
     );
 
-    // Send payment confirmation email if confirmationEmailTo is configured
-    await this.sendPaymentConfirmationEmail(payment, callbackData);
+    // Get the form submission payment record
+    const formSubmissionPayment =
+      await this.formSubmissionPaymentRepository.findOne({
+        where: { paymentId: payment.id },
+      });
 
-    // Mark notification as sent
-    await this.formSubmissionPaymentRepository.update(
-      { paymentId: payment.id },
-      { notificationSent: true },
+    if (!formSubmissionPayment) {
+      this.logger.error(
+        `FormSubmissionPayment not found for payment ${payment.id}`,
+      );
+      return;
+    }
+
+    // Idempotency check: skip if already processed
+    if (formSubmissionPayment.notificationSent) {
+      this.logger.log(
+        `Payment ${payment.id} already processed (notification already sent), skipping`,
+      );
+      return;
+    }
+
+    if (formSubmissionPayment.formDataDeleted) {
+      this.logger.warn(
+        `Form data already deleted for payment ${payment.id}, cannot send emails`,
+      );
+      return;
+    }
+
+    let formData: Record<string, any> = {};
+    if (formSubmissionPayment.encryptedFormData) {
+      try {
+        formData = decryptFormData(formSubmissionPayment.encryptedFormData);
+      } catch (error) {
+        this.logger.error(
+          `Failed to decrypt form data for payment ${payment.id}`,
+          { error: error.message },
+        );
+        return;
+      }
+    }
+
+    // Get form schema with email processors
+    let emailProcessors: any[] = [];
+    try {
+      const formSchema = await this.formUtilsService.getSchemaWithSecrets(
+        formId,
+        formData,
+      );
+      emailProcessors = formSchema.processors.filter(
+        (processor) => processor.type === 'email',
+      );
+    } catch (error) {
+      this.logger.error(`Failed to get form schema for ${formId}`, {
+        error: error.message,
+      });
+      // Don't delete form data - allow retry when schema is available
+      return;
+    }
+
+    // Separate email processors by recipientType
+    const adminEmailProcessors = emailProcessors.filter(
+      (p) => p.config.recipientType === 'admin',
     );
-  }
+    const userEmailProcessors = emailProcessors.filter(
+      (p) => p.config.recipientType === 'user',
+    );
+    // Processors without recipientType default to admin behavior (full form data)
+    const untaggedEmailProcessors = emailProcessors.filter(
+      (p) => !p.config.recipientType,
+    );
 
-  /**
-   * Send payment confirmation emails to admin and customer
-   */
-  private async sendPaymentConfirmationEmail(
-    payment: Payment,
-    callbackData: EZPayCallbackDto,
-  ): Promise<void> {
-    const adminEmails: string[] = payment.metadata?.confirmationEmailTo || [];
-    const customerEmail = payment.metadata?.configCustomerEmail;
-    const formName = payment.metadata?.formName || 'Form Submission';
-    const formId = payment.metadata?.formId || '';
-    const submissionId = payment.metadata?.submissionId || '';
+    // Payment info shared by all emails
+    const processedAt = formatDisplayDate(callbackData._datesettled);
 
-    const emailData = {
-      formName,
-      formId,
-      submissionId,
+    const paymentInfo = {
+      paymentId: payment.id,
       referenceNumber: payment.referenceNumber,
       transactionNumber: callbackData._transaction_number,
       amount: callbackData._amount,
       processor: callbackData._processor,
       customerName: payment.customerName,
       customerEmail: payment.customerEmail,
-      description: payment.description,
+      processedAt,
     };
 
-    // Send admin emails (using admin template)
-    const uniqueAdminEmails = [...new Set(adminEmails.filter(Boolean))];
-    for (const adminEmail of uniqueAdminEmails) {
-      try {
-        await this.emailService.sendEmail({
-          to: adminEmail,
-          subject: `${formName} payment (reference number: ${submissionId})`,
-          template: 'payment-confirmation',
-          data: emailData,
-        });
+    // Submission timestamp (when form was originally submitted)
+    const submittedAt = formatDisplayDate(formSubmissionPayment.createdAt);
 
+    // Context for admin emails: includes full form data + payment info
+    const adminContext = {
+      formId,
+      submissionId,
+      data: {
+        ...formData,
+        formName,
+        submittedAt,
+        paymentInfo,
+      },
+    };
+
+    // Context for user emails: only payment confirmation, no PII form data
+    const userContext = {
+      formId,
+      submissionId,
+      data: {
+        formName,
+        submittedAt,
+        paymentInfo,
+      },
+    };
+
+    let emailsSentSuccessfully = true;
+
+    const adminProcessors = [
+      ...adminEmailProcessors,
+      ...untaggedEmailProcessors,
+    ];
+    if (adminProcessors.length > 0) {
+      try {
+        await this.processorPipelineService.execute(
+          adminProcessors,
+          adminContext,
+        );
         this.logger.log(
-          `Admin payment confirmation email sent to ${adminEmail} for payment ${payment.id}`,
+          `Admin email processors (${adminProcessors.length}) executed successfully for payment ${payment.id}`,
         );
       } catch (error) {
         this.logger.error(
-          `Failed to send admin payment confirmation email to ${adminEmail} for payment ${payment.id}`,
+          `Failed to execute admin email processors for payment ${payment.id}`,
           { error: error.message },
         );
+        emailsSentSuccessfully = false;
       }
     }
 
-    // Send customer email (using customer-friendly template)
-    if (customerEmail) {
+    if (userEmailProcessors.length > 0) {
       try {
-        await this.emailService.sendEmail({
-          to: customerEmail,
-          subject: `Thank you for your request`,
-          template: 'payment-confirmation-customer',
-          data: emailData,
-        });
-
+        await this.processorPipelineService.execute(
+          userEmailProcessors,
+          userContext,
+        );
         this.logger.log(
-          `Customer payment confirmation email sent to ${customerEmail} for payment ${payment.id}`,
+          `User email processors (${userEmailProcessors.length}) executed successfully for payment ${payment.id}`,
         );
       } catch (error) {
         this.logger.error(
-          `Failed to send customer payment confirmation email to ${customerEmail} for payment ${payment.id}`,
+          `Failed to execute user email processors for payment ${payment.id}`,
           { error: error.message },
         );
+        emailsSentSuccessfully = false;
       }
     }
 
-    if (uniqueAdminEmails.length === 0 && !customerEmail) {
+    if (emailProcessors.length === 0) {
       this.logger.log(
-        `No email recipients configured for payment ${payment.id}, skipping email`,
+        `No email processors configured for form ${formId}, skipping emails`,
+      );
+    }
+
+    // Only delete form data and mark as sent if emails were successful
+    if (emailsSentSuccessfully) {
+      // Securely delete encrypted form data
+      await this.formSubmissionPaymentRepository.update(
+        { id: formSubmissionPayment.id },
+        {
+          encryptedFormData: null,
+          formDataDeleted: true,
+          notificationSent: true,
+        },
+      );
+
+      this.logger.log(
+        `Form data securely deleted for payment ${payment.id} after successful email delivery`,
       );
     }
   }
@@ -423,22 +581,6 @@ export class PaymentWebhookService {
     // - Create retry opportunities
     // - Log for manual review
     // - Send alternative payment instructions
-  }
-
-  /**
-   * Map EZPay status to internal payment status
-   */
-  private mapEZPayStatusToPaymentStatus(ezpayStatus: string): PaymentStatus {
-    switch (ezpayStatus) {
-      case 'Success':
-        return PaymentStatus.SUCCESS;
-      case 'Failed':
-        return PaymentStatus.FAILED;
-      case 'Initiated':
-        return PaymentStatus.INITIATED;
-      default:
-        return PaymentStatus.PENDING;
-    }
   }
 
   /**
@@ -588,9 +730,9 @@ export class PaymentWebhookService {
 
       // Check if status needs to be updated
       const currentStatus = payment.status;
-      const verifiedStatus = this.mapEZPayStatusToPaymentStatus(
+      const verifiedStatus = mapEZPayStatusToPaymentStatus(
         paymentData._status,
-      );
+      ) as PaymentStatus;
 
       if (currentStatus !== verifiedStatus) {
         // Update payment status
@@ -605,10 +747,10 @@ export class PaymentWebhookService {
         // Create/update transaction record
         const callbackData: EZPayCallbackDto = {
           _reference: serializedDetails?.reference || reference || '',
-          _status: paymentData._status as any,
+          _status: paymentData._status,
           _transaction_number: paymentData._transaction_number,
           _ezpay_account: paymentData._ezpay_account,
-          _processor: paymentData._processor as any,
+          _processor: paymentData._processor,
           _datesettled: paymentData._datesettled,
           _amount: paymentData._amount,
           _pcode: '',
@@ -660,82 +802,5 @@ export class PaymentWebhookService {
         message: `Manual verification failed: ${error.message}`,
       };
     }
-  }
-
-  /**
-   * Verify payment by transaction number
-   */
-  async verifyPaymentByTransactionNumber(transactionNumber: string): Promise<{
-    success: boolean;
-    verificationResult?: EZPayVerifyResponse;
-    message: string;
-  }> {
-    try {
-      this.logger.log(
-        `Verifying payment by transaction number: ${transactionNumber}`,
-      );
-
-      const verificationResult = await this.verifyPaymentStatus({
-        transactionNumber,
-      });
-
-      if (!verificationResult.success || !verificationResult.data) {
-        return {
-          success: false,
-          message: `EZPay verification failed: ${verificationResult.error}`,
-        };
-      }
-
-      return {
-        success: true,
-        verificationResult: verificationResult.data,
-        message: 'Payment verification successful',
-      };
-    } catch (error) {
-      this.logger.error('Payment verification by transaction number failed', {
-        error: error.message,
-        transactionNumber,
-      });
-
-      return {
-        success: false,
-        message: `Verification failed: ${error.message}`,
-      };
-    }
-  }
-
-  /**
-   * Get payment and transaction status for a form submission
-   */
-  async getPaymentStatusForSubmission(
-    formId: string,
-    submissionId: string,
-  ): Promise<{
-    hasPayment: boolean;
-    payment?: Payment;
-    transactions?: PaymentTransaction[];
-    formSubmissionPayment?: FormSubmissionPayment;
-  }> {
-    const formSubmissionPayment =
-      await this.formSubmissionPaymentRepository.findOne({
-        where: { formId, submissionId },
-        relations: ['payment'],
-      });
-
-    if (!formSubmissionPayment) {
-      return { hasPayment: false };
-    }
-
-    const transactions = await this.transactionRepository.find({
-      where: { paymentId: formSubmissionPayment.payment.id },
-      order: { createdAt: 'DESC' },
-    });
-
-    return {
-      hasPayment: true,
-      payment: formSubmissionPayment.payment,
-      transactions,
-      formSubmissionPayment,
-    };
   }
 }
