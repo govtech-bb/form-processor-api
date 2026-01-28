@@ -5,10 +5,12 @@
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Figtree', 'Segoe UI',
           Roboto, 'Helvetica Neue', Arial, sans-serif;
-        line-height: 1.6;
         color: #333;
         margin: 0;
         padding: 0;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%; /* 30px */
       }
       .header {
         background-color: #ffc726;
@@ -19,26 +21,15 @@
         margin: 0 auto;
         padding: 20px;
       }
-      h1 {
-        color: #000;
-        padding-bottom: 10px;
-        margin-bottom: 10px;
-        font-size: 28px;
-      }
+      h1,
       h2 {
-        color: #00267f;
-        font-size: 20px;
+        color: #000;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+        font-size: 30px;
         font-style: normal;
-        margin-top: 30px;
-        margin-bottom: 15px;
         font-weight: 700;
-        line-height: 150%;
-      }
-      h3 {
-        color: #003087;
-        font-size: 18px;
-        margin-top: 20px;
-        margin-bottom: 10px;
+        line-height: 125%; /* 50px */
       }
       table {
         width: 100%;
@@ -171,61 +162,61 @@
                         <tbody>
                             {{#if applicant.title}}
                                 <tr>
-                                    <td>Title:</td>
+                                    <td>Title</td>
                                     <td>{{ titleCase applicant.title }}</td>
                                 </tr>
                             {{/if}}
                             {{#if applicant.firstName}}
                                 <tr>
-                                    <td>First Name:</td>
+                                    <td>First name</td>
                                     <td>{{ applicant.firstName }}</td>
                                 </tr>
                             {{/if}}
                             {{#if applicant.middleName}}
                                 <tr>
-                                    <td>Middle Name:</td>
+                                    <td>Middle name</td>
                                     <td>{{ applicant.middleName }}</td>
                                 </tr>
                             {{/if}}
                             {{#if applicant.lastName}}
                                 <tr>
-                                    <td>Last Name:</td>
+                                    <td>Last name</td>
                                     <td>{{ applicant.lastName }}</td>
                                 </tr>
                             {{/if}}
                             {{#if applicant.email}}
                                 <tr>
-                                    <td>Email:</td>
+                                    <td>Email</td>
                                     <td>{{ applicant.email }}</td>
                                 </tr>
                             {{/if}}
                             {{#if applicant.phoneNumber}}
                                 <tr>
-                                    <td>Phone Number:</td>
+                                    <td>Phone number</td>
                                     <td>{{ applicant.phoneNumber }}</td>
                                 </tr>
                             {{/if}}
                             {{#if applicant.addressLine1}}
                                 <tr>
-                                    <td>Address Line 1:</td>
+                                    <td>Address line 1</td>
                                     <td>{{ applicant.addressLine1 }}</td>
                                 </tr>
                             {{/if}}
                             {{#if applicant.addressLine2}}
                                 <tr>
-                                    <td>Address Line 2:</td>
+                                    <td>Address line 2</td>
                                     <td>{{ applicant.addressLine2 }}</td>
                                 </tr>
                             {{/if}}
                             {{#if applicant.parish}}
                                 <tr>
-                                    <td>Parish:</td>
+                                    <td>Parish</td>
                                     <td>{{ applicant.parish }}</td>
                                 </tr>
                             {{/if}}
                             {{#if applicant.postalCode}}
                                 <tr>
-                                    <td>Postal Code:</td>
+                                    <td>Postal Code</td>
                                     <td>{{ applicant.postalCode }}</td>
                                 </tr>
                             {{/if}}
@@ -233,13 +224,13 @@
                                 {{#if
                                     applicant.passportNumber}}
                                     <tr>
-                                        <td>Passport Number:</td>
+                                        <td>Passport number</td>
                                         <td>{{ applicant.passportNumber }}</td>
                                     </tr>
                                 {{/if}} {{ else }}
                                 {{#if applicant.idNumber}}
                                     <tr>
-                                        <td>National ID Number:</td>
+                                        <td>National ID number</td>
                                         <td>{{ applicant.idNumber }}</td>
                                     </tr>
                                 {{/if}} {{/if}}
@@ -304,25 +295,25 @@
                                 </tr>
                                 {{#if husband.idNumber}}
                                     <tr>
-                                        <td>National registration No. - Husband</td>
+                                        <td>Husband - National registration No.</td>
                                         <td>{{ husband.idNumber }}</td>
                                     </tr>
                                 {{/if}} {{ else }}
                                 {{#if husband.passportNumber}}
                                     <tr>
-                                        <td>Passport Number - Husband</td>
+                                        <td>Husband - Passport number</td>
                                         <td>{{ husband.passportNumber }}</td>
                                     </tr>
                                 {{/if}} {{/if}}
                                 {{#if wife.idNumber}}
                                     <tr>
-                                        <td>National registration No. - Wife</td>
+                                        <td>Wife - National registration No.</td>
                                         <td>{{ wife.idNumber }}</td>
                                     </tr>
                                 {{/if}} {{ else }}
                                 {{#if wife.passportNumber}}
                                     <tr>
-                                        <td>Passport Number - Wife</td>
+                                        <td>Wife - Passport number</td>
                                         <td>{{ wife.passportNumber }}</td>
                                     </tr>
                                 {{/if}} {{/if}}

@@ -5,42 +5,31 @@
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Figtree', 'Segoe UI',
           Roboto, 'Helvetica Neue', Arial, sans-serif;
-        line-height: 1.6;
         color: #333;
         margin: 0;
         padding: 0;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%; /* 30px */
       }
       .header {
         background-color: #ffc726;
         padding: var(--xm, 24px) var(--m, 32px);
-        align-self: stretch;
       }
       .container {
         max-width: 800px;
         margin: 0 auto;
         padding: 20px;
       }
-      h1 {
-        color: #000;
-        border-bottom: 3px solid #ffb71b;
-        padding-bottom: 10px;
-        margin-bottom: 20px;
-        font-size: 28px;
-      }
+      h1,
       h2 {
-        color: #00267f;
-        font-size: 20px;
+        color: #000;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+        font-size: 30px;
         font-style: normal;
-        margin-top: 30px;
-        margin-bottom: 15px;
         font-weight: 700;
-        line-height: 150%;
-      }
-      h3 {
-        color: #003087;
-        font-size: 18px;
-        margin-top: 20px;
-        margin-bottom: 10px;
+        line-height: 125%; /* 50px */
       }
       table {
         width: 100%;
@@ -67,8 +56,7 @@
         text-align: left;
       }
       .submitted-info {
-        padding: var(--s, 16px);
-        align-self: stretch;
+        padding: var(--s, 15px);
         border-radius: var(--xxs, 4px);
         background: var(--blue-10, #e5e9f2);
         line-height: 1;
@@ -140,7 +128,7 @@
                         A payment confirmation email.
                         <br />
                         (a separate email with the subject line: Death certificate payment
-                        (reference number: xxx))
+                        (reference number: {{ submissionId }}))
                     </li>
                 </ol>
                 <p>Here is the data from this request:</p>
@@ -189,19 +177,19 @@
                                 {{/if}}
                                 {{#if applicant.firstName}}
                                     <tr>
-                                        <td>First Name</td>
+                                        <td>First name</td>
                                         <td>{{ applicant.firstName }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.middleName}}
                                     <tr>
-                                        <td>Middle Name</td>
+                                        <td>Middle name</td>
                                         <td>{{ applicant.middleName }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.lastName}}
                                     <tr>
-                                        <td>Last Name</td>
+                                        <td>Last name</td>
                                         <td>{{ applicant.lastName }}</td>
                                     </tr>
                                 {{/if}}
@@ -213,19 +201,19 @@
                                 {{/if}}
                                 {{#if applicant.telephoneNumber}}
                                     <tr>
-                                        <td>Telephone Number</td>
+                                        <td>Telephone number</td>
                                         <td>{{ applicant.telephoneNumber }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.addressLine1}}
                                     <tr>
-                                        <td>Address Line 1</td>
+                                        <td>Address line 1</td>
                                         <td>{{ applicant.addressLine1 }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.addressLine2}}
                                     <tr>
-                                        <td>Address Line 2</td>
+                                        <td>Address line 2</td>
                                         <td>{{ applicant.addressLine2 }}</td>
                                     </tr>
                                 {{/if}}
@@ -243,13 +231,13 @@
                                 {{/if}}
                                 {{#if applicant.idNumber}}
                                     <tr>
-                                        <td>National ID Number</td>
+                                        <td>National ID number</td>
                                         <td>{{ applicant.idNumber }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if applicant.passportNumber}}
                                     <tr>
-                                        <td>Passport Number</td>
+                                        <td>Passport number</td>
                                         <td>{{ applicant.passportNumber }}</td>
                                     </tr>
                                 {{/if}}
@@ -263,23 +251,23 @@
                             <tbody>
                                 {{#if relationship}}
                                     <tr>
-                                        <td>Relationship to Deceased</td>
+                                        <td>Relationship to deceased</td>
                                         <td>{{ relationship }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if reasonForRequest}}
                                     <tr>
-                                        <td>Reason for Request</td>
+                                        <td>Reason for request</td>
                                         <td>{{ reasonForRequest }}</td>
                                     </tr>
                                 {{/if}}
                                 <tr>
-                                    <td>Number of Copies Requested</td>
+                                    <td>Number of copies requested</td>
                                     <td>{{ order.numberOfCopies }}</td>
                                 </tr>
                                 {{#if deceased.causeOfDeath}}
                                     <tr>
-                                        <td>Cause of Death</td>
+                                        <td>Cause of death</td>
                                         <td>{{ deceased.causeOfDeath }}</td>
                                     </tr>
                                 {{/if}}
@@ -293,25 +281,25 @@
                             <tbody>
                                 {{#if deceased.lastName}}
                                     <tr>
-                                        <td>Last Name</td>
+                                        <td>Last name</td>
                                         <td>{{ deceased.lastName }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if deceased.firstName}}
                                     <tr>
-                                        <td>First Name</td>
+                                        <td>First name</td>
                                         <td>{{ deceased.firstName }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if deceased.middleName}}
                                     <tr>
-                                        <td>Middle Name(s)</td>
+                                        <td>Middle name(s)</td>
                                         <td>{{ deceased.middleName }}</td>
                                     </tr>
                                 {{/if}}
                                 {{#if deceased.knownDateOfDeath}}
                                     <tr>
-                                        <td>Known Date of Death</td>
+                                        <td>Known date of death</td>
                                         <td>
                                             {{#if (eq deceased.knownDateOfDeath 'yes') }}
                                                 Yes{{ else
@@ -321,25 +309,25 @@
                                     {{/if}}
                                     {{#if deceased.dateOfDeath}}
                                         <tr>
-                                            <td>Date of Death</td>
+                                            <td>Date of death</td>
                                             <td>{{ deceased.dateOfDeath }}</td>
                                         </tr>
                                     {{/if}}
                                     {{#if deceased.estimatedDateOfDeath}}
                                         <tr>
-                                            <td>Estimated Date of Death</td>
+                                            <td>Estimated date of death</td>
                                             <td>{{ deceased.estimatedDateOfDeath }}</td>
                                         </tr>
                                     {{/if}}
                                     {{#if deceased.idNumber}}
                                         <tr>
-                                            <td>National ID Number</td>
+                                            <td>National ID number</td>
                                             <td>{{ deceased.idNumber }}</td>
                                         </tr>
                                     {{/if}}
                                     {{#if deceased.placeOfDeath}}
                                         <tr>
-                                            <td>Place of Death</td>
+                                            <td>Place of death</td>
                                             <td>{{ deceased.placeOfDeath }}</td>
                                         </tr>
                                     {{/if}}
