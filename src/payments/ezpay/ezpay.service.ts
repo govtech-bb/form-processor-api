@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import * as crypto from 'crypto';
 import { DepartmentMappingService } from '../department-mapping.service';
 import {
   CreatePaymentParams,
@@ -92,9 +93,12 @@ export class EZPayService {
 
   /**
    * Generate a unique process ID (20 characters)
+   * Uses cryptographically secure random bytes
    */
   generateProcessId(): string {
-    return Date.now().toString() + Math.random().toString(36).substring(2, 12);
+    const timestamp = Date.now().toString(36); // Base36 timestamp (~8 chars)
+    const randomPart = crypto.randomBytes(6).toString('hex'); // 12 hex chars
+    return (timestamp + randomPart).substring(0, 20);
   }
 
   /**
