@@ -5,7 +5,7 @@
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Figtree', 'Segoe UI',
           Roboto, 'Helvetica Neue', Arial, sans-serif;
-        color: #333;
+        color: #000;
         margin: 0;
         padding: 0;
         font-style: normal;
@@ -14,22 +14,26 @@
       }
       .header {
         background-color: #ffc726;
-        padding: var(--xm, 24px) var(--m, 32px);
+        padding: 32px;
       }
       .container {
         max-width: 800px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 64px 32px 32px 32px;
       }
-      h1,
+      h1 {
+        color: #000;
+        margin: 0 0 16px 0;
+        font-size: 40px;
+        font-weight: 700;
+        line-height: 1.25;
+      }
       h2 {
         color: #000;
-        padding-bottom: 5px;
-        margin-bottom: 5px;
-        font-size: 30px;
-        font-style: normal;
+        margin: 0 0 8px 0;
+        font-size: 20px;
         font-weight: 700;
-        line-height: 125%; /* 50px */
+        line-height: 1.5;
       }
       table {
         width: 100%;
@@ -45,7 +49,7 @@
         width: 40%;
       }
       .section {
-        margin-top: 20px;
+        margin-top: 32px;
       }
       .footer {
         margin-top: 30px;
@@ -56,10 +60,18 @@
         text-align: left;
       }
       .submitted-info {
-        padding: var(--s, 15px);
-        border-radius: var(--xxs, 4px);
-        background: var(--blue-10, #e5e9f2);
-        line-height: 1;
+        padding: 16px;
+        border-radius: 4px;
+        background: #e5e9f2;
+        margin-bottom: 16px;
+      }
+
+      .submitted-info p {
+        margin: 0 0 16px 0;
+      }
+
+      .submitted-info p:last-child {
+        margin-bottom: 0;
       }
       .highlight {
         background-color: #fff3cd;
@@ -68,6 +80,9 @@
         border-radius: 4px;
         margin: 10px 0;
       }
+      .declaration-text {
+  margin-bottom: 8px;
+}
         </style>
     </head>
     <body>
@@ -116,7 +131,7 @@
             </div>
             <section class="section">
                 <h2>Declaration</h2>
-                <p>
+                <p class="declaration-text">
                     I confirm that my information is correct and I am happy for it to be
                     verified. I understand that false details may lead to my application
                     being rejected, and that the Government of Barbados will keep my
@@ -200,7 +215,7 @@
                             {{/if}}
                             {{#if applicant.postalCode}}
                                 <tr>
-                                    <td>Postal Code</td>
+                                    <td>Postcode</td>
                                     <td>{{ applicant.postalCode }}</td>
                                 </tr>
                             {{/if}}
@@ -253,19 +268,19 @@
                     <table>
                         <tbody>
                             <tr>
-                                <td>Husband – surname</td>
+                                <td>Husband – Surname</td>
                                 <td>{{ husband.lastName }}</td>
                             </tr>
                             <tr>
-                                <td>Husband – first name</td>
+                                <td>Husband – First name</td>
                                 <td>{{ husband.firstName }}</td>
                             </tr>
                             <tr>
-                                <td>Wife (maiden) – surname</td>
+                                <td>Wife (maiden) – Surname</td>
                                 <td>{{ wife.maidenName }}</td>
                             </tr>
                             <tr>
-                                <td>Wife – first name</td>
+                                <td>Wife – First name</td>
                                 <td>{{ wife.firstName }}</td>
                             </tr>
                             <tr>
