@@ -65,7 +65,7 @@
         },
         {
           "name": "age",
-          "type": "number",
+          "type": "string",
           "required": {
             "when": {
               "all": [{ "field": "father.idNumber", "operator": "empty" }]
@@ -78,8 +78,7 @@
               "operator": "notIn",
               "value": [null, ""],
               "then": {
-                "min": 12,
-                "max": 120,
+                "regex": "^(1[2-9]|[2-9][0-9]|1[0-1][0-9]|120)$",
                 "message": "Age should be between 12 and 120"
               }
             }
@@ -314,7 +313,7 @@
         },
         {
           "name": "age",
-          "type": "number",
+          "type": "string",
           "required": {
             "when": {
               "all": [{ "field": "mother.idNumber", "operator": "empty" }]
@@ -327,8 +326,7 @@
               "operator": "notIn",
               "value": [null, ""],
               "then": {
-                "min": 12,
-                "max": 120,
+                "regex": "^(1[2-9]|[2-9][0-9]|1[0-1][0-9]|120)$",
                 "message": "Age should be between 12 and 120"
               }
             }
