@@ -123,7 +123,7 @@
       ]
     },
     {
-      "name": "relationship",
+      "name": "relationshipToPerson",
       "type": "string",
       "label": "Tell us your relationship with the deceased",
       "required": true,
@@ -132,7 +132,16 @@
       }
     },
     {
-      "name": "reasonForRequest",
+      "name": "relationshipOtherDescription",
+      "type": "string",
+      "label": "Please describe your relationship",
+      "required": false,
+      "validations": {
+        "max": 100
+      }
+    },
+    {
+      "name": "reasonForCertificate",
       "type": "string",
       "label": "Tell us about why you need this certificate",
       "required": true,
