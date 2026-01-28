@@ -324,8 +324,6 @@
         "department": "oag_registration",
         "paymentCode": "{{db:get-marriage-certificate:payment_code}}",
         "amount": "{{formData.order.numberOfCopies * db:get-marriage-certificate:payment_amount}}",
-        "confirmationEmailTo": ["{{db:get-marriage-certificate:admin_email}}"],
-        "customerEmail": "{{formData.applicant.email}}",
         "description": "Marriage Certificate Processing Fee (per copy)",
         "required": true,
         "timing": "after_validation",
@@ -339,7 +337,17 @@
       "config": {
         "to": "{{db:get-marriage-certificate:admin_email}}",
         "subject": "New Marriage Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-        "template": "marriage-certificate"
+        "template": "marriage-certificate",
+        "recipientType": "admin"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Marriage Certificate - Submission Received",
+        "template": "marriage-certificate-receipt",
+        "recipientType": "user"
       }
     }
   ]
