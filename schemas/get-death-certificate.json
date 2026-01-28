@@ -254,8 +254,6 @@
         "department": "oag_registration",
         "paymentCode": "{{db:get-death-certificate:payment_code}}",
         "amount": "{{formData.order.numberOfCopies * db:get-death-certificate:payment_amount}}",
-        "confirmationEmailTo": ["{{db:get-death-certificate:admin_email}}"],
-        "customerEmail": "{{formData.applicant.email}}",
         "description": "Death Certificate Processing Fee (per copy)",
         "required": true,
         "timing": "after_validation",
@@ -269,7 +267,17 @@
       "config": {
         "to": "{{db:get-death-certificate:admin_email}}",
         "subject": "New Death Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-        "template": "death-certificate"
+        "template": "death-certificate",
+        "recipientType": "admin"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Death Certificate - Submission Received",
+        "template": "death-certificate-receipt",
+        "recipientType": "user"
       }
     }
   ]

@@ -67,11 +67,24 @@ export interface PaymentProcessorConfig extends ProcessorConfig {
     required?: boolean; // Whether payment is mandatory for form submission
     timing?: 'immediate' | 'after_validation'; // When to create payment
     responseData?: ResponseDataConfig; // Additional data to include in response
-    confirmationEmailTo?: string[]; // Email addresses to send payment confirmation to (supports expressions)
-    customerEmail?: string; // Customer email expression to send payment confirmation to (supports expressions)
   };
 }
 
 export interface ResponseDataConfig {
   include?: string[]; // Form field paths to include (e.g., ['order.numberOfCopies', 'applicant.email'])
+}
+
+export type EmailRecipientType = 'admin' | 'user';
+
+export interface EmailProcessorConfig extends ProcessorConfig {
+  type: 'email';
+  config: {
+    to: string | string[]; // Recipient email(s) - supports expressions like "{{formData.applicant.email}}"
+    from?: string; // Optional sender email
+    subject: string; // Email subject - supports expressions
+    template?: string; // Handlebars template name
+    html?: string; // Raw HTML content
+    text?: string; // Plain text content
+    recipientType?: EmailRecipientType; // 'admin' or 'user' - helps identify email purpose
+  };
 }

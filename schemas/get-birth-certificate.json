@@ -494,8 +494,6 @@
 				"department": "oag_registration",
 				"paymentCode": "{{db:get-birth-certificate:payment_code}}",
 				"amount": "{{formData.order.numberOfCopies * db:get-birth-certificate:payment_amount}}",
-        "confirmationEmailTo": ["{{db:get-birth-certificate:admin_email}}"],
-        "customerEmail": "{{formData.applicant.email}}",
 				"description": "Birth Certificate Processing Fee (per copy)",
 				"required": true,
 				"timing": "after_validation",
@@ -509,7 +507,17 @@
 			"config": {
 				"to": "{{db:get-birth-certificate:admin_email}}",
 				"subject": "New Birth Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-				"template": "birth-certificate"
+				"template": "birth-certificate",
+				"recipientType": "admin"
+			}
+		},
+		{
+			"type": "email",
+			"config": {
+				"to": "{{formData.applicant.email}}",
+				"subject": "Birth Certificate - Submission Received",
+				"template": "birth-certificate-receipt",
+				"recipientType": "user"
 			}
 		}
 	]
