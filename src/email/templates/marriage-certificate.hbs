@@ -246,7 +246,7 @@
                                         <td>Are you applying for your own marriage certificate?</td>
                                         <td>{{ applyingForYourself }}</td>
                                     </tr>
-                                    {{#if eq applyingForYourself 'no'}}
+                                    {{#if (eq applyingForYourself 'no')}}
                                         <tr>
                                             <td>Relationship to the person to whom the certificate relates</td>
                                             <td>{{ reason.relationshipToMarriedPersons }}</td>
@@ -298,45 +298,45 @@
                                         <td>Husband - National registration No.</td>
                                         <td>{{ husband.idNumber }}</td>
                                     </tr>
-                                {{/if}} {{ else }}
-                                {{#if husband.passportNumber}}
-                                    <tr>
-                                        <td>Husband - Passport number</td>
-                                        <td>{{ husband.passportNumber }}</td>
-                                    </tr>
-                                {{/if}} {{/if}}
-                                {{#if wife.idNumber}}
-                                    <tr>
-                                        <td>Wife - National registration No.</td>
-                                        <td>{{ wife.idNumber }}</td>
-                                    </tr>
-                                {{/if}} {{ else }}
-                                {{#if wife.passportNumber}}
-                                    <tr>
-                                        <td>Wife - Passport number</td>
-                                        <td>{{ wife.passportNumber }}</td>
-                                    </tr>
-                                {{/if}} {{/if}}
-                            </tbody>
-                        </table>
-                    </section>
-                    <!-- Footer -->
-                    <div class="footer">
-                        <p>
-                            This is an automated email from the Government of Barbados Forms
-                            Processing System.
-                            <br />
-                            Birth Certificate applications are processed during regular business
-                            hours.
-                            <br />
-                            Please allow 5-10 business days for processing.
-                            <br />
-                            <br />
-                            <strong>Important:</strong>
-                            If this application is for someone other than yourself, additional
-                            documentation may be required for verification.
-                        </p>
-                    </div>
-                </div>
-            </body>
-        </html>
+                                {{ else }}
+                                    {{#if husband.passportNumber}}
+                                        <tr>
+                                            <td>Husband - Passport number</td>
+                                            <td>{{ husband.passportNumber }}</td>
+                                        </tr>
+                                    {{/if}} {{/if}}
+                                    {{#if wife.idNumber}}
+                                        <tr>
+                                            <td>Wife - National registration No.</td>
+                                            <td>{{ wife.idNumber }}</td>
+                                        </tr>
+                                    {{ else }}
+                                        {{#if wife.passportNumber}}
+                                            <tr>
+                                                <td>Wife - Passport number</td>
+                                                <td>{{ wife.passportNumber }}</td>
+                                            </tr>
+                                        {{/if}} {{/if}}
+                                    </tbody>
+                                </table>
+                            </section>
+                            <!-- Footer -->
+                            <div class="footer">
+                                <p>
+                                    This is an automated email from the Government of Barbados Forms
+                                    Processing System.
+                                    <br />
+                                    Birth Certificate applications are processed during regular business
+                                    hours.
+                                    <br />
+                                    Please allow 5-10 business days for processing.
+                                    <br />
+                                    <br />
+                                    <strong>Important:</strong>
+                                    If this application is for someone other than yourself, additional
+                                    documentation may be required for verification.
+                                </p>
+                            </div>
+                        </div>
+                    </body>
+                </html>
