@@ -128,9 +128,9 @@
           }
         },
         {
-          "name": "postalCode",
+          "name": "postcode",
           "type": "string",
-          "label": "Postal Code",
+          "label": "Postcode",
           "required": false,
           "validations": {
             "regex": "^BB\\d{5}$",
@@ -175,9 +175,9 @@
           }
         },
         {
-          "name": "postalCode",
+          "name": "postcode",
           "type": "string",
-          "label": "Postal Code",
+          "label": "Postcode",
           "required": false,
           "validations": {
             "regex": "^BB\\d{5}$",

@@ -1,7 +1,7 @@
 <html>
-  <head>
-    <meta charset='utf-8' />
-    <style>
+    <head>
+        <meta charset='utf-8' />
+        <style>
       body { font-family: Arial, sans-serif; line-height: 1.6; color: #333;
       max-width: 800px; margin: 0 auto; padding: 20px; } .header {
       background-color: #2c5282; color: white; padding: 20px; text-align:
@@ -18,149 +18,153 @@
       font-size: 14px; color: #718096; } .endorsement-item { background-color:
       #f7fafc; padding: 15px; margin: 10px 0; border-left: 3px solid #2c5282;
       border-radius: 3px; }
-    </style>
-  </head>
-  <body>
-    <div class='header'>
-      <h1>🚌 Conductor Licence Application</h1>
-    </div>
-
-    <div class='content'>
-      <p>A new conductor licence application has been submitted.</p>
-      <p><strong>Reference:</strong> {{submissionId}}</p>
-
-      <div class='section'>
-        <div class='section-title'>Applicant Information</div>
-        <div class='field'>
-          <span class='field-label'>Name:</span>
-          <span class='field-value'>{{applicant.title}} {{applicant.firstName}}{{#if applicant.middleName}} {{applicant.middleName}}{{/if}} {{applicant.lastName}}</span>
+        </style>
+    </head>
+    <body>
+        <div class='header'>
+            <h1>🚌 Conductor Licence Application</h1>
         </div>
-        {{#if applicant.dateOfBirth}}
-          <div class='field'>
-            <span class='field-label'>Date of Birth:</span>
-            <span class='field-value'>{{applicant.dateOfBirth}}</span>
-          </div>
-        {{/if}}
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Contact Details</div>
-        <div class='field'>
-          <span class='field-label'>Address:</span>
-          <span class='field-value'>{{contactDetails.addressLine1}}{{#if contactDetails.addressLine2}}, {{contactDetails.addressLine2}}{{/if}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Parish:</span>
-          <span class='field-value'>{{contactDetails.parish}}</span>
-        </div>
-        {{#if contactDetails.postalCode}}
-          <div class='field'>
-            <span class='field-label'>Postal Code:</span>
-            <span class='field-value'>{{contactDetails.postalCode}}</span>
-          </div>
-        {{/if}}
-        <div class='field'>
-          <span class='field-label'>Email:</span>
-          <span class='field-value'>{{contactDetails.email}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Telephone:</span>
-          <span class='field-value'>{{contactDetails.telephoneNumber}}</span>
-        </div>
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Licence History</div>
-        <div class='field'>
-          <span class='field-label'>Has Previous Licence:</span>
-          <span class='field-value'>{{licenceHistory.hasPreviousLicence}}</span>
-        </div>
-        {{#if licenceHistory.licenceNumber}}
-          <div class='field'>
-            <span class='field-label'>Licence Number:</span>
-            <span class='field-value'>{{licenceHistory.licenceNumber}}</span>
-          </div>
-        {{/if}}
-        {{#if licenceHistory.dateOfIssue}}
-          <div class='field'>
-            <span class='field-label'>Date of Issue:</span>
-            <span class='field-value'>{{licenceHistory.dateOfIssue}}</span>
-          </div>
-        {{/if}}
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Endorsements</div>
-        <div class='field'>
-          <span class='field-label'>Has Endorsements:</span>
-          <span class='field-value'>{{hasEndorsements}}</span>
-        </div>
-        {{#if endorsementDetails}}
-          {{#each endorsementDetails}}
-            <div class='endorsement-item'>
-              <div class='field'>
-                <span class='field-label'>Type:</span>
-                <span class='field-value'>{{this.typeOfEndorsement}}</span>
-              </div>
-              <div class='field'>
-                <span class='field-label'>Date:</span>
-                <span class='field-value'>{{this.dateOfEndorsement}}</span>
-              </div>
-              <div class='field'>
-                <span class='field-label'>Duration:</span>
-                <span class='field-value'>{{this.duration}}</span>
-              </div>
-            </div>
-          {{/each}}
-        {{/if}}
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Disqualifications</div>
-        <div class='field'>
-          <span class='field-label'>Has Been Disqualified:</span>
-          <span class='field-value'>{{disqualifications.hasDisqualifications}}</span>
-        </div>
-        {{#if disqualifications.courtName}}
-          <div class='field'>
-            <span class='field-label'>Court Name:</span>
-            <span class='field-value'>{{disqualifications.courtName}}</span>
-          </div>
-        {{/if}}
-        {{#if disqualifications.reasonForDisqualification}}
-          <div class='field'>
-            <span class='field-label'>Reason:</span>
-            <span class='field-value'>{{disqualifications.reasonForDisqualification}}</span>
-          </div>
-        {{/if}}
-        {{#if disqualifications.dateOfDisqualification}}
-          <div class='field'>
-            <span class='field-label'>Date:</span>
-            <span class='field-value'>{{disqualifications.dateOfDisqualification}}</span>
-          </div>
-        {{/if}}
-        {{#if disqualifications.lengthOfDisqualification}}
-          <div class='field'>
-            <span class='field-label'>Length:</span>
-            <span class='field-value'>{{disqualifications.lengthOfDisqualification}}</span>
-          </div>
-        {{/if}}
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Criminal Record</div>
-        <div class='field'>
-          <span class='field-label'>Has Criminal Convictions:</span>
-          <span class='field-value'>{{hasCriminalConvictions}}</span>
-        </div>
-      </div>
-
-      <div class='footer'>
-        <p><strong>Submission ID:</strong> {{submissionId}}</p>
-        <p><strong>Reference:</strong> {{submissionId}}</p>
-        <p>This is an automated notification from the Conductor Licence Application System.</p>
-        <p><em>Please review and process this application.</em></p>
-      </div>
-    </div>
-  </body>
-</html>
+        <div class='content'>
+            <p>A new conductor licence application has been submitted.</p>
+            <p>
+                <strong>Reference:</strong> {{ submissionId }}
+            </p>
+            <div class='section'>
+                <div class='section-title'>Applicant Information</div>
+                <div class='field'>
+                    <span class='field-label'>Name:</span>
+                    <span class='field-value'>{{ applicant.title }} {{ applicant.firstName }}
+                        {{#if applicant.middleName}}
+                        {{ applicant.middleName }}{{/if}} {{ applicant.lastName }}</span>
+                    </div>
+                    {{#if applicant.dateOfBirth}}
+                        <div class='field'>
+                            <span class='field-label'>Date of Birth:</span>
+                            <span class='field-value'>{{ applicant.dateOfBirth }}</span>
+                        </div>
+                    {{/if}}
+                </div>
+                <div class='section'>
+                    <div class='section-title'>Contact Details</div>
+                    <div class='field'>
+                        <span class='field-label'>Address:</span>
+                        <span class='field-value'>{{ contactDetails.addressLine1 }}
+                            {{#if contactDetails.addressLine2}}
+                            , {{ contactDetails.addressLine2 }}{{/if}}</span>
+                        </div>
+                        <div class='field'>
+                            <span class='field-label'>Parish:</span>
+                            <span class='field-value'>{{ contactDetails.parish }}</span>
+                        </div>
+                        {{#if contactDetails.postcode}}
+                            <div class='field'>
+                                <span class='field-label'>Postcode:</span>
+                                <span class='field-value'>{{ contactDetails.postcode }}</span>
+                            </div>
+                        {{/if}}
+                        <div class='field'>
+                            <span class='field-label'>Email:</span>
+                            <span class='field-value'>{{ contactDetails.email }}</span>
+                        </div>
+                        <div class='field'>
+                            <span class='field-label'>Telephone:</span>
+                            <span class='field-value'>{{ contactDetails.telephoneNumber }}</span>
+                        </div>
+                    </div>
+                    <div class='section'>
+                        <div class='section-title'>Licence History</div>
+                        <div class='field'>
+                            <span class='field-label'>Has Previous Licence:</span>
+                            <span class='field-value'>{{ licenceHistory.hasPreviousLicence }}</span>
+                        </div>
+                        {{#if licenceHistory.licenceNumber}}
+                            <div class='field'>
+                                <span class='field-label'>Licence Number:</span>
+                                <span class='field-value'>{{ licenceHistory.licenceNumber }}</span>
+                            </div>
+                        {{/if}}
+                        {{#if licenceHistory.dateOfIssue}}
+                            <div class='field'>
+                                <span class='field-label'>Date of Issue:</span>
+                                <span class='field-value'>{{ licenceHistory.dateOfIssue }}</span>
+                            </div>
+                        {{/if}}
+                    </div>
+                    <div class='section'>
+                        <div class='section-title'>Endorsements</div>
+                        <div class='field'>
+                            <span class='field-label'>Has Endorsements:</span>
+                            <span class='field-value'>{{ hasEndorsements }}</span>
+                        </div>
+                        {{#if endorsementDetails}}
+                            {{#each endorsementDetails}}
+                                <div class='endorsement-item'>
+                                    <div class='field'>
+                                        <span class='field-label'>Type:</span>
+                                        <span class='field-value'>{{ this.typeOfEndorsement }}</span>
+                                    </div>
+                                    <div class='field'>
+                                        <span class='field-label'>Date:</span>
+                                        <span class='field-value'>{{ this.dateOfEndorsement }}</span>
+                                    </div>
+                                    <div class='field'>
+                                        <span class='field-label'>Duration:</span>
+                                        <span class='field-value'>{{ this.duration }}</span>
+                                    </div>
+                                </div>
+                            {{/each}}
+                        {{/if}}
+                    </div>
+                    <div class='section'>
+                        <div class='section-title'>Disqualifications</div>
+                        <div class='field'>
+                            <span class='field-label'>Has Been Disqualified:</span>
+                            <span class='field-value'>{{ disqualifications.hasDisqualifications }}</span>
+                        </div>
+                        {{#if disqualifications.courtName}}
+                            <div class='field'>
+                                <span class='field-label'>Court Name:</span>
+                                <span class='field-value'>{{ disqualifications.courtName }}</span>
+                            </div>
+                        {{/if}}
+                        {{#if disqualifications.reasonForDisqualification}}
+                            <div class='field'>
+                                <span class='field-label'>Reason:</span>
+                                <span class='field-value'>{{ disqualifications.reasonForDisqualification }}</span>
+                            </div>
+                        {{/if}}
+                        {{#if disqualifications.dateOfDisqualification}}
+                            <div class='field'>
+                                <span class='field-label'>Date:</span>
+                                <span class='field-value'>{{ disqualifications.dateOfDisqualification }}</span>
+                            </div>
+                        {{/if}}
+                        {{#if disqualifications.lengthOfDisqualification}}
+                            <div class='field'>
+                                <span class='field-label'>Length:</span>
+                                <span class='field-value'>{{ disqualifications.lengthOfDisqualification }}</span>
+                            </div>
+                        {{/if}}
+                    </div>
+                    <div class='section'>
+                        <div class='section-title'>Criminal Record</div>
+                        <div class='field'>
+                            <span class='field-label'>Has Criminal Convictions:</span>
+                            <span class='field-value'>{{ hasCriminalConvictions }}</span>
+                        </div>
+                    </div>
+                    <div class='footer'>
+                        <p>
+                            <strong>Submission ID:</strong> {{ submissionId }}
+                        </p>
+                        <p>
+                            <strong>Reference:</strong> {{ submissionId }}
+                        </p>
+                        <p>This is an automated notification from the Conductor Licence Application System.</p>
+                        <p>
+                            <em>Please review and process this application.</em>
+                        </p>
+                    </div>
+                </div>
+            </body>
+        </html>

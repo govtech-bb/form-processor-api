@@ -1,7 +1,7 @@
 <html>
-  <head>
-    <meta charset='utf-8' />
-    <style>
+    <head>
+        <meta charset='utf-8' />
+        <style>
       body { font-family: Arial, sans-serif; line-height: 1.6; color: #333;
       max-width: 800px; margin: 0 auto; padding: 20px; } .header {
       background-color: #2c5282; color: white; padding: 20px; text-align:
@@ -23,306 +23,305 @@
       border-radius: 5px; border-left: 3px solid #2c5282; } .employment-item {
       background-color: #f7fafc; padding: 15px; margin-bottom: 10px;
       border-radius: 5px; border-left: 3px solid #48bb78; }
-    </style>
-  </head>
-  <body>
-    <div class='header'>
-      <h1>New JobStart Plus Application</h1>
-    </div>
-
-    <div class='content'>
-      <p>A new application to the JobStart Plus programme has been submitted.</p>
-      <p><strong>Reference:</strong> {{submissionId}}</p>
-
-      <div class='section'>
-        <div class='section-title'>Personal Information</div>
-        <div class='field'>
-          <span class='field-label'>Name:</span>
-          <span class='field-value'>{{applicant.title}}
-            {{applicant.firstName}}
-            {{#if applicant.middleName}}{{applicant.middleName}}{{/if}}
-            {{applicant.lastName}}</span>
+        </style>
+    </head>
+    <body>
+        <div class='header'>
+            <h1>New JobStart Plus Application</h1>
         </div>
-        <div class='field'>
-          <span class='field-label'>Date of Birth:</span>
-          <span class='field-value'>{{applicant.dateOfBirth}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Sex:</span>
-          <span class='field-value'>{{applicant.sex}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Marital Status:</span>
-          <span class='field-value'>{{applicant.maritalStatus}}</span>
-        </div>
-        {{#if applicant.idNumber}}
-          <div class='field'>
-            <span class='field-label'>ID Number:</span>
-            <span class='field-value'>{{applicant.idNumber}}</span>
-          </div>
-        {{/if}}
-        {{#if applicant.passportNumber}}
-          <div class='field'>
-            <span class='field-label'>Passport Number:</span>
-            <span class='field-value'>{{applicant.passportNumber}}</span>
-          </div>
-        {{/if}}
-        {{#if applicant.hasNisNumber}}
-          <div class='field'>
-            <span class='field-label'>Has NIS Number:</span>
-            <span class='field-value'>{{applicant.hasNisNumber}}</span>
-          </div>
-        {{/if}}
-        {{#if applicant.nisNumber}}
-          <div class='field'>
-            <span class='field-label'>NIS Number:</span>
-            <span class='field-value'>{{applicant.nisNumber}}</span>
-          </div>
-        {{/if}}
-        <div class='field'>
-          <span class='field-label'>Has Disability:</span>
-          <span class='field-value'>{{applicant.hasDisability}}</span>
-        </div>
-        {{#if applicant.disabilityDetails}}
-          <div class='field'>
-            <span class='field-label'>Disability Details:</span>
-            <span class='field-value'>{{applicant.disabilityDetails}}</span>
-          </div>
-        {{/if}}
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Contact Details</div>
-        <div class='field'>
-          <span class='field-label'>Address Line 1:</span>
-          <span class='field-value'>{{contactDetails.addressLine1}}</span>
-        </div>
-        {{#if contactDetails.addressLine2}}
-          <div class='field'>
-            <span class='field-label'>Address Line 2:</span>
-            <span class='field-value'>{{contactDetails.addressLine2}}</span>
-          </div>
-        {{/if}}
-        <div class='field'>
-          <span class='field-label'>Parish:</span>
-          <span class='field-value'>{{contactDetails.parish}}</span>
-        </div>
-        {{#if contactDetails.postalCode}}
-          <div class='field'>
-            <span class='field-label'>Postal Code:</span>
-            <span class='field-value'>{{contactDetails.postalCode}}</span>
-          </div>
-        {{/if}}
-        <div class='field'>
-          <span class='field-label'>Email:</span>
-          <span class='field-value'>{{contactDetails.email}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Phone Number:</span>
-          <span class='field-value'>{{contactDetails.telephoneNumber}}</span>
-        </div>
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Emergency Contact</div>
-        <div class='field'>
-          <span class='field-label'>Name:</span>
-          <span class='field-value'>{{emergency.title}}
-            {{emergency.firstName}}
-            {{emergency.lastName}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Relationship:</span>
-          <span class='field-value'>{{emergency.relationship}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Address Line 1:</span>
-          <span class='field-value'>{{emergency.addressLine1}}</span>
-        </div>
-        {{#if emergency.addressLine2}}
-          <div class='field'>
-            <span class='field-label'>Address Line 2:</span>
-            <span class='field-value'>{{emergency.addressLine2}}</span>
-          </div>
-        {{/if}}
-        <div class='field'>
-          <span class='field-label'>Parish:</span>
-          <span class='field-value'>{{emergency.parish}}</span>
-        </div>
-        {{#if emergency.postalCode}}
-          <div class='field'>
-            <span class='field-label'>Postal Code:</span>
-            <span class='field-value'>{{emergency.postalCode}}</span>
-          </div>
-        {{/if}}
-        <div class='field'>
-          <span class='field-label'>Email:</span>
-          <span class='field-value'>{{emergency.email}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Phone Number:</span>
-          <span class='field-value'>{{emergency.telephoneNumber}}</span>
-        </div>
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Primary Education</div>
-        <div class='field'>
-          <span class='field-label'>School Name:</span>
-          <span class='field-value'>{{primaryEducation.schoolName}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Start Year:</span>
-          <span class='field-value'>{{primaryEducation.startYear}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>End Year:</span>
-          <span class='field-value'>{{primaryEducation.endYear}}</span>
-        </div>
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Secondary Education</div>
-        <div class='field'>
-          <span class='field-label'>School Name:</span>
-          <span class='field-value'>{{secondaryEducation.schoolName}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Start Year:</span>
-          <span class='field-value'>{{secondaryEducation.startYear}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>End Year:</span>
-          <span class='field-value'>{{secondaryEducation.endYear}}</span>
-        </div>
-      </div>
-
-      {{#if postSecondaryEducation}}
-        <div class='section'>
-          <div class='section-title'>Post-Secondary Education</div>
-          {{#each postSecondaryEducation}}
-            <div class='education-item'>
-              {{#if this.institutionName}}
+        <div class='content'>
+            <p>A new application to the JobStart Plus programme has been submitted.</p>
+            <p>
+                <strong>Reference:</strong> {{ submissionId }}
+            </p>
+            <div class='section'>
+                <div class='section-title'>Personal Information</div>
                 <div class='field'>
-                  <span class='field-label'>Institution:</span>
-                  <span class='field-value'>{{this.institutionName}}</span>
+                    <span class='field-label'>Name:</span>
+                    <span class='field-value'>{{ applicant.title }}
+                        {{ applicant.firstName }}
+                        {{#if applicant.middleName}}
+                            {{ applicant.middleName }}{{/if}}
+                        {{ applicant.lastName }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Date of Birth:</span>
+                        <span class='field-value'>{{ applicant.dateOfBirth }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Sex:</span>
+                        <span class='field-value'>{{ applicant.sex }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Marital Status:</span>
+                        <span class='field-value'>{{ applicant.maritalStatus }}</span>
+                    </div>
+                    {{#if applicant.idNumber}}
+                        <div class='field'>
+                            <span class='field-label'>ID Number:</span>
+                            <span class='field-value'>{{ applicant.idNumber }}</span>
+                        </div>
+                    {{/if}}
+                    {{#if applicant.passportNumber}}
+                        <div class='field'>
+                            <span class='field-label'>Passport Number:</span>
+                            <span class='field-value'>{{ applicant.passportNumber }}</span>
+                        </div>
+                    {{/if}}
+                    {{#if applicant.hasNisNumber}}
+                        <div class='field'>
+                            <span class='field-label'>Has NIS Number:</span>
+                            <span class='field-value'>{{ applicant.hasNisNumber }}</span>
+                        </div>
+                    {{/if}}
+                    {{#if applicant.nisNumber}}
+                        <div class='field'>
+                            <span class='field-label'>NIS Number:</span>
+                            <span class='field-value'>{{ applicant.nisNumber }}</span>
+                        </div>
+                    {{/if}}
+                    <div class='field'>
+                        <span class='field-label'>Has Disability:</span>
+                        <span class='field-value'>{{ applicant.hasDisability }}</span>
+                    </div>
+                    {{#if applicant.disabilityDetails}}
+                        <div class='field'>
+                            <span class='field-label'>Disability Details:</span>
+                            <span class='field-value'>{{ applicant.disabilityDetails }}</span>
+                        </div>
+                    {{/if}}
                 </div>
-              {{/if}}
-              {{#if this.qualificationsObtained}}
-                <div class='field'>
-                  <span class='field-label'>Qualifications:</span>
-                  <span class='field-value'>{{this.qualificationsObtained}}</span>
+                <div class='section'>
+                    <div class='section-title'>Contact Details</div>
+                    <div class='field'>
+                        <span class='field-label'>Address Line 1:</span>
+                        <span class='field-value'>{{ contactDetails.addressLine1 }}</span>
+                    </div>
+                    {{#if contactDetails.addressLine2}}
+                        <div class='field'>
+                            <span class='field-label'>Address Line 2:</span>
+                            <span class='field-value'>{{ contactDetails.addressLine2 }}</span>
+                        </div>
+                    {{/if}}
+                    <div class='field'>
+                        <span class='field-label'>Parish:</span>
+                        <span class='field-value'>{{ contactDetails.parish }}</span>
+                    </div>
+                    {{#if contactDetails.postcode}}
+                        <div class='field'>
+                            <span class='field-label'>Postcode:</span>
+                            <span class='field-value'>{{ contactDetails.postcode }}</span>
+                        </div>
+                    {{/if}}
+                    <div class='field'>
+                        <span class='field-label'>Email:</span>
+                        <span class='field-value'>{{ contactDetails.email }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Phone Number:</span>
+                        <span class='field-value'>{{ contactDetails.telephoneNumber }}</span>
+                    </div>
                 </div>
-              {{/if}}
-              {{#if this.coursesOrSubjects}}
-                <div class='field'>
-                  <span class='field-label'>Courses/Subjects:</span>
-                  <span class='field-value'>{{this.coursesOrSubjects}}</span>
+                <div class='section'>
+                    <div class='section-title'>Emergency Contact</div>
+                    <div class='field'>
+                        <span class='field-label'>Name:</span>
+                        <span class='field-value'>{{ emergency.title }}
+                            {{ emergency.firstName }}
+                        {{ emergency.lastName }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Relationship:</span>
+                        <span class='field-value'>{{ emergency.relationship }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Address Line 1:</span>
+                        <span class='field-value'>{{ emergency.addressLine1 }}</span>
+                    </div>
+                    {{#if emergency.addressLine2}}
+                        <div class='field'>
+                            <span class='field-label'>Address Line 2:</span>
+                            <span class='field-value'>{{ emergency.addressLine2 }}</span>
+                        </div>
+                    {{/if}}
+                    <div class='field'>
+                        <span class='field-label'>Parish:</span>
+                        <span class='field-value'>{{ emergency.parish }}</span>
+                    </div>
+                    {{#if emergency.postcode}}
+                        <div class='field'>
+                            <span class='field-label'>Postcode:</span>
+                            <span class='field-value'>{{ emergency.postcode }}</span>
+                        </div>
+                    {{/if}}
+                    <div class='field'>
+                        <span class='field-label'>Email:</span>
+                        <span class='field-value'>{{ emergency.email }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Phone Number:</span>
+                        <span class='field-value'>{{ emergency.telephoneNumber }}</span>
+                    </div>
                 </div>
-              {{/if}}
-              {{#if this.startDate}}
-                <div class='field'>
-                  <span class='field-label'>Start Date:</span>
-                  <span class='field-value'>{{this.startDate}}</span>
+                <div class='section'>
+                    <div class='section-title'>Primary Education</div>
+                    <div class='field'>
+                        <span class='field-label'>School Name:</span>
+                        <span class='field-value'>{{ primaryEducation.schoolName }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Start Year:</span>
+                        <span class='field-value'>{{ primaryEducation.startYear }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>End Year:</span>
+                        <span class='field-value'>{{ primaryEducation.endYear }}</span>
+                    </div>
                 </div>
-              {{/if}}
-              {{#if this.endDate}}
-                <div class='field'>
-                  <span class='field-label'>End Date:</span>
-                  <span class='field-value'>{{this.endDate}}</span>
+                <div class='section'>
+                    <div class='section-title'>Secondary Education</div>
+                    <div class='field'>
+                        <span class='field-label'>School Name:</span>
+                        <span class='field-value'>{{ secondaryEducation.schoolName }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Start Year:</span>
+                        <span class='field-value'>{{ secondaryEducation.startYear }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>End Year:</span>
+                        <span class='field-value'>{{ secondaryEducation.endYear }}</span>
+                    </div>
                 </div>
-              {{/if}}
+                {{#if postSecondaryEducation}}
+                    <div class='section'>
+                        <div class='section-title'>Post-Secondary Education</div>
+                        {{#each postSecondaryEducation}}
+                            <div class='education-item'>
+                                {{#if this.institutionName}}
+                                    <div class='field'>
+                                        <span class='field-label'>Institution:</span>
+                                        <span class='field-value'>{{ this.institutionName }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if this.qualificationsObtained}}
+                                    <div class='field'>
+                                        <span class='field-label'>Qualifications:</span>
+                                        <span class='field-value'>{{ this.qualificationsObtained }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if this.coursesOrSubjects}}
+                                    <div class='field'>
+                                        <span class='field-label'>Courses/Subjects:</span>
+                                        <span class='field-value'>{{ this.coursesOrSubjects }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if this.startDate}}
+                                    <div class='field'>
+                                        <span class='field-label'>Start Date:</span>
+                                        <span class='field-value'>{{ this.startDate }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if this.endDate}}
+                                    <div class='field'>
+                                        <span class='field-label'>End Date:</span>
+                                        <span class='field-value'>{{ this.endDate }}</span>
+                                    </div>
+                                {{/if}}
+                            </div>
+                        {{/each}}
+                    </div>
+                {{/if}}
+                <div class='section'>
+                    <div class='section-title'>Employment History</div>
+                    <div class='field'>
+                        <span class='field-label'>Has Previous Paid Job:</span>
+                        <span class='field-value'>{{ hasPreviousPaidJob }}</span>
+                    </div>
+                    {{#if employmentHistory}}
+                        {{#each employmentHistory}}
+                            <div class='employment-item'>
+                                {{#if this.employerName}}
+                                    <div class='field'>
+                                        <span class='field-label'>Employer:</span>
+                                        <span class='field-value'>{{ this.employerName }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if this.occupation}}
+                                    <div class='field'>
+                                        <span class='field-label'>Occupation:</span>
+                                        <span class='field-value'>{{ this.occupation }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if this.startDate}}
+                                    <div class='field'>
+                                        <span class='field-label'>Start Date:</span>
+                                        <span class='field-value'>{{ this.startDate }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if this.endDate}}
+                                    <div class='field'>
+                                        <span class='field-label'>End Date:</span>
+                                        <span class='field-value'>{{ this.endDate }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if this.currentlyWorkingHere}}
+                                    <div class='field'>
+                                        <span class='field-label'>Currently Working Here:</span>
+                                        <span class='field-value'>{{ this.currentlyWorkingHere }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if this.mainTasks}}
+                                    <div class='field'>
+                                        <span class='field-label'>Main Tasks:</span>
+                                        <span class='field-value'>{{ this.mainTasks }}</span>
+                                    </div>
+                                {{/if}}
+                            </div>
+                        {{/each}}
+                    {{/if}}
+                </div>
+                {{#if eligibility}}
+                    <div class='section'>
+                        <div class='section-title'>Eligibility Information</div>
+                        {{#if eligibility.interests}}
+                            <div class='field'>
+                                <span class='field-label'>Job/Trade Interests:</span>
+                                <span class='field-value'>{{ eligibility.interests }}</span>
+                            </div>
+                        {{/if}}
+                        {{#if eligibility.areYouOver18}}
+                            <div class='field'>
+                                <span class='field-label'>Over 18:</span>
+                                <span class='field-value'>{{ eligibility.areYouOver18 }}</span>
+                            </div>
+                        {{/if}}
+                        {{#if eligibility.willingToWorkAtNight}}
+                            <div class='field'>
+                                <span class='field-label'>Willing to Work at Night:</span>
+                                <span class='field-value'>{{ eligibility.willingToWorkAtNight }}</span>
+                            </div>
+                        {{/if}}
+                        {{#if eligibility.shortTermGoals}}
+                            <div class='field'>
+                                <span class='field-label'>Short-term Goals:</span>
+                                <span class='field-value'>{{ eligibility.shortTermGoals }}</span>
+                            </div>
+                        {{/if}}
+                    </div>
+                {{/if}}
+                <div class='footer'>
+                    <p>
+                        <strong>Reference:</strong> {{ submissionId }}
+                    </p>
+                    <p>
+                        This is an automated notification from the JobStart Plus Programme
+                        System.
+                    </p>
+                    <p>
+                        <em>Please review and process this request.</em>
+                    </p>
+                </div>
             </div>
-          {{/each}}
-        </div>
-      {{/if}}
-
-      <div class='section'>
-        <div class='section-title'>Employment History</div>
-        <div class='field'>
-          <span class='field-label'>Has Previous Paid Job:</span>
-          <span class='field-value'>{{hasPreviousPaidJob}}</span>
-        </div>
-        {{#if employmentHistory}}
-          {{#each employmentHistory}}
-            <div class='employment-item'>
-              {{#if this.employerName}}
-                <div class='field'>
-                  <span class='field-label'>Employer:</span>
-                  <span class='field-value'>{{this.employerName}}</span>
-                </div>
-              {{/if}}
-              {{#if this.occupation}}
-                <div class='field'>
-                  <span class='field-label'>Occupation:</span>
-                  <span class='field-value'>{{this.occupation}}</span>
-                </div>
-              {{/if}}
-              {{#if this.startDate}}
-                <div class='field'>
-                  <span class='field-label'>Start Date:</span>
-                  <span class='field-value'>{{this.startDate}}</span>
-                </div>
-              {{/if}}
-              {{#if this.endDate}}
-                <div class='field'>
-                  <span class='field-label'>End Date:</span>
-                  <span class='field-value'>{{this.endDate}}</span>
-                </div>
-              {{/if}}
-              {{#if this.currentlyWorkingHere}}
-                <div class='field'>
-                  <span class='field-label'>Currently Working Here:</span>
-                  <span class='field-value'>{{this.currentlyWorkingHere}}</span>
-                </div>
-              {{/if}}
-              {{#if this.mainTasks}}
-                <div class='field'>
-                  <span class='field-label'>Main Tasks:</span>
-                  <span class='field-value'>{{this.mainTasks}}</span>
-                </div>
-              {{/if}}
-            </div>
-          {{/each}}
-        {{/if}}
-      </div>
-
-      {{#if eligibility}}
-        <div class='section'>
-          <div class='section-title'>Eligibility Information</div>
-          {{#if eligibility.interests}}
-            <div class='field'>
-              <span class='field-label'>Job/Trade Interests:</span>
-              <span class='field-value'>{{eligibility.interests}}</span>
-            </div>
-          {{/if}}
-          {{#if eligibility.areYouOver18}}
-            <div class='field'>
-              <span class='field-label'>Over 18:</span>
-              <span class='field-value'>{{eligibility.areYouOver18}}</span>
-            </div>
-          {{/if}}
-          {{#if eligibility.willingToWorkAtNight}}
-            <div class='field'>
-              <span class='field-label'>Willing to Work at Night:</span>
-              <span class='field-value'>{{eligibility.willingToWorkAtNight}}</span>
-            </div>
-          {{/if}}
-          {{#if eligibility.shortTermGoals}}
-            <div class='field'>
-              <span class='field-label'>Short-term Goals:</span>
-              <span class='field-value'>{{eligibility.shortTermGoals}}</span>
-            </div>
-          {{/if}}
-        </div>
-      {{/if}}
-
-      <div class='footer'>
-        <p><strong>Reference:</strong> {{submissionId}}</p>
-        <p>This is an automated notification from the JobStart Plus Programme
-          System.</p>
-        <p><em>Please review and process this request.</em></p>
-      </div>
-    </div>
-  </body>
-</html>
+        </body>
+    </html>

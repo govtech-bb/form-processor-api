@@ -80,9 +80,9 @@
           }
         },
         {
-          "name": "postalCode",
+          "name": "postcode",
           "type": "string",
-          "label": "Postal Code",
+          "label": "Postcode",
           "required": false
         },
         {
@@ -328,7 +328,9 @@
         "required": true,
         "timing": "after_validation",
         "responseData": {
-          "include": ["order.numberOfCopies"]
+          "include": [
+            "order.numberOfCopies"
+          ]
         }
       }
     },

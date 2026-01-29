@@ -80,9 +80,9 @@
           }
         },
         {
-          "name": "postalCode",
+          "name": "postcode",
           "type": "string",
-          "label": "Postal Code",
+          "label": "Postcode",
           "required": false,
           "validations": {
             "regex": "^BB\\d{5}$",
@@ -235,7 +235,6 @@
         }
       ]
     },
-
     {
       "name": "order",
       "type": "object",
@@ -267,7 +266,9 @@
         "required": true,
         "timing": "after_validation",
         "responseData": {
-          "include": ["order.numberOfCopies"]
+          "include": [
+            "order.numberOfCopies"
+          ]
         }
       }
     },
