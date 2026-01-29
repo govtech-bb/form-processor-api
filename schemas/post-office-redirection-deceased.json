@@ -244,15 +244,6 @@
           "required": false
         }
       ]
-    },
-    {
-      "name": "uploadDocumentUrls",
-      "type": "array",
-      "label": "Uploaded Documents",
-      "required": true,
-      "items": {
-        "type": "string"
-      }
     }
   ],
   "processors": [
