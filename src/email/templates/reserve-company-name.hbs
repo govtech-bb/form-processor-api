@@ -1,7 +1,7 @@
 <html>
-  <head>
-    <meta charset='utf-8' />
-    <style>
+    <head>
+        <meta charset='utf-8' />
+        <style>
       body { font-family: Arial, sans-serif; line-height: 1.6; color: #333;
       max-width: 800px; margin: 0 auto; padding: 20px; } .header {
       background-color: #2563eb; color: white; padding: 20px; text-align:
@@ -20,107 +20,109 @@
       10px; border-left: 4px solid #f59e0b; } .name-choice {
       background-color: #e0f2fe; padding: 10px; margin: 10px 0;
       border-radius: 5px; border-left: 4px solid #0284c7; }
-    </style>
-  </head>
-  <body>
-    <div class='header'>
-      <h1>Request to Reserve Company Name Application</h1>
-    </div>
-
-    <div class='content'>
-      <p>A new request to reserve a company name has been submitted.</p>
-      <p><strong>Reference:</strong> {{submissionId}}</p>
-
-      <div class='section'>
-        <div class='section-title'>Purpose of New Company Name</div>
-        <div class='field'>
-          <span class='field-label'>What will this name be used for?</span>
-          <span class='field-value'>{{purposeOfNewCompanyName}}</span>
+        </style>
+    </head>
+    <body>
+        <div class='header'>
+            <h1>Request to Reserve Company Name Application</h1>
         </div>
-        {{#if companyPresentName}}
-          <div class='field'>
-            <span class='field-label'>Present Company Name:</span>
-            <span class='field-value'>{{companyPresentName}}</span>
-          </div>
-        {{/if}}
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Company Name Choices</div>
-        <div class='name-choice'>
-          <div class='field'>
-            <span class='field-label'>First Choice:</span>
-            <span class='field-value'>{{companyName.firstChoice}}</span>
-          </div>
-        </div>
-        <div class='name-choice'>
-          <div class='field'>
-            <span class='field-label'>Second Choice:</span>
-            <span class='field-value'>{{companyName.secondChoice}}</span>
-          </div>
-        </div>
-        <div class='name-choice'>
-          <div class='field'>
-            <span class='field-label'>Third Choice:</span>
-            <span class='field-value'>{{companyName.thirdChoice}}</span>
-          </div>
-        </div>
-        {{#if companyName.reserveFirstAvailableName}}
-          <div class='field'>
-            <span class='field-label'>Reserve First Available Name:</span>
-            <span class='field-value'>{{companyName.reserveFirstAvailableName}}</span>
-          </div>
-        {{/if}}
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Business Activities</div>
-        {{#each businessActivity}}
-          <div class='field'>
-            <span class='field-value'>• {{this.value}}</span>
-          </div>
-        {{/each}}
-      </div>
-
-      <div class='section'>
-        <div class='section-title'>Applicant Information</div>
-        <div class='field'>
-          <span class='field-label'>Name:</span>
-          <span class='field-value'>{{applicant.firstName}}
-            {{applicant.lastName}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Address:</span>
-          <span class='field-value'>{{applicant.addressLine1}}{{#if
-              applicant.addressLine2
-            }}, {{applicant.addressLine2}}{{/if}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Parish:</span>
-          <span class='field-value'>{{applicant.parish}}</span>
-        </div>
-        {{#if applicant.postalCode}}
-          <div class='field'>
-            <span class='field-label'>Postal Code:</span>
-            <span class='field-value'>{{applicant.postalCode}}</span>
-          </div>
-        {{/if}}
-        <div class='field'>
-          <span class='field-label'>Email:</span>
-          <span class='field-value'>{{applicant.email}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Phone:</span>
-          <span class='field-value'>{{applicant.telephoneNumber}}</span>
-        </div>
-      </div>
-
-      <div class='footer'>
-        <p><strong>Application ID:</strong> {{submissionId}}</p>
-        <p>This is an automated notification from the Reserve a Company Name
-          System.</p>
-        <p>Please review this application and follow up as necessary.</p>
-      </div>
-    </div>
-  </body>
-</html>
+        <div class='content'>
+            <p>A new request to reserve a company name has been submitted.</p>
+            <p>
+                <strong>Reference:</strong> {{ submissionId }}
+            </p>
+            <div class='section'>
+                <div class='section-title'>Purpose of New Company Name</div>
+                <div class='field'>
+                    <span class='field-label'>What will this name be used for?</span>
+                    <span class='field-value'>{{ purposeOfNewCompanyName }}</span>
+                </div>
+                {{#if companyPresentName}}
+                    <div class='field'>
+                        <span class='field-label'>Present Company Name:</span>
+                        <span class='field-value'>{{ companyPresentName }}</span>
+                    </div>
+                {{/if}}
+            </div>
+            <div class='section'>
+                <div class='section-title'>Company Name Choices</div>
+                <div class='name-choice'>
+                    <div class='field'>
+                        <span class='field-label'>First Choice:</span>
+                        <span class='field-value'>{{ companyName.firstChoice }}</span>
+                    </div>
+                </div>
+                <div class='name-choice'>
+                    <div class='field'>
+                        <span class='field-label'>Second Choice:</span>
+                        <span class='field-value'>{{ companyName.secondChoice }}</span>
+                    </div>
+                </div>
+                <div class='name-choice'>
+                    <div class='field'>
+                        <span class='field-label'>Third Choice:</span>
+                        <span class='field-value'>{{ companyName.thirdChoice }}</span>
+                    </div>
+                </div>
+                {{#if companyName.reserveFirstAvailableName}}
+                    <div class='field'>
+                        <span class='field-label'>Reserve First Available Name:</span>
+                        <span class='field-value'>{{ companyName.reserveFirstAvailableName }}</span>
+                    </div>
+                {{/if}}
+            </div>
+            <div class='section'>
+                <div class='section-title'>Business Activities</div>
+                {{#each businessActivity}}
+                    <div class='field'>
+                        <span class='field-value'>• {{ this.value }}</span>
+                    </div>
+                {{/each}}
+            </div>
+            <div class='section'>
+                <div class='section-title'>Applicant Information</div>
+                <div class='field'>
+                    <span class='field-label'>Name:</span>
+                    <span class='field-value'>{{ applicant.firstName }}
+                    {{ applicant.lastName }}</span>
+                </div>
+                <div class='field'>
+                    <span class='field-label'>Address:</span>
+                    <span class='field-value'>{{ applicant.addressLine1 }}
+                        {{#if
+                            applicant.addressLine2
+                            }}
+                        , {{ applicant.addressLine2 }}{{/if}}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Parish:</span>
+                        <span class='field-value'>{{ applicant.parish }}</span>
+                    </div>
+                    {{#if applicant.postcode}}
+                        <div class='field'>
+                            <span class='field-label'>Postcode:</span>
+                            <span class='field-value'>{{ applicant.postcode }}</span>
+                        </div>
+                    {{/if}}
+                    <div class='field'>
+                        <span class='field-label'>Email:</span>
+                        <span class='field-value'>{{ applicant.email }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Phone:</span>
+                        <span class='field-value'>{{ applicant.telephoneNumber }}</span>
+                    </div>
+                </div>
+                <div class='footer'>
+                    <p>
+                        <strong>Application ID:</strong> {{ submissionId }}
+                    </p>
+                    <p>
+                        This is an automated notification from the Reserve a Company Name
+                        System.
+                    </p>
+                    <p>Please review this application and follow up as necessary.</p>
+                </div>
+            </div>
+        </body>
+    </html>
