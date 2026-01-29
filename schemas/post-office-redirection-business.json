@@ -108,6 +108,23 @@
           }
         },
         {
+          "name": "idNumber",
+          "type": "string",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{6}[-]?\\d{4}$",
+            "message": "Must be in format XXXXXX-XXXX"
+          }
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "required": false,
+          "validations": {
+            "max": 50
+          }
+        },
+        {
           "name": "email",
           "type": "email",
           "label": "Email Address",
@@ -122,12 +139,12 @@
       ]
     },
     {
-      "name": "permissionDetails",
+      "name": "positionDetails",
       "type": "string",
-      "label": "Tell us what permission you have to act for this business",
+      "label": "Tell us what position you hold in the business.",
       "required": true,
       "validations": {
-        "message": "Permission details required"
+        "message": "Position is required"
       }
     },
     {
@@ -176,37 +193,18 @@
           }
         },
         {
-          "name": "isMovingPermanent",
-          "type": "string",
-          "label": "Are you moving permanently?",
-          "required": true,
-          "validations": {
-            "regex": "^(yes|no)$",
-            "message": "Must select an option"
-          }
-        },
-        {
           "name": "redirectionStartDate",
           "type": "date",
           "label": "Redirection Start Date",
-          "required": false
+          "required": true
         },
         {
           "name": "redirectionEndDate",
           "type": "date",
           "label": "Redirection End Date",
-          "required": false
+          "required": true
         }
       ]
-    },
-    {
-      "name": "uploadDocumentUrls",
-      "type": "array",
-      "label": "Uploaded Documents",
-      "required": true,
-      "items": {
-        "type": "string"
-      }
     }
   ],
   "processors": [
