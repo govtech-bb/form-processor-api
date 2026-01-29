@@ -11,6 +11,7 @@ import {
   LocationBundle,
   LocationType,
 } from './types';
+import { OpenCRVSCacheService } from './opencrvs-cache.service';
 
 @Injectable()
 export class OpenCRVSService {
@@ -22,14 +23,10 @@ export class OpenCRVSService {
   private readonly clientId: string;
   private readonly clientSecret: string;
 
-  // Cache for access token with expiry
-  private accessToken: string | null = null;
-  private tokenExpiry: Date | null = null;
-
-  // Cache for location lookups to avoid repeated API calls
-  private readonly locationCache: Map<string, string> = new Map();
-
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly cacheService: OpenCRVSCacheService,
+  ) {
     const isLocalhost = this.configService.get<boolean>('opencrvs.localhost');
 
     if (isLocalhost) {
@@ -64,16 +61,19 @@ export class OpenCRVSService {
 
   /**
    * Get an access token from the OpenCRVS auth service
-   * Uses caching to avoid unnecessary token requests
+   * Uses node-cache for TTL-based token management
+   * @param forceRefresh - If true, ignores cached token and fetches a new one
    */
-  async getAccessToken(): Promise<string> {
-    // Return cached token if still valid (with 5 minute buffer)
-    if (
-      this.accessToken &&
-      this.tokenExpiry &&
-      new Date() < new Date(this.tokenExpiry.getTime() - 5 * 60 * 1000)
-    ) {
-      return this.accessToken;
+  async getAccessToken(forceRefresh = false): Promise<string> {
+    // Return cached token if still valid (unless force refresh)
+    if (!forceRefresh) {
+      const cachedToken = this.cacheService.getAccessToken();
+      if (cachedToken) {
+        return cachedToken;
+      }
+    } else {
+      // Clear the cached token when forcing refresh
+      this.cacheService.clearAccessToken();
     }
 
     if (!this.clientId || !this.clientSecret) {
@@ -108,22 +108,50 @@ export class OpenCRVSService {
       throw new Error('OpenCRVS token response missing access_token');
     }
 
-    this.accessToken = data.access_token;
-
-    // Set expiry based on response or default to 1 hour
+    // Cache the token with TTL (includes 5-minute buffer)
     const expiresIn = data.expires_in ?? 3600;
-    this.tokenExpiry = new Date(Date.now() + expiresIn * 1000);
+    this.cacheService.setAccessToken(data.access_token, expiresIn);
 
     this.logger.log('OpenCRVS access token obtained successfully');
-    return this.accessToken;
+    return data.access_token;
+  }
+
+  /**
+   * Make an authenticated request with automatic token refresh on 401
+   * @param url - The URL to request
+   * @param options - Fetch options (without Authorization header)
+   * @param isRetry - Internal flag to prevent infinite retry loops
+   * @returns The fetch Response
+   */
+  private async authenticatedFetch(
+    url: string,
+    options: RequestInit = {},
+    isRetry = false,
+  ): Promise<Response> {
+    const accessToken = await this.getAccessToken();
+
+    const res = await fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    // If we get a 401 and haven't retried yet, refresh token and retry once
+    if (res.status === 401 && !isRetry) {
+      this.logger.warn('Received 401, refreshing token and retrying request');
+      await this.getAccessToken(true);
+      return this.authenticatedFetch(url, options, true);
+    }
+
+    return res;
   }
 
   /**
    * Create a new birth event in OpenCRVS
    */
   async createBirthEvent(transactionId?: string): Promise<CreateEventResponse> {
-    const accessToken = await this.getAccessToken();
-
     const payload: CreateEventRequest = {
       type: 'birth',
       transactionId: transactionId ?? uuidv4(),
@@ -134,14 +162,16 @@ export class OpenCRVSService {
       `Creating birth event with transactionId: ${payload.transactionId}`,
     );
 
-    const res = await fetch(`${this.eventsBaseUrl}/api/events/events`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
+    const res = await this.authenticatedFetch(
+      `${this.eventsBaseUrl}/api/events/events`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
       },
-      body: JSON.stringify(payload),
-    });
+    );
 
     if (!res.ok) {
       const errorText = await res.text();
@@ -168,8 +198,6 @@ export class OpenCRVSService {
     createdAtLocation: string,
     annotation?: Record<string, unknown>,
   ): Promise<NotifyResponse> {
-    const accessToken = await this.getAccessToken();
-
     const payload: NotifyRequest = {
       eventId,
       transactionId: uuidv4(),
@@ -181,12 +209,11 @@ export class OpenCRVSService {
 
     this.logger.log(`Notifying birth event: ${eventId}`);
 
-    const res = await fetch(
+    const res = await this.authenticatedFetch(
       `${this.eventsBaseUrl}/api/events/events/notifications`,
       {
         method: 'POST',
         headers: {
-          Authorization: `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
@@ -219,10 +246,8 @@ export class OpenCRVSService {
     locationName: string,
     locationType: LocationType,
   ): Promise<string> {
-    const cacheKey = `${locationType}:${locationName}`;
-
     // Check cache first
-    const cachedId = this.locationCache.get(cacheKey);
+    const cachedId = this.cacheService.getLocation(locationType, locationName);
     if (cachedId) {
       return cachedId;
     }
@@ -254,7 +279,11 @@ export class OpenCRVSService {
     }
 
     // Cache the result
-    this.locationCache.set(cacheKey, match.resource.id);
+    this.cacheService.setLocation(
+      locationType,
+      locationName,
+      match.resource.id,
+    );
 
     this.logger.log(
       `Found location: "${locationName}" -> ${match.resource.id}`,
@@ -321,7 +350,7 @@ export class OpenCRVSService {
    * Clear the location cache (useful if locations are updated)
    */
   clearLocationCache(): void {
-    this.locationCache.clear();
+    this.cacheService.clearLocations();
     this.logger.log('Location cache cleared');
   }
 
@@ -329,8 +358,7 @@ export class OpenCRVSService {
    * Clear the access token cache (useful for testing or token refresh)
    */
   clearTokenCache(): void {
-    this.accessToken = null;
-    this.tokenExpiry = null;
+    this.cacheService.clearAccessToken();
     this.logger.log('Token cache cleared');
   }
 }
