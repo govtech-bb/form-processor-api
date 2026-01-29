@@ -1,7 +1,7 @@
 <html>
-  <head>
-    <meta charset='utf-8' />
-    <style>
+    <head>
+        <meta charset='utf-8' />
+        <style>
       body { font-family: Arial, sans-serif; line-height: 1.6; color: #333;
       max-width: 800px; margin: 0 auto; padding: 20px; } .header {
       background-color: #2c5282; color: white; padding: 20px; text-align:
@@ -21,346 +21,399 @@
       center; font-size: 14px; color: #718096; } .document-list { list-style:
       none; padding-left: 0; } .document-list li { padding: 8px;
       background-color: #edf2f7; margin-bottom: 8px; border-radius: 3px;
-      word-break: break-all; } .minor-item { background-color: #f7fafc;
+      word-break: break-all; } .minor-item, .adult-item { background-color: #f7fafc;
       padding: 10px; margin-bottom: 8px; border-radius: 5px;
       border-left: 3px solid #2c5282; }
-    </style>
-  </head>
-  <body>
-    <div class='header'>
-      {{#if deceased}}
-        <h1>Post Office Redirection for Deceased - Request Submission</h1>
-      {{else if businessName}}
-        <h1>Post Office Redirection for Business - Request Submission</h1>
-      {{else}}
-        <h1>Post Office Redirection for Individual - Request Submission</h1>
-      {{/if}}
-    </div>
-
-    <div class='content'>
-      {{#if deceased}}
-        <p>A new post office redirection request for a deceased person has been
-          submitted.</p>
-      {{else if businessName}}
-        <p>A new post office redirection request for a business has been
-          submitted.</p>
-      {{else}}
-        <p>A new post office redirection request for an individual has been
-          submitted.</p>
-      {{/if}}
-
-      <p><strong>Reference:</strong> {{submissionId}}</p>
-
-      <!-- Deceased Information Section -->
-      <div class='section'>
-        <div class='section-title'>Deceased Person Information</div>
-        <div class='field'>
-          <span class='field-label'>Title:</span>
-          <span class='field-value'>{{deceased.title}}</span>
+        </style>
+    </head>
+    <body>
+        <div class='header'>
+            {{#if deceased}}
+                <h1>Post Office Redirection for Deceased - Request Submission</h1>
+                {{ else if businessName }}
+                <h1>Post Office Redirection for Business - Request Submission</h1>
+            {{ else }}
+                <h1>Post Office Redirection for Individual - Request Submission</h1>
+            {{/if}}
         </div>
-        <div class='field'>
-          <span class='field-label'>First Name:</span>
-          <span class='field-value'>{{deceased.firstName}}</span>
-        </div>
-        {{#if deceased.middleName}}
-          <div class='field'>
-            <span class='field-label'>Title:</span>
-            <span class='field-value'>{{deceased.title}}</span>
-          </div>
-          <div class='field'>
-            <span class='field-label'>First Name:</span>
-            <span class='field-value'>{{deceased.firstName}}</span>
-          </div>
-          {{#if deceased.middleName}}
-            <div class='field'>
-              <span class='field-label'>Middle Name:</span>
-              <span class='field-value'>{{deceased.middleName}}</span>
-            </div>
-          {{/if}}
-          <div class='field'>
-            <span class='field-label'>Last Name:</span>
-            <span class='field-value'>{{deceased.lastName}}</span>
-          </div>
-          {{#if deceased.dateOfDeath}}
-            <div class='field'>
-              <span class='field-label'>Date of Death:</span>
-              <span class='field-value'>{{deceased.dateOfDeath}}</span>
-            </div>
-          {{/if}}
-        </div>
-      {{/if}}
-
-      <!-- Business Information Section (only for business form) -->
-      {{#if businessName}}
-        <div class='section'>
-          <div class='section-title'>Business Information</div>
-          <div class='field'>
-            <span class='field-label'>Business Name:</span>
-            <span class='field-value'>{{businessName}}</span>
-          </div>
-        </div>
-      {{/if}}
-
-      <!-- Old/Current Address Section -->
-      <div class='section'>
-        <div class='section-title'>{{#if businessName}}Current Address{{else}}Old/Previous
-            Address{{/if}}</div>
-        {{#if oldAddress}}
-          <div class='field'>
-            <span class='field-label'>Address Line 1:</span>
-            <span class='field-value'>{{oldAddress.addressLine1}}</span>
-          </div>
-          {{#if oldAddress.addressLine2}}
-            <div class='field'>
-              <span class='field-label'>Address Line 2:</span>
-              <span class='field-value'>{{oldAddress.addressLine2}}</span>
-            </div>
-          {{/if}}
-          <div class='field'>
-            <span class='field-label'>Parish:</span>
-            <span class='field-value'>{{oldAddress.parish}}</span>
-          </div>
-          {{#if oldAddress.postcode}}
-            <div class='field'>
-              <span class='field-label'>Postcode:</span>
-              <span class='field-value'>{{oldAddress.postcode}}</span>
-            </div>
-          {{/if}}
-          {{#if oldAddress.postalCode}}
-            <div class='field'>
-              <span class='field-label'>Postal Code:</span>
-              <span class='field-value'>{{oldAddress.postalCode}}</span>
-            </div>
-          {{/if}}
-        {{/if}}
-        {{#if currentAddress}}
-          <div class='field'>
-            <span class='field-label'>Address Line 1:</span>
-            <span class='field-value'>{{currentAddress.addressLine1}}</span>
-          </div>
-          {{#if currentAddress.addressLine2}}
-            <div class='field'>
-              <span class='field-label'>Address Line 2:</span>
-              <span class='field-value'>{{currentAddress.addressLine2}}</span>
-            </div>
-          {{/if}}
-          <div class='field'>
-            <span class='field-label'>Parish:</span>
-            <span class='field-value'>{{currentAddress.parish}}</span>
-          </div>
-          {{#if currentAddress.postcode}}
-            <div class='field'>
-              <span class='field-label'>Postcode:</span>
-              <span class='field-value'>{{currentAddress.postcode}}</span>
-            </div>
-          {{/if}}
-        {{/if}}
-      </div>
-
-      <!-- Applicant Information Section -->
-      {{#if applicant}}
-        <div class='section'>
-          <div class='section-title'>{{#if deceased}}Applicant
-              Information{{else if businessName}}Contact Person
-              Information{{else}}Applicant Information{{/if}}</div>
-          {{#if applicant.title}}
-            <div class='field'>
-              <span class='field-label'>Title:</span>
-              <span class='field-value'>{{applicant.title}}</span>
-            </div>
-          {{/if}}
-          <div class='field'>
-            <span class='field-label'>First Name:</span>
-            <span class='field-value'>{{applicant.firstName}}</span>
-          </div>
-          {{#if applicant.middleName}}
-            <div class='field'>
-              <span class='field-label'>Middle Name:</span>
-              <span class='field-value'>{{applicant.middleName}}</span>
-            </div>
-          {{/if}}
-          <div class='field'>
-            <span class='field-label'>Last Name:</span>
-            <span class='field-value'>{{applicant.lastName}}</span>
-          </div>
-          {{#if applicant.dateOfBirth}}
-            <div class='field'>
-              <span class='field-label'>Date of Birth:</span>
-              <span class='field-value'>{{applicant.dateOfBirth}}</span>
-            </div>
-          {{/if}}
-          {{#if applicant.idNumber}}
-            <div class='field'>
-              <span class='field-label'>ID Number:</span>
-              <span class='field-value'>{{applicant.idNumber}}</span>
-            </div>
-          {{/if}}
-          {{#if applicant.passportNumber}}
-            <div class='field'>
-              <span class='field-label'>Passport Number:</span>
-              <span class='field-value'>{{applicant.passportNumber}}</span>
-            </div>
-          {{/if}}
-          {{#if applicant.relationshipToDeceased}}
-            <div class='field'>
-              <span class='field-label'>Relationship to Deceased:</span>
-              <span class='field-value'>{{applicant.relationshipToDeceased}}</span>
-            </div>
-          {{/if}}
-          <div class='field'>
-            <span class='field-label'>Email Address:</span>
-            <span class='field-value'>{{applicant.email}}</span>
-          </div>
-          <div class='field'>
-            <span class='field-label'>Telephone Number:</span>
-            <span class='field-value'>{{applicant.telephoneNumber}}</span>
-          </div>
-        </div>
-      {{/if}}
-
-      <!-- Permission Details Section (for business and deceased forms) -->
-      {{#if permissionDetails}}
-        <div class='section'>
-          <div class='section-title'>Permission Details</div>
-          <div class='field'>
-            <span class='field-label'>{{#if deceased}}Permission to Act on
-                Estate:{{else}}Permission to Act for Business:{{/if}}</span>
-            <span class='field-value'>{{permissionDetails}}</span>
-          </div>
-        </div>
-      {{/if}}
-
-      <!-- New Address Section -->
-      {{#if newAddress}}
-        <div class='section'>
-          <div class='section-title'>New Address for Mail Redirection</div>
-          <div class='field'>
-            <span class='field-label'>Address Line 1:</span>
-            <span class='field-value'>{{newAddress.addressLine1}}</span>
-          </div>
-          {{#if newAddress.addressLine2}}
-            <div class='field'>
-              <span class='field-label'>Address Line 2:</span>
-              <span class='field-value'>{{newAddress.addressLine2}}</span>
-            </div>
-          {{/if}}
-          <div class='field'>
-            <span class='field-label'>Parish:</span>
-            <span class='field-value'>{{newAddress.parish}}</span>
-          </div>
-          {{#if newAddress.postcode}}
-            <div class='field'>
-              <span class='field-label'>Postcode:</span>
-              <span class='field-value'>{{newAddress.postcode}}</span>
-            </div>
-          {{/if}}
-          {{#if newAddress.postalCode}}
-            <div class='field'>
-              <span class='field-label'>Postal Code:</span>
-              <span class='field-value'>{{newAddress.postalCode}}</span>
-            </div>
-          {{/if}}
-          {{#if newAddress.isRedirectPermanent}}
-            <div class='field'>
-              <span class='field-label'>Permanent Redirection:</span>
-              <span class='field-value'>{{newAddress.isRedirectPermanent}}</span>
-            </div>
-          {{/if}}
-          {{#if newAddress.isMovingPermanent}}
-            <div class='field'>
-              <span class='field-label'>Moving Permanently:</span>
-              <span class='field-value'>{{newAddress.isMovingPermanent}}</span>
-            </div>
-          {{/if}}
-          {{#if newAddress.redirectionStartDate}}
-            <div class='field'>
-              <span class='field-label'>Redirection Start Date:</span>
-              <span class='field-value'>{{newAddress.redirectionStartDate}}</span>
-            </div>
-          {{/if}}
-          {{#if newAddress.redirectionEndDate}}
-            <div class='field'>
-              <span class='field-label'>Redirection End Date:</span>
-              <span class='field-value'>{{newAddress.redirectionEndDate}}</span>
-            </div>
-          {{/if}}
-        </div>
-      {{/if}}
-
-      <!-- Minor Dependents Section (only for individual form) -->
-      {{#if anyMinorDependents}}
-        <div class='section'>
-          <div class='section-title'>Minor Dependents Information</div>
-          <div class='field'>
-            <span class='field-label'>Any Minor Dependents:</span>
-            <span class='field-value'>{{anyMinorDependents}}</span>
-          </div>
-          {{#if minorDetails}}
-            <div style='margin-top: 15px;'>
-              <strong>Minor Dependents:</strong>
-              {{#each minorDetails}}
-                <div class='minor-item'>
-                  {{#if this.firstName}}
-                    <div class='field'>
-                      <span class='field-label'>First Name:</span>
-                      <span class='field-value'>{{this.firstName}}</span>
-                    </div>
-                  {{/if}}
-                  {{#if this.lastName}}
-                    <div class='field'>
-                      <span class='field-label'>Last Name:</span>
-                      <span class='field-value'>{{this.lastName}}</span>
-                    </div>
-                  {{/if}}
+        <div class='content'>
+            {{#if deceased}}
+                <p>
+                    A new post office redirection request for a deceased person has been
+                    submitted.
+                </p>
+                {{ else if businessName }}
+                <p>
+                    A new post office redirection request for a business has been
+                    submitted.
+                </p>
+            {{ else }}
+                <p>
+                    A new post office redirection request for an individual has been
+                    submitted.
+                </p>
+            {{/if}}
+            <p>
+                <strong>Reference:</strong> {{ submissionId }}
+            </p>
+            <!-- Deceased Information Section -->
+            <div class='section'>
+                <div class='section-title'>Deceased Person Information</div>
+                <div class='field'>
+                    <span class='field-label'>Title:</span>
+                    <span class='field-value'>{{ deceased.title }}</span>
                 </div>
-              {{/each}}
-            </div>
-          {{/if}}
-        </div>
-      {{/if}}
-
-      <!-- Uploaded Documents Section (for business and deceased forms) -->
-      {{#if uploadDocumentUrls}}
-        <div class='section'>
-          <div class='section-title'>Uploaded Documents</div>
-          {{#if uploadDocumentUrls.length}}
-            <ul class='document-list'>
-              {{#each uploadDocumentUrls}}
-                <li><a href='{{this}}' target='_blank'>{{this}}</a></li>
-              {{/each}}
-            </ul>
-          {{else}}
-            <p>No documents uploaded.</p>
-          {{/if}}
-        </div>
-      {{/if}}
-
-      <!-- Uploaded Documents Section -->
-      {{#if uploadDocumentUrls}}
-        <div class='section'>
-          <div class='section-title'>Uploaded Documents</div>
-          {{#if uploadDocumentUrls.length}}
-            <ul class='document-list'>
-              {{#each uploadDocumentUrls}}
-                <li><a href='{{this}}' target='_blank'>{{this}}</a></li>
-              {{/each}}
-            </ul>
-          {{else}}
-            <p>No documents uploaded.</p>
-          {{/if}}
-        </div>
-      {{/if}}
-
-      <div class='footer'>
-        <p><strong>Submission ID:</strong> {{submissionId}}</p>
-        <p>This is an automated notification from the Post Office Redirection
-          System.</p>
-        <p><em>{{#if deceased}}Please review and process this mail redirection
-              request for the deceased person's estate.{{else if businessName}}Please
-              review and process this business mail redirection
-              request.{{else}}Please review and process this mail redirection
-              request.{{/if}}</em></p>
-      </div>
-    </div>
-  </body>
-</html>
+                <div class='field'>
+                    <span class='field-label'>First Name:</span>
+                    <span class='field-value'>{{ deceased.firstName }}</span>
+                </div>
+                {{#if deceased.middleName}}
+                    <div class='field'>
+                        <span class='field-label'>Title:</span>
+                        <span class='field-value'>{{ deceased.title }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>First Name:</span>
+                        <span class='field-value'>{{ deceased.firstName }}</span>
+                    </div>
+                    {{#if deceased.middleName}}
+                        <div class='field'>
+                            <span class='field-label'>Middle Name:</span>
+                            <span class='field-value'>{{ deceased.middleName }}</span>
+                        </div>
+                    {{/if}}
+                    <div class='field'>
+                        <span class='field-label'>Last Name:</span>
+                        <span class='field-value'>{{ deceased.lastName }}</span>
+                    </div>
+                    {{#if deceased.dateOfDeath}}
+                        <div class='field'>
+                            <span class='field-label'>Date of Death:</span>
+                            <span class='field-value'>{{ deceased.dateOfDeath }}</span>
+                        </div>
+                    {{/if}}
+                </div>
+            {{/if}}
+            <!-- Business Information Section (only for business form) -->
+            {{#if businessName}}
+                <div class='section'>
+                    <div class='section-title'>Business Information</div>
+                    <div class='field'>
+                        <span class='field-label'>Business Name:</span>
+                        <span class='field-value'>{{ businessName }}</span>
+                    </div>
+                </div>
+            {{/if}}
+            <!-- Old/Current Address Section -->
+            <div class='section'>
+                <div class='section-title'>
+                    {{#if businessName}}
+                    Current Address{{ else }}Old/Previous
+                        Address{{/if}}
+                    </div>
+                    {{#if oldAddress}}
+                        <div class='field'>
+                            <span class='field-label'>Address Line 1:</span>
+                            <span class='field-value'>{{ oldAddress.addressLine1 }}</span>
+                        </div>
+                        {{#if oldAddress.addressLine2}}
+                            <div class='field'>
+                                <span class='field-label'>Address Line 2:</span>
+                                <span class='field-value'>{{ oldAddress.addressLine2 }}</span>
+                            </div>
+                        {{/if}}
+                        <div class='field'>
+                            <span class='field-label'>Parish:</span>
+                            <span class='field-value'>{{ oldAddress.parish }}</span>
+                        </div>
+                        {{#if oldAddress.postcode}}
+                            <div class='field'>
+                                <span class='field-label'>Postcode:</span>
+                                <span class='field-value'>{{ oldAddress.postcode }}</span>
+                            </div>
+                        {{/if}}
+                        {{#if oldAddress.postalCode}}
+                            <div class='field'>
+                                <span class='field-label'>Postal Code:</span>
+                                <span class='field-value'>{{ oldAddress.postalCode }}</span>
+                            </div>
+                        {{/if}}
+                    {{/if}}
+                    {{#if currentAddress}}
+                        <div class='field'>
+                            <span class='field-label'>Address Line 1:</span>
+                            <span class='field-value'>{{ currentAddress.addressLine1 }}</span>
+                        </div>
+                        {{#if currentAddress.addressLine2}}
+                            <div class='field'>
+                                <span class='field-label'>Address Line 2:</span>
+                                <span class='field-value'>{{ currentAddress.addressLine2 }}</span>
+                            </div>
+                        {{/if}}
+                        <div class='field'>
+                            <span class='field-label'>Parish:</span>
+                            <span class='field-value'>{{ currentAddress.parish }}</span>
+                        </div>
+                        {{#if currentAddress.postcode}}
+                            <div class='field'>
+                                <span class='field-label'>Postcode:</span>
+                                <span class='field-value'>{{ currentAddress.postcode }}</span>
+                            </div>
+                        {{/if}}
+                    {{/if}}
+                </div>
+                <!-- Applicant Information Section -->
+                {{#if applicant}}
+                    <div class='section'>
+                        <div class='section-title'>
+                            {{#if deceased}}
+                                Applicant
+                                Information{{ else if businessName }}Contact Person
+                            Information{{ else }}Applicant Information{{/if}}
+                            </div>
+                            {{#if applicant.title}}
+                                <div class='field'>
+                                    <span class='field-label'>Title:</span>
+                                    <span class='field-value'>{{ applicant.title }}</span>
+                                </div>
+                            {{/if}}
+                            <div class='field'>
+                                <span class='field-label'>First Name:</span>
+                                <span class='field-value'>{{ applicant.firstName }}</span>
+                            </div>
+                            {{#if applicant.middleName}}
+                                <div class='field'>
+                                    <span class='field-label'>Middle Name:</span>
+                                    <span class='field-value'>{{ applicant.middleName }}</span>
+                                </div>
+                            {{/if}}
+                            <div class='field'>
+                                <span class='field-label'>Last Name:</span>
+                                <span class='field-value'>{{ applicant.lastName }}</span>
+                            </div>
+                            {{#if applicant.dateOfBirth}}
+                                <div class='field'>
+                                    <span class='field-label'>Date of Birth:</span>
+                                    <span class='field-value'>{{ applicant.dateOfBirth }}</span>
+                                </div>
+                            {{/if}}
+                            {{#if applicant.idNumber}}
+                                <div class='field'>
+                                    <span class='field-label'>ID Number:</span>
+                                    <span class='field-value'>{{ applicant.idNumber }}</span>
+                                </div>
+                            {{/if}}
+                            {{#if applicant.passportNumber}}
+                                <div class='field'>
+                                    <span class='field-label'>Passport Number:</span>
+                                    <span class='field-value'>{{ applicant.passportNumber }}</span>
+                                </div>
+                            {{/if}}
+                            {{#if applicant.relationshipToDeceased}}
+                                <div class='field'>
+                                    <span class='field-label'>Relationship to Deceased:</span>
+                                    <span class='field-value'>{{ applicant.relationshipToDeceased }}</span>
+                                </div>
+                            {{/if}}
+                            <div class='field'>
+                                <span class='field-label'>Email Address:</span>
+                                <span class='field-value'>{{ applicant.email }}</span>
+                            </div>
+                            <div class='field'>
+                                <span class='field-label'>Telephone Number:</span>
+                                <span class='field-value'>{{ applicant.telephoneNumber }}</span>
+                            </div>
+                        </div>
+                    {{/if}}
+                    <!-- Permission Details Section (for business and deceased forms) -->
+                    {{#if permissionDetails}}
+                        <div class='section'>
+                            <div class='section-title'>Permission Details</div>
+                            <div class='field'>
+                                <span class='field-label'>
+                                    {{#if deceased}}
+                                        Permission to Act on
+                                    Estate:{{ else }}Permission to Act for Business:{{/if}}</span>
+                                    <span class='field-value'>{{ permissionDetails }}</span>
+                                </div>
+                            </div>
+                        {{/if}}
+                        <!-- New Address Section -->
+                        {{#if newAddress}}
+                            <div class='section'>
+                                <div class='section-title'>New Address for Mail Redirection</div>
+                                <div class='field'>
+                                    <span class='field-label'>Address Line 1:</span>
+                                    <span class='field-value'>{{ newAddress.addressLine1 }}</span>
+                                </div>
+                                {{#if newAddress.addressLine2}}
+                                    <div class='field'>
+                                        <span class='field-label'>Address Line 2:</span>
+                                        <span class='field-value'>{{ newAddress.addressLine2 }}</span>
+                                    </div>
+                                {{/if}}
+                                <div class='field'>
+                                    <span class='field-label'>Parish:</span>
+                                    <span class='field-value'>{{ newAddress.parish }}</span>
+                                </div>
+                                {{#if newAddress.postcode}}
+                                    <div class='field'>
+                                        <span class='field-label'>Postcode:</span>
+                                        <span class='field-value'>{{ newAddress.postcode }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if newAddress.postalCode}}
+                                    <div class='field'>
+                                        <span class='field-label'>Postal Code:</span>
+                                        <span class='field-value'>{{ newAddress.postalCode }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if newAddress.isRedirectPermanent}}
+                                    <div class='field'>
+                                        <span class='field-label'>Permanent Redirection:</span>
+                                        <span class='field-value'>{{ newAddress.isRedirectPermanent }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if newAddress.redirectionStartDate}}
+                                    <div class='field'>
+                                        <span class='field-label'>Redirection Start Date:</span>
+                                        <span class='field-value'>{{ newAddress.redirectionStartDate }}</span>
+                                    </div>
+                                {{/if}}
+                                {{#if newAddress.redirectionEndDate}}
+                                    <div class='field'>
+                                        <span class='field-label'>Redirection End Date:</span>
+                                        <span class='field-value'>{{ newAddress.redirectionEndDate }}</span>
+                                    </div>
+                                {{/if}}
+                            </div>
+                        {{/if}}
+                        <!-- Minor Dependents Section (only for individual form) -->
+                        {{#if anyMinorDependents}}
+                            <div class='section'>
+                                <div class='section-title'>Minor Dependents Information</div>
+                                <div class='field'>
+                                    <span class='field-label'>Any Minor Dependents:</span>
+                                    <span class='field-value'>{{ anyMinorDependents }}</span>
+                                </div>
+                                {{#if minorDetails}}
+                                    <div style='margin-top: 15px;'>
+                                        <strong>Minor Dependents:</strong>
+                                        {{#each minorDetails}}
+                                            <div class='minor-item'>
+                                                {{#if this.firstName}}
+                                                    <div class='field'>
+                                                        <span class='field-label'>First Name:</span>
+                                                        <span class='field-value'>{{ this.firstName }}</span>
+                                                    </div>
+                                                {{/if}}
+                                                {{#if this.middleName}}
+                                                    <div class='field'>
+                                                        <span class='field-label'>middle name:</span>
+                                                        <span class='field-value'>{{ this.middleName }}</span>
+                                                    </div>
+                                                {{/if}}
+                                                {{#if this.lastName}}
+                                                    <div class='field'>
+                                                        <span class='field-label'>Last Name:</span>
+                                                        <span class='field-value'>{{ this.lastName }}</span>
+                                                    </div>
+                                                {{/if}}
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                {{/if}}
+                            </div>
+                        {{/if}}
+                        <!-- Adult s Section (only for individual form) -->
+                        {{#if anyAdults}}
+                            <div class='section'>
+                                <div class='section-title'>Adults Information</div>
+                                <div class='field'>
+                                    <span class='field-label'>Any Adults:</span>
+                                    <span class='field-value'>{{ anyAdults }}</span>
+                                </div>
+                                {{#if minorDetails}}
+                                    <div style='margin-top: 15px;'>
+                                        <strong>Adults:</strong>
+                                        {{#each adultDetails}}
+                                            <div class='adult-item'>
+                                                {{#if this.firstname}}
+                                                    <div class='field'>
+                                                        <span class='field-label'>first name:</span>
+                                                        <span class='field-value'>{{ this.firstName }}</span>
+                                                    </div>
+                                                {{/if}}
+                                                {{#if this.middlename}}
+                                                    <div class='field'>
+                                                        <span class='field-label'>middle name:</span>
+                                                        <span class='field-value'>{{ this.middleName }}</span>
+                                                    </div>
+                                                {{/if}}
+                                                {{#if this.lastName}}
+                                                    <div class='field'>
+                                                        <span class='field-label'>Last Name:</span>
+                                                        <span class='field-value'>{{ this.lastName }}</span>
+                                                    </div>
+                                                {{/if}}
+                                            </div>
+                                        {{/each}}
+                                    </div>
+                                {{/if}}
+                            </div>
+                        {{/if}}
+                        <!-- Uploaded Documents Section (for business and deceased forms) -->
+                        {{#if uploadDocumentUrls}}
+                            <div class='section'>
+                                <div class='section-title'>Uploaded Documents</div>
+                                {{#if uploadDocumentUrls.length}}
+                                    <ul class='document-list'>
+                                        {{#each uploadDocumentUrls}}
+                                            <li>
+                                                <a href='{{ this }}' target='_blank'>{{ this }}</a>
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                {{ else }}
+                                    <p>No documents uploaded.</p>
+                                {{/if}}
+                            </div>
+                        {{/if}}
+                        <!-- Uploaded Documents Section -->
+                        {{#if uploadDocumentUrls}}
+                            <div class='section'>
+                                <div class='section-title'>Uploaded Documents</div>
+                                {{#if uploadDocumentUrls.length}}
+                                    <ul class='document-list'>
+                                        {{#each uploadDocumentUrls}}
+                                            <li>
+                                                <a href='{{ this }}' target='_blank'>{{ this }}</a>
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                {{ else }}
+                                    <p>No documents uploaded.</p>
+                                {{/if}}
+                            </div>
+                        {{/if}}
+                        <div class='footer'>
+                            <p>
+                                <strong>Submission ID:</strong> {{ submissionId }}
+                            </p>
+                            <p>
+                                This is an automated notification from the Post Office Redirection
+                                System.
+                            </p>
+                            <p>
+                                <em>
+                                    {{#if deceased}}
+                                        Please review and process this mail redirection
+                                        request for the deceased person's estate.{{ else if businessName }}Please
+                                        review and process this business mail redirection
+                                    request.{{ else }}Please review and process this mail redirection
+                                    request.{{/if}}</em>
+                                </p>
+                            </div>
+                        </div>
+                    </body>
+                </html>
