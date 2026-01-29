@@ -132,14 +132,13 @@
           }
         },
         {
-          "name": "relationshipToDeceased",
+          "name": "middleName",
           "type": "string",
-          "label": "What is your relationship to the person?",
-          "required": true,
+          "label": "Middle name",
+          "required": false,
           "validations": {
-            "min": 1,
             "max": 100,
-            "message": "Relationship to deceased is required"
+            "message": "Middle name must be between 1 and 100 characters"
           }
         },
         {
@@ -151,6 +150,17 @@
             "min": 1,
             "max": 100,
             "message": "Last name is required"
+          }
+        },
+        {
+          "name": "relationshipToDeceased",
+          "type": "string",
+          "label": "What is your relationship to the person?",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Relationship to deceased is required"
           }
         },
         {
@@ -219,16 +229,6 @@
           "validations": {
             "regex": "^BB\\d{5}$",
             "message": "Enter a valid postal code (e.g., BB17004)"
-          }
-        },
-        {
-          "name": "isRedirectPermanent",
-          "type": "string",
-          "label": "Are you redirecting their mail permanently?",
-          "required": true,
-          "validations": {
-            "regex": "^(yes|no)$",
-            "message": "Must select an option"
           }
         },
         {
