@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { jwtDecode } from 'jwt-decode';
 import { v4 as uuidv4 } from 'uuid';
 import {
   TokenResponse,
@@ -12,6 +13,8 @@ import {
   LocationType,
 } from './types';
 import { OpenCRVSCacheService } from './opencrvs-cache.service';
+
+const TOKEN_EXPIRY_FALLBACK_SECONDS = 10 * 60; // 10 minutes
 
 @Injectable()
 export class OpenCRVSService {
@@ -104,9 +107,19 @@ export class OpenCRVSService {
       throw new Error('OpenCRVS token response missing access_token');
     }
 
-    // Cache the token with TTL (includes 5-minute buffer)
-    const expiresIn = data.expires_in ?? 3600;
-    this.cacheService.setAccessToken(data.access_token, expiresIn);
+    const payload = jwtDecode<{ exp?: number }>(data.access_token);
+
+    const currentTimeSec = Math.floor(Date.now() / 1000);
+
+    // Default fallback in case the token has no `exp`
+    let secondsUntilExpiry = TOKEN_EXPIRY_FALLBACK_SECONDS;
+
+    // If the JWT has an `exp`, calculate how many seconds remain until it expires
+    if (payload.exp) {
+      secondsUntilExpiry = payload.exp - currentTimeSec;
+    }
+
+    this.cacheService.setAccessToken(data.access_token, secondsUntilExpiry);
 
     this.logger.log('OpenCRVS access token obtained successfully');
     return data.access_token;
