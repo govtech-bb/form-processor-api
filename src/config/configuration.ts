@@ -58,9 +58,6 @@ export default () => ({
     },
   },
   opencrvs: {
-    // Use localhost URLs when running locally against OpenCRVS dev environment
-    localhost: process.env.OPENCRVS_LOCALHOST === 'true',
-    // Production/QA URLs
     authBaseUrl:
       process.env.OPENCRVS_AUTH_URL || 'https://auth.barbados-qa.opencrvs.org',
     eventsBaseUrl:
