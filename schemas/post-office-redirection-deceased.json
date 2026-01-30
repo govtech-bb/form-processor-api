@@ -132,14 +132,13 @@
           }
         },
         {
-          "name": "relationshipToDeceased",
+          "name": "middleName",
           "type": "string",
-          "label": "What is your relationship to the person?",
-          "required": true,
+          "label": "Middle name",
+          "required": false,
           "validations": {
-            "min": 1,
             "max": 100,
-            "message": "Relationship to deceased is required"
+            "message": "Middle name must be between 1 and 100 characters"
           }
         },
         {
@@ -151,6 +150,17 @@
             "min": 1,
             "max": 100,
             "message": "Last name is required"
+          }
+        },
+        {
+          "name": "relationshipToDeceased",
+          "type": "string",
+          "label": "What is your relationship to the person?",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 100,
+            "message": "Relationship to deceased is required"
           }
         },
         {
@@ -222,16 +232,6 @@
           }
         },
         {
-          "name": "isRedirectPermanent",
-          "type": "string",
-          "label": "Are you redirecting their mail permanently?",
-          "required": true,
-          "validations": {
-            "regex": "^(yes|no)$",
-            "message": "Must select an option"
-          }
-        },
-        {
           "name": "redirectionStartDate",
           "type": "string",
           "label": "Redirection Start Date",
@@ -244,34 +244,9 @@
           "required": false
         }
       ]
-    },
-    {
-      "name": "uploadDocumentUrls",
-      "type": "array",
-      "label": "Uploaded Documents",
-      "required": true,
-      "items": {
-        "type": "string"
-      }
     }
   ],
   "processors": [
-    {
-      "type": "payment",
-      "config": {
-        "provider": "ezpay",
-        "department": "post_office",
-        "paymentCode": "{{db:post-office-redirection-deceased:payment_code}}",
-        "amount": "{{db:post-office-redirection-deceased:payment_amount}}",
-        "description": "Application Fee",
-        "confirmationEmailTo": [
-          "{{db:post-office-redirection-deceased:admin_email}}"
-        ],
-        "customerEmail": "{{formData.applicant.email}}",
-        "required": true,
-        "timing": "after_validation"
-      }
-    },
     {
       "type": "email",
       "config": {

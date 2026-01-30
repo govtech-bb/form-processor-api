@@ -4,9 +4,9 @@
   "description": "Register as a mentor for the Project Protege mentorship program",
   "fields": [
     {
-      "name": "personal",
+      "name": "applicant",
       "type": "object",
-      "label": "Personal Information",
+      "label": "Applicant Information",
       "required": true,
       "fields": [
         {

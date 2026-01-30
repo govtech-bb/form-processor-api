@@ -146,46 +146,101 @@
         {
           "name": "goodsOrServices",
           "type": "string",
+          "label": "Selling goods or services",
           "required": true,
           "validations": {
             "regex": "^(goods|services)$",
             "message": "Must be 'goods' or 'services'"
           }
+        }
+      ]
+    },
+    {
+      "name": "goods",
+      "type": "object",
+      "required": false,
+      "conditionalOn": {
+        "field": "selling.goodsOrServices",
+        "value": "goods"
+      },
+      "fields": [
+        {
+          "name": "from",
+          "type": "string",
+          "label": "Where are the goods from?",
+          "required": true,
+          "validations": {
+            "regex": "^(barbados|imported)$",
+            "message": "Must be 'barbados' or 'imported'"
+          }
         },
         {
           "name": "manufacturingLocation",
           "type": "string",
+          "label": "Which country are the goods from?",
           "required": false,
+          "conditionalOn": {
+            "field": "goods.from",
+            "value": "imported"
+          },
           "validations": {
             "max": 100,
-            "message": "Location is required"
+            "message": "Location must be at least 2 characters"
+          }
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "label": "Describe the goods you would like to sell",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 500,
+            "message": "Description of goods must be at least 2 characters"
+          }
+        },
+        {
+          "name": "intendedLocation",
+          "type": "string",
+          "label": "Where do you intend to sell your goods?",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 200,
+            "message": "Place of doing business must be at least 2 characters"
           }
         }
       ]
     },
     {
-      "name": "business",
+      "name": "services",
       "type": "object",
-      "required": true,
+      "required": false,
+      "conditionalOn": {
+        "field": "selling.goodsOrServices",
+        "value": "services"
+      },
       "fields": [
         {
-          "name": "descriptionOfGoodsOrServices",
+          "name": "description",
           "type": "string",
+          "label": "Describe the services you would like to offer",
           "required": true,
           "validations": {
             "min": 2,
-            "max": 100,
-            "message": "Description is required"
+            "max": 500,
+            "message": "Description of services must be at least 2 characters"
           }
         },
         {
-          "name": "intendedPlaceOfDoingBusiness",
+          "name": "intendedLocation",
           "type": "string",
+          "label": "Where do you intend to offer this service?",
           "required": true,
           "validations": {
             "min": 2,
-            "max": 100,
-            "message": "Place of doing business is required"
+            "max": 200,
+            "message": "Place of doing business must be at least 2 characters"
           }
         }
       ]
@@ -371,6 +426,26 @@
             "regex": "^BB\\d{5}$",
             "message": "Enter a valid postal code (e.g., BB17004)"
           }
+        }
+      ]
+    },
+    {
+      "name": "documents",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "policeCertificate",
+          "type": "file",
+          "label": "Police Certificate of Character",
+          "required": true
+        },
+        {
+          "name": "passportPhotos",
+          "type": "file",
+          "label": "2 passport-sized photos",
+          "required": true,
+          "multiple": true
         }
       ]
     }
