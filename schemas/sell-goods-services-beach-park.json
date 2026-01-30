@@ -184,6 +184,7 @@
             "value": "imported"
           },
           "validations": {
+            "min": 2,
             "max": 100,
             "message": "Location must be at least 2 characters"
           }
@@ -425,6 +426,166 @@
           "validations": {
             "regex": "^BB\\d{5}$",
             "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "firstTestimonial",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "First name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Last name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "relationship",
+          "type": "string",
+          "label": "Relationship",
+          "required": true,
+          "validations": {
+            "regex": "^(community-leader|mentor|religious-leader|teacher|coach|neighbour|other)$",
+            "message": "Must select a valid relationship"
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "testimonial",
+          "type": "string",
+          "label": "Testimonial",
+          "required": true,
+          "validations": {
+            "min": 10,
+            "max": 1000,
+            "message": "Testimonial must be at least 10 characters"
+          }
+        }
+      ]
+    },
+    {
+      "name": "secondTestimonial",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "First name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 100,
+            "message": "Last name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "relationship",
+          "type": "string",
+          "label": "Relationship",
+          "required": true,
+          "validations": {
+            "regex": "^(community-leader|mentor|religious-leader|teacher|coach|neighbour|other)$",
+            "message": "Must select a valid relationship"
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "max": 200,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address line 2",
+          "required": false,
+          "validations": {
+            "max": 200
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true,
+          "validations": {
+            "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+            "message": "Must select a valid parish"
+          }
+        },
+        {
+          "name": "testimonial",
+          "type": "string",
+          "label": "Testimonial",
+          "required": true,
+          "validations": {
+            "min": 10,
+            "max": 1000,
+            "message": "Testimonial must be at least 10 characters"
           }
         }
       ]
