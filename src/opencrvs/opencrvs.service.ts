@@ -112,10 +112,18 @@ export class OpenCRVSService {
     }
 
     const payload = jwtDecode<{ exp?: number }>(data.access_token);
-    const expiresIn = payload.exp
-      ? payload.exp - Math.floor(Date.now() / 1000)
-      : TOKEN_EXPIRY_FALLBACK_SECONDS;
-    this.cacheService.setAccessToken(data.access_token, expiresIn);
+
+    const currentTimeSec = Math.floor(Date.now() / 1000);
+
+    // Default fallback in case the token has no `exp`
+    let secondsUntilExpiry = TOKEN_EXPIRY_FALLBACK_SECONDS;
+
+    // If the JWT has an `exp`, calculate how many seconds remain until it expires
+    if (payload.exp) {
+      secondsUntilExpiry = payload.exp - currentTimeSec;
+    }
+
+    this.cacheService.setAccessToken(data.access_token, secondsUntilExpiry);
 
     this.logger.log('OpenCRVS access token obtained successfully');
     return data.access_token;
