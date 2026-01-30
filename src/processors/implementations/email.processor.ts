@@ -39,7 +39,7 @@ export class EmailProcessor implements IProcessor {
     }
 
     await this.emailService.sendEmail({
-      to,
+      to: to.split(',').map((email: string) => email.trim()),
       from,
       subject,
       template,
