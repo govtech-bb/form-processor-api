@@ -173,8 +173,16 @@
       "type": "email",
       "config": {
         "to": "{{db:reserve-company-name:admin_email}}",
-        "subject": "New Request to Reserve Society Name - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "subject": "New Request to Reserve Company Name - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "reserve-company-name"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Reserve Company Name - Submission Received",
+        "template": "reserve-company-name-receipt"
       }
     }
   ]

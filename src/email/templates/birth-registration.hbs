@@ -31,9 +31,66 @@
       <section class='section'>
         <h2>Marriage Status</h2>
         <p><strong>{{#if marriageStatus}}{{#if
-                (eq marriageStatus 'yes')
-              }}Married{{else if (eq marriageStatus 'no')}}Not married{{else}}Not
-                specified{{/if}}{{else}}Not specified{{/if}}</strong></p>
+            (eq marriageStatus 'yes')
+          }}Married{{else if (eq marriageStatus 'no')}}Not married{{else}}Not
+            specified{{/if}}{{else}}Not specified{{/if}}</strong></p>
+      </section>
+
+      <!-- Birth Details -->
+      <section class='section'>
+        <h3>Birth Details</h3>
+        <table>
+          <tbody>
+            {{#if birth.placeOfBirth}}
+              <tr>
+                <td>Place of birth:</td>
+                <td>{{birth.placeOfBirth}}</td>
+              </tr>
+            {{/if}}
+            {{#if birth.parish}}
+              <tr>
+                <td>Parish:</td>
+                <td>{{birth.parish}}</td>
+              </tr>
+            {{/if}}
+            {{#if birth.streetAddress}}
+              <tr>
+                <td>Street address:</td>
+                <td>{{birth.streetAddress}}</td>
+              </tr>
+            {{/if}}
+            {{#if birth.numberOfBirths}}
+              <tr>
+                <td>Number of births:</td>
+                <td>{{birth.numberOfBirths}}</td>
+              </tr>
+            {{/if}}
+            {{#if birth.attendantAtBirth}}
+              <tr>
+                <td>Attendant at birth:</td>
+                <td>{{birth.attendantAtBirth}}</td>
+              </tr>
+            {{/if}}
+            {{#if birth.liveBorn}}
+              <tr>
+                <td>Live born:</td>
+                <td>{{birth.liveBorn}}</td>
+              </tr>
+            {{/if}}
+            {{#if birth.stillBorn}}
+              <tr>
+                <td>Still born:</td>
+                <td>{{birth.stillBorn}}</td>
+              </tr>
+            {{/if}}
+            {{#if birth.totalStillAlive}}
+              <tr>
+                <td>Total still alive:</td>
+                <td>{{birth.totalStillAlive}}</td>
+              </tr>
+            {{/if}}
+          </tbody>
+        </table>
       </section>
 
       <!-- Mother's Details -->
@@ -59,40 +116,40 @@
                 <td>{{mother.lastName}}</td>
               </tr>
             {{/if}}
-            {{#if mother.otherSurname}}
+            {{#if mother.maidenSurname}}
               <tr>
-                <td>Previous last name:</td>
-                <td>{{mother.otherSurname}}</td>
+                <td>Maiden surname:</td>
+                <td>{{mother.maidenSurname}}</td>
               </tr>
             {{/if}}
-            {{#if mother.dateOfBirth}}
+            {{#if mother.parish}}
               <tr>
-                <td>Date of birth:</td>
-                <td>{{mother.dateOfBirth}}</td>
+                <td>Parish:</td>
+                <td>{{mother.parish}}</td>
               </tr>
             {{/if}}
-            {{#if mother.address}}
+            {{#if mother.streetAddress}}
               <tr>
-                <td>Address:</td>
-                <td>{{mother.address}}</td>
+                <td>Street address:</td>
+                <td>{{mother.streetAddress}}</td>
               </tr>
             {{/if}}
-            {{#if mother.nationalRegistrationNumber}}
+            {{#if mother.addressLine2}}
               <tr>
-                <td>National registration number:</td>
-                <td>{{mother.nationalRegistrationNumber}}</td>
+                <td>Address line 2:</td>
+                <td>{{mother.addressLine2}}</td>
+              </tr>
+            {{/if}}
+            {{#if mother.idNumber}}
+              <tr>
+                <td>ID number:</td>
+                <td>{{mother.idNumber}}</td>
               </tr>
             {{/if}}
             {{#if mother.passportNumber}}
               <tr>
                 <td>Passport number:</td>
                 <td>{{mother.passportNumber}}</td>
-              </tr>
-            {{/if}}
-            {{#if mother.passportPlaceOfIssue}}
-              <tr>
-                <td>Passport place of issue:</td>
-                <td>{{mother.passportPlaceOfIssue}}</td>
               </tr>
             {{/if}}
             {{#if mother.occupation}}
@@ -129,40 +186,34 @@
                   <td>{{father.lastName}}</td>
                 </tr>
               {{/if}}
-              {{#if father.otherSurname}}
+              {{#if father.parish}}
                 <tr>
-                  <td>Previous last name:</td>
-                  <td>{{father.otherSurname}}</td>
+                  <td>Parish:</td>
+                  <td>{{father.parish}}</td>
                 </tr>
               {{/if}}
-              {{#if father.dateOfBirth}}
+              {{#if father.streetAddress}}
                 <tr>
-                  <td>Date of birth:</td>
-                  <td>{{father.dateOfBirth}}</td>
+                  <td>Street address:</td>
+                  <td>{{father.streetAddress}}</td>
                 </tr>
               {{/if}}
-              {{#if father.address}}
+              {{#if father.addressLine2}}
                 <tr>
-                  <td>Address:</td>
-                  <td>{{father.address}}</td>
+                  <td>Address line 2:</td>
+                  <td>{{father.addressLine2}}</td>
                 </tr>
               {{/if}}
-              {{#if father.nationalRegistrationNumber}}
+              {{#if father.idNumber}}
                 <tr>
-                  <td>National registration number:</td>
-                  <td>{{father.nationalRegistrationNumber}}</td>
+                  <td>ID number:</td>
+                  <td>{{father.idNumber}}</td>
                 </tr>
               {{/if}}
               {{#if father.passportNumber}}
                 <tr>
                   <td>Passport number:</td>
                   <td>{{father.passportNumber}}</td>
-                </tr>
-              {{/if}}
-              {{#if father.passportPlaceOfIssue}}
-                <tr>
-                  <td>Passport place of issue:</td>
-                  <td>{{father.passportPlaceOfIssue}}</td>
                 </tr>
               {{/if}}
               {{#if father.occupation}}
@@ -181,16 +232,16 @@
         <h3>Child's Details</h3>
         <table>
           <tbody>
-            {{#if child.firstNames}}
+            {{#if child.firstName}}
               <tr>
                 <td>First name:</td>
-                <td>{{child.firstNames}}</td>
+                <td>{{child.firstName}}</td>
               </tr>
             {{/if}}
-            {{#if child.middleNames}}
+            {{#if child.middleName}}
               <tr>
                 <td>Middle name(s):</td>
-                <td>{{child.middleNames}}</td>
+                <td>{{child.middleName}}</td>
               </tr>
             {{/if}}
             {{#if child.lastName}}
@@ -211,12 +262,6 @@
                 <td>{{child.sexAtBirth}}</td>
               </tr>
             {{/if}}
-            {{#if child.parishOfBirth}}
-              <tr>
-                <td>Place of birth:</td>
-                <td>{{child.parishOfBirth}}</td>
-              </tr>
-            {{/if}}
           </tbody>
         </table>
       </section>
@@ -227,8 +272,8 @@
         <table>
           <tbody>
             <tr>
-              <td>Number of certificates:</td>
-              <td>{{numberOfCertificates}}</td>
+              <td>Number of copies:</td>
+              <td>{{order.numberOfCopies}}</td>
             </tr>
           </tbody>
         </table>

@@ -30,6 +30,15 @@
           }
         },
         {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name",
+          "required": false,
+          "validations": {
+            "max": 100
+          }
+        },
+        {
           "name": "lastName",
           "type": "string",
           "label": "Last name",
@@ -176,16 +185,6 @@
           }
         },
         {
-          "name": "isMovingPermanent",
-          "type": "string",
-          "label": "Are you moving permanently?",
-          "required": true,
-          "validations": {
-            "regex": "^(yes|no)$",
-            "message": "Must select an option"
-          }
-        },
-        {
           "name": "redirectionStartDate",
           "type": "date",
           "label": "Redirection Start Date",
@@ -208,14 +207,21 @@
       ]
     },
     {
-      "name": "anyMinorDependents",
-      "type": "string",
-      "label": "Are there any minor dependents?",
+      "name": "dependents",
+      "type": "object",
       "required": true,
-      "validations": {
-        "regex": "^(yes|no)$",
-        "message": "Must select an option"
-      }
+      "fields": [
+        {
+          "name": "anyMinorDependents",
+          "type": "string",
+          "label": "Are there any minor dependents?",
+          "required": true,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
+        }
+      ]
     },
     {
       "name": "minorDetails",
@@ -228,8 +234,60 @@
           "firstName": {
             "type": "string"
           },
+          "middleName": {
+            "type": "string"
+          },
           "lastName": {
             "type": "string"
+          },
+          "idNumber": {
+            "type": "string",
+            "validations": {
+              "regex": "^\\d{6}-\\d{4}$"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "adult",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "anyAdults",
+          "type": "string",
+          "label": "Are there any adults?",
+          "required": true,
+          "validations": {
+            "regex": "^(yes|no)$",
+            "message": "Must select an option"
+          }
+        }
+      ]
+    },
+    {
+      "name": "adultDetails",
+      "type": "array",
+      "label": "Tell us about the adults that needs their email sent to the new address",
+      "required": false,
+      "items": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "idNumber": {
+            "type": "string",
+            "validations": {
+              "regex": "^\\d{6}-\\d{4}$"
+            }
           }
         }
       }
@@ -242,6 +300,14 @@
         "to": "{{db:post-office-redirection-individual:admin_email}}",
         "subject": "New Request to redirect mail for an individual - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "post-office-redirection-notice"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Mail Redirection - Submission Received",
+        "template": "post-office-redirection-individual-receipt"
       }
     }
   ]

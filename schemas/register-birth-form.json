@@ -53,28 +53,25 @@
           }
         },
         {
-          "name": "hadOtherSurname",
+          "name": "parish",
           "type": "string",
-          "required": false,
+          "required": true,
           "validations": {
-            "regex": "^(yes|no)$"
+            "min": 2,
+            "max": 500
           }
         },
         {
-          "name": "otherSurname",
+          "name": "streetAddress",
           "type": "string",
-          "required": false,
+          "required": true,
           "validations": {
-            "max": 100
+            "min": 2,
+            "max": 500
           }
         },
         {
-          "name": "dateOfBirth",
-          "type": "date",
-          "required": false
-        },
-        {
-          "name": "address",
+          "name": "addressLine2",
           "type": "string",
           "required": false,
           "validations": {
@@ -82,11 +79,11 @@
           }
         },
         {
-          "name": "nationalRegistrationNumber",
+          "name": "idNumber",
           "type": "string",
           "required": false,
           "validations": {
-            "regex": "^\\d{6}-\\d{4}$",
+            "regex": "^\\d{6}[-]?\\d{4}$",
             "message": "Must be in format XXXXXX-XXXX"
           }
         },
@@ -99,20 +96,79 @@
           }
         },
         {
-          "name": "passportPlaceOfIssue",
-          "type": "string",
-          "required": false,
-          "validations": {
-            "max": 100
-          }
-        },
-        {
           "name": "occupation",
           "type": "string",
           "required": false,
           "validations": {
             "max": 100
           }
+        }
+      ]
+    },
+    {
+      "name": "birth",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "placeOfBirth",
+          "type": "string",
+          "label": "Where did the birth take place?",
+          "required": true,
+          "validations": {
+            "regex": "^(health-facility|residential|other)$",
+            "message": "Must select an option"
+          }
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": false
+        },
+        {
+          "name": "streetAddress",
+          "type": "string",
+          "label": "Street Address",
+          "required": false
+        },
+        {
+          "name": "numberOfBirths",
+          "type": "string",
+          "label": "How many births do you need to register?",
+          "required": true,
+          "validations": {
+            "regex": "^(single|twins|triplets|more-than-triplets)$",
+            "message": "Must select an option"
+          }
+        },
+        {
+          "name": "attendantAtBirth",
+          "type": "string",
+          "label": "Attendant at birth",
+          "required": true,
+          "validations": {
+            "regex": "^(doctor|midwife|nurse|relative|none)$",
+            "message": "Must select an option"
+          }
+        },
+        {
+          "name": "liveBorn",
+          "type": "string",
+          "label": "Live born",
+          "required": false
+        },
+        {
+          "name": "stillBorn",
+          "type": "string",
+          "label": "Still born",
+          "required": false
+        },
+        {
+          "name": "totalStillAlive",
+          "type": "string",
+          "label": "Total still alive",
+          "required": false
         }
       ]
     },
@@ -148,15 +204,7 @@
           }
         },
         {
-          "name": "hadOtherSurname",
-          "type": "string",
-          "required": false,
-          "validations": {
-            "regex": "^(yes|no)$"
-          }
-        },
-        {
-          "name": "otherSurname",
+          "name": "maidenSurname",
           "type": "string",
           "required": false,
           "validations": {
@@ -164,25 +212,37 @@
           }
         },
         {
-          "name": "dateOfBirth",
-          "type": "date",
-          "required": true
-        },
-        {
-          "name": "address",
+          "name": "parish",
           "type": "string",
           "required": true,
           "validations": {
-            "min": 5,
+            "min": 2,
             "max": 500
           }
         },
         {
-          "name": "nationalRegistrationNumber",
+          "name": "streetAddress",
+          "type": "string",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "max": 500
+          }
+        },
+        {
+          "name": "addressLine2",
           "type": "string",
           "required": false,
           "validations": {
-            "regex": "^\\d{6}-\\d{4}$",
+            "max": 500
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{6}[-]?\\d{4}$",
             "message": "Must be in format XXXXXX-XXXX"
           }
         },
@@ -192,14 +252,6 @@
           "required": false,
           "validations": {
             "max": 50
-          }
-        },
-        {
-          "name": "passportPlaceOfIssue",
-          "type": "string",
-          "required": false,
-          "validations": {
-            "max": 100
           }
         },
         {
@@ -219,7 +271,7 @@
       "required": true,
       "fields": [
         {
-          "name": "firstNames",
+          "name": "firstName",
           "type": "string",
           "required": true,
           "validations": {
@@ -228,7 +280,7 @@
           }
         },
         {
-          "name": "middleNames",
+          "name": "middleName",
           "type": "string",
           "required": false,
           "validations": {
@@ -254,51 +306,44 @@
           "type": "string",
           "required": true,
           "validations": {
-            "regex": "^(Male|Female)$",
-            "message": "Must be 'Male' or 'Female'"
-          }
-        },
-        {
-          "name": "parishOfBirth",
-          "type": "string",
-          "required": true,
-          "validations": {
-            "min": 1,
-            "max": 100
+            "regex": "^(male|female)$",
+            "message": "Must be 'male' or 'female'"
           }
         }
       ]
     },
     {
-      "name": "numberOfCertificates",
-      "type": "number",
+      "name": "order",
+      "type": "object",
       "required": true,
-      "validations": {
-        "min": 0,
-        "max": 20
-      }
-    },
-    {
-      "name": "email",
-      "type": "email",
-      "required": true
-    },
-    {
-      "name": "phoneNumber",
-      "type": "string",
-      "required": true,
-      "validations": {
-        "min": 7,
-        "max": 20
-      }
+      "fields": [
+        {
+          "name": "numberOfCopies",
+          "type": "number",
+          "label": "Number of copies",
+          "required": true,
+          "validations": {
+            "min": 1,
+            "max": 10,
+            "message": "You must order at least 1 copy and maximum 10 copies"
+          }
+        }
+      ]
     }
   ],
   "processors": [
     {
+      "type": "opencrvs",
+      "config": {
+        "eventType": "birth",
+        "officeName": "Registration District A"
+      }
+    },
+    {
       "type": "email",
       "config": {
         "to": "{{db:register-birth-form:admin_email}}",
-        "subject": "New Birth Registration - {{formData.child.firstNames}} {{formData.child.lastName}}",
+        "subject": "New Birth Registration - {{formData.child.firstName}} {{formData.child.lastName}}",
         "template": "birth-registration"
       }
     },

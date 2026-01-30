@@ -74,6 +74,19 @@ export interface ResponseDataConfig {
   include?: string[]; // Form field paths to include (e.g., ['order.numberOfCopies', 'applicant.email'])
 }
 
+export interface OpenCRVSProcessorConfig extends ProcessorConfig {
+  type: 'opencrvs';
+  config: {
+    eventType: 'birth'; // Currently only birth is supported
+    officeId?: string; // Direct location ID for CRVS office
+    officeName?: string; // Location name (resolved to ID at runtime)
+    healthFacilityId?: string; // Direct location ID for health facility
+    healthFacilityName?: string; // Location name (resolved to ID at runtime)
+    parishId?: string; // Direct location ID for parish
+    parishName?: string; // Location name (resolved to ID at runtime)
+  };
+}
+
 export type EmailRecipientType = 'admin' | 'user';
 
 export interface EmailProcessorConfig extends ProcessorConfig {
