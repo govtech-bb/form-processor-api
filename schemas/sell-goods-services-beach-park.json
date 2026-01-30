@@ -329,7 +329,7 @@
         {
           "name": "postcode",
           "type": "string",
-          "label": "Post code",
+          "label": "Postcode",
           "required": false,
           "validations": {
             "regex": "^BB\\d{5}$",
@@ -421,7 +421,7 @@
         {
           "name": "postcode",
           "type": "string",
-          "label": "Post code",
+          "label": "Postcode",
           "required": false,
           "validations": {
             "regex": "^BB\\d{5}$",
