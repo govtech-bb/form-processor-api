@@ -109,7 +109,7 @@ export class OpenCRVSService {
     }
 
     // Cache the token with TTL (includes 5-minute buffer)
-    const expiresIn = data.expires_in ?? 3600;
+    const expiresIn = data.expires_in ?? 600;
     this.cacheService.setAccessToken(data.access_token, expiresIn);
 
     this.logger.log('OpenCRVS access token obtained successfully');
