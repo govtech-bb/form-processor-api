@@ -24,7 +24,18 @@
     {
       "name": "father",
       "type": "object",
-      "required": false,
+      "required": {
+        "when": {
+          "all": [
+            {
+              "field": "includeFatherDetails",
+              "operator": "equals",
+              "value": "yes"
+            }
+          ]
+        },
+        "message": "Father details are required when includeFatherDetails is yes"
+      },
       "fields": [
         {
           "name": "firstName",
@@ -50,6 +61,27 @@
           "validations": {
             "min": 1,
             "max": 100
+          }
+        },
+        {
+          "name": "age",
+          "type": "string",
+          "required": {
+            "when": {
+              "all": [{ "field": "father.idNumber", "operator": "empty" }]
+            },
+            "message": "Age is required when no ID number is provided"
+          },
+          "validations": {
+            "condition": {
+              "field": "father.age",
+              "operator": "notIn",
+              "value": [null, ""],
+              "then": {
+                "regex": "^(1[2-9]|[2-9][0-9]|1[0-1][0-9]|120)$",
+                "message": "Age should be between 12 and 120"
+              }
+            }
           }
         },
         {
@@ -90,9 +122,23 @@
         {
           "name": "passportNumber",
           "type": "string",
-          "required": false,
+          "required": {
+            "when": {
+              "all": [{ "field": "father.idNumber", "operator": "empty" }]
+            },
+            "message": "Passport number is required when no ID number is provided"
+          },
           "validations": {
-            "max": 50
+            "condition": {
+              "field": "father.passportNumber",
+              "operator": "notIn",
+              "value": [null, ""],
+              "then": {
+                "min": 6,
+                "max": 50,
+                "message": "Passport number must be between 6 and 50 characters"
+              }
+            }
           }
         },
         {
@@ -121,16 +167,78 @@
           }
         },
         {
+          "name": "healthFacility",
+          "type": "string",
+          "label": "Health Facility",
+          "required": {
+            "when": {
+              "all": [
+                {
+                  "field": "birth.placeOfBirth",
+                  "operator": "equals",
+                  "value": "health-facility"
+                }
+              ]
+            },
+            "message": "Health facility is required when place of birth is health-facility"
+          }
+        },
+        {
           "name": "parish",
           "type": "string",
           "label": "Parish",
-          "required": false
+          "required": {
+            "when": {
+              "all": [
+                {
+                  "field": "birth.placeOfBirth",
+                  "operator": "in",
+                  "value": ["residential", "other"]
+                }
+              ]
+            },
+            "message": "Parish is required for residential/other birth locations"
+          },
+          "validations": {
+            "condition": {
+              "field": "birth.parish",
+              "operator": "notIn",
+              "value": [null, ""],
+              "then": {
+                "regex": "^(christ-church|st-andrew|st-george|st-james|st-john|st-joseph|st-lucy|st-michael|st-peter|st-philip|st-thomas)$",
+                "message": "Must select a valid parish"
+              }
+            }
+          }
         },
         {
           "name": "streetAddress",
           "type": "string",
           "label": "Street Address",
-          "required": false
+          "required": {
+            "when": {
+              "all": [
+                {
+                  "field": "birth.placeOfBirth",
+                  "operator": "in",
+                  "value": ["residential", "other"]
+                }
+              ]
+            },
+            "message": "Street address is required for residential/other birth locations"
+          },
+          "validations": {
+            "condition": {
+              "field": "birth.streetAddress",
+              "operator": "notIn",
+              "value": [null, ""],
+              "then": {
+                "min": 5,
+                "max": 200,
+                "message": "Address must be at least 5 characters"
+              }
+            }
+          }
         },
         {
           "name": "numberOfBirths",
@@ -204,6 +312,27 @@
           }
         },
         {
+          "name": "age",
+          "type": "string",
+          "required": {
+            "when": {
+              "all": [{ "field": "mother.idNumber", "operator": "empty" }]
+            },
+            "message": "Age is required when no ID number is provided"
+          },
+          "validations": {
+            "condition": {
+              "field": "mother.age",
+              "operator": "notIn",
+              "value": [null, ""],
+              "then": {
+                "regex": "^(1[2-9]|[2-9][0-9]|1[0-1][0-9]|120)$",
+                "message": "Age should be between 12 and 120"
+              }
+            }
+          }
+        },
+        {
           "name": "maidenSurname",
           "type": "string",
           "required": false,
@@ -249,9 +378,23 @@
         {
           "name": "passportNumber",
           "type": "string",
-          "required": false,
+          "required": {
+            "when": {
+              "all": [{ "field": "mother.idNumber", "operator": "empty" }]
+            },
+            "message": "Passport number is required when no ID number is provided"
+          },
           "validations": {
-            "max": 50
+            "condition": {
+              "field": "mother.passportNumber",
+              "operator": "notIn",
+              "value": [null, ""],
+              "then": {
+                "min": 6,
+                "max": 50,
+                "message": "Passport number must be between 6 and 50 characters"
+              }
+            }
           }
         },
         {
