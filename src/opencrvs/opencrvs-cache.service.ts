@@ -34,8 +34,8 @@ export class OpenCRVSCacheService {
    * Includes a 5-minute buffer before actual expiry
    */
   setAccessToken(accessToken: string, expiresIn: number): void {
-    // Apply 5-minute buffer to TTL
-    const bufferSeconds = 5 * 60;
+    // Apply 2-minute buffer to TTL
+    const bufferSeconds = 2 * 60;
     const ttl = Math.max(expiresIn - bufferSeconds, 0);
 
     if (ttl <= 0) {
