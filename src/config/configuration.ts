@@ -53,7 +53,30 @@ export default () => ({
       ministry_of_agriculture:
         process.env.EZPAY_MINISTRY_OF_AGRICULTURE_API_KEY,
       oag_registration: process.env.EZPAY_OAG_REGISTRATION_API_KEY,
+      post_office: process.env.EZPAY_OAG_REGISTRATION_API_KEY, //TODO: Update when we get the correct API key
       default: process.env.EZPAY_API_KEY || 'your_ezpay_api_key',
     },
+  },
+  opencrvs: {
+    // Use localhost URLs when running locally against OpenCRVS dev environment
+    localhost: process.env.OPENCRVS_LOCALHOST === 'true',
+    // Production/QA URLs
+    authBaseUrl:
+      process.env.OPENCRVS_AUTH_URL || 'https://auth.barbados-qa.opencrvs.org',
+    eventsBaseUrl:
+      process.env.OPENCRVS_EVENTS_URL ||
+      'https://register.barbados-qa.opencrvs.org',
+    locationsBaseUrl:
+      process.env.OPENCRVS_LOCATIONS_URL ||
+      'https://gateway.barbados-qa.opencrvs.org',
+    // Authentication credentials
+    clientId: process.env.OPENCRVS_CLIENT_ID,
+    clientSecret: process.env.OPENCRVS_CLIENT_SECRET,
+    // Default location names (resolved to IDs at runtime)
+    defaultOfficeName:
+      process.env.OPENCRVS_DEFAULT_OFFICE ||
+      'Registration Department Records Branch',
+    defaultHealthFacilityName: process.env.OPENCRVS_DEFAULT_HEALTH_FACILITY,
+    defaultParishName: process.env.OPENCRVS_DEFAULT_PARISH || 'Christ Church',
   },
 });

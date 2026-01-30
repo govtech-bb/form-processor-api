@@ -288,6 +288,14 @@
         "template": "death-certificate-receipt",
         "recipientType": "user"
       }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Death Certificate Application - Submission Received",
+        "template": "death-certificate-receipt"
+      }
     }
   ]
 }

@@ -193,8 +193,16 @@
       "type": "email",
       "config": {
         "to": "{{db:primary-school-textbook-grant:admin_email}}",
-        "subject": "New Textbook Grant Application - {{formData.beneficiaries.firstName}} {{formData.beneficiaries.lastName}}",
+        "subject": "New Textbook Grant Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "primary-school-textbook-grant"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Primary School Textbook Grant - Submission Received",
+        "template": "primary-school-textbook-grant-receipt"
       }
     }
   ]

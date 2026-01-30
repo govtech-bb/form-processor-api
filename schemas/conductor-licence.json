@@ -244,6 +244,14 @@
         "subject": "Apply for conductor licence - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "apply-for-conductor-licence"
       }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.contactDetails.email}}",
+        "subject": "Conductor Licence Application - Submission Received",
+        "template": "conductor-licence-receipt"
+      }
     }
   ]
 }

@@ -480,7 +480,7 @@
           "name": "willingToWorkAtNight",
           "type": "string",
           "label": "Are you willing to work at night?",
-          "required": true,
+          "required": false,
           "validations": {
             "regex": "^(yes|no)$",
             "message": "Must select an option"
@@ -507,6 +507,14 @@
         "to": "{{db:jobstart-plus-programme:admin_email}}",
         "subject": "New JobStart Plus Programme Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "jobstart-plus-programme"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.contactDetails.email}}",
+        "subject": "JobStart Plus Programme Application - Submission Received",
+        "template": "jobstart-plus-programme-receipt"
       }
     }
   ]
