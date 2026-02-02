@@ -6,6 +6,10 @@ import { FormSubmissionResponseDto } from './dto';
 import { FormUtilsService } from './form-utils.service';
 import { OpenCRVSProcessorResult } from '../opencrvs/types';
 import { generateReferenceCode } from '../common/utils';
+import {
+  getOpenCRVSSuccessMessage,
+  getOpenCRVSFailureMessage,
+} from '../opencrvs/common/opencrvs.utils';
 
 @Injectable()
 export class FormsService {
@@ -94,7 +98,10 @@ export class FormsService {
     );
 
     // Build integrations result from processor results
-    const additionalData = this.buildIntegrationsResult(processorResults);
+    const additionalData = this.buildIntegrationsResult(
+      processorResults,
+      formId,
+    );
 
     const response = new FormSubmissionResponseDto(
       submissionId,
@@ -115,6 +122,7 @@ export class FormsService {
    */
   private buildIntegrationsResult(
     processorResults: Map<string, unknown>,
+    formId: string,
   ): Record<string, unknown> | undefined {
     const opencrvsResult = processorResults.get('opencrvs') as
       | OpenCRVSProcessorResult
@@ -128,12 +136,12 @@ export class FormsService {
       opencrvs: opencrvsResult.success
         ? {
             success: true,
-            message: 'Birth registration submitted successfully',
+            message: getOpenCRVSSuccessMessage(formId),
             trackingId: opencrvsResult.trackingId,
           }
         : {
             success: false,
-            message: opencrvsResult.error ?? 'Birth registration failed',
+            message: opencrvsResult.error ?? getOpenCRVSFailureMessage(formId),
           },
     };
 

@@ -10,7 +10,7 @@ export interface FormField {
   name: string;
   type: FieldType;
   label?: string;
-  required?: boolean;
+  required?: boolean | ConditionalRequired;
   placeholder?: string;
   defaultValue?: any;
   validations?: FieldValidation;
@@ -35,17 +35,55 @@ export type FieldType =
   | 'object'
   | 'array';
 
+interface SubFieldValidation {
+  min?: number;
+  max?: number;
+  regex?: string;
+  message?: string;
+}
+
 export interface FieldValidation {
   min?: number; // For numbers and string length
   max?: number; // For numbers and string length
   email?: boolean;
   regex?: string;
   message?: string; // Custom error message
+  condition?: {
+    field: string; // Dependent field path
+    operator?: 'equals' | 'not_equals' | 'in' | 'not_in'; // Default is 'equals'
+    value: any[]; // Values that trigger the validation
+    then: SubFieldValidation; // Validation to apply if condition is met
+    else?: SubFieldValidation; // Optional validation if condition is not met
+  };
 }
 
 export interface FieldOption {
   label: string;
   value: string | number;
+}
+
+export interface ConditionalRequired {
+  when: ConditionalWhen;
+  message?: string; // Custom error message when field is required
+}
+
+export interface ConditionalWhen {
+  all?: ConditionalRule[];
+  any?: ConditionalRule[];
+}
+export interface ConditionalRule {
+  field: string; // Dependent field path (e.g., "father.idNumber")
+  operator:
+    | 'exists'
+    | 'missing'
+    | 'null'
+    | 'empty'
+    | 'notEmpty'
+    | 'equals'
+    | 'notEquals'
+    | 'in'
+    | 'notIn';
+  value?: any; // Value for equals, notEquals, in, notIn operators
 }
 
 export interface ProcessorConfig {
