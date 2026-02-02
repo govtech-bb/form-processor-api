@@ -1,6 +1,13 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { z, ZodSchema, ZodError } from 'zod';
-import { FormSchema, FormField, FieldValidation } from '../forms/interfaces';
+import {
+  FormSchema,
+  FormField,
+  FieldValidation,
+  ConditionalRule,
+  ConditionalWhen,
+  ConditionalRequired,
+} from '../forms/interfaces';
 
 @Injectable()
 export class SchemaBuilderService {
@@ -11,7 +18,261 @@ export class SchemaBuilderService {
       shape[field.name] = this.buildFieldSchema(field);
     }
 
-    return z.object(shape);
+    const { dynamicallyRequired, dynamicallyValidated } =
+      this.collectConditionalFields(formSchema.fields);
+
+    return z.object(shape).superRefine((data, ctx) => {
+      /* -----------------------------
+       * CONDITIONAL REQUIRED
+       * ----------------------------- */
+      for (const { field, path } of dynamicallyRequired) {
+        const requiredCondition = field.required as ConditionalRequired;
+        const currentValue = this.getValueByPath(data, path.join('.'));
+
+        // Skip validation if parent object doesn't exist
+        if (!this.shouldValidateConditional(data, path)) continue;
+
+        const conditionMet = this.evaluateWhen(requiredCondition.when, data);
+
+        if (conditionMet && this.isEmpty(currentValue)) {
+          ctx.addIssue({
+            path,
+            message: requiredCondition.message || `${field.name} is required`,
+            code: 'custom',
+          });
+        }
+      }
+
+      /* -----------------------------
+       * CONDITIONAL VALIDATIONS
+       * ----------------------------- */
+      for (const { field, path } of dynamicallyValidated) {
+        const validationCondition = field.validations.condition as any;
+
+        const dependentValue = this.getValueByPath(
+          data,
+          validationCondition.field,
+        );
+        const currentValue = this.getValueByPath(data, path.join('.'));
+
+        // Handle then/else validations
+        if (field.validations?.condition) {
+          const cond = field.validations.condition;
+          const opResult = this.evaluateCondition(
+            dependentValue,
+            cond.operator,
+            cond.value,
+          );
+
+          const validationsToApply = opResult ? cond.then : cond.else;
+          if (validationsToApply) {
+            this.runConditionalRules(
+              validationsToApply,
+              field.type,
+              currentValue,
+              ctx,
+              path,
+            );
+          }
+        }
+      }
+    });
+  }
+
+  private isOptionalField(field: FormField): boolean {
+    return !field.required || typeof field.required === 'object';
+  }
+
+  private isEmpty(value: any): boolean {
+    return value === undefined || value === null || value === '';
+  }
+
+  private getValueByPath(obj: any, path: string): any {
+    return path.split('.').reduce((acc, key) => acc?.[key], obj);
+  }
+
+  private evaluateRule(
+    rule: ConditionalRule,
+    data: Record<string, unknown>,
+  ): boolean {
+    const value = this.getValueByPath(data, rule.field);
+
+    switch (rule.operator) {
+      case 'exists':
+        return value !== undefined;
+
+      case 'missing':
+        return value === undefined;
+
+      case 'null':
+        return value === null;
+
+      case 'empty':
+        return this.isEmpty(value);
+
+      case 'notEmpty':
+        return !this.isEmpty(value);
+
+      case 'equals':
+        return value === rule.value;
+
+      case 'notEquals':
+        return value !== rule.value;
+
+      case 'in':
+        return Array.isArray(rule.value) && rule.value.includes(value);
+
+      case 'notIn':
+        return !Array.isArray(rule.value) || !rule.value.includes(value);
+
+      default:
+        return false;
+    }
+  }
+
+  private evaluateWhen(
+    when: ConditionalWhen,
+    data: Record<string, unknown>,
+  ): boolean {
+    if (when.all && Array.isArray(when.all)) {
+      return when.all.every((rule) => this.evaluateRule(rule, data));
+    }
+
+    if (when.any && Array.isArray(when.any)) {
+      return when.any.some((rule) => this.evaluateRule(rule, data));
+    }
+
+    return false;
+  }
+
+  private collectConditionalFields(
+    fields: FormField[],
+    path: string[] = [],
+  ): {
+    dynamicallyRequired: { field: FormField; path: string[] }[];
+    dynamicallyValidated: { field: FormField; path: string[] }[];
+  } {
+    const dynamicallyRequired: { field: FormField; path: string[] }[] = [];
+    const dynamicallyValidated: { field: FormField; path: string[] }[] = [];
+
+    for (const field of fields) {
+      const currentPath = [...path, field.name];
+
+      if (typeof field.required === 'object') {
+        dynamicallyRequired.push({ field, path: currentPath });
+      }
+
+      if (field.validations?.condition) {
+        dynamicallyValidated.push({ field, path: currentPath });
+      }
+
+      if (field.type === 'object' && field.fields) {
+        const nested = this.collectConditionalFields(field.fields, currentPath);
+        dynamicallyRequired.push(...nested.dynamicallyRequired);
+        dynamicallyValidated.push(...nested.dynamicallyValidated);
+      }
+    }
+
+    return { dynamicallyRequired, dynamicallyValidated };
+  }
+
+  private shouldValidateConditional(
+    data: any,
+    path: (string | number)[],
+  ): boolean {
+    if (path.length <= 1) return true;
+
+    const parentPath = path.slice(0, -1).join('.');
+    const parentValue = this.getValueByPath(data, parentPath);
+
+    return parentValue !== undefined && parentValue !== null;
+  }
+
+  private evaluateCondition(
+    value: any,
+    operator: string,
+    compareValue: any,
+  ): boolean {
+    switch (operator) {
+      case 'in':
+        return (compareValue as any[]).includes(value);
+      case 'notIn':
+        return !(compareValue as any[]).includes(value);
+      case 'equals':
+        return value === compareValue;
+      case 'notEquals':
+        return value !== compareValue;
+      default:
+        return false;
+    }
+  }
+
+  private runConditionalRules(
+    validations: FieldValidation | undefined,
+    type: string,
+    value: any,
+    ctx: z.RefinementCtx,
+    path: (string | number)[],
+  ) {
+    if (!validations || this.isEmpty(value)) return;
+
+    // Regex
+    if (validations.regex) {
+      try {
+        const regex = new RegExp(validations.regex);
+        if (!regex.test(value)) {
+          ctx.addIssue({
+            path,
+            code: 'custom',
+            message: validations.message || 'Invalid format',
+          });
+        }
+      } catch {
+        throw new BadRequestException(
+          `Invalid regex pattern: ${validations.regex}`,
+        );
+      }
+    }
+
+    // String min/max
+    if (type === 'string') {
+      if (validations.min !== undefined && value?.length < validations.min) {
+        ctx.addIssue({
+          path,
+          code: 'custom',
+          message:
+            validations.message || `Minimum length is ${validations.min}`,
+        });
+      }
+
+      if (validations.max !== undefined && value?.length > validations.max) {
+        ctx.addIssue({
+          path,
+          code: 'custom',
+          message:
+            validations.message || `Maximum length is ${validations.max}`,
+        });
+      }
+    }
+
+    // Number min/max
+    if (type === 'number') {
+      if (validations.min !== undefined && value < validations.min) {
+        ctx.addIssue({
+          path,
+          code: 'custom',
+          message: validations.message || `Minimum value is ${validations.min}`,
+        });
+      }
+
+      if (validations.max !== undefined && value > validations.max) {
+        ctx.addIssue({
+          path,
+          code: 'custom',
+          message: validations.message || `Maximum value is ${validations.max}`,
+        });
+      }
+    }
   }
 
   private buildFieldSchema(field: FormField): any {
@@ -46,7 +307,7 @@ export class SchemaBuilderService {
       schema = z.array(itemSchema);
 
       // Handle required/optional for arrays
-      if (!field.required) {
+      if (this.isOptionalField(field)) {
         schema = schema.optional();
       }
       return schema;
@@ -61,7 +322,7 @@ export class SchemaBuilderService {
       schema = z.object(nestedShape);
 
       // Handle required/optional for objects
-      if (!field.required) {
+      if (this.isOptionalField(field)) {
         schema = schema.optional();
       }
       return schema;
@@ -72,7 +333,7 @@ export class SchemaBuilderService {
       case 'string':
         // For required strings, use z.string().min(1) to reject empty strings
         // For optional strings, use z.coerce.string() but allow empty
-        if (field.required) {
+        if (!this.isOptionalField(field)) {
           schema = z.string().min(1, 'This field is required');
         } else {
           schema = z.coerce.string();
@@ -89,7 +350,7 @@ export class SchemaBuilderService {
         break;
       case 'date':
         // For optional date fields, allow empty strings or valid dates
-        if (!field.required) {
+        if (this.isOptionalField(field)) {
           schema = z
             .string()
             .refine(
@@ -119,12 +380,12 @@ export class SchemaBuilderService {
         schema,
         field.validations,
         field.type,
-        field.required,
+        field.required === true, // Only true means strictly required keep optional for objects
       );
     }
 
     // Handle required/optional
-    if (!field.required) {
+    if (this.isOptionalField(field)) {
       schema = schema.optional();
     }
 

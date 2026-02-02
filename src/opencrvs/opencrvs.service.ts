@@ -1,5 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { jwtDecode } from 'jwt-decode';
 import { v4 as uuidv4 } from 'uuid';
 import {
   TokenResponse,
@@ -13,6 +14,8 @@ import {
 } from './types';
 import { OpenCRVSCacheService } from './opencrvs-cache.service';
 
+const TOKEN_EXPIRY_FALLBACK_SECONDS = 10 * 60; // 10 minutes
+
 @Injectable()
 export class OpenCRVSService {
   private readonly logger = new Logger(OpenCRVSService.name);
@@ -23,30 +26,26 @@ export class OpenCRVSService {
   private readonly clientId: string;
   private readonly clientSecret: string;
 
-  constructor(
-    private readonly configService: ConfigService,
-    private readonly cacheService: OpenCRVSCacheService,
-  ) {
-    const isLocalhost = this.configService.get<boolean>('opencrvs.localhost');
+  // Cache for access token with expiry
+  private accessToken: string | null = null;
+  private tokenExpiry: Date | null = null;
 
-    if (isLocalhost) {
-      this.authBaseUrl = 'http://localhost:4040';
-      this.eventsBaseUrl = 'http://localhost:3000';
-      this.locationsBaseUrl = 'http://localhost:7070';
-    } else {
-      this.authBaseUrl = this.configService.get<string>(
-        'opencrvs.authBaseUrl',
-        'https://auth.barbados-qa.opencrvs.org',
-      );
-      this.eventsBaseUrl = this.configService.get<string>(
-        'opencrvs.eventsBaseUrl',
-        'https://register.barbados-qa.opencrvs.org',
-      );
-      this.locationsBaseUrl = this.configService.get<string>(
-        'opencrvs.locationsBaseUrl',
-        'https://gateway.barbados-qa.opencrvs.org',
-      );
-    }
+  // Cache for location lookups to avoid repeated API calls
+  private readonly locationCache: Map<string, string> = new Map();
+
+  constructor(private readonly configService: ConfigService) {
+    this.authBaseUrl = this.configService.get<string>(
+      'opencrvs.authBaseUrl',
+      'https://auth.barbados-qa.opencrvs.org',
+    );
+    this.eventsBaseUrl = this.configService.get<string>(
+      'opencrvs.eventsBaseUrl',
+      'https://register.barbados-qa.opencrvs.org',
+    );
+    this.locationsBaseUrl = this.configService.get<string>(
+      'opencrvs.locationsBaseUrl',
+      'https://gateway.barbados-qa.opencrvs.org',
+    );
 
     this.clientId = this.configService.get<string>('opencrvs.clientId', '');
     this.clientSecret = this.configService.get<string>(
@@ -108,9 +107,19 @@ export class OpenCRVSService {
       throw new Error('OpenCRVS token response missing access_token');
     }
 
-    // Cache the token with TTL (includes 5-minute buffer)
-    const expiresIn = data.expires_in ?? 3600;
-    this.cacheService.setAccessToken(data.access_token, expiresIn);
+    const payload = jwtDecode<{ exp?: number }>(data.access_token);
+
+    const currentTimeSec = Math.floor(Date.now() / 1000);
+
+    // Default fallback in case the token has no `exp`
+    let secondsUntilExpiry = TOKEN_EXPIRY_FALLBACK_SECONDS;
+
+    // If the JWT has an `exp`, calculate how many seconds remain until it expires
+    if (payload.exp) {
+      secondsUntilExpiry = payload.exp - currentTimeSec;
+    }
+
+    this.cacheService.setAccessToken(data.access_token, secondsUntilExpiry);
 
     this.logger.log('OpenCRVS access token obtained successfully');
     return data.access_token;

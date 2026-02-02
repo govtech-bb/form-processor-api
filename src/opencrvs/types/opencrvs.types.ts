@@ -135,7 +135,7 @@ export type BirthDeclaration = {
   'mother.brn'?: string;
   'mother.address'?: DomesticAddress;
   'mother.occupation'?: string;
-  'mother.bornAlive'?: number
+  'mother.bornAlive'?: number;
   'mother.stillborn'?: number;
   'mother.stillAlive'?: number;
 
@@ -236,4 +236,13 @@ export type OpenCRVSProcessorResult = {
   trackingId?: string;
   transactionId?: string;
   error?: string;
+};
+
+// ============================================================================
+// Exported Constants
+// ============================================================================
+
+export type HealthFacility = {
+  label: string;
+  value: string;
 };
