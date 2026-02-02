@@ -26,14 +26,10 @@ export class OpenCRVSService {
   private readonly clientId: string;
   private readonly clientSecret: string;
 
-  // Cache for access token with expiry
-  private accessToken: string | null = null;
-  private tokenExpiry: Date | null = null;
-
-  // Cache for location lookups to avoid repeated API calls
-  private readonly locationCache: Map<string, string> = new Map();
-
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly cacheService: OpenCRVSCacheService,
+  ) {
     this.authBaseUrl = this.configService.get<string>(
       'opencrvs.authBaseUrl',
       'https://auth.barbados-qa.opencrvs.org',
