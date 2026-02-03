@@ -237,116 +237,135 @@ describe('SchemaBuilderService', () => {
   });
 
   describe('Operators (evaluateRule / evaluateWhen)', () => {
-    it('empty', () => {
-      const formSchema = minimalSchema([
+    const requiredWhenOperatorFormSchema = (
+      operator: string,
+      message: string,
+      value?: any,
+    ) =>
+      minimalSchema([
         { name: 'x', type: 'string', required: false },
         {
           name: 'conditionalField',
           type: 'string',
           required: {
-            when: { all: [{ field: 'x', operator: 'empty' }] },
-            message: 'Required when x is empty',
+            when: {
+              all: [
+                (value === undefined
+                  ? { field: 'x', operator }
+                  : { field: 'x', operator, value }) as any,
+              ],
+            },
+            message,
           },
         },
       ]);
-      const schema = service.buildZodSchema(formSchema);
 
-      expect(
-        service.validateData(schema, { x: '', conditionalField: '' }).success,
-      ).toBe(false);
+    it('empty', () => {
+      const schema = service.buildZodSchema(
+        requiredWhenOperatorFormSchema('empty', 'Required when x is empty'),
+      );
+      const resultFail = service.validateData(schema, {
+        x: '',
+        conditionalField: '',
+      });
+      expect(resultFail.success).toBe(false);
+      expect(resultFail.errors).toHaveLength(1);
+      expect(resultFail.errors![0]).toMatchObject({
+        field: 'conditionalField',
+        message: 'Required when x is empty',
+        code: 'custom',
+      });
       expect(
         service.validateData(schema, { x: 'a', conditionalField: '' }).success,
       ).toBe(true);
     });
 
     it('notEmpty', () => {
-      const formSchema = minimalSchema([
-        { name: 'x', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: {
-            when: { all: [{ field: 'x', operator: 'notEmpty' }] },
-            message: 'Required when x is not empty',
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
-
-      expect(
-        service.validateData(schema, { x: 'a', conditionalField: '' }).success,
-      ).toBe(false);
+      const schema = service.buildZodSchema(
+        requiredWhenOperatorFormSchema(
+          'notEmpty',
+          'Required when x is not empty',
+        ),
+      );
+      const resultFail = service.validateData(schema, {
+        x: 'a',
+        conditionalField: '',
+      });
+      expect(resultFail.success).toBe(false);
+      expect(resultFail.errors).toHaveLength(1);
+      expect(resultFail.errors![0]).toMatchObject({
+        field: 'conditionalField',
+        message: 'Required when x is not empty',
+        code: 'custom',
+      });
       expect(
         service.validateData(schema, { x: '', conditionalField: '' }).success,
       ).toBe(true);
     });
 
     it('equals', () => {
-      const formSchema = minimalSchema([
-        { name: 'x', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: {
-            when: {
-              all: [{ field: 'x', operator: 'equals', value: 'yes' }],
-            },
-            message: 'Required when x is yes',
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
-
-      expect(
-        service.validateData(schema, { x: 'yes', conditionalField: '' })
-          .success,
-      ).toBe(false);
+      const schema = service.buildZodSchema(
+        requiredWhenOperatorFormSchema(
+          'equals',
+          'Required when x is yes',
+          'yes',
+        ),
+      );
+      const resultFail = service.validateData(schema, {
+        x: 'yes',
+        conditionalField: '',
+      });
+      expect(resultFail.success).toBe(false);
+      expect(resultFail.errors).toHaveLength(1);
+      expect(resultFail.errors![0]).toMatchObject({
+        field: 'conditionalField',
+        message: 'Required when x is yes',
+        code: 'custom',
+      });
       expect(
         service.validateData(schema, { x: 'no', conditionalField: '' }).success,
       ).toBe(true);
     });
 
     it('in', () => {
-      const formSchema = minimalSchema([
-        { name: 'x', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: {
-            when: {
-              all: [{ field: 'x', operator: 'in', value: ['a', 'b'] }],
-            },
-            message: 'Required when x is a or b',
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
-
-      expect(
-        service.validateData(schema, { x: 'a', conditionalField: '' }).success,
-      ).toBe(false);
+      const schema = service.buildZodSchema(
+        requiredWhenOperatorFormSchema(
+          'in',
+          'Required when x is a or b',
+          ['a', 'b'],
+        ),
+      );
+      const resultFail = service.validateData(schema, {
+        x: 'a',
+        conditionalField: '',
+      });
+      expect(resultFail.success).toBe(false);
+      expect(resultFail.errors).toHaveLength(1);
+      expect(resultFail.errors![0]).toMatchObject({
+        field: 'conditionalField',
+        message: 'Required when x is a or b',
+        code: 'custom',
+      });
       expect(
         service.validateData(schema, { x: 'c', conditionalField: '' }).success,
       ).toBe(true);
     });
 
     it('exists', () => {
-      const formSchema = minimalSchema([
-        { name: 'x', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: {
-            when: { all: [{ field: 'x', operator: 'exists' }] },
-            message: 'Required when x exists',
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
-
-      expect(
-        service.validateData(schema, { x: '', conditionalField: '' }).success,
-      ).toBe(false);
+      const schema = service.buildZodSchema(
+        requiredWhenOperatorFormSchema('exists', 'Required when x exists'),
+      );
+      const resultFail = service.validateData(schema, {
+        x: '',
+        conditionalField: '',
+      });
+      expect(resultFail.success).toBe(false);
+      expect(resultFail.errors).toHaveLength(1);
+      expect(resultFail.errors![0]).toMatchObject({
+        field: 'conditionalField',
+        message: 'Required when x exists',
+        code: 'custom',
+      });
       expect(
         service.validateData(schema, { x: null, conditionalField: '' }).success,
       ).toBe(false);
@@ -356,71 +375,65 @@ describe('SchemaBuilderService', () => {
     });
 
     it('missing', () => {
-      const formSchema = minimalSchema([
-        { name: 'x', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: {
-            when: { all: [{ field: 'x', operator: 'missing' }] },
-            message: 'Required when x is missing',
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
-
-      expect(
-        service.validateData(schema, { conditionalField: '' }).success,
-      ).toBe(false);
+      const schema = service.buildZodSchema(
+        requiredWhenOperatorFormSchema('missing', 'Required when x is missing'),
+      );
+      const resultFail = service.validateData(schema, { conditionalField: '' });
+      expect(resultFail.success).toBe(false);
+      expect(resultFail.errors).toHaveLength(1);
+      expect(resultFail.errors![0]).toMatchObject({
+        field: 'conditionalField',
+        message: 'Required when x is missing',
+        code: 'custom',
+      });
       expect(
         service.validateData(schema, { x: 'a', conditionalField: '' }).success,
       ).toBe(true);
     });
 
     it('notEquals', () => {
-      const formSchema = minimalSchema([
-        { name: 'x', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: {
-            when: {
-              all: [{ field: 'x', operator: 'notEquals', value: 'no' }],
-            },
-            message: 'Required when x is not no',
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
-
-      expect(
-        service.validateData(schema, { x: 'yes', conditionalField: '' })
-          .success,
-      ).toBe(false);
+      const schema = service.buildZodSchema(
+        requiredWhenOperatorFormSchema(
+          'notEquals',
+          'Required when x is not no',
+          'no',
+        ),
+      );
+      const resultFail = service.validateData(schema, {
+        x: 'yes',
+        conditionalField: '',
+      });
+      expect(resultFail.success).toBe(false);
+      expect(resultFail.errors).toHaveLength(1);
+      expect(resultFail.errors![0]).toMatchObject({
+        field: 'conditionalField',
+        message: 'Required when x is not no',
+        code: 'custom',
+      });
       expect(
         service.validateData(schema, { x: 'no', conditionalField: '' }).success,
       ).toBe(true);
     });
 
     it('notIn', () => {
-      const formSchema = minimalSchema([
-        { name: 'x', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: {
-            when: {
-              all: [{ field: 'x', operator: 'notIn', value: ['a', 'b'] }],
-            },
-            message: 'Required when x is not in a,b',
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
-
-      expect(
-        service.validateData(schema, { x: 'c', conditionalField: '' }).success,
-      ).toBe(false);
+      const schema = service.buildZodSchema(
+        requiredWhenOperatorFormSchema(
+          'notIn',
+          'Required when x is not in a,b',
+          ['a', 'b'],
+        ),
+      );
+      const resultFail = service.validateData(schema, {
+        x: 'c',
+        conditionalField: '',
+      });
+      expect(resultFail.success).toBe(false);
+      expect(resultFail.errors).toHaveLength(1);
+      expect(resultFail.errors![0]).toMatchObject({
+        field: 'conditionalField',
+        message: 'Required when x is not in a,b',
+        code: 'custom',
+      });
       expect(
         service.validateData(schema, { x: 'a', conditionalField: '' }).success,
       ).toBe(true);
@@ -428,27 +441,28 @@ describe('SchemaBuilderService', () => {
   });
 
   describe('Conditional validations (validations.condition)', () => {
-    it('condition true and then applied with invalid value yields one error with correct path and message', () => {
-      const formSchema = minimalSchema([
-        { name: 'useId', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: false,
-          validations: {
-            condition: {
-              field: 'useId',
-              operator: 'equals',
-              value: 'yes' as any,
-              then: {
-                regex: '^[0-9]+$',
-                message: 'Must be digits only',
-              },
+    const conditionThenOnlyFormSchema = minimalSchema([
+      { name: 'useId', type: 'string', required: false },
+      {
+        name: 'conditionalField',
+        type: 'string',
+        required: false,
+        validations: {
+          condition: {
+            field: 'useId',
+            operator: 'equals',
+            value: 'yes' as any,
+            then: {
+              regex: '^[0-9]+$',
+              message: 'Must be digits only',
             },
           },
         },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
+      },
+    ]);
+
+    it('condition true and then applied with invalid value yields one error with correct path and message', () => {
+      const schema = service.buildZodSchema(conditionThenOnlyFormSchema);
       const result = service.validateData(schema, {
         useId: 'yes',
         conditionalField: 'abc',
@@ -463,26 +477,7 @@ describe('SchemaBuilderService', () => {
     });
 
     it('condition true and value empty yields no conditional validation error', () => {
-      const formSchema = minimalSchema([
-        { name: 'useId', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: false,
-          validations: {
-            condition: {
-              field: 'useId',
-              operator: 'equals',
-              value: 'yes' as any,
-              then: {
-                regex: '^[0-9]+$',
-                message: 'Must be digits only',
-              },
-            },
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
+      const schema = service.buildZodSchema(conditionThenOnlyFormSchema);
       const result = service.validateData(schema, {
         useId: 'yes',
         conditionalField: '',
@@ -490,32 +485,32 @@ describe('SchemaBuilderService', () => {
       expect(result.success).toBe(true);
     });
 
-    it('condition false skips then; when else present, else is applied', () => {
-      const formSchema = minimalSchema([
-        { name: 'useId', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: false,
-          validations: {
-            condition: {
-              field: 'useId',
-              operator: 'equals',
-              value: 'yes' as any,
-              then: {
-                regex: '^[0-9]+$',
-                message: 'Digits when yes',
-              },
-              else: {
-                min: 2,
-                message: 'Min 2 when no',
-              },
+    const conditionThenElseFormSchema = minimalSchema([
+      { name: 'useId', type: 'string', required: false },
+      {
+        name: 'conditionalField',
+        type: 'string',
+        required: false,
+        validations: {
+          condition: {
+            field: 'useId',
+            operator: 'equals',
+            value: 'yes' as any,
+            then: {
+              regex: '^[0-9]+$',
+              message: 'Digits when yes',
+            },
+            else: {
+              min: 2,
+              message: 'Min 2 when no',
             },
           },
         },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
+      },
+    ]);
 
+    it('condition false skips then; when else present, else is applied', () => {
+      const schema = service.buildZodSchema(conditionThenElseFormSchema);
       const resultElseInvalid = service.validateData(schema, {
         useId: 'no',
         conditionalField: 'x',
@@ -527,7 +522,6 @@ describe('SchemaBuilderService', () => {
         message: 'Min 2 when no',
         code: 'custom',
       });
-
       const resultElseValid = service.validateData(schema, {
         useId: 'no',
         conditionalField: 'ab',
@@ -536,8 +530,12 @@ describe('SchemaBuilderService', () => {
     });
 
     describe('operators in condition (evaluateCondition)', () => {
-      it('equals', () => {
-        const formSchema = minimalSchema([
+      const conditionOperatorFormSchema = (
+        operator: string,
+        value: any,
+        thenMessage: string,
+      ) =>
+        minimalSchema([
           { name: 'useId', type: 'string', required: false },
           {
             name: 'conditionalField',
@@ -546,122 +544,112 @@ describe('SchemaBuilderService', () => {
             validations: {
               condition: {
                 field: 'useId',
-                operator: 'equals',
-                value: 'yes' as any,
-                then: { min: 2, message: 'Min 2 when yes' },
+                operator: operator as any,
+                value,
+                then: { min: 2, message: thenMessage },
               },
             },
           },
         ]);
+
+      it('equals', () => {
+        const formSchema = conditionOperatorFormSchema(
+          'equals',
+          'yes' as any,
+          'Min 2 when yes',
+        );
         const schema = service.buildZodSchema(formSchema);
-        expect(
-          service.validateData(schema, {
-            useId: 'yes',
-            conditionalField: 'x',
-          }).success,
-        ).toBe(false);
-        expect(
-          service.validateData(schema, {
-            useId: 'no',
-            conditionalField: 'x',
-          }).success,
-        ).toBe(true);
+        const resultFail = service.validateData(schema, {
+          useId: 'yes',
+          conditionalField: 'x',
+        });
+        expect(resultFail.success).toBe(false);
+        expect(resultFail.errors).toHaveLength(1);
+        expect(resultFail.errors![0]).toMatchObject({
+          field: 'conditionalField',
+          message: 'Min 2 when yes',
+          code: 'custom',
+        });
+        const resultPass = service.validateData(schema, {
+          useId: 'no',
+          conditionalField: 'x',
+        });
+        expect(resultPass.success).toBe(true);
       });
 
       it('notEquals', () => {
-        const formSchema = minimalSchema([
-          { name: 'useId', type: 'string', required: false },
-          {
-            name: 'conditionalField',
-            type: 'string',
-            required: false,
-            validations: {
-              condition: {
-                field: 'useId',
-                operator: 'notEquals' as any,
-                value: 'no' as any,
-                then: { min: 2, message: 'Min 2 when not no' },
-              },
-            },
-          },
-        ]);
+        const formSchema = conditionOperatorFormSchema(
+          'notEquals',
+          'no' as any,
+          'Min 2 when not no',
+        );
         const schema = service.buildZodSchema(formSchema);
-        expect(
-          service.validateData(schema, {
-            useId: 'yes',
-            conditionalField: 'x',
-          }).success,
-        ).toBe(false);
-        expect(
-          service.validateData(schema, {
-            useId: 'no',
-            conditionalField: 'x',
-          }).success,
-        ).toBe(true);
+        const resultFail = service.validateData(schema, {
+          useId: 'yes',
+          conditionalField: 'x',
+        });
+        expect(resultFail.success).toBe(false);
+        expect(resultFail.errors).toHaveLength(1);
+        expect(resultFail.errors![0]).toMatchObject({
+          field: 'conditionalField',
+          message: 'Min 2 when not no',
+          code: 'custom',
+        });
+        const resultPass = service.validateData(schema, {
+          useId: 'no',
+          conditionalField: 'x',
+        });
+        expect(resultPass.success).toBe(true);
       });
 
       it('in', () => {
-        const formSchema = minimalSchema([
-          { name: 'useId', type: 'string', required: false },
-          {
-            name: 'conditionalField',
-            type: 'string',
-            required: false,
-            validations: {
-              condition: {
-                field: 'useId',
-                operator: 'in',
-                value: ['a', 'b'],
-                then: { min: 2, message: 'Min 2 when a or b' },
-              },
-            },
-          },
-        ]);
+        const formSchema = conditionOperatorFormSchema(
+          'in',
+          ['a', 'b'],
+          'Min 2 when a or b',
+        );
         const schema = service.buildZodSchema(formSchema);
-        expect(
-          service.validateData(schema, {
-            useId: 'a',
-            conditionalField: 'x',
-          }).success,
-        ).toBe(false);
-        expect(
-          service.validateData(schema, {
-            useId: 'c',
-            conditionalField: 'x',
-          }).success,
-        ).toBe(true);
+        const resultFail = service.validateData(schema, {
+          useId: 'a',
+          conditionalField: 'x',
+        });
+        expect(resultFail.success).toBe(false);
+        expect(resultFail.errors).toHaveLength(1);
+        expect(resultFail.errors![0]).toMatchObject({
+          field: 'conditionalField',
+          message: 'Min 2 when a or b',
+          code: 'custom',
+        });
+        const resultPass = service.validateData(schema, {
+          useId: 'c',
+          conditionalField: 'x',
+        });
+        expect(resultPass.success).toBe(true);
       });
 
       it('notIn', () => {
-        const formSchema = minimalSchema([
-          { name: 'useId', type: 'string', required: false },
-          {
-            name: 'conditionalField',
-            type: 'string',
-            required: false,
-            validations: {
-              condition: {
-                field: 'useId',
-                operator: 'notIn' as any,
-                value: ['x'],
-                then: { min: 2, message: 'Min 2 when not x' },
-              },
-            },
-          },
-        ]);
+        const formSchema = conditionOperatorFormSchema(
+          'notIn',
+          ['x'],
+          'Min 2 when not x',
+        );
         const schema = service.buildZodSchema(formSchema);
-        expect(
-          service.validateData(schema, {
-            useId: 'y',
-            conditionalField: 'x',
-          }).success,
-        ).toBe(false);
-        expect(
-          service.validateData(schema, {
-            useId: 'x',
-            conditionalField: 'x',
-          }).success,
-        ).toBe(true);
+        const resultFail = service.validateData(schema, {
+          useId: 'y',
+          conditionalField: 'x',
+        });
+        expect(resultFail.success).toBe(false);
+        expect(resultFail.errors).toHaveLength(1);
+        expect(resultFail.errors![0]).toMatchObject({
+          field: 'conditionalField',
+          message: 'Min 2 when not x',
+          code: 'custom',
+        });
+        const resultPass = service.validateData(schema, {
+          useId: 'x',
+          conditionalField: 'x',
+        });
+        expect(resultPass.success).toBe(true);
       });
     });
 
@@ -706,19 +694,40 @@ describe('SchemaBuilderService', () => {
   });
 
   describe('Interaction with base schema', () => {
-    it('required string with regex: empty string yields one required-style error', () => {
-      const formSchema = minimalSchema([
-        {
-          name: 'choice',
-          type: 'string',
-          required: true,
-          validations: {
-            regex: '^(yes|no)$',
-            message: 'Must select an option',
+    const requiredChoiceFormSchema = minimalSchema([
+      {
+        name: 'choice',
+        type: 'string',
+        required: true,
+        validations: {
+          regex: '^(yes|no)$',
+          message: 'Must select an option',
+        },
+      },
+    ]);
+
+    const conditionalFieldFormSchema = minimalSchema([
+      { name: 'trigger', type: 'string', required: false },
+      {
+        name: 'conditionalField',
+        type: 'string',
+        required: false,
+        validations: {
+          condition: {
+            field: 'trigger',
+            operator: 'equals',
+            value: 'yes' as any,
+            then: {
+              regex: '^[0-9]+$',
+              message: 'Digits only',
+            },
           },
         },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
+      },
+    ]);
+
+    it('required string with regex: empty string yields one required-style error', () => {
+      const schema = service.buildZodSchema(requiredChoiceFormSchema);
       const result = service.validateData(schema, { choice: '' });
       expect(result.success).toBe(false);
       expect(result.errors.length).toBeGreaterThanOrEqual(1);
@@ -730,18 +739,7 @@ describe('SchemaBuilderService', () => {
     });
 
     it('required string with regex: key missing yields one error', () => {
-      const formSchema = minimalSchema([
-        {
-          name: 'choice',
-          type: 'string',
-          required: true,
-          validations: {
-            regex: '^(yes|no)$',
-            message: 'Must select an option',
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
+      const schema = service.buildZodSchema(requiredChoiceFormSchema);
       const result = service.validateData(schema, {});
       expect(result.success).toBe(false);
       expect(result.errors).toHaveLength(1);
@@ -752,18 +750,7 @@ describe('SchemaBuilderService', () => {
     });
 
     it('required string with regex: non-empty invalid yields format error', () => {
-      const formSchema = minimalSchema([
-        {
-          name: 'choice',
-          type: 'string',
-          required: true,
-          validations: {
-            regex: '^(yes|no)$',
-            message: 'Must select an option',
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
+      const schema = service.buildZodSchema(requiredChoiceFormSchema);
       const result = service.validateData(schema, { choice: 'invalid' });
       expect(result.success).toBe(false);
       expect(result.errors).toHaveLength(1);
@@ -774,51 +761,13 @@ describe('SchemaBuilderService', () => {
     });
 
     it('optional field with condition: value missing yields no conditional error', () => {
-      const formSchema = minimalSchema([
-        { name: 'trigger', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: false,
-          validations: {
-            condition: {
-              field: 'trigger',
-              operator: 'equals',
-              value: 'yes' as any,
-              then: {
-                regex: '^[0-9]+$',
-                message: 'Digits only',
-              },
-            },
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
+      const schema = service.buildZodSchema(conditionalFieldFormSchema);
       const result = service.validateData(schema, { trigger: 'yes' });
       expect(result.success).toBe(true);
     });
 
     it('optional field with condition: value provided and invalid yields then validation error', () => {
-      const formSchema = minimalSchema([
-        { name: 'trigger', type: 'string', required: false },
-        {
-          name: 'conditionalField',
-          type: 'string',
-          required: false,
-          validations: {
-            condition: {
-              field: 'trigger',
-              operator: 'equals',
-              value: 'yes' as any,
-              then: {
-                regex: '^[0-9]+$',
-                message: 'Digits only',
-              },
-            },
-          },
-        },
-      ]);
-      const schema = service.buildZodSchema(formSchema);
+      const schema = service.buildZodSchema(conditionalFieldFormSchema);
       const result = service.validateData(schema, {
         trigger: 'yes',
         conditionalField: 'abc',
