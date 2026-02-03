@@ -1,3 +1,5 @@
+// command to runs tests => npm test -- --testPathPattern=schema-builder.service.spec.ts
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { SchemaBuilderService } from './schema-builder.service';
 import { FormSchema } from '../forms/interfaces';
@@ -56,21 +58,7 @@ describe('SchemaBuilderService', () => {
       });
 
       it('fails with fallback message when message omitted', () => {
-        const formSchema = minimalSchema([
-          { name: 'trigger', type: 'string', required: false },
-          {
-            name: 'conditionalField',
-            type: 'string',
-            required: {
-              when: {
-                all: [
-                  { field: 'trigger', operator: 'equals', value: 'yes' },
-                ],
-              },
-            },
-          },
-        ]);
-        const schema = service.buildZodSchema(formSchema);
+        const schema = service.buildZodSchema(schemaWithConditionalRequired());
         const result = service.validateData(schema, {
           trigger: 'yes',
           conditionalField: '',
@@ -160,9 +148,11 @@ describe('SchemaBuilderService', () => {
       const schema = service.buildZodSchema(birthSchema);
       expect(service.validateData(schema, {}).success).toBe(true);
 
-      const resultNull = service.validateData(schema, { birth: null });
-      if (!resultNull.success && resultNull.errors) {
-        const healthFacilityError = resultNull.errors.find(
+      const resultUndefined = service.validateData(schema, {
+        birth: undefined,
+      });
+      if (!resultUndefined.success && resultUndefined.errors) {
+        const healthFacilityError = resultUndefined.errors.find(
           (e) => e.field === 'birth.healthFacility' && e.code === 'custom',
         );
         expect(healthFacilityError).toBeUndefined();
@@ -308,7 +298,8 @@ describe('SchemaBuilderService', () => {
       const schema = service.buildZodSchema(formSchema);
 
       expect(
-        service.validateData(schema, { x: 'yes', conditionalField: '' }).success,
+        service.validateData(schema, { x: 'yes', conditionalField: '' })
+          .success,
       ).toBe(false);
       expect(
         service.validateData(schema, { x: 'no', conditionalField: '' }).success,
@@ -323,9 +314,7 @@ describe('SchemaBuilderService', () => {
           type: 'string',
           required: {
             when: {
-              all: [
-                { field: 'x', operator: 'in', value: ['a', 'b'] },
-              ],
+              all: [{ field: 'x', operator: 'in', value: ['a', 'b'] }],
             },
             message: 'Required when x is a or b',
           },
@@ -405,7 +394,8 @@ describe('SchemaBuilderService', () => {
       const schema = service.buildZodSchema(formSchema);
 
       expect(
-        service.validateData(schema, { x: 'yes', conditionalField: '' }).success,
+        service.validateData(schema, { x: 'yes', conditionalField: '' })
+          .success,
       ).toBe(false);
       expect(
         service.validateData(schema, { x: 'no', conditionalField: '' }).success,
@@ -420,9 +410,7 @@ describe('SchemaBuilderService', () => {
           type: 'string',
           required: {
             when: {
-              all: [
-                { field: 'x', operator: 'notIn', value: ['a', 'b'] },
-              ],
+              all: [{ field: 'x', operator: 'notIn', value: ['a', 'b'] }],
             },
             message: 'Required when x is not in a,b',
           },
