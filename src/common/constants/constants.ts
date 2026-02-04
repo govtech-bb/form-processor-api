@@ -1,6 +1,7 @@
 export type KVPair = Record<string, string>;
+export type ConstantsKVPair = Record<string, KVPair>;
 
-export const primarySchoolToEmailMap: KVPair = {
+const primarySchoolToEmailMap: KVPair = {
   'a-dacosta-edwards': 'ADacostaEdwardsPrimary@mes.gov.bb',
   'all-saints-primary': 'AllSaintsPrimary@mes.gov.bb',
   'arthur-smith-primary': 'ArthurSmithPrimary@mes.gov.bb',
@@ -71,4 +72,8 @@ export const primarySchoolToEmailMap: KVPair = {
   'westbury-primary': 'WestburyPrimary@mes.gov.bb',
   'wilkie-cumberbatch': 'WilkieCumberbatchPrimary@mes.gov.bb',
   'workmans-primary': 'WorkmansPrimary@mes.gov.bb',
+};
+
+export const constantData: ConstantsKVPair = {
+  primarySchoolToEmailMap: primarySchoolToEmailMap,
 };
