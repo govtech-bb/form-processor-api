@@ -32,6 +32,19 @@
                 <strong>Reference:</strong> {{ submissionId }}
             </p>
             {{#if beneficiaries}}
+                <section class="section">
+                    <h2 class="section-title">
+                        School Information
+                        <div class="field">
+                            <span class="field-label">School:</span>
+                            <span class="field-value">{{ beneficiariesShared.school }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="field-label">Principal name:</span>
+                            <span class="field-value">{{ beneficiariesShared.principalName }}</span>
+                        </div>
+                    </h2>
+                </section>
                 <div class='section'>
                     <div class='section-title'>Student Information (Beneficiaries)</div>
                     {{#each beneficiaries}}
@@ -40,9 +53,33 @@
                                 <span class='field-label'>Student Name:</span>
                                 <span class='field-value'>{{ this.firstName }} {{ this.lastName }}</span>
                             </div>
-                            {{#if this.guardian}}
+                            {{#if this.idNumber}}
+                                <div class='field'>
+                                    <span class='field-label'>ID number:</span>
+                                    <span class='field-value'>{{ this.idNumber }}</span>
+                                </div>
+                            {{/if}}
+                            {{#if this.passportNumber}}
+                                <div class='field'>
+                                    <span class='field-label'>Passport number:</span>
+                                    <span class='field-value'>{{ this.passportNumber }}</span>
+                                </div>
+                            {{/if}}
+                            <div class='field'>
+                                <span class='field-label'>Sex:</span>
+                                <span class='field-value'>{{ this.sex }}</span>
+                            </div>
+                            <div class='field'>
+                                <span class='field-label'>Current class:</span>
+                                <span class='field-value'>{{ this.classNumber }}</span>
+                            </div>
+                            <div class='field'>
+                                <span class='field-label'>Completed by Parent or Guardian?:</span>
+                                <span class='field-value'>{{ this.isParentOrGuardian }}</span>
+                            </div>
+                            {{#if (eq this.isParentOrGuardian 'no')}}
                                 <div style='margin-top: 10px;'>
-                                    <strong>Guardian Information:</strong>
+                                    <strong>Parent / Guardian Information:</strong>
                                     <div style='margin-left: 20px; margin-top: 5px;'>
                                         {{#if this.guardian.title}}
                                             <div class='field'>
@@ -74,22 +111,34 @@
                                                 <span class='field-value'>{{ this.guardian.idNumber }}</span>
                                             </div>
                                         {{/if}}
+                                        {{#if this.guardian.passportNumber}}
+                                            <div class='field'>
+                                                <span class='field-label'>Passport Number:</span>
+                                                <span class='field-value'>{{ this.guardian.passportNumber }}</span>
+                                            </div>
+                                        {{/if}}
                                         {{#if this.guardian.gender}}
                                             <div class='field'>
                                                 <span class='field-label'>Gender:</span>
                                                 <span class='field-value'>{{ this.guardian.gender }}</span>
                                             </div>
                                         {{/if}}
-                                        {{#if this.guardian.relationship}}
+                                        {{#if this.relationshipDescription}}
                                             <div class='field'>
-                                                <span class='field-label'>Relationship:</span>
-                                                <span class='field-value'>{{ this.guardian.relationship }}</span>
+                                                <span class='field-label'>Relationship to Student:</span>
+                                                <span class='field-value'>{{ this.relationshipDescription }}</span>
                                             </div>
                                         {{/if}}
                                         {{#if this.guardian.email}}
                                             <div class='field'>
                                                 <span class='field-label'>Email:</span>
                                                 <span class='field-value'>{{ this.guardian.email }}</span>
+                                            </div>
+                                        {{/if}}
+                                        {{#if this.guardian.tamisNumber}}
+                                            <div class='field'>
+                                                <span class='field-label'>TAMIS Number:</span>
+                                                <span class='field-value'>{{ this.guardian.tamisNumber }}</span>
                                             </div>
                                         {{/if}}
                                     </div>
