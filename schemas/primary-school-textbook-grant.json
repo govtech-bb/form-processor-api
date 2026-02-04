@@ -73,6 +73,25 @@
       }
     },
     {
+      "name": "beneficiariesShared",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "school",
+          "type": "string",
+          "required": true,
+          "label": "School name"
+        },
+        {
+          "name": "principalName",
+          "type": "string",
+          "required": true,
+          "label": "Principal name"
+        }
+      ]
+    },
+    {
       "name": "applicant",
       "type": "object",
       "required": true,
@@ -251,7 +270,7 @@
     {
       "type": "email",
       "config": {
-        "to": "{{db:primary-school-textbook-grant:admin_email}}",
+        "to": "{{constants:primarySchoolToEmailMap:formData.beneficiariesShared.school}}",
         "subject": "New Textbook Grant Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "primary-school-textbook-grant"
       }
