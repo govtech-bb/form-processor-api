@@ -11,14 +11,79 @@
       "items": {
         "type": "object",
         "properties": {
-          "value": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "idNumber": {
+            "type": "string"
+          },
+          "usePassportInstead": {
+            "type": "string"
+          },
+          "passportNumber": {
+            "type": "string"
+          },
+          "sex": {
+            "type": "string"
+          },
+          "classNumber": {
+            "type": "string"
+          },
+          "isParentOrGuardian": {
+            "type": "string"
+          },
+          "relationshipDescription": {
             "type": "string"
           },
           "guardian": {
-            "type": "object"
+            "type": "object",
+            "fields": [
+              {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "idNumber": {
+                  "type": "string"
+                },
+                "usePassportInstead": {
+                  "type": "string"
+                },
+                "passportNumber": {
+                  "type": "string"
+                },
+                "tamisNumber": {
+                  "type": "string"
+                }
+              }
+            ]
           }
         }
       }
+    },
+    {
+      "name": "beneficiariesShared",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "school",
+          "type": "string",
+          "required": true,
+          "label": "School name"
+        },
+        {
+          "name": "principalName",
+          "type": "string",
+          "required": true,
+          "label": "Principal name"
+        }
+      ]
     },
     {
       "name": "applicant",
@@ -110,6 +175,12 @@
           }
         },
         {
+          "name": "usePassportInstead",
+          "type": "string",
+          "label": "Use Passport Instead?",
+          "required": false
+        },
+        {
           "name": "passportNumber",
           "type": "string",
           "label": "Passport Number",
@@ -124,6 +195,7 @@
           "label": "TAMIS Number",
           "required": false,
           "validations": {
+            "regex": "^\\d{10,15}$",
             "message": "Tamis must be 10-15 digits"
           }
         }
@@ -192,7 +264,7 @@
     {
       "type": "email",
       "config": {
-        "to": "{{db:primary-school-textbook-grant:admin_email}}",
+        "to": "{{constants:primarySchoolToEmailMap:formData.beneficiariesShared.school}}",
         "subject": "New Textbook Grant Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
         "template": "primary-school-textbook-grant"
       }
