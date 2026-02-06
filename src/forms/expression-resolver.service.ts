@@ -2,6 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Repository } from 'typeorm';
 import { FormConfig } from '../database/entities';
+import { constantData } from 'src/common/constants/constants';
 
 export interface ExpressionContext {
   formId: string;
@@ -14,12 +15,13 @@ export interface ExpressionContext {
 export class ExpressionResolverService {
   private readonly logger = new Logger(ExpressionResolverService.name);
 
-  constructor(private readonly configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) { }
 
   /**
    * Resolve any expression with support for:
    * - Database secrets: {{db:form-id:key}} or {{db:key}}
    * - Form data references: {{formData.path}}
+   * - Values from constant data source: {{constants:KVPair:key}}
    * - Mathematical expressions: {{formData.field * db:form-id:amount}}
    * - Simple values: direct strings or numbers
    * - Multiple expressions in a string: "Hello {{formData.name}} from {{formData.city}}"
@@ -132,6 +134,12 @@ export class ExpressionResolverService {
 
     // Replace form data references in the inner expression
     innerExpression = this.replaceFormDataReferences(innerExpression, context);
+
+    // Resolve references to constant data
+    innerExpression = this.replaceConstantDataReferences(
+      innerExpression,
+      context,
+    );
 
     return innerExpression; // Return the resolved inner content without {{}}
   }
@@ -270,6 +278,33 @@ export class ExpressionResolverService {
     }
 
     return result;
+  }
+
+  private replaceConstantDataReferences(
+    expression: string,
+    _context: ExpressionContext,
+  ): string {
+    const constantDataPattern = /constants:([a-zA-Z]+):(.*)/g;
+    const result = expression;
+
+    const matches = [...expression.matchAll(constantDataPattern)];
+
+    if (!matches.length || (matches.length && matches[0].length != 3)) {
+      return expression;
+    }
+
+    const match = matches[0];
+
+    if (match[2] == '0') {
+      return expression;
+    }
+
+    const pairKey = match[1];
+    const key = match[2];
+
+    const email = constantData[pairKey][key];
+
+    return email;
   }
 
   /**

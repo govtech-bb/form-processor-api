@@ -1,7 +1,7 @@
 <html>
-  <head>
-    <meta charset='utf-8' />
-    <style>
+    <head>
+        <meta charset='utf-8' />
+        <style>
       body { font-family: Arial, sans-serif; line-height: 1.6; color: #333;
       max-width: 800px; margin: 0 auto; padding: 20px; } .header {
       background-color: #2563eb; color: white; padding: 20px; text-align:
@@ -20,187 +20,237 @@
       10px; border-left: 4px solid #f59e0b; } .beneficiary-item {
       background-color: #f0f9ff; padding: 15px; margin-bottom: 15px;
       border-radius: 5px; border-left: 4px solid #0284c7; }
-    </style>
-  </head>
-  <body>
-    <div class='header'>
-      <h1>Primary School Textbook Grant Application</h1>
-    </div>
-
-    <div class='content'>
-      <p>A new textbook grant application has been submitted.</p>
-      <p><strong>Reference:</strong> {{submissionId}}</p>
-
-      {{#if beneficiaries}}
-        <div class='section'>
-          <div class='section-title'>Student Information (Beneficiaries)</div>
-          {{#each beneficiaries}}
-            <div class='beneficiary-item'>
-              {{#if this.value}}
+        </style>
+    </head>
+    <body>
+        <div class='header'>
+            <h1>Primary School Textbook Grant Application</h1>
+        </div>
+        <div class='content'>
+            <p>A new textbook grant application has been submitted.</p>
+            <p>
+                <strong>Reference:</strong> {{ submissionId }}
+            </p>
+            {{#if beneficiaries}}
+                <section class="section">
+                    <h2 class="section-title">
+                        School Information
+                        <div class="field">
+                            <span class="field-label">School:</span>
+                            <span class="field-value">{{ beneficiariesShared.school }}</span>
+                        </div>
+                        <div class="field">
+                            <span class="field-label">Principal name:</span>
+                            <span class="field-value">{{ beneficiariesShared.principalName }}</span>
+                        </div>
+                    </h2>
+                </section>
+                <div class='section'>
+                    <div class='section-title'>Student Information (Beneficiaries)</div>
+                    {{#each beneficiaries}}
+                        <div class='beneficiary-item'>
+                            <div class='field'>
+                                <span class='field-label'>Student Name:</span>
+                                <span class='field-value'>{{ this.firstName }} {{ this.lastName }}</span>
+                            </div>
+                            {{#if this.idNumber}}
+                                <div class='field'>
+                                    <span class='field-label'>ID number:</span>
+                                    <span class='field-value'>{{ this.idNumber }}</span>
+                                </div>
+                            {{/if}}
+                            {{#if this.passportNumber}}
+                                <div class='field'>
+                                    <span class='field-label'>Passport number:</span>
+                                    <span class='field-value'>{{ this.passportNumber }}</span>
+                                </div>
+                            {{/if}}
+                            <div class='field'>
+                                <span class='field-label'>Sex:</span>
+                                <span class='field-value'>{{ this.sex }}</span>
+                            </div>
+                            <div class='field'>
+                                <span class='field-label'>Current class:</span>
+                                <span class='field-value'>{{ this.classNumber }}</span>
+                            </div>
+                            <div class='field'>
+                                <span class='field-label'>Completed by Parent or Guardian?:</span>
+                                <span class='field-value'>{{ this.isParentOrGuardian }}</span>
+                            </div>
+                            {{#if (eq this.isParentOrGuardian 'no')}}
+                                <div style='margin-top: 10px;'>
+                                    <strong>Parent / Guardian Information:</strong>
+                                    <div style='margin-left: 20px; margin-top: 5px;'>
+                                        {{#if this.guardian.title}}
+                                            <div class='field'>
+                                                <span class='field-label'>Title:</span>
+                                                <span class='field-value'>{{ this.guardian.title }}</span>
+                                            </div>
+                                        {{/if}}
+                                        {{#if this.guardian.firstName}}
+                                            <div class='field'>
+                                                <span class='field-label'>First Name:</span>
+                                                <span class='field-value'>{{ this.guardian.firstName }}</span>
+                                            </div>
+                                        {{/if}}
+                                        {{#if this.guardian.middleName}}
+                                            <div class='field'>
+                                                <span class='field-label'>Middle Name:</span>
+                                                <span class='field-value'>{{ this.guardian.middleName }}</span>
+                                            </div>
+                                        {{/if}}
+                                        {{#if this.guardian.lastName}}
+                                            <div class='field'>
+                                                <span class='field-label'>Last Name:</span>
+                                                <span class='field-value'>{{ this.guardian.lastName }}</span>
+                                            </div>
+                                        {{/if}}
+                                        {{#if this.guardian.idNumber}}
+                                            <div class='field'>
+                                                <span class='field-label'>ID Number:</span>
+                                                <span class='field-value'>{{ this.guardian.idNumber }}</span>
+                                            </div>
+                                        {{/if}}
+                                        {{#if this.guardian.passportNumber}}
+                                            <div class='field'>
+                                                <span class='field-label'>Passport Number:</span>
+                                                <span class='field-value'>{{ this.guardian.passportNumber }}</span>
+                                            </div>
+                                        {{/if}}
+                                        {{#if this.guardian.gender}}
+                                            <div class='field'>
+                                                <span class='field-label'>Gender:</span>
+                                                <span class='field-value'>{{ this.guardian.gender }}</span>
+                                            </div>
+                                        {{/if}}
+                                        {{#if this.relationshipDescription}}
+                                            <div class='field'>
+                                                <span class='field-label'>Relationship to Student:</span>
+                                                <span class='field-value'>{{ this.relationshipDescription }}</span>
+                                            </div>
+                                        {{/if}}
+                                        {{#if this.guardian.email}}
+                                            <div class='field'>
+                                                <span class='field-label'>Email:</span>
+                                                <span class='field-value'>{{ this.guardian.email }}</span>
+                                            </div>
+                                        {{/if}}
+                                        {{#if this.guardian.tamisNumber}}
+                                            <div class='field'>
+                                                <span class='field-label'>TAMIS Number:</span>
+                                                <span class='field-value'>{{ this.guardian.tamisNumber }}</span>
+                                            </div>
+                                        {{/if}}
+                                    </div>
+                                </div>
+                            {{/if}}
+                        </div>
+                    {{/each}}
+                </div>
+            {{/if}}
+            <div class='section'>
+                <div class='section-title'>Applicant Information</div>
                 <div class='field'>
-                  <span class='field-label'>Student:</span>
-                  <span class='field-value'>{{this.value}}</span>
+                    <span class='field-label'>Name:</span>
+                    <span class='field-value'>{{ applicant.firstName }}
+                    {{ applicant.lastName }}</span>
                 </div>
-              {{/if}}
-              {{#if this.guardian}}
-                <div style='margin-top: 10px;'>
-                  <strong>Guardian Information:</strong>
-                  <div style='margin-left: 20px; margin-top: 5px;'>
-                    {{#if this.guardian.title}}
-                      <div class='field'>
-                        <span class='field-label'>Title:</span>
-                        <span class='field-value'>{{this.guardian.title}}</span>
-                      </div>
+                <div class='field'>
+                    <span class='field-label'>Address:</span>
+                    <span class='field-value'>{{ applicant.addressLine1 }}
+                        {{#if
+                            applicant.addressLine2
+                            }}
+                        , {{ applicant.addressLine2 }}{{/if}}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Parish:</span>
+                        <span class='field-value'>{{ applicant.parish }}</span>
+                    </div>
+                    {{#if applicant.postalCode}}
+                        <div class='field'>
+                            <span class='field-label'>Postal Code:</span>
+                            <span class='field-value'>{{ applicant.postalCode }}</span>
+                        </div>
                     {{/if}}
-                    {{#if this.guardian.firstName}}
-                      <div class='field'>
-                        <span class='field-label'>First Name:</span>
-                        <span class='field-value'>{{this.guardian.firstName}}</span>
-                      </div>
-                    {{/if}}
-                    {{#if this.guardian.middleName}}
-                      <div class='field'>
-                        <span class='field-label'>Middle Name:</span>
-                        <span class='field-value'>{{this.guardian.middleName}}</span>
-                      </div>
-                    {{/if}}
-                    {{#if this.guardian.lastName}}
-                      <div class='field'>
-                        <span class='field-label'>Last Name:</span>
-                        <span class='field-value'>{{this.guardian.lastName}}</span>
-                      </div>
-                    {{/if}}
-                    {{#if this.guardian.idNumber}}
-                      <div class='field'>
-                        <span class='field-label'>ID Number:</span>
-                        <span class='field-value'>{{this.guardian.idNumber}}</span>
-                      </div>
-                    {{/if}}
-                    {{#if this.guardian.gender}}
-                      <div class='field'>
-                        <span class='field-label'>Gender:</span>
-                        <span class='field-value'>{{this.guardian.gender}}</span>
-                      </div>
-                    {{/if}}
-                    {{#if this.guardian.relationship}}
-                      <div class='field'>
-                        <span class='field-label'>Relationship:</span>
-                        <span class='field-value'>{{this.guardian.relationship}}</span>
-                      </div>
-                    {{/if}}
-                    {{#if this.guardian.email}}
-                      <div class='field'>
+                    <div class='field'>
                         <span class='field-label'>Email:</span>
-                        <span class='field-value'>{{this.guardian.email}}</span>
-                      </div>
+                        <span class='field-value'>{{ applicant.email }}</span>
+                    </div>
+                    <div class='field'>
+                        <span class='field-label'>Phone:</span>
+                        <span class='field-value'>{{ applicant.telephoneNumber }}</span>
+                    </div>
+                    {{#if applicant.idNumber}}
+                        <div class='field'>
+                            <span class='field-label'>ID Number:</span>
+                            <span class='field-value'>{{ applicant.idNumber }}</span>
+                        </div>
                     {{/if}}
-                  </div>
+                    {{#if applicant.passportNumber}}
+                        <div class='field'>
+                            <span class='field-label'>Passport Number:</span>
+                            <span class='field-value'>{{ applicant.passportNumber }}</span>
+                        </div>
+                    {{/if}}
+                    {{#if applicant.tamisNumber}}
+                        <div class='field'>
+                            <span class='field-label'>TAMIS Number:</span>
+                            <span class='field-value'>{{ applicant.tamisNumber }}</span>
+                        </div>
+                    {{/if}}
                 </div>
-              {{/if}}
+                {{#if bankAccount}}
+                    <div class='section'>
+                        <div class='section-title'>Bank Account Information</div>
+                        <div class='financial-highlight'>
+                            <div class='field'>
+                                <span class='field-label'>Account Holder Name:</span>
+                                <span class='field-value'>{{ bankAccount.accountHolderName }}</span>
+                            </div>
+                            <div class='field'>
+                                <span class='field-label'>Bank Name:</span>
+                                <span class='field-value'>{{ bankAccount.bankName }}</span>
+                            </div>
+                            <div class='field'>
+                                <span class='field-label'>Account Number:</span>
+                                <span class='field-value'>{{ bankAccount.accountNumber }}</span>
+                            </div>
+                            {{#if bankAccount.branchName}}
+                                <div class='field'>
+                                    <span class='field-label'>Branch Name:</span>
+                                    <span class='field-value'>{{ bankAccount.branchName }}</span>
+                                </div>
+                            {{/if}}
+                            {{#if bankAccount.branchCode}}
+                                <div class='field'>
+                                    <span class='field-label'>Branch Code:</span>
+                                    <span class='field-value'>{{ bankAccount.branchCode }}</span>
+                                </div>
+                            {{/if}}
+                            {{#if bankAccount.branchLocation}}
+                                <div class='field'>
+                                    <span class='field-label'>Branch Location:</span>
+                                    <span class='field-value'>{{ bankAccount.branchLocation }}</span>
+                                </div>
+                            {{/if}}
+                            <div class='field'>
+                                <span class='field-label'>Account Type:</span>
+                                <span class='field-value'>{{ bankAccount.accountType }}</span>
+                            </div>
+                        </div>
+                    </div>
+                {{/if}}
+                <div class='footer'>
+                    <p>
+                        <strong>Application ID:</strong> {{ submissionId }}
+                    </p>
+                    <p>
+                        This is an automated notification from the Primary School Textbook
+                        Grant System.
+                    </p>
+                    <p>Please review this application and follow up as necessary.</p>
+                </div>
             </div>
-          {{/each}}
-        </div>
-      {{/if}}
-
-      <div class='section'>
-        <div class='section-title'>Applicant Information</div>
-        <div class='field'>
-          <span class='field-label'>Name:</span>
-          <span class='field-value'>{{applicant.firstName}}
-            {{applicant.lastName}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Address:</span>
-          <span class='field-value'>{{applicant.addressLine1}}{{#if
-              applicant.addressLine2
-            }}, {{applicant.addressLine2}}{{/if}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Parish:</span>
-          <span class='field-value'>{{applicant.parish}}</span>
-        </div>
-        {{#if applicant.postalCode}}
-          <div class='field'>
-            <span class='field-label'>Postal Code:</span>
-            <span class='field-value'>{{applicant.postalCode}}</span>
-          </div>
-        {{/if}}
-        <div class='field'>
-          <span class='field-label'>Email:</span>
-          <span class='field-value'>{{applicant.email}}</span>
-        </div>
-        <div class='field'>
-          <span class='field-label'>Phone:</span>
-          <span class='field-value'>{{applicant.telephoneNumber}}</span>
-        </div>
-        {{#if applicant.idNumber}}
-          <div class='field'>
-            <span class='field-label'>ID Number:</span>
-            <span class='field-value'>{{applicant.idNumber}}</span>
-          </div>
-        {{/if}}
-        {{#if applicant.passportNumber}}
-          <div class='field'>
-            <span class='field-label'>Passport Number:</span>
-            <span class='field-value'>{{applicant.passportNumber}}</span>
-          </div>
-        {{/if}}
-        {{#if applicant.tamisNumber}}
-          <div class='field'>
-            <span class='field-label'>TAMIS Number:</span>
-            <span class='field-value'>{{applicant.tamisNumber}}</span>
-          </div>
-        {{/if}}
-      </div>
-
-      {{#if bankAccount}}
-        <div class='section'>
-          <div class='section-title'>Bank Account Information</div>
-          <div class='financial-highlight'>
-            <div class='field'>
-              <span class='field-label'>Account Holder Name:</span>
-              <span class='field-value'>{{bankAccount.accountHolderName}}</span>
-            </div>
-            <div class='field'>
-              <span class='field-label'>Bank Name:</span>
-              <span class='field-value'>{{bankAccount.bankName}}</span>
-            </div>
-            <div class='field'>
-              <span class='field-label'>Account Number:</span>
-              <span class='field-value'>{{bankAccount.accountNumber}}</span>
-            </div>
-            {{#if bankAccount.branchName}}
-              <div class='field'>
-                <span class='field-label'>Branch Name:</span>
-                <span class='field-value'>{{bankAccount.branchName}}</span>
-              </div>
-            {{/if}}
-            {{#if bankAccount.branchCode}}
-              <div class='field'>
-                <span class='field-label'>Branch Code:</span>
-                <span class='field-value'>{{bankAccount.branchCode}}</span>
-              </div>
-            {{/if}}
-            {{#if bankAccount.branchLocation}}
-              <div class='field'>
-                <span class='field-label'>Branch Location:</span>
-                <span class='field-value'>{{bankAccount.branchLocation}}</span>
-              </div>
-            {{/if}}
-            <div class='field'>
-              <span class='field-label'>Account Type:</span>
-              <span class='field-value'>{{bankAccount.accountType}}</span>
-            </div>
-          </div>
-        </div>
-      {{/if}}
-
-      <div class='footer'>
-        <p><strong>Application ID:</strong> {{submissionId}}</p>
-        <p>This is an automated notification from the Primary School Textbook
-          Grant System.</p>
-        <p>Please review this application and follow up as necessary.</p>
-      </div>
-    </div>
-  </body>
-</html>
+        </body>
+    </html>
