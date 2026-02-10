@@ -20,6 +20,7 @@ import {
 import { FormUtilsService } from '../forms/form-utils.service';
 import { ProcessorPipelineService } from '../processors/processor-pipeline.service';
 import { decryptFormData, formatDisplayDate } from '../common/utils';
+import { CloudWatchMetricsService } from '../metrics/cloudwatch-metrics.service';
 
 @Injectable()
 export class PaymentWebhookService {
@@ -35,6 +36,7 @@ export class PaymentWebhookService {
     private ezpayService: EZPayService,
     private formUtilsService: FormUtilsService,
     private processorPipelineService: ProcessorPipelineService,
+    private metricsService: CloudWatchMetricsService,
   ) {}
 
   /**
@@ -378,6 +380,10 @@ export class PaymentWebhookService {
     const submissionId = payment.metadata?.submissionId || '';
     const formName = payment.metadata?.formName || 'Form Submission';
 
+    if (formId) {
+      await this.metricsService.emitFormSubmissionMetric(formId, 'success');
+    }
+
     this.logger.log(
       `Processing successful payment workflows for ${payment.id}`,
       {
@@ -572,7 +578,14 @@ export class PaymentWebhookService {
     payment: Payment,
     callbackData: EZPayCallbackDto,
   ): Promise<void> {
+    const formId = payment.metadata?.formId || '';
+
+    if (formId) {
+      await this.metricsService.emitFormSubmissionMetric(formId, 'failed');
+    }
+
     this.logger.log(`Processing failed payment workflows for ${payment.id}`, {
+      formId,
       transactionNumber: callbackData._transaction_number,
     });
 

@@ -76,4 +76,9 @@ export default () => ({
     defaultHealthFacilityName: process.env.OPENCRVS_DEFAULT_HEALTH_FACILITY,
     defaultParishName: process.env.OPENCRVS_DEFAULT_PARISH || 'Christ Church',
   },
+  metrics: {
+    enabled: process.env.METRICS_ENABLED !== 'false',
+    namespace: process.env.METRICS_NAMESPACE || 'FormsProcessor/Submissions',
+    environment: process.env.NODE_ENV || 'development',
+  },
 });

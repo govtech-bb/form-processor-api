@@ -6,6 +6,7 @@ import { ValidationModule } from './validation/validation.module';
 import { ProcessorsModule } from './processors/processors.module';
 import { EmailModule } from './email/email.module';
 import { FileModule } from './file/file.module';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { FileModule } from './file/file.module';
     ProcessorsModule,
     EmailModule,
     FileModule,
+    MetricsModule,
   ],
   controllers: [],
   providers: [],
