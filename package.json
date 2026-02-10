@@ -26,7 +26,8 @@
     "db:migrate": "npm run typeorm migration:run -- -d src/database/datasource.ts",
     "db:revert": "npm run typeorm migration:revert -- -d src/database/datasource.ts",
     "db:drop": "npm run typeorm schema:drop -- -d src/database/datasource.ts",
-    "db:migrate:prod": "node ./node_modules/typeorm/cli migration:run -d ./dist/database/datasource.js"
+    "db:migrate:prod": "node ./node_modules/typeorm/cli migration:run -d ./dist/database/datasource.js",
+    "template:create-admin-email": "pwsh ./scripts/admin_email_create.ps1"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.954.0",

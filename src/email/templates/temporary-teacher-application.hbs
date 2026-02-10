@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+  </head>
+  <body>
+    <div class='header'>
+      <h1>🧑‍🏫 Temporary Teacher Application</h1>
+    </div>
+    <div class='content'>
+      <p>A new Temporary Teacher Application has been submitted.</p>
+      <div class='section'>
+        <div class='section-title'>Applicant Information</div>
+        <div class="field">
+          <span class="field-label">Name:</span>
+          <span class="field-value">{{ applicant.firstName }} {{ applicant.lastName }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Date of Birth:</span>
+          <span class="field-value">{{ applicant.dateOfBirth }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Place of Birth:</span>
+          <span class="field-value">{{ applicant.placeOfBirth }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Nationality:</span>
+          <span class="field-value">{{ applicant.nationality }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Gender:</span>
+          <span class="field-value">{{ applicant.sex }}</span>
+        </div>
+        <div class="field">
+          <span class="field-label">Marital Status:</span>
+          <span class="field-value">{{ applicant.maritalStatus }}</span>
+        </div>
+        {{#if applicant.nationalIdNumber}}
+          <div class="field">
+            <span class="field-label">National ID Number:</span>
+            <span class="field-value">{{ applicant.nationalIdNumber }}</span>
+          </div>
+        {{/if}}
+        {{#if applicant.passportNumber}}
+          <div class="field">
+            <span class="field-label">Passport Number:</span>
+            <span class="field-value">{{ applicant.passportNumber }}</span>
+          </div>
+        {{/if}}
+        <div class="field">
+          <span class="field-label">National Insurance Number:</span>
+          <span class="field-value">{{ applicant.nationalInsuranceNumber }}</span>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">Barbados Residency Duartion:</div>
+        <div class="field">
+          <div class="field-label">How long have they lived in Barbados</div>
+          <div class="field-value">{{ barbadosResidencyDuration.residencyDuration }}</div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="section-title">Contact Information</div>
+        <div class="field">
+          <div class="field-label">Address</div>
+          <div class="field-value">
+            {{ contact.addressLine1 }}
+            {{#if contact.addressLine2 }}
+              {{ contact.addressLine2 }}
+            {{/if}}
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Country</div>
+          <div class="field-value">{{ contact.country }}</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Parish</div>
+          <div class="field-value">{{ contact.parish }}</div>
+        </div>
+        {{#if contact.postalCode }}
+          <div class="field">
+            <div class="field-label">Postal Code</div>
+            <div class="field-value">{{ contact.postalCode }}</div>
+          </div>
+        {{/if}}
+        <div class="field">
+          <div class="field-label">Email Address</div>
+          <div class="field-value">{{ contact.emailAddress }}</div>
+        </div>
+        <div class="field">
+          <div class="field-label">Telephone Number</div>
+          <div class="field-value">{{ contact.telephoneNumber }}</div>
+        </div>
+      </div>
+      <div class="footer">
+        <p>
+          <strong>Application ID:</strong> {{ submissionId }}
+        </p>
+        <p>{{ Additional Information }}</p>
+        <p>Please review this application and follow up as necessary.</p>
+      </div>
+    </div>
+  </body>
+</html>
