@@ -9,9 +9,11 @@ import {
   Param,
   Post,
   Query,
+  Redirect,
   Req,
 } from '@nestjs/common';
 import { Request } from 'express';
+import { ConfigService } from '@nestjs/config';
 import { EZPayService } from './ezpay/ezpay.service';
 import { EZPayCallbackDto } from './ezpay/dto';
 import { EZPayException } from './ezpay/exceptions';
@@ -26,6 +28,7 @@ export class PaymentsController {
     private readonly ezpayService: EZPayService,
     private readonly paymentWebhookService: PaymentWebhookService,
     private readonly reconciliationService: PaymentReconciliationService,
+    private readonly configService: ConfigService,
   ) {}
 
   @Post('ezpay/webhook')
@@ -151,5 +154,52 @@ export class PaymentsController {
       );
 
     return result;
+  }
+
+  /**
+   * EZPay redirect endpoint
+   * Called when users complete payment on EZPay and are redirected back
+   *
+   * Expected query params:
+   * - rid: reference number (e.g., DEPARTMENT|formId|submissionId)
+   * - tx: transaction number
+   * - payment_status: "Success" | "Failed" | "Initiated"
+   */
+  @Get('ezpay/redirect')
+  @Redirect()
+  async handleEZPayRedirect(
+    @Query('rid') referenceNumber?: string,
+    @Query('tx') transactionNumber?: string,
+    @Query('payment_status') paymentStatus?: 'Success' | 'Failed' | 'Initiated',
+  ): Promise<{ url: string }> {
+    const frontendUrl = this.configService.get<string>('app.frontendUrl');
+
+    // Extract formId from reference number
+    // Expected format: DEPARTMENT|formId|submissionId
+    let formId: string | null = null;
+    if (referenceNumber) {
+      const parts = referenceNumber.split('|');
+      if (parts.length >= 2) {
+        formId = parts[1]; // Extract formId from middle part
+      }
+    }
+
+    // Build redirect URL
+    const redirectUrl = new URL('/api/payments/ezpay/redirect', frontendUrl);
+
+    if (formId) {
+      redirectUrl.searchParams.set('formId', formId);
+    }
+    if (referenceNumber) {
+      redirectUrl.searchParams.set('rid', referenceNumber);
+    }
+    if (transactionNumber) {
+      redirectUrl.searchParams.set('tx', transactionNumber);
+    }
+    if (paymentStatus) {
+      redirectUrl.searchParams.set('paymentStatus', paymentStatus);
+    }
+
+    return { url: redirectUrl.toString() };
   }
 }
