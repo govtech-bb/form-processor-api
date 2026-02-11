@@ -32,41 +32,41 @@ The EZPay integration enables secure payment processing for form submissions. Th
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
-│                     Form Submission Layer                        │
+│                     Form Submission Layer                       │
 │  (User submits form with payment-required flag)                 │
 └────────────────────┬────────────────────────────────────────────┘
                      │
                      ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                     Payment Service Layer                        │
-│                                                                  │
-│  ┌──────────────┐  ┌─────────────────┐  ┌──────────────────┐  │
-│  │ EZPay        │  │ Payment Webhook │  │ Reconciliation   │  │
-│  │ Service      │◄─┤ Service         │◄─┤ Service          │  │
-│  └──────┬───────┘  └────────┬────────┘  └──────────────────┘  │
+│                     Payment Service Layer                       │
+│                                                                 │
+│  ┌──────────────┐  ┌─────────────────┐  ┌──────────────────┐    │
+│  │ EZPay        │  │ Payment Webhook │  │ Reconciliation   │    │
+│  │ Service      │◄─┤ Service         │◄─┤ Service          │    │
+│  └──────┬───────┘  └────────┬────────┘  └──────────────────┘    │
 │         │                   │                                   │
 └─────────┼───────────────────┼───────────────────────────────────┘
           │                   │
           ▼                   ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                       Database Layer                             │
-│                                                                  │
-│  ┌──────────────┐  ┌──────────────────────┐  ┌──────────────┐ │
-│  │ Payment      │  │ FormSubmissionPayment│  │ Transaction  │ │
-│  │ (metadata)   │  │ (encrypted PII)      │  │ (audit)      │ │
-│  └──────────────┘  └──────────────────────┘  └──────────────┘ │
+│                       Database Layer                            │
+│                                                                 │
+│  ┌──────────────┐  ┌──────────────────────┐  ┌──────────────┐   │
+│  │ Payment      │  │ FormSubmissionPayment│  │ Transaction  │   │
+│  │ (metadata)   │  │ (encrypted PII)      │  │ (audit)      │   │
+│  └──────────────┘  └──────────────────────┘  └──────────────┘   │
 └─────────────────────────────────────────────────────────────────┘
           │                   │                   │
           ▼                   ▼                   ▼
 ┌─────────────────────────────────────────────────────────────────┐
-│                     Cleanup Layer (Cron Jobs)                    │
-│                                                                  │
-│  ┌──────────────────────────┐  ┌────────────────────────────┐  │
-│  │ Abandoned Payment        │  │ Payment Reconciliation     │  │
-│  │ Cleanup (Daily 2AM)      │  │ (Every 5 Minutes)          │  │
-│  │ - TTL: 72 hours          │  │ - Sync with EZPay          │  │
-│  │ - Deletes PII            │  │ - Trigger workflows        │  │
-│  └──────────────────────────┘  └────────────────────────────┘  │
+│                     Cleanup Layer (Cron Jobs)                   │
+│                                                                 │
+│  ┌──────────────────────────┐  ┌────────────────────────────┐   │
+│  │ Abandoned Payment        │  │ Payment Reconciliation     │   │
+│  │ Cleanup (Daily 2AM)      │  │ (Every 5 Minutes)          │   │
+│  │ - TTL: 72 hours          │  │ - Sync with EZPay          │   │
+│  │ - Deletes PII            │  │ - Trigger workflows        │   │
+│  └──────────────────────────┘  └────────────────────────────┘   │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
