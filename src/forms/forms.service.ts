@@ -10,6 +10,7 @@ import {
   getOpenCRVSSuccessMessage,
   getOpenCRVSFailureMessage,
 } from '../opencrvs/common/opencrvs.utils';
+import { CloudWatchMetricsService } from '../metrics/cloudwatch-metrics.service';
 
 @Injectable()
 export class FormsService {
@@ -19,6 +20,7 @@ export class FormsService {
     private readonly formUtilsService: FormUtilsService,
     private readonly schemaBuilderService: SchemaBuilderService,
     private readonly processorPipeline: ProcessorPipelineService,
+    private readonly metricsService: CloudWatchMetricsService,
   ) {}
 
   /**
@@ -102,6 +104,9 @@ export class FormsService {
       processorResults,
       formId,
     );
+
+    // Emit 'success' metric for successful non-payment form submissions
+    await this.metricsService.emitFormSubmissionMetric(formId, 'success');
 
     const response = new FormSubmissionResponseDto(
       submissionId,

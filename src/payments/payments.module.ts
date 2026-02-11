@@ -14,6 +14,7 @@ import { EZPayService, PaymentsController } from './ezpay';
 import { EmailModule } from '../email/email.module';
 import { FormsModule } from '../forms/forms.module';
 import { ProcessorsModule } from '../processors/processors.module';
+import { MetricsModule } from '../metrics/metrics.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { ProcessorsModule } from '../processors/processors.module';
     EmailModule,
     forwardRef(() => FormsModule),
     forwardRef(() => ProcessorsModule),
+    MetricsModule,
   ],
   providers: [
     PaymentWebhookService,
