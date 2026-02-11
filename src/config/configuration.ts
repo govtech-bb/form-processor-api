@@ -3,6 +3,7 @@ export default () => ({
     nodeEnv: process.env.NODE_ENV || 'development',
     port: parseInt(process.env.PORT, 10) || 3000,
     apiPrefix: process.env.API_PREFIX || 'api',
+    frontendUrl: process.env.FRONTEND_URL || 'http://localhost:3001',
   },
   database: {
     host: process.env.DB_HOST || 'localhost',
@@ -75,5 +76,10 @@ export default () => ({
       'Registration Department Records Branch',
     defaultHealthFacilityName: process.env.OPENCRVS_DEFAULT_HEALTH_FACILITY,
     defaultParishName: process.env.OPENCRVS_DEFAULT_PARISH || 'Christ Church',
+  },
+  metrics: {
+    enabled: process.env.METRICS_ENABLED !== 'false',
+    namespace: process.env.METRICS_NAMESPACE || 'FormsProcessor/Submissions',
+    environment: process.env.NODE_ENV || 'development',
   },
 });
