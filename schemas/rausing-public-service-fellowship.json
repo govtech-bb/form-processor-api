@@ -1,0 +1,424 @@
+{
+  "id": "rausing-public-service-fellowship",
+  "name": "Rausing Public Service Fellowship Programme",
+  "description": "Apply for the Rausing Public Service Fellowship Programme",
+  "fields": [
+    {
+      "name": "applicant",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "message": "First name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "middleName",
+          "type": "string",
+          "label": "Middle name",
+          "required": false,
+          "validations": {
+            "min": 2,
+            "message": "Middle name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "message": "Last name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "dateOfBirth",
+          "type": "date",
+          "label": "Date of birth",
+          "required": true
+        },
+        {
+          "name": "sex",
+          "type": "string",
+          "label": "Sex",
+          "required": true,
+          "validations": {
+            "regex": "^(male|female)$",
+            "message": "Sex is required"
+          }
+        },
+        {
+          "name": "maritalStatus",
+          "type": "string",
+          "label": "Marital status",
+          "required": true,
+          "validations": {
+            "regex": "^(single|married|divorced)$",
+            "message": "Marital Status is required"
+          }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "label": "National Identification (ID) number",
+          "required": false,
+          "validations": {
+            "regex": "^\\d{6}-\\d{4}$",
+            "message": "Enter a valid ID number (e.g., 850101-0001)"
+          }
+        },
+        {
+          "name": "usePassportInstead",
+          "type": "boolean",
+          "label": "Use passport number instead",
+          "required": false
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "label": "Passport number",
+          "required": false,
+          "validations": {
+            "min": 6,
+            "message": "Passport number must be at least 6 characters"
+          }
+        },
+        {
+          "name": "nisNumber",
+          "type": "string",
+          "label": "National insurance number (NIS)",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "message": "NIS Number must be at least 2 characters"
+          }
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address line 2",
+          "required": false
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "string",
+          "label": "Postcode",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone number",
+          "required": true,
+          "validations": {
+            "regex": "^\\d{1,2}\\s?\\d{3}\\s?\\d{3}\\s?\\d{4}$",
+            "message": "Please enter a valid phone number (e.g., 1 246 234 5678)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "employment",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "employerName",
+          "type": "string",
+          "label": "Name of employer or organization",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "message": "Employer name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "occupation",
+          "type": "string",
+          "label": "Occupation",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "message": "Occupation must be at least 2 characters"
+          }
+        },
+        {
+          "name": "yearsOfEmployment",
+          "type": "number",
+          "label": "Years of employment",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "emergency",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "firstName",
+          "type": "string",
+          "label": "First name",
+          "required": true
+        },
+        {
+          "name": "lastName",
+          "type": "string",
+          "label": "Last name",
+          "required": true
+        },
+        {
+          "name": "email",
+          "type": "email",
+          "label": "Email address",
+          "required": true
+        },
+        {
+          "name": "telephoneNumber",
+          "type": "string",
+          "label": "Telephone number",
+          "required": true,
+          "validations": {
+            "regex": "^\\d{1,2}\\s?\\d{3}\\s?\\d{3}\\s?\\d{4}$",
+            "message": "Please enter a valid phone number (e.g. 1 246 234 5678)"
+          }
+        },
+        {
+          "name": "isAddressTheSame",
+          "type": "boolean",
+          "label": "Address is the same as my address provided",
+          "required": false
+        },
+        {
+          "name": "addressLine1",
+          "type": "string",
+          "label": "Address line 1",
+          "required": true,
+          "validations": {
+            "min": 5,
+            "message": "Address must be at least 5 characters"
+          }
+        },
+        {
+          "name": "addressLine2",
+          "type": "string",
+          "label": "Address line 2",
+          "required": false
+        },
+        {
+          "name": "parish",
+          "type": "string",
+          "label": "Parish",
+          "required": true
+        },
+        {
+          "name": "postCode",
+          "type": "string",
+          "label": "Postcode",
+          "required": false,
+          "validations": {
+            "regex": "^BB\\d{5}$",
+            "message": "Enter a valid postal code (e.g., BB17004)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "study",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "programmeName",
+          "type": "string",
+          "label": "The programme you plan to study",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "message": "Programme name must be at least 2 characters"
+          }
+        },
+        {
+          "name": "reasonForApplying",
+          "type": "string",
+          "label": "Why do you want to attend this programme",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "message": "Why you want to attend must be at least 2 characters"
+          }
+        },
+        {
+          "name": "benefitForNationalDevelopment",
+          "type": "string",
+          "label": "How this programme will benefit national development",
+          "required": true,
+          "validations": {
+            "min": 2,
+            "message": "Benefit for national development must be at least 2 characters"
+          }
+        }
+      ]
+    },
+    {
+      "name": "educationQualifications",
+      "type": "array",
+      "label": "Educational Qualifications",
+      "required": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "institutionName": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Name of institution must be at least 2 characters"
+            }
+          },
+          "institutionLocation": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Location of institution must be at least 2 characters"
+            }
+          },
+          "awardEarned": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Award earned must be at least 2 characters"
+            }
+          },
+          "areaOfStudy": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Area of study must be at least 2 characters"
+            }
+          },
+          "yearAwarded": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Year awarded must be at least 2 characters"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "professionalQualifications",
+      "type": "array",
+      "label": "Professional Qualifications",
+      "required": true,
+      "items": {
+        "type": "object",
+        "properties": {
+          "institutionName": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Name of institution must be at least 2 characters"
+            }
+          },
+          "institutionLocation": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Location of institution must be at least 2 characters"
+            }
+          },
+          "awardEarned": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Award earned must be at least 2 characters"
+            }
+          },
+          "areaOfStudy": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Area of study must be at least 2 characters"
+            }
+          },
+          "yearAwarded": {
+            "type": "string",
+            "validations": {
+              "min": 2,
+              "message": "Year awarded must be at least 2 characters"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "uploadDocument",
+      "type": "string",
+      "label": "Upload your degrees/diplomas",
+      "required": true
+    },
+    {
+      "name": "declaration",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "confirmed",
+          "type": "boolean",
+          "label": "All information is correct and true",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "dateOfDeclaration",
+      "type": "date",
+      "label": "Date of declaration",
+      "required": true
+    }
+  ],
+  "processors": [
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:rausing-public-service-fellowship:admin_email}}",
+        "subject": "New Rausing Public Service Fellowship Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "rausing-public-service-fellowship"
+      }
+    }
+  ]
+}
