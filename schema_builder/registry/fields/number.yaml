@@ -4,3 +4,5 @@ meta:
 validation:
   required: true
   minValue: 0
+ui:
+  width: short

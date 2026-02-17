@@ -3,3 +3,5 @@ meta:
   htmlType: select
 validation:
   required: true
+ui:
+  width: medium
