@@ -211,6 +211,47 @@ However, as you may imagine, this may also introduce ambiguity for the human or 
 As such, when using components, always explicitly set an ID, or explicitly set the meta.id to an empty string. 
 Of course, this is only for schema building purposes, as once the schema is built, interactions proceed programmatically.
 
+### ID Prefixes
+
+In some cases, we may want to have multiple of the same block on the same page. I'm not sure of a usecase, but we will cover that possibility regardless. 
+
+Blocks will have support for an `idPrefix` field defined in their meta information.
+
+This will be a string value, and will be prefixed to the ids of all elements of the block, BEFORE page prefixes are applied.
+
+For example:
+
+```yaml
+---
+type: block
+meta:
+  blockName: SampleBlock
+  idPrefix: sample_
+elements:
+  - ref: fields/text
+    meta:
+      id: myField
+```
+
+The field with id `myField`, will have its id value updated to be `idPrefix_id`, in this case, that will give us `sample_myField`.
+
+> [!NOTE]
+> idPrefixes should end with an underscore, to make it still reading friendly, and compatible with being the id of an HTML field.
+
+Now, as we will examine later, blocks and components are all flattened to be their `field` form, when the schema is created from the recipe. 
+
+However, it is to be noted, that this will require a payload to be sent as follows:
+
+```json
+{
+  "myPage": {
+    "sample_myField": "my value"
+  }
+}
+```
+
+The reason I choose this method, is because you currently cannot change the ID of a specific component when using a `ref` to a block. 
+
 ## Creating the Form Schema
 
 So far, we would have been working with Form Recipes, identifiable by keywords such as `ref` and `extends`.
@@ -277,7 +318,7 @@ This will be broken into the following steps (until a field is obtained):
 1. Evaluate each `Block`:
   1. If a `Block` is the only entry for a page, then set `pageTitle` and `pageDescription` to `block.content.pageTitle` and `block.content.pageDescription` (if applicable).
   1. If a `Block` has `repeatable` meta information, apply that to the entire page, if no `repeatable` meta information for the page is explicitly set.
-  1. Evaluate each of the `Block`'s `element`s, converting them into their `Component` form.
+  1. Evaluate each of the `Block`'s `element`s, converting them into their `Component` form, including nested blocks.
 1. With only components and / or fields left in the recipe, apply all template substitions, if any are left.
 1. Evaluate each component, converting them into fields, and applying their values.
 1. With only fields left, apply all substitutions if any are left.
@@ -288,6 +329,8 @@ This will be broken into the following steps (until a field is obtained):
   1. If `options` are present, but is an array of strings, then convert the array of strings, into an array of 2-key objects, where `label` is the provided string, and `value` is `label`, but lowercased, without any special characters (except spaces), and then with spaces replaced with hyphens (-).
 1. For the final pass, move the properties inside `meta`, to be at the root of their field object.
 1. Convert `elements` to `fields`.
+
+Note: Blocks can contain blocks, components, or fields, and components may only contain fields. Similarly, a block may not contain a nested reference to itself. However, two of the same blocks con exist on the same page, given an `idPrefix` is applied in the meta field of the block.
 
 Once Recipes are converted into schemas, these schemas are stored in `/schema_builder/schemas/`
 

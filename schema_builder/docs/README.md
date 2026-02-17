@@ -212,10 +212,11 @@ Blocks should be defined as follows:
 type: Block
 meta:
     blockName: Name for the block (Can match the filename)
+    description: Meta description of the block, and when / where to use it.
     repeatable (bool): Whether this block should be repeatable or not.
     minItems (int): If block is repeatable, determines the min number of entries.
     maxItems (int): If block is repeatable, determines the max number of entries.
-    exclude (`list[str]`): List of IDs to exclude from the block. (This information should be passed by a form)
+    exclude (`list[str]`): List of IDs to exclude from the block. (This information should be passed by a form recipe)
 content:
     title (string): Title for the block. Can be used to display a title on a page for the block.
     description (string): Description for the block. Can be used to display a description on a page for the block.
