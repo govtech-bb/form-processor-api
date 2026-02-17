@@ -252,6 +252,83 @@ However, it is to be noted, that this will require a payload to be sent as follo
 
 The reason I choose this method, is because you currently cannot change the ID of a specific component when using a `ref` to a block. 
 
+## Context and Template Strings
+
+Fields, Components, and Blocks all have support for template strings.
+These are string values assigned to fields, that are meant to be replaced with a value.
+
+There are currently three (3) types of these template strings.
+
+- Context
+- Field
+- Processor
+
+Context template strings look like `{!Variable}`, uniquely identified by the presence of the `!` right after the `{`. These strings get their values from a `context` property provided to the block, component, or field.
+
+For example, a component defined as:
+
+```yaml
+
+type: component
+meta:
+  componentName: address
+  extends: fields/text
+content:
+  label: "{!PERSON} address"
+```
+
+Can be used, and a value provided, for example, as follows:
+
+```yaml
+
+type: block
+elements:
+  - ref: component/address
+    context:
+      PERSON: "Your father's"
+```
+
+On form schema generation, the `{!PERSON}` will be replaced with the provided value, setting the label to be "Your father's address". Context template strings will be resolved as soon as they appear.
+
+Field template strings contain values that will be replaced by the value of a property defined on the current object.
+
+As such, they will only be applied once the object is in its `field` form. 
+
+Field template strings are denoted with `{#Variable#}`. Note the enclosing `{##}`.
+
+A good example for field template strings, are for error messages. For example:
+
+```yaml
+
+type: field
+meta:
+  fieldName: numericText
+  htmlType: text
+validation:
+  pattern: "^[0-9]$"
+  errorMessage: "{#content.label#} only accepts digits"
+```
+
+This will then look for and apply the value of `content.label`. For example, given:
+
+```yaml
+
+type: component
+meta:
+  extends: field/numericText
+content:
+  label: ID Number
+```
+
+When the builder builds the component, into its field form, and then evaluates the field template string, then the `errorMessage` will become "ID Number only accepts digits."
+
+Lastly, Processor template strings are denoted with `{{}}`.
+
+Processor template strings gain access to communicating with pre-defined external interfaces, such as a database, along with accessing values from the submitted payload.
+
+As such, processor template strings are not evaluated at all, until a processor processes them.
+Similarly, they are only present in the `processors` part (section dedicated to form post-processors) of a form recipe.
+
 ## Creating the Form Schema
 
 So far, we would have been working with Form Recipes, identifiable by keywords such as `ref` and `extends`.

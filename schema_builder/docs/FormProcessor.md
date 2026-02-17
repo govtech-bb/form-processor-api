@@ -2,7 +2,7 @@
 
 If you haven't, please read [README](./README.md).
 
-With an understanding that the final form schema will consist of only fields, we now need to determine the two key factors for form processing, these being how validation should be handled, and what the submission payload should look like.
+With an understanding that the final form schema will consist of only fields, we now need to determine the three key factors for form processing, these being how validation should be handled, what the submission payload should look like, and how any post-processors should be handled.
 
 ## Validation
 
