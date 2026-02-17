@@ -1,0 +1,8 @@
+type: component
+meta:
+  extends: fields/text
+  componentName: telephoneNumber
+content:
+  label: 'Telephone Number'
+validation:
+  pattern: "^(?:1[- ]?[2-9]\\d{2}[- ]?\\d{3}[- ]?\\d{4}|[2-9]\\d{2}[- ]?\\d{3}[- ]?\\d{4}|[2-9]\\d{2}[- ]?\\d{4})$"

@@ -1,0 +1,6 @@
+type: component
+meta:
+  extends: fields/date
+  componentName: dateOfBirth
+content:
+  label: 'Date of Birth'

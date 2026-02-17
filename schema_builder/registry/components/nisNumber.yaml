@@ -1,0 +1,9 @@
+type: component
+meta:
+  extends: fields/text
+  componentName: nisNumber
+content:
+  label: 'NIS Number'
+validation:
+  minLength: 10
+  maxLength: 15

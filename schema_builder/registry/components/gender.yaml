@@ -1,0 +1,9 @@
+type: component
+meta:
+  extends: fields/select
+  componentName: gender
+content:
+  label: 'Gender'
+  options:
+    - 'Male'
+    - 'Female'

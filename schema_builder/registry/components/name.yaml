@@ -1,0 +1,6 @@
+type: component
+meta:
+  extends: fields/text
+  componentName: name
+content:
+  label: 'Name'

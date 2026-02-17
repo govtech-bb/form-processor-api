@@ -1,0 +1,9 @@
+type: component
+meta:
+  extends: fields/text
+  componentName: tamisNumber
+content:
+  label: 'TAMIS Number'
+validation:
+  minLength: 10
+  maxLength: 15

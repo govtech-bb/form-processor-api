@@ -1,0 +1,9 @@
+type: component
+meta:
+  extends: fields/text
+  componentName: idNumber
+content:
+  label: 'ID Number'
+  placeholder: 'XXXXXX-XXXX'
+validation:
+  pattern: '^[0-9]{6}-[0-9]{4}$'
