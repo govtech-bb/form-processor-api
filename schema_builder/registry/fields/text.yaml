@@ -1,0 +1,5 @@
+type: field
+meta:
+  htmlType: text
+validation:
+  required: true

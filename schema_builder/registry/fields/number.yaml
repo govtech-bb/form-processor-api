@@ -1,0 +1,6 @@
+type: field
+meta:
+  htmlType: number
+validation:
+  required: true
+  minValue: 0
