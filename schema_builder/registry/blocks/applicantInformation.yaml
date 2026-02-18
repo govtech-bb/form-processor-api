@@ -5,6 +5,7 @@ meta:
 content:
   title: Tell us about yourself
 elements:
+  - ref: components/title.yaml
   - ref: components/name.yaml
     content:
       label: First name

@@ -2,13 +2,13 @@
 type: block
 meta:
   blockName: declaration
-  description: "Declaration page"
+  description: "Final declaration page, to be used for the applicant to confirm all of their information is correct"
 content:
-  title: Declare everything is correct
+  title: Declaration
   description: ""
 elements:
   - ref: fields/checkbox
     meta:
       id: declaration
     content:
-      label: "I declare everything is correct."
+      label: I confirm that my information is correct and I am happy for it to be verified. I understand that false details may lead to my application being rejected, and that the Government of Barbados will keep my information confidential.
