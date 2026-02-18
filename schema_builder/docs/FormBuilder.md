@@ -350,6 +350,19 @@ processors:
 
 Processors are defined in `registry/processors`.
 
+Also present in `schema_builder/registry/processors`, is `confirmation`, which defines a reusable template for confirmation screens.
+
+Similar to other components, the values are overridden by including it again as follows:
+
+```yaml
+
+formId: myForm
+elements: []
+processors: []
+confirmation:
+  description: "This will override the default value."
+```
+
 ## Creating the Form Schema
 
 So far, we would have been working with Form Recipes, identifiable by keywords such as `ref` and `extends`.

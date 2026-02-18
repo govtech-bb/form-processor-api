@@ -5,20 +5,8 @@ meta:
 content:
   title: Tell us about yourself
 elements:
-  - ref: components/title.yaml
-  - ref: components/name.yaml
-    content:
-      label: First name
-  - ref: components/name.yaml
-    meta:
-      id: middleName
-    content:
-      label: Middle name(s)
-    validation:
-      required: false
-  - ref: components/name.yaml
-    content:
-      label: Last name
+  - ref: components/title
+  - ref: blocks/nameInformation
   - ref: components/dateOfBirth
   - ref: components/sex
   - ref: components/country
