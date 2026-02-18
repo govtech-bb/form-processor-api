@@ -1,0 +1,139 @@
+---
+formId: applyForConductorLicence
+title: Conductor Licence Application
+description: Conductor Licence Application
+pages:
+  - pageId: applicant
+    elements:
+      - ref: blocks/applicantInformation
+        meta:
+          exclude:
+            - sex
+            - country
+            - nationality
+  - pageId: contactDetails
+    title: Contact details
+    description: ""
+    elements:
+      - ref: blocks/address
+        meta:
+          exclude:
+            - country
+      - ref: fields/email
+      - ref: components/telephoneNumber
+  - pageId: licenceHistory
+    title: Tell us about your licence history
+    elements:
+      - ref: fields/radio
+        meta:
+          id: hasPreviousLicence
+        content:
+          label: "Have you had a conductor's licence before?"
+      - ref: components/genericShortText
+        meta:
+          id: licenceNumber
+        content: 
+          label: Provide your licence number
+        validation:
+          dependsOn: hasPreviousLicence
+          dependsIeq: yes
+      - ref: fields/date
+        meta:
+          id: dateOfIssue
+        content:
+          label: Date of Issue
+        validation:
+          dateIsPast: true
+          dependsOn: hasPreviousLicence
+          dependsIeq: yes
+  - pageId: endorsements
+    title: Tell us about any endorsements
+    description: "An endorsement is a record of an offence added to your conductor's or driving licence."
+    elements:
+      - ref: fields/radio
+        meta:
+          id: hasEndorsements
+        content:
+          label: Do you have any endorsements?
+  - pageId: endorsementDetails
+    title: Your endorsements
+    meta:
+      repeatable: true
+      maxItems: 10
+    elements:
+      - ref: components/genericShortText
+        content:
+          label: Type of licence
+      - ref: fields/date
+        content:
+          label: Date of endorsement
+        validation:
+          dateIsPastOrToday: true
+      - ref: components/genericShortText
+        meta:
+          id: duration
+        content:
+          label: How long did the endorsement appear on your licence.
+  - pageId: disqualifications
+    title: Tell us about your disqualifications
+    description: A disqualification is when a court has stopped you from getting or holding a licence.
+    elements:
+      - ref: fields/radio
+        meta:
+          id: hasDisqualifications
+        content:
+          label: Have you ever been disqualified?
+      - ref: components/genericShortText
+        content:
+          label: Court name
+        validation:
+          dependsOn: hasDisqualifications
+          dependsIeq: yes
+      - ref: components/genericShortText
+        meta:
+          id: reasonForDisqualification
+        content:
+          label: "Court's reason for disqualification"
+        validation:
+          dependsOn: hasDisqualifications
+          dependsIeq: yes
+      - ref: fields/date
+        content:
+          label: Date of disqualification
+        validation:
+          dependsOn: hasDisqualifications
+          dependsIeq: yes
+          dateIsPast: true
+      - ref: components/genericShortText
+        content:
+          label: Length of disqualification
+        validation:
+          dependsOn: hasDisqualifications
+          dependsIeq: yes
+  - pageId: convictions
+    elements:
+      - ref: blocks/criminalConvictions
+  - pageId: declaration
+    elements:
+      - ref: blocks/declaration
+processors:
+  - ref: processors/email
+    to: "{{db:apply-for-conductor-licence:admin_email}}"
+    subject: "Apply for conductor licence - {{formData.applicant.firstName}} {{formData.applicant.lastName}}"
+  - ref: processors/email
+    to: "{{formData.contactDetails.email}}"
+    subject: "Conductor Licence Application - Submission Received"
+confirmation:
+  title: Thank you for your application
+  description: Your information has been sent to the Barbados Transport Authority
+  content: |
+    ## What happens next
+
+    We will review your application and any supporting information.
+
+    If we need further details, we will contact you using the email address you provided.
+
+    You will receive an email confirming this submission.
+
+    If you do not receive the confirmation email within a few minutes, check your junk or spam folder.
+  enableFeedback: true
