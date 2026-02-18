@@ -13,13 +13,15 @@ pages:
             - nationality
   - pageId: contactDetails
     title: Contact details
-    description: ""
+    description: ''
     elements:
       - ref: blocks/address
         meta:
           exclude:
             - country
       - ref: fields/email
+        content:
+          label: Email address
       - ref: components/telephoneNumber
   - pageId: licenceHistory
     title: Tell us about your licence history
@@ -32,7 +34,7 @@ pages:
       - ref: components/genericShortText
         meta:
           id: licenceNumber
-        content: 
+        content:
           label: Provide your licence number
         validation:
           dependsOn: hasPreviousLicence
@@ -118,10 +120,10 @@ pages:
       - ref: blocks/declaration
 processors:
   - ref: processors/email
-    to: "{{db:apply-for-conductor-licence:admin_email}}"
-    subject: "Apply for conductor licence - {{formData.applicant.firstName}} {{formData.applicant.lastName}}"
+    to: '{{db:apply-for-conductor-licence:admin_email}}'
+    subject: 'Apply for conductor licence - {{formData.applicant.firstName}} {{formData.applicant.lastName}}'
   - ref: processors/email
-    to: "{{formData.contactDetails.email}}"
-    subject: "Conductor Licence Application - Submission Received"
+    to: '{{formData.contactDetails.email}}'
+    subject: 'Conductor Licence Application - Submission Received'
 confirmation:
   description: Your information has been sent to the Barbados Transport Authority

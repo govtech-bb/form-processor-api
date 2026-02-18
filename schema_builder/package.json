@@ -1,0 +1,36 @@
+{
+  "name": "schema_builder",
+  "version": "1.0.0",
+  "description": "Form Recipe to Schema Builder",
+  "main": "src/index.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node --esm --transpile-only src/cli.ts",
+    "cli": "node --loader ts-node/esm --no-warnings src/cli.ts",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "validate": "npm run cli -- validate",
+    "build-recipe": "npm run cli -- build",
+    "build-all": "npm run cli -- build-all"
+  },
+  "keywords": [
+    "form",
+    "schema",
+    "builder",
+    "yaml",
+    "json"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "js-yaml": "^4.1.1"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^25.2.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}

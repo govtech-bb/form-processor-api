@@ -3,7 +3,7 @@ type: component
 meta:
   extends: fields/text
   componentName: genericShortText
-valildation:
+validation:
   minLength: 2
   maxLength: 20
-  pattern: "^[a-zA-Z0-9]+$"
+  pattern: '^[a-zA-Z0-9]+$'

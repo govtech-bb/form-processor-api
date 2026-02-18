@@ -11,7 +11,6 @@ Given that the initial schema can be written using what we will refer to as "Rec
 For example, if we have a form defined as:
 
 ```yaml
-
 formId: validFormId
 title: Valid Form Title
 elements:
@@ -76,7 +75,6 @@ In a single page form, IDs will be as they are defined / generated. However, in 
 For example:
 
 ```yaml
-
 formId: myForm
 title: My Form
 pages:
@@ -114,7 +112,6 @@ These IDs can be applied as meta values for either a component, or a field direc
 For example:
 
 ```yaml
-
 ---
 type: component
 meta:
@@ -126,7 +123,6 @@ meta:
 Will evaluate into a field structured as:
 
 ```yaml
-
 ---
 type: field
 meta:
@@ -136,7 +132,7 @@ meta:
 
 ### Rules for IDs
 
-IDs must satisfy the expression: `^[a-z][a-zA-Z0-9]*$`. 
+IDs must satisfy the expression: `^[a-z][a-zA-Z0-9]*$`.
 That is, the first character must be a lowercase alphabetical character, and subsequent characters can be alphanumerical. No special symbols such as hyphens, underscores, etc., are allowed. Ideally, IDs should also be camelCased.
 
 ### Generating IDs
@@ -208,12 +204,12 @@ ref: components/userName
 
 Resulting in the IDs being generated to be "firstName" and "lastName".
 However, as you may imagine, this may also introduce ambiguity for the human or AI building forms, as it requires you to check whether component.meta.id, and by extension field.meta.id is set to an empty value / not defined.
-As such, when using components, always explicitly set an ID, or explicitly set the meta.id to an empty string. 
+As such, when using components, always explicitly set an ID, or explicitly set the meta.id to an empty string.
 Of course, this is only for schema building purposes, as once the schema is built, interactions proceed programmatically.
 
 ### ID Prefixes
 
-In some cases, we may want to have multiple of the same block on the same page. I'm not sure of a usecase, but we will cover that possibility regardless. 
+In some cases, we may want to have multiple of the same block on the same page. I'm not sure of a usecase, but we will cover that possibility regardless.
 
 Blocks will have support for an `idPrefix` field defined in their meta information.
 
@@ -238,7 +234,7 @@ The field with id `myField`, will have its id value updated to be `idPrefix_id`,
 > [!NOTE]
 > idPrefixes should end with an underscore, to make it still reading friendly, and compatible with being the id of an HTML field.
 
-Now, as we will examine later, blocks and components are all flattened to be their `field` form, when the schema is created from the recipe. 
+Now, as we will examine later, blocks and components are all flattened to be their `field` form, when the schema is created from the recipe.
 
 However, it is to be noted, that this will require a payload to be sent as follows:
 
@@ -250,7 +246,7 @@ However, it is to be noted, that this will require a payload to be sent as follo
 }
 ```
 
-The reason I choose this method, is because you currently cannot change the ID of a specific component when using a `ref` to a block. 
+The reason I choose this method, is because you currently cannot change the ID of a specific component when using a `ref` to a block.
 
 ## Context and Template Strings
 
@@ -268,19 +264,17 @@ Context template strings look like `{!Variable}`, uniquely identified by the pre
 For example, a component defined as:
 
 ```yaml
-
 type: component
 meta:
   componentName: address
   extends: fields/text
 content:
-  label: "{!PERSON} address"
+  label: '{!PERSON} address'
 ```
 
 Can be used, and a value provided, for example, as follows:
 
 ```yaml
-
 type: block
 elements:
   - ref: component/address
@@ -292,27 +286,25 @@ On form schema generation, the `{!PERSON}` will be replaced with the provided va
 
 Field template strings contain values that will be replaced by the value of a property defined on the current object.
 
-As such, they will only be applied once the object is in its `field` form. 
+As such, they will only be applied once the object is in its `field` form.
 
 Field template strings are denoted with `{#Variable#}`. Note the enclosing `{##}`.
 
 A good example for field template strings, are for error messages. For example:
 
 ```yaml
-
 type: field
 meta:
   fieldName: numericText
   htmlType: text
 validation:
-  pattern: "^[0-9]$"
-  errorMessage: "{#content.label#} only accepts digits"
+  pattern: '^[0-9]$'
+  errorMessage: '{#content.label#} only accepts digits'
 ```
 
 This will then look for and apply the value of `content.label`. For example, given:
 
 ```yaml
-
 type: component
 meta:
   extends: field/numericText
@@ -338,14 +330,13 @@ These are additional functionality that can be performed once a submitted form's
 For example, sending an email to the applicant.
 
 ```yaml
-
 formId: myForm
 elements: []
 processors:
   - ref: processors/email
     config:
-      to: "{{formData.contactDetails.email}}"
-      subject: "My Form - Submission Received"
+      to: '{{formData.contactDetails.email}}'
+      subject: 'My Form - Submission Received'
 ```
 
 Processors are defined in `registry/processors`.
@@ -355,12 +346,11 @@ Also present in `schema_builder/registry/processors`, is `confirmation`, which d
 Similar to other components, the values are overridden by including it again as follows:
 
 ```yaml
-
 formId: myForm
 elements: []
 processors: []
 confirmation:
-  description: "This will override the default value."
+  description: 'This will override the default value.'
 ```
 
 ## Creating the Form Schema
@@ -377,16 +367,15 @@ A Form Schema should only consist of fields, meaning that all components, and bl
 For example, given the following recipe:
 
 ```yaml
-
 ---
 formId: myForm
 elements:
   - ref: components/userName
     content:
-      label: "First Name"
+      label: 'First Name'
   - ref: components/email
     content:
-      label: "Email Address"
+      label: 'Email Address'
 ```
 
 The builder should turn it into the following JSON schema:
@@ -412,7 +401,7 @@ The builder should turn it into the following JSON schema:
         "label": "Email Address"
       },
       "validation": {
-        "pattern": "^.*@.*\..*$"
+        "pattern": "^.*@.*..*$"
       }
     }
   ]
@@ -427,24 +416,176 @@ This will be broken into the following steps (until a field is obtained):
 1. Store any `context` values, for context template substitutions.
 1. Apply all substitutions for any context template strings with their values.
 1. Evaluate each `Block`:
-  1. If a `Block` is the only entry for a page, then set `pageTitle` and `pageDescription` to `block.content.pageTitle` and `block.content.pageDescription` (if applicable).
-  1. If a `Block` has `repeatable` meta information, apply that to the entire page, if no `repeatable` meta information for the page is explicitly set.
-  1. Evaluate each of the `Block`'s `element`s, converting them into their `Component` form, including nested blocks.
+1. If a `Block` is the only entry for a page, then set `pageTitle` and `pageDescription` to `block.content.pageTitle` and `block.content.pageDescription` (if applicable).
+1. If a `Block` has `repeatable` meta information, apply that to the entire page, if no `repeatable` meta information for the page is explicitly set.
+1. Evaluate each of the `Block`'s `element`s, converting them into their `Component` form, including nested blocks.
 1. With only components and / or fields left in the recipe, apply all template substitions, if any are left.
 1. Evaluate each component, converting them into fields, and applying their values.
 1. With only fields left, apply all substitutions if any are left.
 1. Process each field.
-  1. If the id value for a field is empty, then generate the ID from a camelCased `label`.
+1. If the id value for a field is empty, then generate the ID from a camelCased `label`.
+
+
     - If no `label` is provided, then throw an exception indicating that a field without an ID is illegal
-  1. If `options` are present, and the value matches `constants/fileName`, then fetch the values from that file, and set them as KV pairs.
-  1. If `options` are present, but is an array of strings, then convert the array of strings, into an array of 2-key objects, where `label` is the provided string, and `value` is `label`, but lowercased, without any special characters (except spaces), and then with spaces replaced with hyphens (-).
-  1. Apply any field substitutions.
+
+1. If `options` are present, and the value matches `constants/fileName`, then fetch the values from that file, and set them as KV pairs.
+1. If `options` are present, but is an array of strings, then convert the array of strings, into an array of 2-key objects, where `label` is the provided string, and `value` is `label`, but lowercased, without any special characters (except spaces), and then with spaces replaced with hyphens (-).
+1. Apply any field substitutions.
 1. For the final pass, move the properties inside `meta`, to be at the root of their field object.
 1. Convert `elements` to `fields`.
 
 Note: Blocks can contain blocks, components, or fields, and components may only contain fields. Similarly, a block may not contain a nested reference to itself. However, two of the same blocks con exist on the same page, given an `idPrefix` is applied in the meta field of the block.
 
 Once Recipes are converted into schemas, these schemas are stored in `/schema_builder/schemas/`
+
+## Running the Service
+
+The Form Builder is implemented as a TypeScript CLI service that transforms YAML/JSON recipes into JSON schemas.
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm
+
+### Installation
+
+```bash
+npm install
+```
+
+### Available Commands
+
+#### Validate a Recipe
+
+Check if a recipe file is valid without building it:
+
+```bash
+npm run validate -- <recipe-file>
+```
+
+Example:
+
+```bash
+npm run validate -- recipes/permission-to-remove-tree.yaml
+```
+
+#### Build a Single Recipe
+
+Transform a recipe into a JSON schema:
+
+```bash
+npm run build-recipe -- <recipe-file> [options]
+```
+
+Options:
+
+- `-o, --output <path>` - Output file path (default: stdout)
+- `-r, --registry <path>` - Registry directory path (default: ./registry)
+- `-v, --verbose` - Enable verbose output
+
+Examples:
+
+```bash
+# Build and output to file
+npm run build-recipe -- recipes/my-form.yaml -o schemas/my-form.json
+
+# Build with verbose output
+npm run build-recipe -- recipes/my-form.yaml -o schemas/my-form.json -v
+
+# Build with custom registry
+npm run build-recipe -- recipes/my-form.yaml -r ./custom-registry -o schemas/my-form.json
+```
+
+#### Build All Recipes
+
+Build all recipes in the recipes directory:
+
+```bash
+npm run build-all
+```
+
+This will process all `.yaml`, `.yml`, and `.json` files in the `recipes/` directory and output schemas to the `schemas/` directory.
+
+### Development Mode
+
+For development with automatic reloading:
+
+```bash
+npm run dev
+```
+
+### Project Structure
+
+```
+schema_builder/
+├── recipes/              # Input recipe files (YAML/JSON)
+├── registry/             # Registry of reusable components
+│   ├── fields/          # Base field definitions
+│   ├── components/      # Component definitions (extend fields)
+│   ├── blocks/          # Block/section definitions
+│   ├── constants/       # Constant values (options for selects)
+│   └── processors/      # Post-processor definitions
+├── schemas/             # Output JSON schemas
+└── src/                 # Source code
+    ├── cli.ts          # CLI entry point
+    ├── builder/        # Builder modules
+    ├── parser/         # YAML/JSON parsers
+    ├── registry/       # Registry loader
+    ├── types/          # TypeScript types
+    └── utils/          # Utility functions
+```
+
+### Build Pipeline
+
+The builder processes recipes through the following pipeline:
+
+1. **Parse** - Parse YAML/JSON recipe files
+2. **Load Registry** - Load fields, components, blocks, and constants
+3. **Resolve References** - Resolve `ref:` to actual definitions
+4. **Process Context** - Substitute `{!variable}` context templates
+5. **Expand Components** - Merge components with their base fields
+6. **Generate IDs** - Generate IDs from labels when not provided
+7. **Process Field Templates** - Substitute `{#field#}` templates
+8. **Resolve Options** - Load constants and convert string arrays to KV pairs
+9. **Assemble Schema** - Flatten to final JSON schema format
+
+### Error Handling
+
+The builder provides clear error messages for common issues:
+
+- **Missing context variables** - Warning is issued, replaced with empty string
+- **Missing field labels/IDs** - Error with field location details
+- **Circular references** - Detected and reported with reference chain
+- **Invalid registry references** - Error indicating which reference failed
+
+### Output Format
+
+Single-page forms output a flat array:
+
+```json
+{
+  "formId": "myForm",
+  "fields": [
+    { "id": "firstName", "htmlType": "text", ... }
+  ]
+}
+```
+
+Multi-page forms output nested by pageId:
+
+```json
+{
+  "formId": "myForm",
+  "fields": {
+    "page1": [
+      { "id": "page1.firstName", "htmlType": "text", ... }
+    ],
+    "page2": [
+      { "id": "page2.lastName", "htmlType": "text", ... }
+    ]
+  }
+}
+```
 
 ## Next Readings
 
