@@ -1,0 +1,38 @@
+[
+	{
+		"label": "Select relationship",
+		"value": ""
+	},
+	{
+		"label": "Mother",
+		"value": "mother"
+	},
+	{
+		"label": "Father",
+		"value": "father"
+	},
+	{
+		"label": "Grandmother",
+		"value": "grandmother"
+	},
+	{
+		"label": "Grandfather",
+		"value": "grandfather"
+	},
+	{
+		"label": "Aunt",
+		"value": "aunt"
+	},
+	{
+		"label": "Uncle",
+		"value": "uncle"
+	},
+	{
+		"label": "Legal Guardian",
+		"value": "legal_guardian"
+	},
+	{
+		"label": "Other",
+		"value": "other"
+	}
+]

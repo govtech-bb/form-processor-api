@@ -1,5 +1,9 @@
 [
 	{
+		"label": "Select a country",
+		"value": ""
+	},
+	{
 		"label": "Afghanistan",
 		"value": "afghanistan"
 	},
