@@ -1,0 +1,23 @@
+---
+type: block
+meta:
+  blockName: bankInformation
+content:
+  title: "Your bank details"
+elements:
+  - ref: components/name
+    meta:
+      id: accountHolderName
+    content:
+      label: "Account holder name"
+  - ref: fields/text
+    meta:
+      id: bank
+    content:
+      label: "Bank name"
+  - ref: fields/numericText
+    meta:
+      id: accountNumber
+    content:
+      label: "Account number"
+  - ref: components/accountType 

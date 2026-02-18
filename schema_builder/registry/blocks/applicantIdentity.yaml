@@ -1,0 +1,16 @@
+---
+type: block
+meta:
+  blockName: applicantIdentity
+content:
+  # Note: Block titles are omitted if blocks are not the only element on a page.
+  title: Proof of identity
+elements:
+  - ref: components/idNumber
+    validation:
+      skipIfHasValue: passportNumber
+  - ref: components/passportNumber
+    validation:
+      skipIfHasValue: idNumber
+  - ref: components/nisNumber
+  - ref: components/tamisNumber

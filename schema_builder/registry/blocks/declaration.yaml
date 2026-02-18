@@ -1,0 +1,14 @@
+---
+type: block
+meta:
+  blockName: declaration
+  description: "Declaration page"
+content:
+  title: Declare everything is correct
+  description: ""
+elements:
+  - ref: fields/checkbox
+    meta:
+      id: declaration
+    content:
+      label: "I declare everything is correct."

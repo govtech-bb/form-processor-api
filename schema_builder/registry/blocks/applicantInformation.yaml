@@ -1,0 +1,28 @@
+---
+type: block
+meta:
+  blockName: applicantInformation
+content:
+  title: Tell us about yourself
+elements:
+  - ref: components/name.yaml
+    content:
+      label: First name
+  - ref: components/name.yaml
+    meta:
+      id: middleName
+    content:
+      label: Middle name(s)
+    validation:
+      required: false
+  - ref: components/name.yaml
+    content:
+      label: Last name
+  - ref: components/dateOfBirth
+  - ref: components/gender
+  - ref: components/country
+    meta:
+      id: nationality
+    content:
+      label: Nationality / Citizenship
+
