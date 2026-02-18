@@ -442,6 +442,8 @@ Once Recipes are converted into schemas, these schemas are stored in `/schema_bu
 
 The Form Builder is implemented as a TypeScript CLI service that transforms YAML/JSON recipes into JSON schemas.
 
+Note: This is currently setup to be run from the `/schema_builder` directory.
+
 ### Prerequisites
 
 - Node.js (v18 or higher)
