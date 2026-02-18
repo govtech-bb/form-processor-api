@@ -1,6 +1,6 @@
 # Form Builder
 
-If you haven't, please refer to the [README](./README.md) for context about what we're doing here.
+If you haven't, please refer to the [Recipe Information](./RecipeInformation.md) for context about what we're doing here.
 
 Now that we have outlined the modules that can be compose a Form Recipe, next is determining how the server should take the modulated schema, and apply the modulations.
 
