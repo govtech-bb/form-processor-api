@@ -92,6 +92,30 @@ export function parseRegistryFile<T extends Field | Component | Block>(
 }
 
 /**
+ * Parse a generic object file (YAML or JSON) without type validation
+ * Used for processors and other non-typed registry items
+ */
+export function parseObjectFile<T>(filePath: string): T {
+  const content = fs.readFileSync(filePath, 'utf-8');
+  const ext = path.extname(filePath).toLowerCase();
+
+  let parsed: unknown;
+  if (ext === '.json') {
+    parsed = JSON.parse(content);
+  } else if (ext === '.yaml' || ext === '.yml') {
+    parsed = yaml.load(content);
+  } else {
+    throw new Error(`Unsupported file format: ${ext}`);
+  }
+
+  if (!parsed || typeof parsed !== 'object') {
+    throw new Error(`File ${filePath} does not contain a valid object`);
+  }
+
+  return parsed as T;
+}
+
+/**
  * Parse a constants file (JSON array of label/value pairs)
  */
 export function parseConstantsFile(

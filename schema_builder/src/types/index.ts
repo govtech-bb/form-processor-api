@@ -199,6 +199,7 @@ export interface Registry {
   components: Map<string, Component>;
   blocks: Map<string, Block>;
   constants: Map<string, Array<{ label: string; value: string }>>;
+  processors: Map<string, ProcessorConfig>;
 }
 
 // ============================================================================

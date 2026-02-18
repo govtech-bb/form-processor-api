@@ -72,6 +72,7 @@ export async function buildFromRecipe(
       console.log(`  Components: ${registry.components.size}`);
       console.log(`  Blocks: ${registry.blocks.size}`);
       console.log(`  Constants: ${registry.constants.size}`);
+      console.log(`  Processors: ${registry.processors.size}`);
     }
 
     // Run the pipeline
@@ -103,7 +104,7 @@ export async function buildFromRecipe(
 
     // Step 9: Assemble Schema
     if (options.verbose) console.log('Assembling schema...');
-    const schema = assembleSchema(processedRecipe);
+    const schema = assembleSchema(processedRecipe, registry);
 
     return {
       schema,

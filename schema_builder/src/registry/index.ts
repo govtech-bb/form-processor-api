@@ -5,14 +5,25 @@
 
 import * as fs from 'fs';
 import * as path from 'path';
-import { parseRegistryFile, parseConstantsFile } from '../parser/index.js';
-import type { Registry, Field, Component, Block } from '../types/index.js';
+import {
+  parseRegistryFile,
+  parseConstantsFile,
+  parseObjectFile,
+} from '../parser/index.js';
+import type {
+  Registry,
+  Field,
+  Component,
+  Block,
+  ProcessorConfig,
+} from '../types/index.js';
 
 const REGISTRY_SUBDIRS = {
   fields: 'fields',
   components: 'components',
   blocks: 'blocks',
   constants: 'constants',
+  processors: 'processors',
 };
 
 /**
@@ -24,6 +35,7 @@ export function loadRegistry(registryPath: string): Registry {
     components: new Map(),
     blocks: new Map(),
     constants: new Map(),
+    processors: new Map(),
   };
 
   // Load fields
@@ -48,6 +60,12 @@ export function loadRegistry(registryPath: string): Registry {
   const constantsPath = path.join(registryPath, REGISTRY_SUBDIRS.constants);
   if (fs.existsSync(constantsPath)) {
     loadConstants(constantsPath, registry.constants);
+  }
+
+  // Load processors
+  const processorsPath = path.join(registryPath, REGISTRY_SUBDIRS.processors);
+  if (fs.existsSync(processorsPath)) {
+    loadProcessors(processorsPath, registry.processors);
   }
 
   return registry;
@@ -164,12 +182,43 @@ export function getRegistryItem<T>(
 }
 
 /**
+ * Load processors from the processors directory
+ */
+function loadProcessors(
+  dirPath: string,
+  processorsMap: Map<string, ProcessorConfig>,
+): void {
+  const files = fs.readdirSync(dirPath);
+
+  for (const file of files) {
+    const filePath = path.join(dirPath, file);
+    const stat = fs.statSync(filePath);
+
+    if (stat.isDirectory()) {
+      loadProcessors(filePath, processorsMap);
+    } else if (isYamlOrJson(file)) {
+      try {
+        const processor = parseObjectFile<ProcessorConfig>(filePath);
+        const name = path.basename(file, path.extname(file));
+
+        // Store with both full path and simple name
+        const refKey = `processors/${name}`;
+        processorsMap.set(refKey, processor);
+        processorsMap.set(name, processor);
+      } catch (error) {
+        console.error(`Error loading processor file ${filePath}:`, error);
+      }
+    }
+  }
+}
+
+/**
  * Validate that a reference exists in the registry
  */
 export function validateRef(
   ref: string,
   registry: Registry,
-): { valid: boolean; type?: 'field' | 'component' | 'block' } {
+): { valid: boolean; type?: 'field' | 'component' | 'block' | 'processor' } {
   if (ref.startsWith('fields/')) {
     return {
       valid: getRegistryItem(registry.fields, ref) !== undefined,
@@ -186,6 +235,12 @@ export function validateRef(
     return {
       valid: getRegistryItem(registry.blocks, ref) !== undefined,
       type: 'block',
+    };
+  }
+  if (ref.startsWith('processors/')) {
+    return {
+      valid: getRegistryItem(registry.processors, ref) !== undefined,
+      type: 'processor',
     };
   }
 
