@@ -1,6 +1,6 @@
 type: component
 meta:
-  extends: fields/text
+  extends: fields/numericText
   componentName: nisNumber
 content:
   label: 'NIS Number'

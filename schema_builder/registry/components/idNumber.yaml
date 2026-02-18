@@ -1,6 +1,6 @@
 type: component
 meta:
-  extends: fields/text
+  extends: fields/numericText
   componentName: idNumber
 content:
   label: 'ID Number'
