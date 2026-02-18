@@ -86,6 +86,7 @@ However, a field should have support for the following properties, most of which
 * ui (object containing UI suggestions)
     * width (string): (short|medium|long) width of the field for a client to render.
     * disabled (bool): Whether the field should be disabled or not.
+    * hideLabel (bool): Whether to hide the label or not.
 * context (Key-value pairs that can be used for run-time substitution)
 
 ### Components
