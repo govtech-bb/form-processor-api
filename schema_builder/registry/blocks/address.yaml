@@ -3,7 +3,7 @@ type: block
 meta:
   blockName: address
 content:
-  title: "{{TARGET}} Address Information"
+  title: "{{!TARGET}} Address Information"
 elements:
   - ref: components/address
     meta:

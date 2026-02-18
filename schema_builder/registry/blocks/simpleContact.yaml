@@ -1,0 +1,10 @@
+---
+type: block
+meta:
+  blockName: simpleContact
+  description: Simply requests for email and telephone number
+elements:
+  - ref: fields/email
+  - ref: components/telephoneNumber
+    content:
+      label: "Telephone number"
