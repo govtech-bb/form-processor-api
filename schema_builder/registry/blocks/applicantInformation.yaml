@@ -19,7 +19,7 @@ elements:
     content:
       label: Last name
   - ref: components/dateOfBirth
-  - ref: components/gender
+  - ref: components/sex
   - ref: components/country
     meta:
       id: nationality

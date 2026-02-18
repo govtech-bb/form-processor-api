@@ -21,7 +21,7 @@ elements:
       label: Last name
   - ref: components/idNumber
   - ref: components/dateOfBirth
-  - ref: components/gender
+  - ref: components/sex
   - ref: components/relation
   - ref: blocks/address
   - ref: fields/email
