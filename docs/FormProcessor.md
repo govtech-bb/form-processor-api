@@ -12,7 +12,7 @@ We will take consideration for two types of validation. These being:
 * Individual field validation
 * Dependent field validation.
 
-Individual field validation refers to validations that will ensure that input for a given field, meets a set of predefined requirements. 
+Individual field validation refers to validations that will ensure that input for a given field, meets a set of predefined requirements.
 
 These will cover the following:
 
@@ -23,7 +23,10 @@ These will cover the following:
 * maxLength (int): Determines the maximum number of characters an input field must have.
 * pattern (string): These are regular expression based patterns, that the input must satisfy.
 * maxSize (string): For file fields only. This determines the maximum size of a file, based on meta information provided.
-* fileTypes (list[string]): For file fields only. This determines the valid MIME types for submitted files. This should check header information, instead of just checking for file extensions.
+* fileTypes (`list[string]`): For file fields only. This determines the valid MIME types for submitted files. This should check header information, instead of just checking for file extensions.
+* dateIsPast (bool): If true, the date must be in the past.
+* dateIsFuture (bool): Date fields only. If true, the date must be in the future.
+* dateIsPastOrToday (bool): If true, date must be in the past, or be the current date.
 
 Each validation type will have their own error messages, for when validation fails.
 
@@ -33,12 +36,62 @@ The values of some fields should depend on / interact with values of other field
 
 Each of these validation rules, will accept the id of the field it needs to compare against.
 
+These are split into two sets:
+
+- dependent comparisons
+- comparison
+
+`Dependent comparison` rules are those that will determine if the current field is required or not, based on whether the value from a different field, matches some value.
+
+`Dependent comparison` rules are outlined as follows:
+
+* dependsOn (fieldID): Fetches the value from the fieldID, and holds it for depend comparisons. If the comparison returns a truthy value, then the current field is deemed as required.
+* dependsGte (string): Ensures that the value for the field that is being depended on (ID passed to dependOn), is greater than or equal to the value provided.
+* dependsEq (string): Ensures that the value for the depended on field, exactly matches the value provided.
+* dependsIeq (string): Ensures that the value for the current field, matches the value provided, but can be case insensitive.
+
+Example:
+
+```yaml
+
+type: block
+elements:
+  - ref: fields/radio
+    meta:
+      id: addFriendName
+    content:
+      label: "Add your friend's name?"
+  - ref: components/name
+    meta:
+      id: friendName
+    content:
+      label: "What is your friend's name?"
+    validation:
+      dependsOn: addFriendName
+      dependsIeq: yes
+```
+
+This way, the content inside of friendName, is only seen as required, if the value to addFriendName is `yes`.
+
+Note: You can only use dependEq, dependIeq, and dependGte, if dependOn is set.
+
+Next, are comparison rules. These are rules that determine if the value of a field should be allowed, based on their relationship to other fields.
+
 These rules are outlined as follows:
 
 * skipIfHasValue (fieldID): Fetches the value from the fieldID. If a nonempty value is obtained, then the current field is allowed to have an empty value. However, if the current field has a value, then validation rules will be applied as well. This essentially acts as a conditional required.
 * gte (fieldID): Fetches the value from the field with id fieldID. Ensures that the value for the current field, is greater than or equal to the value obtained from the related field.
 * eq (fieldID): Ensures that the value for the current field, exactly matches the value for another field.
 * ieq (fieldID): Ensures that the value for the current field, matches the value for another field, but can be case insensitive.
+
+---
+Dependent comparisons vs skipIfHasValue:
+
+Depend comparison rules are used, when the value of the referenced field should decide whether the current field is treated as required or not, based on the value of the referenced field.
+
+skipIfHasValue is used when the actual value of the referenced field is not relevant, only if a value was provided.
+
+---
 
 Now, having validation rules is only one step. We also need to determine the order of which validation rules will be applied!
 

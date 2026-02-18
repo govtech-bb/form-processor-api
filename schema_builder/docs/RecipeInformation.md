@@ -264,25 +264,29 @@ formId (string): idOfTheForm
 title (string): Title of the Form (If form has one page, this overrides any block.content.title)
 description (string): Brief description of the form (if form has one pages, this overrides any block.content.description)
 pages (`list[pageObject]`): // This is for if the form has multiple pages
-    - pageId (string): id for the page.
-      pageTitle (string): Title for the page. (Overrides block.content.title if present)
+  - pageId (string): id for the page.
+    pageTitle (string): Title for the page. (Overrides block.content.title if present)
       pageDescription (string): Description for the page. (Overrides block.content.description if present)
       elements (`list[blocks|components|fields]`):
-          - ref (string): blocks/blockName, components/componentName or fields/fieldName
-            meta:
-                repeatable (bool): Overrides block.meta.repeatable if present.
-                minItems (int): Overrides block.meta.minItems if present.
-                maxItems (int): Overrides block.meta.maxItems if present.
-                exclude (`list[str]`): List of ids for components / fields that should be excluded. (Applies to blocks only)
-                # Other meta fields override components / fields fields.
-            content: {}
+        - ref (string): blocks/blockName, components/componentName or fields/fieldName
+          meta:
+              repeatable (bool): Overrides block.meta.repeatable if present.
+              minItems (int): Overrides block.meta.minItems if present.
+              maxItems (int): Overrides block.meta.maxItems if present.
+              exclude (`list[str]`): List of ids for components / fields that should be excluded. (Applies to blocks only)
+              # Other meta fields override components / fields fields.
+          content: {}
             ui: {} // (Only applied for components or fields, not to blocks)
 elements: (If the form only has a single page, then this property should be used instead of `pages`)
-    ref (string): blocks/blockName, components/componentName or fields/fieldName
+  ref (string): blocks/blockName, components/componentName or fields/fieldName
      # Same rules apply, in terms of content, meta and ui
 processors (`list[Processor]`):
-    type (email|payment): Type of processor
-    config (object): Configuration for processor
+  type (email|payment): Type of processor
+  config (object): Configuration for processor
+confirmation (object): // Confirmation page!
+  title (string): Title to display on successful submission.
+  description (string): Description to display for successful submission.
+  content (string): Body text to display on successful submission.
 
 To demonstrate this, we can build a one page form that will use the components and blocks we defined before, along with a field by itself to get a user's first name, email address, ID number, and address information (but not the addressLine2).
 Let's call it Applicant Information (YAML provided for comments):
@@ -319,6 +323,10 @@ processors:
       from: "system@mail.com"
       subject: Applicant information received
       content: "Thank you!"
+confirmation:
+  title: Thank you for your application
+  description: Your information has been sent to the appropriate agency.
+  content: Good job.
 ```
 
 Now, if we wanted to, we could actually split this into 2 pages!
@@ -365,6 +373,10 @@ processors:
       from: "system@mail.com"
       subject: Applicant information received
       content: "Thank you!"
+confirmation:
+  title: Thank you for your application
+  description: Your information has been sent to the appropriate agency.
+  content: Good job.
 ```
 
 For next readings, refer to [Form Builder](./FormBuilder.md) and [Form Processor](/docs/FormProcessor.md).

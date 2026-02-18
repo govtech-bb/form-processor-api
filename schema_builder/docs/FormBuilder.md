@@ -329,6 +329,27 @@ Processor template strings gain access to communicating with pre-defined externa
 As such, processor template strings are not evaluated at all, until a processor processes them.
 Similarly, they are only present in the `processors` part (section dedicated to form post-processors) of a form recipe.
 
+## Post Processors
+
+Once a form has been successfully submitted, and the data passes validation, post-processors are applied.
+
+These are additional functionality that can be performed once a submitted form's information is correct.
+
+For example, sending an email to the applicant.
+
+```yaml
+
+formId: myForm
+elements: []
+processors:
+  - ref: processors/email
+    config:
+      to: "{{formData.contactDetails.email}}"
+      subject: "My Form - Submission Received"
+```
+
+Processors are defined in `registry/processors`.
+
 ## Creating the Form Schema
 
 So far, we would have been working with Form Recipes, identifiable by keywords such as `ref` and `extends`.
@@ -390,8 +411,8 @@ In this section, we will outline the rules for how the form builder will go from
 This will be broken into the following steps (until a field is obtained):
 
 1. If using `pages`, the following steps are applied to each page.
-1. Store any `context` values, for template substitutions.
-1. Apply all substitutions for any template strings with the values.
+1. Store any `context` values, for context template substitutions.
+1. Apply all substitutions for any context template strings with their values.
 1. Evaluate each `Block`:
   1. If a `Block` is the only entry for a page, then set `pageTitle` and `pageDescription` to `block.content.pageTitle` and `block.content.pageDescription` (if applicable).
   1. If a `Block` has `repeatable` meta information, apply that to the entire page, if no `repeatable` meta information for the page is explicitly set.
@@ -404,6 +425,7 @@ This will be broken into the following steps (until a field is obtained):
     - If no `label` is provided, then throw an exception indicating that a field without an ID is illegal
   1. If `options` are present, and the value matches `constants/fileName`, then fetch the values from that file, and set them as KV pairs.
   1. If `options` are present, but is an array of strings, then convert the array of strings, into an array of 2-key objects, where `label` is the provided string, and `value` is `label`, but lowercased, without any special characters (except spaces), and then with spaces replaced with hyphens (-).
+  1. Apply any field substitutions.
 1. For the final pass, move the properties inside `meta`, to be at the root of their field object.
 1. Convert `elements` to `fields`.
 
