@@ -90,6 +90,10 @@ async function handleBuild(args: string[]) {
   // Output schema
   const schemaJson = serializeToJson(result.schema, true);
 
+  if (!options.output) {
+    const parsed = path.parse(recipePath);
+    options.output = `./schemas/${parsed.name}.json`;
+  }
   if (options.output) {
     // Ensure output directory exists
     const outputDir = path.dirname(options.output);
@@ -114,10 +118,9 @@ async function handleBuild(args: string[]) {
   console.log(`  Form ID: ${result.schema.formId}`);
   console.log(`  Fields: ${fieldCount}`);
   console.log(
-    `  Pages: ${
-      Array.isArray(result.schema.fields)
-        ? 1
-        : Object.keys(result.schema.fields).length
+    `  Pages: ${Array.isArray(result.schema.fields)
+      ? 1
+      : Object.keys(result.schema.fields).length
     }`,
   );
 }
@@ -207,10 +210,9 @@ async function handleValidate(args: string[]) {
     console.log(`✓ Recipe is valid: ${recipe.formId}`);
     console.log(`  Title: ${recipe.title || 'N/A'}`);
     console.log(
-      `  Type: ${
-        recipe.pages
-          ? `Multi-page (${recipe.pages.length} pages)`
-          : 'Single page'
+      `  Type: ${recipe.pages
+        ? `Multi-page (${recipe.pages.length} pages)`
+        : 'Single page'
       }`,
     );
     process.exit(0);

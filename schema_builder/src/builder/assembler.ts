@@ -8,7 +8,6 @@
  */
 
 import { getRegistryItem } from '../registry/index.js';
-import { deepMerge } from '../utils/index.js';
 import type {
   FormRecipe,
   ElementDefinition,
