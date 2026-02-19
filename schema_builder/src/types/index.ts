@@ -183,6 +183,7 @@ export interface SchemaField {
 
 export interface FormSchema {
   formId: string;
+  id?: string;
   title?: string;
   description?: string;
   fields: SchemaField[] | Record<string, SchemaField[]>;

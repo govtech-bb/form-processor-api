@@ -29,6 +29,7 @@ export function assembleSchema(
 ): FormSchema {
   const schema: FormSchema = {
     formId: recipe.formId,
+    id: recipe.formId, // Used for the current processor.
     title: recipe.title,
     description: recipe.description,
     fields: {},
