@@ -12,3 +12,6 @@ elements:
       id: declaration
     content:
       label: I confirm that my information is correct and I am happy for it to be verified. I understand that false details may lead to my application being rejected, and that the Government of Barbados will keep my information confidential.
+      options:
+        - label: ""
+          value: "confirmed"

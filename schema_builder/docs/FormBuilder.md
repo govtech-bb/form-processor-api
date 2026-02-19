@@ -79,6 +79,8 @@ formId: myForm
 title: My Form
 pages:
   - pageId: applicant
+    pageTitle: Title for the page
+    pageDescription: Description for the page
     elements:
       - ref: fields/text
         meta:

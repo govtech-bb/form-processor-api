@@ -267,7 +267,7 @@ description (string): Brief description of the form (if form has one pages, this
 pages (`list[pageObject]`): // This is for if the form has multiple pages
   - pageId (string): id for the page.
     pageTitle (string): Title for the page. (Overrides block.content.title if present)
-      pageDescription (string): Description for the page. (Overrides block.content.description if present)
+    pageDescription (string): Description for the page. (Overrides block.content.description if present)
       elements (`list[blocks|components|fields]`):
         - ref (string): blocks/blockName, components/componentName or fields/fieldName
           meta:

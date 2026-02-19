@@ -12,8 +12,8 @@ pages:
             - country
             - nationality
   - pageId: contactDetails
-    title: Contact details
-    description: ''
+    pageTitle: Contact details
+    pageDescription: ''
     elements:
       - ref: blocks/address
         meta:
@@ -24,7 +24,7 @@ pages:
           label: Email address
       - ref: components/telephoneNumber
   - pageId: licenceHistory
-    title: Tell us about your licence history
+    pageTitle: Tell us about your licence history
     elements:
       - ref: fields/radio
         meta:
@@ -49,8 +49,8 @@ pages:
           dependsOn: hasPreviousLicence
           dependsIeq: yes
   - pageId: endorsements
-    title: Tell us about any endorsements
-    description: "An endorsement is a record of an offence added to your conductor's or driving licence."
+    pageTitle: Tell us about any endorsements
+    pageDescription: "An endorsement is a record of an offence added to your conductor's or driving licence."
     elements:
       - ref: fields/radio
         meta:
@@ -58,7 +58,7 @@ pages:
         content:
           label: Do you have any endorsements?
   - pageId: endorsementDetails
-    title: Your endorsements
+    pageTitle: Your endorsements
     meta:
       repeatable: true
       maxItems: 10
@@ -77,8 +77,8 @@ pages:
         content:
           label: How long did the endorsement appear on your licence.
   - pageId: disqualifications
-    title: Tell us about your disqualifications
-    description: A disqualification is when a court has stopped you from getting or holding a licence.
+    pageTitle: Tell us about your disqualifications
+    pageDescription: A disqualification is when a court has stopped you from getting or holding a licence.
     elements:
       - ref: fields/radio
         meta:

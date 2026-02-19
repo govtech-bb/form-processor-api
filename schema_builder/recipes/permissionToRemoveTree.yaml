@@ -17,7 +17,7 @@ pages:
             - faxNumber
             - workTelephone
   - pageId: treesToRemove
-    title: Tell us about the protected tree you want to remove
+    pageTitle: Tell us about the protected tree you want to remove
     meta:
       repeatable: true
       maxItems: 5
