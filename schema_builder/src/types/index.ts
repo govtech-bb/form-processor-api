@@ -181,12 +181,25 @@ export interface SchemaField {
   [key: string]: unknown;
 }
 
+export interface PageSchemaField {
+  id: string;
+  title?: string;
+  description?: string;
+  repeatable?: boolean;
+  minItems?: number;
+  maxItems?: number;
+  fields: SchemaField[];
+}
+
+export type SchemaType = 'single' | 'multi';
+
 export interface FormSchema {
   formId: string;
   id?: string;
   title?: string;
   description?: string;
-  fields: SchemaField[] | Record<string, SchemaField[]>;
+  type?: SchemaType;
+  fields: SchemaField[] | PageSchemaField[];
   processors?: ProcessorConfig[];
   confirmation?: ConfirmationConfig;
 }

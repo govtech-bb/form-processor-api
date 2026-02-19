@@ -142,10 +142,10 @@ To reduce the need for redundant rewriting, at the expense of potentially introd
 ```
 formId: myForm
 elements:
-ref: components/idNumber
-  meta:
-   id: ""
-  content:
+  - ref: components/idNumber
+    meta:
+     id: ""
+    content:
 ```
 
 Since we explicitly pass an empty string as the meta.id value, we are essentially telling the builder to use a camel cased "ID Number" (that being idNumber) as the id for the field. However, ideally, we would want IDs to be implemented at the component level. For example:
@@ -165,16 +165,16 @@ For example:
 ```
 formId: myForm
 elements:
-ref: components/userName
-  meta:
-   id: firstName
-  content:
-   label: "First Name"
-ref: components/userName
-  meta:
-   id: lastName
-  content:
-   label: "Last Name"
+  - ref: components/userName
+    meta:
+     id: firstName
+    content:
+     label: "First Name"
+  - ref: components/userName
+    meta:
+     id: lastName
+    content:
+     label: "Last Name"
 ```
 
 In this case, we use the `userName` component, a component that wraps `fields/text`, and provides simple name validation rules, twice. As such, we explicitly defined the meta.id for each of the fields.
@@ -194,12 +194,12 @@ Notice how id is set to an empty string. This means that when using the componen
 ```
 formId: myForm
 elements:
-ref: components/userName
-  content:
-   label: "First Name"
-ref: components/userName
-  content:
-   label: "Last Name"
+  - ref: components/userName
+    content:
+     label: "First Name"
+  - ref: components/userName
+    content:
+     label: "Last Name"
 ```
 
 Resulting in the IDs being generated to be "firstName" and "lastName".
@@ -567,27 +567,40 @@ Single-page forms output a flat array:
 ```json
 {
   "formId": "myForm",
+  "type": "single",
   "fields": [
     { "id": "firstName", "htmlType": "text", ... }
   ]
 }
 ```
 
-Multi-page forms output nested by pageId:
+Multipage forms output an array, with fields nested in pages:
 
 ```json
 {
   "formId": "myForm",
-  "fields": {
-    "page1": [
-      { "id": "page1.firstName", "htmlType": "text", ... }
-    ],
-    "page2": [
-      { "id": "page2.lastName", "htmlType": "text", ... }
-    ]
-  }
+  "type": "multi",
+  "fields": [
+    {
+      "id": "Page ID",
+      "title": "Page Title",
+      "description": "Page description",
+      "fields": [
+        { "id": "page1.firstName", "htmlType": "text", ... },
+        { "id": "page1.lastName", "htmlType": "text", ... }
+      ]
+    },
+    {
+      "id": "Page ID 2",
+      "title": "Page Title",
+      "description": "Page description",
+      "fields": [{ "id": "page2.firstName", "htmlType": "text", ... }]
+    }
+  ]
 }
 ```
+
+Note: We also add a meta field called `type` to clearly indicate whether the form is a single page form, or a multipage form.
 
 ## Next Readings
 

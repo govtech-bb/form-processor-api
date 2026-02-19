@@ -18,6 +18,7 @@ import type {
   ProcessorConfig,
   ConfirmationConfig,
   Registry,
+  PageSchemaField,
 } from '../types/index.js';
 
 /**
@@ -32,7 +33,8 @@ export function assembleSchema(
     id: recipe.formId, // Used for the current processor.
     title: recipe.title,
     description: recipe.description,
-    fields: {},
+    type: 'single',
+    fields: [],
   };
 
   // Process single page form (elements)
@@ -40,20 +42,27 @@ export function assembleSchema(
     const fields = flattenElements(recipe.elements);
     // For single page, just return the flat array
     schema.fields = fields.map((field) => fieldToSchemaField(field));
+    schema.type = 'single';
   }
 
   // Process multi-page form (pages)
   if (recipe.pages) {
-    const pageFields: Record<string, SchemaField[]> = {};
+    const pageFields: PageSchemaField[] = [];
 
     for (const page of recipe.pages) {
       const fields = flattenElements(page.elements);
-      pageFields[page.pageId] = fields.map((field) =>
-        fieldToSchemaField(field),
-      );
+      const pageField: PageSchemaField = {
+        title: page.pageTitle,
+        description: page.pageDescription,
+        id: page.pageId,
+        fields: fields.map((field) => fieldToSchemaField(field)),
+      };
+
+      pageFields.push(pageField);
     }
 
     schema.fields = pageFields;
+    schema.type = 'multi';
   }
 
   // Resolve processors from registry if present

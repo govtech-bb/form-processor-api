@@ -1,6 +1,6 @@
 type: field
 meta:
-  htmlType: text:email
+  htmlType: email
 validation:
   required: true
 ui:

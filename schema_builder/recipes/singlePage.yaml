@@ -1,0 +1,15 @@
+---
+formId: singlePage
+title: This is a single page form
+description: Just a basic single page form
+elements:
+  - ref: blocks/nameInformation
+  - ref: blocks/address
+  - ref: blocks/contact
+processors:
+  - ref: processors/email
+    config:
+      to: johnBrowne
+      subject: Hello John
+confirmation:
+  description: Thank you! Until next time!
