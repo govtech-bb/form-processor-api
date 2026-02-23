@@ -144,7 +144,6 @@ export class EZPayService {
       }
 
       const data = await response.json();
-      this.logger.debug('Response received', data);
 
       return data;
     } catch (error) {
