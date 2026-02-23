@@ -1,0 +1,38 @@
+{
+  "type": "block",
+  "meta": {
+    "blockName": "nameInformation"
+  },
+  "elements": [
+    {
+      "ref": "components/name",
+      "meta": {
+        "id": "firstName"
+      },
+      "content": {
+        "label": "First name"
+      }
+    },
+    {
+      "ref": "components/name",
+      "meta": {
+        "id": "middleName"
+      },
+      "content": {
+        "label": "Middle name(s)"
+      },
+      "validation": {
+        "required": false
+      }
+    },
+    {
+      "ref": "components/name",
+      "meta": {
+        "id": "lastName"
+      },
+      "content": {
+        "label": "Last name"
+      }
+    }
+  ]
+}

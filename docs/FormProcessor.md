@@ -47,8 +47,8 @@ These are split into two sets:
 
 * dependsOn (fieldID): Fetches the value from the fieldID, and holds it for depend comparisons. If the comparison returns a truthy value, then the current field is deemed as required.
 * dependsGte (string): Ensures that the value for the field that is being depended on (ID passed to dependOn), is greater than or equal to the value provided.
-* dependsEq (string): Ensures that the value for the depended on field, exactly matches the value provided.
-* dependsIeq (string): Ensures that the value for the current field, matches the value provided, but can be case insensitive.
+* dependsEqCase (string): Ensures that the value for the depended on field, exactly matches the value provided.
+* dependsEq (string): Ensures that the value for the current field, matches the value provided, but can be case insensitive.
 
 Example:
 
@@ -68,7 +68,7 @@ elements:
       label: "What is your friend's name?"
     validation:
       dependsOn: addFriendName
-      dependsIeq: yes
+      dependsEq: yes
 ```
 
 This way, the content inside of friendName, is only seen as required, if the value to addFriendName is `yes`.
@@ -81,8 +81,8 @@ These rules are outlined as follows:
 
 * skipIfHasValue (fieldID): Fetches the value from the fieldID. If a nonempty value is obtained, then the current field is allowed to have an empty value. However, if the current field has a value, then validation rules will be applied as well. This essentially acts as a conditional required.
 * gte (fieldID): Fetches the value from the field with id fieldID. Ensures that the value for the current field, is greater than or equal to the value obtained from the related field.
-* eq (fieldID): Ensures that the value for the current field, exactly matches the value for another field.
-* ieq (fieldID): Ensures that the value for the current field, matches the value for another field, but can be case insensitive.
+* eqCase (fieldID): Ensures that the value for the current field, exactly matches the value for another field.
+* eq (fieldID): Ensures that the value for the current field, matches the value for another field, but can be case insensitive.
 
 ---
 Dependent comparisons vs skipIfHasValue:

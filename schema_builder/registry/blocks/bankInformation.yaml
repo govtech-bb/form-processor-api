@@ -12,7 +12,7 @@ elements:
       label: "Account holder name"
   - ref: fields/text
     meta:
-      id: bank
+      id: bankName
     content:
       label: "Bank name"
   - ref: fields/numericText

@@ -75,19 +75,21 @@ However, a field should have support for the following properties, most of which
     * minLength (int): Minimum length of a string received as input.
     * maxLength (int): Maximum length of a string received as input.
     * pattern (string): Regular Expression based pattern to validate the input against.
-    * fileTypes `[file]` (`list[string]`): List of MIME types.
     * required (bool): Determines whether the field needs a value, or not.
+    * fileTypes `[file]` (`list[string]`): List of MIME types.
     * maxSize `[file]`(string): The maximum size for an uploaded file.
     * skipIfHasValue (string): ID of another field. If that field has a value, then skip validation of this field.
     * gt `[number, date]` (string): ID of another field. This field must be greater than the value in the field referenced.
-    * eq (string): ID of another field. This field must have a case sensitive exact match to the value in the field referenced.
-    * ieq (string): ID of another field. This field must have a case insensitive value to the value in the field being referenced.
+    * eqCase (string): ID of another field. This field must have a case sensitive exact match to the value in the field referenced.
+    * eq (string): ID of another field. This field must have a case insensitive value to the value in the field being referenced.
     * errorMessage (string): Default error message. If not provided, will use generated messages per validation type.
 * ui (object containing UI suggestions)
     * width (string): (short|medium|long) width of the field for a client to render.
     * disabled (bool): Whether the field should be disabled or not.
     * hideLabel (bool): Whether to hide the label or not.
 * context (Key-value pairs that can be used for run-time substitution)
+
+Refer to `/docs/FormProcessor.md` for more up-to-date information on validation rules.
 
 ### Components
 
@@ -215,6 +217,7 @@ meta:
     minItems (int): If block is repeatable, determines the min number of entries.
     maxItems (int): If block is repeatable, determines the max number of entries.
     exclude (`list[str]`): List of IDs to exclude from the block. (This information should be passed by a form recipe)
+    idPrefix (string): Prefix to prepend to each component in this block.
 content:
     title (string): Title for the block. Can be used to display a title on a page for the block.
     description (string): Description for the block. Can be used to display a description on a page for the block.
@@ -261,33 +264,39 @@ Refer to [Form Builder](./formBuilder.md) for more details on the form builder.
 
 Now, Form Recipes will have the following format:
 
-formId (string): idOfTheForm
-title (string): Title of the Form (If form has one page, this overrides any block.content.title)
-description (string): Brief description of the form (if form has one pages, this overrides any block.content.description)
-pages (`list[pageObject]`): // This is for if the form has multiple pages
-  - pageId (string): id for the page.
-    pageTitle (string): Title for the page. (Overrides block.content.title if present)
-    pageDescription (string): Description for the page. (Overrides block.content.description if present)
-      elements (`list[blocks|components|fields]`):
-        - ref (string): blocks/blockName, components/componentName or fields/fieldName
-          meta:
-              repeatable (bool): Overrides block.meta.repeatable if present.
-              minItems (int): Overrides block.meta.minItems if present.
-              maxItems (int): Overrides block.meta.maxItems if present.
-              exclude (`list[str]`): List of ids for components / fields that should be excluded. (Applies to blocks only)
-              # Other meta fields override components / fields fields.
-          content: {}
-            ui: {} // (Only applied for components or fields, not to blocks)
-elements: (If the form only has a single page, then this property should be used instead of `pages`)
-  ref (string): blocks/blockName, components/componentName or fields/fieldName
-     # Same rules apply, in terms of content, meta and ui
-processors (`list[Processor]`):
-  type (email|payment): Type of processor
-  config (object): Configuration for processor
-confirmation (object): // Confirmation page!
-  title (string): Title to display on successful submission.
-  description (string): Description to display for successful submission.
-  content (string): Body text to display on successful submission.
+```yaml
+formId: idOfTheForm
+title: Title of the Form (If form has one page, this overrides any block.content.title)
+description: Brief description of the form (if form has one pages, this overrides any block.content.description)
+pages:
+  - pageId: idForThePage
+    pageTitle: Title for the page. (Overrides block.content.title if present)
+    pageDescription: Description for the page. (Overrides block.content.description if present)
+    elements:
+      - ref: blocks/blockName or components/componentName or fields/fieldName
+        meta:
+          id: "idForComponentOrField" # Does not apply to blocks
+          repeatable: true # Overrides block.meta.repeatable if present.
+          minItems: 1     # Overrides block.meta.minItems if present.
+          maxItems: 5     # Overrides block.meta.maxItems if present.
+          exclude: [id1, id2] # List of ids for components / fields that should be excluded. (Applies to blocks only)
+          # Other meta fields override components / fields fields.
+        content: {}
+        ui: {} # (Only applied for components or fields, not to blocks)
+
+elements:
+  ref: blocks/blockName or components/componentName or fields/fieldName
+  # Same rules apply, in terms of content, meta and ui
+
+processors:
+  - type: email | payment
+    config:
+      # Configuration for processor
+confirmation:
+  title: Title to display on successful submission.
+  description: Description to display for successful submission.
+  content: Body text to display on successful submission.
+```
 
 To demonstrate this, we can build a one page form that will use the components and blocks we defined before, along with a field by itself to get a user's first name, email address, ID number, and address information (but not the addressLine2).
 Let's call it Applicant Information (YAML provided for comments):

@@ -1,0 +1,84 @@
+{
+  "formId": "permissionToRemoveTree",
+  "title": "Apply for permission to remove a protected tree",
+  "description": "Apply for permission to remove a protected tree",
+  "pages": [
+    {
+      "pageId": "applicant",
+      "elements": [
+        {
+          "ref": "blocks/nameInformation"
+        },
+        {
+          "ref": "blocks/address",
+          "meta": {
+            "exclude": [
+              "city",
+              "country"
+            ]
+          }
+        },
+        {
+          "ref": "blocks/contact",
+          "meta": {
+            "exclude": [
+              "faxNumber",
+              "workTelephone"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "pageId": "treesToRemove",
+      "pageTitle": "Tell us about the protected tree you want to remove",
+      "meta": {
+        "repeatable": true,
+        "maxItems": 5
+      },
+      "elements": [
+        {
+          "ref": "components/genericShortText",
+          "content": {
+            "label": "Type of protected tree"
+          }
+        },
+        {
+          "ref": "components/genericShortText",
+          "content": {
+            "label": "Reason for removing tree"
+          }
+        },
+        {
+          "ref": "blocks/address",
+          "meta": {
+            "exclude": [
+              "city",
+              "country",
+              "postcode"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "processors": [
+    {
+      "ref": "processors/email",
+      "config": {
+        "to": "{{db:permission-to-remove-tree:admin_email}}",
+        "subject": "New Request to remove protected tree - {{formData.applicant.firstName}} {{formData.applicant.lastName}}"
+      }
+    },
+    {
+      "ref": "processors/email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Permission to Remove Tree - Submission Received"
+      }
+    }
+  ],
+  "confirmation": {
+    "description": "Your information has been sent to the Tree Cutting Association"
+  }
+}

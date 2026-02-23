@@ -3,3 +3,4 @@ type: email
 config:
   to: ""
   subject: ""
+  template: ""

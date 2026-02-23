@@ -141,7 +141,7 @@ That is, the first character must be a lowercase alphabetical character, and sub
 
 To reduce the need for redundant rewriting, at the expense of potentially introducing ambiguity, if no meta.id value is provided at any level (component or field), or an empty string is passed for meta.id, then the id for the field is generated using the label field, converting the space delimited text, into camelCase. For example:
 
-```
+```yaml
 formId: myForm
 elements:
   - ref: components/idNumber
@@ -152,7 +152,7 @@ elements:
 
 Since we explicitly pass an empty string as the meta.id value, we are essentially telling the builder to use a camel cased "ID Number" (that being idNumber) as the id for the field. However, ideally, we would want IDs to be implemented at the component level. For example:
 
-```
+```yaml
 type: component
 meta:
  componentName: idNumber
@@ -164,44 +164,47 @@ The only time these should be overridden however, is in the situation where mult
 
 For example:
 
-```
+```yaml
+
 formId: myForm
 elements:
   - ref: components/userName
-    meta:
-     id: firstName
-    content:
-     label: "First Name"
+    meta:
+      id: firstName
+    content:
+      label: "First Name"
   - ref: components/userName
-    meta:
-     id: lastName
-    content:
-     label: "Last Name"
+    meta:
+      id: lastName
+    content:
+      label: "Last Name"
 ```
 
 In this case, we use the `userName` component, a component that wraps `fields/text`, and provides simple name validation rules, twice. As such, we explicitly defined the meta.id for each of the fields.
 However, generic validation components such as userName, should be defined as follows:
 
-```
+```yaml
+
 type: component
 meta:
- componentName: userName
- id: ""
+  componentName: userName
+  id: ""
 validation:
- pattern: "^[a-zA-Z- ]$"
+  pattern: "^[a-zA-Z- ]$"
 ```
 
 Notice how id is set to an empty string. This means that when using the component, instead of explicitly defining the id and the label, we can only provide the label, and have the ID be generated for it. This turns our earlier example into:
 
-```
+```yaml
+
 formId: myForm
 elements:
   - ref: components/userName
-    content:
-     label: "First Name"
+    content:
+      label: "First Name"
   - ref: components/userName
-    content:
-     label: "Last Name"
+    content:
+      label: "Last Name"
 ```
 
 Resulting in the IDs being generated to be "firstName" and "lastName".

@@ -6,19 +6,7 @@ meta:
 content:
   title: Tell us about {{PERSON}} # For example: Tell us about your father.
 elements:
-  - ref: components/name.yaml
-    content:
-      label: First name
-  - ref: components/name.yaml
-    meta:
-      id: middleName
-    content:
-      label: Middle name(s)
-    validation:
-      required: false
-  - ref: components/name.yaml
-    content:
-      label: Last name
+  - ref: blocks/nameInformation
   - ref: components/idNumber
   - ref: components/dateOfBirth
   - ref: components/sex

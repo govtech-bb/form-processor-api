@@ -1,8 +1,0 @@
----
-type: component
-meta:
-  extends: fields/text
-  componentName: genericText
-valildation:
-  minLength: 2
-  maxLength: 150
