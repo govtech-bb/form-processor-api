@@ -1,0 +1,9 @@
+---
+
+type: component
+meta:
+  extends: fields/select
+  id: relationship
+content:
+  label: "What is the relationship?"
+  options: constants/relations

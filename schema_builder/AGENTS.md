@@ -59,6 +59,15 @@ An example recipe:
           "ref": "components/componentName"
         }
       ]
+    },
+    {
+      "pageId": "declaration",
+      "pageTitle": "Declaration",
+      "elements": [
+        {
+          "ref": "blocks/declaration"
+        }
+      ]
     }
   ],
   "processors": [
@@ -165,6 +174,7 @@ Currently, the following components are available to be referenced:
 - tamisNumber: Text field with validation for a Barbadian Tax Identification (TAMIS) number.
 - telephoneNumber: Text field with validation for a telephone number.
 - title: Select field with options with values `mr`, `mrs`, `ms`.
+- relationship: Select field with options outlining the different relationships between people.
 
 Note, when a recipe is evaluated into a schema, all components are evaluated into their field forms, applying a deep merge. This will be explained further in the section titled references.
 
@@ -306,6 +316,15 @@ Example:
         },
         {
           "ref": "fields/fieldName"
+        }
+      ]
+    },
+    {
+      "pageId": "declaration",
+      "pageTitle": "Declaration",
+      "elements": [
+        {
+          "ref": "blocks/declaration"
         }
       ]
     }
@@ -465,8 +484,9 @@ When building a recipe, the following steps should be followed:
   - Block matches that have a majority of required elements, excluding others.
   - Components
   - Fields
-4. Add two email processors (with empty configs).
-5. Add the confirmation information
+4. The declaration page must always be by itself, and be the final page.
+5. Add two email processors (with empty configs).
+6. Add the confirmation information
 
 That is, when building a form recipe, prioritize referencing exact block matches, then block matches with the `exclude` meta tag excluding unwanted fields, then referencing components, and if there is none that satisfy what is needed, then as a last resort, reference a field directly.
 
@@ -484,3 +504,5 @@ A "majority" match, will be like a block that has firstName, middleName and last
 ```
 
 Note: As meta information, each reference to a component or field, must contain `id`.
+
+When written, recipes are stored in the `./recipes/`, as json files.
