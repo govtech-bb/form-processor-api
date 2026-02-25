@@ -1,0 +1,45 @@
+Create a recipe for a JSON form titled "Project Protege Mentor Registration".
+
+This form consists of 7 pages, (not including the declaration page), structured in the following order, with the labels for each of their nested fields:
+
+1. Applicant Information:
+  - First Name
+  - Last Name
+  - Date of Birth
+  - Employment Status (text field)
+  - Institution Name
+  - Employer Name
+  - Other Employment Details (text field)
+2. Contact Information
+  - Address Line 1
+  - Address Line 2
+  - Parish 
+  - Email Address 
+  - Telephone Number
+3. Mentorship Information
+  - Why do you want to be a mentor (textarea)
+  - What are your strenghts that would benefit a mentee? (textarea)
+  - What would you like your mentee to learn from you (textarea)
+4. Preferences
+  - Mentee Gender Preference (Select with options: male, female, either)
+  - Are you willing to share your phone number with your mentee? (radio: yes, no)
+  - Do you have a specific mentee in mind? (Radio: yes, no)
+  - Name of mentee you have in mind (Only if "do you have a specific mentee in mind" is yes)
+  - Mentee Phone number (Only if do you have a specifc mentee in mind is yes.)
+5. Mentoring Experience
+  - Do you have previous mentoring experience? (Radio: yes, no)
+  - Years of mentoring experience (number, maxValue: 50. Only if do you have previous mentoring experience is 'yes')
+6. Professional Reference
+  - First Name 
+  - Last Name
+  - Relationship 
+  - Email 
+  - Phone number
+7. Personal Reference
+  - First Name
+  - Last Name 
+  - Relationship 
+  - Email 
+  - Phone 
+
+Note: The Recipe should be written as a JSON file.
