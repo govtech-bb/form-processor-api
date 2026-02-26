@@ -184,7 +184,6 @@
             "value": "imported"
           },
           "validations": {
-            "min": 2,
             "max": 100,
             "message": "Location must be at least 2 characters"
           }
