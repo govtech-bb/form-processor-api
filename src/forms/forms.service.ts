@@ -161,12 +161,11 @@ export class FormsService {
     data?: FormSubmissionResponseDto;
     errors?: any[];
   }> {
-    try {
-      // Find payment processor config
-      const paymentProcessor = formSchema.processors.find(
-        (processor: any) => processor.type === 'payment',
-      );
+    const paymentProcessor = formSchema.processors.find(
+      (processor: any) => processor.type === 'payment',
+    );
 
+    try {
       // Execute payment processor only (form data is encrypted and stored here)
       // No other processors (like email) are executed at submission time
       const paymentResult = await this.processorPipeline.executeProcessor(
@@ -180,10 +179,26 @@ export class FormsService {
       );
 
       if (!paymentResult.success || !paymentResult.paymentRequired) {
-        // Payment creation failed
+        // Payment creation failed - EZPay unavailable, but submission was received
+        this.logger.warn(
+          `Payment service unavailable for ${formId}:${submissionId} - ${paymentResult.error}`,
+        );
         return {
           validationSuccess: true,
-          data: new FormSubmissionResponseDto(submissionId, formId, 'failed'),
+          data: new FormSubmissionResponseDto(
+            submissionId,
+            formId,
+            'payment_unavailable',
+            {
+              paymentRequired: true,
+              amount: paymentResult.amount ?? paymentProcessor.config.amount,
+              description:
+                paymentResult.description ??
+                paymentProcessor.config.description,
+              errorMessage:
+                'The payment service is temporarily unavailable. Please try again shortly.',
+            },
+          ),
         };
       }
 
@@ -220,7 +235,18 @@ export class FormsService {
 
       return {
         validationSuccess: true,
-        data: new FormSubmissionResponseDto(submissionId, formId, 'failed'),
+        data: new FormSubmissionResponseDto(
+          submissionId,
+          formId,
+          'payment_unavailable',
+          {
+            paymentRequired: true,
+            amount: paymentProcessor.config.amount,
+            description: paymentProcessor.config.description,
+            errorMessage:
+              'The payment service is temporarily unavailable. Please try again shortly.',
+          },
+        ),
       };
     }
   }

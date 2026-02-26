@@ -9,6 +9,7 @@ import { EmailProcessor } from './implementations/email.processor';
 import { PaymentProcessor } from './implementations/payment.processor';
 import { OpenCRVSProcessor } from './implementations/opencrvs.processor';
 import { EZPayService, DepartmentMappingService } from '../payments';
+import { SlackService } from '../common/slack.service';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { EZPayService, DepartmentMappingService } from '../payments';
     OpenCRVSProcessor,
     EZPayService,
     DepartmentMappingService,
+    SlackService,
   ],
   exports: [ProcessorPipelineService],
 })

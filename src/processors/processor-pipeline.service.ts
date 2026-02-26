@@ -2,13 +2,17 @@ import { Injectable, Logger, BadRequestException } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import { IProcessor, ProcessorContext } from './interfaces';
 import { ProcessorConfig } from '../forms/interfaces';
+import { SlackService } from '../common/slack.service';
 
 @Injectable()
 export class ProcessorPipelineService {
   private readonly logger = new Logger(ProcessorPipelineService.name);
   private processors: Map<string, IProcessor> = new Map();
 
-  constructor(private readonly moduleRef: ModuleRef) {}
+  constructor(
+    private readonly moduleRef: ModuleRef,
+    private readonly slackService: SlackService,
+  ) {}
 
   registerProcessor(processor: IProcessor): void {
     this.processors.set(processor.type, processor);
@@ -46,6 +50,12 @@ export class ProcessorPipelineService {
           `Processor ${config.type} failed: ${error.message}`,
           error.stack,
         );
+        void this.slackService.notifyError({
+          processor: config.type,
+          formId: context.formId,
+          submissionId: context.submissionId,
+          error: error.message,
+        });
         throw error;
       }
     });
@@ -87,6 +97,12 @@ export class ProcessorPipelineService {
         `Processor ${processorConfig.type} failed: ${error.message}`,
         error.stack,
       );
+      void this.slackService.notifyError({
+        processor: processorConfig.type,
+        formId: context.formId,
+        submissionId: context.submissionId,
+        error: error.message,
+      });
       throw error;
     }
   }
