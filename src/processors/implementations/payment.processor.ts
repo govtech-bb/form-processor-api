@@ -15,7 +15,6 @@ import {
 } from '../../forms/interfaces/form-schema.interface';
 import { IProcessor } from '../interfaces/processor.interface';
 import { encryptFormData } from '../../common/utils';
-import { SlackService } from '../../common/slack.service';
 
 export interface PaymentProcessorResult {
   success: boolean;
@@ -41,7 +40,6 @@ export class PaymentProcessor implements IProcessor {
     private formSubmissionPaymentRepository: Repository<FormSubmissionPayment>,
     private ezpayService: EZPayService,
     private departmentMappingService: DepartmentMappingService,
-    private slackService: SlackService,
   ) {}
 
   get type(): string {
@@ -69,7 +67,10 @@ export class PaymentProcessor implements IProcessor {
       formName?: string;
     },
   ): Promise<PaymentProcessorResult> {
-    let resolvedConfig: Awaited<ReturnType<typeof this.resolveConfig>> | undefined;
+    let resolvedConfig:
+      | Awaited<ReturnType<typeof this.resolveConfig>>
+      | undefined;
+
     try {
       this.logger.log(`Processing payment for form ${context.formId}`, {
         submissionId: context.submissionId,
@@ -136,19 +137,6 @@ export class PaymentProcessor implements IProcessor {
         });
 
         const errorMessage = `Payment creation failed: ${failedResult.error}`;
-
-        // Fire-and-forget Slack notification
-        void this.slackService.notifyError({
-          title: 'Payment Service Error',
-          processor: 'payment',
-          formId: context.formId,
-          submissionId: context.submissionId,
-          error: errorMessage,
-          fields: {
-            Amount: resolvedConfig.amount,
-            Description: resolvedConfig.description,
-          },
-        });
 
         return {
           success: false,
