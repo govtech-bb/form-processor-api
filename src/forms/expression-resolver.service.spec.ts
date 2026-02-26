@@ -618,6 +618,102 @@ describe('ExpressionResolverService', () => {
     });
   });
 
+  describe('resolveExpression - ageDbSelect Conditional DB Lookup', () => {
+    const ALTERNATE_PAYMENT_AMOUNT = '15';
+    const STANDARD_PAYMENT_AMOUNT = '25';
+
+    beforeEach(() => {
+      mockConfigRepository.findOne.mockImplementation(async (options: any) => {
+        const key = options.where.key;
+        if (key === 'alternate_payment_amount') {
+          return createMockFormConfig(
+            '1',
+            'get-birth-certificate',
+            'alternate_payment_amount',
+            ALTERNATE_PAYMENT_AMOUNT,
+          );
+        }
+        if (key === 'payment_amount') {
+          return createMockFormConfig(
+            '2',
+            'get-birth-certificate',
+            'payment_amount',
+            STANDARD_PAYMENT_AMOUNT,
+          );
+        }
+        return null;
+      });
+    });
+
+    it('should use alternate_payment_amount when dateOfBirth is 60+ years ago', async () => {
+      const context: ExpressionContext = {
+        formId: 'get-birth-certificate',
+        configRepository: mockConfigRepository,
+        formData: {
+          birthDetails: { dateOfBirth: '1960-06-15' },
+          order: { numberOfCopies: 2 },
+        },
+      };
+
+      const result = await service.resolveExpression(
+        '{{formData.order.numberOfCopies * ageDbSelect(formData.birthDetails.dateOfBirth, 60, db:get-birth-certificate:alternate_payment_amount, db:get-birth-certificate:payment_amount)}}',
+        context,
+      );
+      expect(result).toBe(2 * parseInt(ALTERNATE_PAYMENT_AMOUNT, 10));
+    });
+
+    it('should use payment_amount when dateOfBirth is less than 60 years ago', async () => {
+      const context: ExpressionContext = {
+        formId: 'get-birth-certificate',
+        configRepository: mockConfigRepository,
+        formData: {
+          birthDetails: { dateOfBirth: '2000-06-15' },
+          order: { numberOfCopies: 3 },
+        },
+      };
+
+      const result = await service.resolveExpression(
+        '{{formData.order.numberOfCopies * ageDbSelect(formData.birthDetails.dateOfBirth, 60, db:get-birth-certificate:alternate_payment_amount, db:get-birth-certificate:payment_amount)}}',
+        context,
+      );
+      expect(result).toBe(3 * parseInt(STANDARD_PAYMENT_AMOUNT, 10));
+    });
+
+    it('should use payment_amount when dateOfBirth is missing', async () => {
+      const context: ExpressionContext = {
+        formId: 'get-birth-certificate',
+        configRepository: mockConfigRepository,
+        formData: {
+          birthDetails: {},
+          order: { numberOfCopies: 1 },
+        },
+      };
+
+      const result = await service.resolveExpression(
+        '{{formData.order.numberOfCopies * ageDbSelect(formData.birthDetails.dateOfBirth, 60, db:get-birth-certificate:alternate_payment_amount, db:get-birth-certificate:payment_amount)}}',
+        context,
+      );
+      expect(result).toBe(1 * parseInt(STANDARD_PAYMENT_AMOUNT, 10));
+    });
+
+    it('should use payment_amount when dateOfBirth is an invalid date string', async () => {
+      const context: ExpressionContext = {
+        formId: 'get-birth-certificate',
+        configRepository: mockConfigRepository,
+        formData: {
+          birthDetails: { dateOfBirth: 'not-a-date' },
+          order: { numberOfCopies: 1 },
+        },
+      };
+
+      const result = await service.resolveExpression(
+        '{{formData.order.numberOfCopies * ageDbSelect(formData.birthDetails.dateOfBirth, 60, db:get-birth-certificate:alternate_payment_amount, db:get-birth-certificate:payment_amount)}}',
+        context,
+      );
+      expect(result).toBe(1 * parseInt(STANDARD_PAYMENT_AMOUNT, 10));
+    });
+  });
+
   describe('Edge Cases', () => {
     it('should handle empty formData', async () => {
       const context: ExpressionContext = {

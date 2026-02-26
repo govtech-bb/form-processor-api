@@ -489,7 +489,7 @@
 				"provider": "ezpay",
 				"department": "oag_registration",
 				"paymentCode": "{{db:get-birth-certificate:payment_code}}",
-				"amount": "{{formData.order.numberOfCopies * db:get-birth-certificate:payment_amount}}",
+				"amount": "{{formData.order.numberOfCopies * ageDbSelect(formData.birthDetails.dateOfBirth, 60, db:get-birth-certificate:alternate_payment_amount, db:get-birth-certificate:payment_amount)}}",
 				"description": "Birth Certificate Processing Fee (per copy)",
 				"required": true,
 				"timing": "after_validation",
