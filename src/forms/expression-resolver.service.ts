@@ -23,6 +23,8 @@ export class ExpressionResolverService {
    * - Form data references: {{formData.path}}
    * - Values from constant data source: {{constants:KVPair:key}}
    * - Mathematical expressions: {{formData.field * db:form-id:amount}}
+   * - Age-conditional DB selects: ageDbSelect(formData.path, minAge, db:formId:trueKey, db:formId:falseKey)
+   *   Resolves to trueKey value when the date at formData.path is >= minAge years old, falseKey otherwise
    * - Simple values: direct strings or numbers
    * - Multiple expressions in a string: "Hello {{formData.name}} from {{formData.city}}"
    */
@@ -98,7 +100,13 @@ export class ExpressionResolverService {
 
     let mathExpression = match[1];
 
-    // Replace database references first
+    // Resolve age-conditional DB selects before other replacements
+    mathExpression = await this.resolveAgeDbSelectExpressions(
+      mathExpression,
+      context,
+    );
+
+    // Replace database references
     mathExpression = await this.replaceDatabaseReferences(
       mathExpression,
       context,
@@ -109,6 +117,72 @@ export class ExpressionResolverService {
 
     // Evaluate the mathematical expression
     return this.evaluateMathExpression(mathExpression);
+  }
+
+  /**
+   * Resolve ageDbSelect(formData.path, minAge, db:formId:trueKey, db:formId:falseKey) expressions.
+   *
+   * When the date at formData.path is >= minAge years old, the trueKey DB value is used.
+   * When the date is missing, invalid, or < minAge years old, the falseKey DB value is used.
+   */
+  private async resolveAgeDbSelectExpressions(
+    expression: string,
+    context: ExpressionContext,
+  ): Promise<string> {
+    const pattern =
+      /ageDbSelect\(formData\.([a-zA-Z0-9_.]+),\s*(\d+),\s*(db:[^,\s]+),\s*(db:[^)\s]+)\)/g;
+
+    let result = expression;
+    const matches = [...expression.matchAll(pattern)];
+
+    for (const match of matches) {
+      const [fullMatch, dateFieldPath, minAgeStr, trueDbRef, falseDbRef] =
+        match;
+
+      const dateValue = context.formData
+        ? this.getNestedValue(context.formData, dateFieldPath)
+        : undefined;
+
+      const ageInYears =
+        dateValue ? this.calculateAgeInYears(String(dateValue)) : NaN;
+
+      // NaN comparisons are always false, so missing/invalid dates fall through to falseDbRef
+      const selectedDbRef =
+        ageInYears >= parseInt(minAgeStr, 10) ? trueDbRef : falseDbRef;
+
+      const resolved = await this.replaceDatabaseReferences(
+        selectedDbRef,
+        context,
+      );
+      result = result.replace(fullMatch, resolved);
+    }
+
+    return result;
+  }
+
+  /**
+   * Calculate age in whole years from an ISO date string (YYYY-MM-DD).
+   * Returns NaN when the input cannot be parsed as a valid date.
+   */
+  private calculateAgeInYears(dateString: string): number {
+    const birthDate = new Date(dateString);
+
+    if (isNaN(birthDate.getTime())) {
+      return NaN;
+    }
+
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDiff < 0 ||
+      (monthDiff === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
+    }
+
+    return age;
   }
 
   /**
