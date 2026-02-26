@@ -69,6 +69,15 @@
             "min": 2,
             "message": "ID Number must be at least 2 characters"
           }
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "label": "Passport Number",
+          "required": false,
+          "validations": {
+            "message": "Passport number must be at least 6 characters"
+          }
         }
       ]
     },
