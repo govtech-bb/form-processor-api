@@ -129,6 +129,7 @@ Currently, the following fields are available:
 - number: Represents a field that only accepts numbers, with validation of `minValue = 0`.
 - numericText: Represents a text field that accepts only numbers, with validation `pattern = "^[0-9]*$"`
 - textArea: Represents a textarea with validation `maxLength = 400`.
+- tel: Represents a telephone field, with simple validation.
 
 Note: All fields have `validation.required = true`. Therefore, if a field is to be optional, `validation.required` must be set to `false` in the overriding information. Similarly, if a field is to be required, there is no need to explicitly set `validation.required`.
 
