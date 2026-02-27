@@ -5,5 +5,4 @@ meta:
 content:
   label: 'NIS Number'
 validation:
-  minLength: 10
-  maxLength: 15
+  pattern: "^[0-9]{6}$"

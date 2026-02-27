@@ -4,3 +4,5 @@ meta:
   componentName: dateOfBirth
 content:
   label: 'Date of Birth'
+validation:
+  dateIsPast: true

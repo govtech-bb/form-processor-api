@@ -4,3 +4,5 @@ meta:
   componentName: address
 content:
   label: 'Address'
+validation:
+  minLength: 5
