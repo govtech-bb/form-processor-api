@@ -269,14 +269,12 @@
         {
           "name": "dateOfBirth",
           "type": "date",
-          "label": "Date of birth",
-          "required": false
+          "label": "Date of birth"
         },
         {
           "name": "placeOfBirth",
           "type": "string",
           "label": "Place of birth",
-          "required": false,
           "validations": {
             "min": 2,
             "max": 200,
