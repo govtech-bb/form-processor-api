@@ -121,8 +121,8 @@ export class ProcessorPipelineService {
     result: Record<string, any>,
   ) {
     const fields: Record<string, string | number> = {};
-    if (result.amount != null) fields['Amount'] = result?.amount;
-    if (result.description) fields['Description'] = result?.description;
+    if (result?.amount != null) fields['Amount'] = result?.amount;
+    if (result?.description) fields['Description'] = result?.description;
 
     return {
       processor: processorType,
