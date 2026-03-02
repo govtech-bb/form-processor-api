@@ -11,7 +11,7 @@ type IntegrationsResult = {
 export class FormSubmissionResponseDto {
   submissionId: string;
   formId: string;
-  status: 'success' | 'failed' | 'payment_required';
+  status: 'success' | 'failed' | 'payment_required' | 'payment_unavailable';
   processedAt: Date;
 
   // Payment-related fields
@@ -22,6 +22,7 @@ export class FormSubmissionResponseDto {
   referenceNumber?: string;
   amount?: number;
   description?: string;
+  errorMessage?: string;
 
   // Integration results
   integrations?: IntegrationsResult;
@@ -32,7 +33,7 @@ export class FormSubmissionResponseDto {
   constructor(
     submissionId: string,
     formId: string,
-    status: 'success' | 'failed' | 'payment_required',
+    status: 'success' | 'failed' | 'payment_required' | 'payment_unavailable',
     paymentInfo?: {
       paymentRequired?: boolean;
       paymentUrl?: string;
@@ -41,6 +42,7 @@ export class FormSubmissionResponseDto {
       referenceNumber?: string;
       amount?: number;
       description?: string;
+      errorMessage?: string;
     },
     additionalData?: Record<string, unknown>,
   ) {
@@ -57,6 +59,7 @@ export class FormSubmissionResponseDto {
       this.referenceNumber = paymentInfo.referenceNumber;
       this.amount = paymentInfo.amount;
       this.description = paymentInfo.description;
+      this.errorMessage = paymentInfo.errorMessage;
     }
 
     // Add any additional dynamic data (including integrations)

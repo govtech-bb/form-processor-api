@@ -59,6 +59,25 @@
             "regex": "^\\d{4}-\\d{2}-\\d{2}$",
             "message": "Date of birth is required and must be in YYYY-MM-DD format"
           }
+        },
+        {
+          "name": "idNumber",
+          "type": "string",
+          "label": "National Identification (ID) Number",
+          "required": false,
+          "validations": {
+            "min": 2,
+            "message": "ID Number must be at least 2 characters"
+          }
+        },
+        {
+          "name": "passportNumber",
+          "type": "string",
+          "label": "Passport Number",
+          "required": false,
+          "validations": {
+            "message": "Passport number must be at least 6 characters"
+          }
         }
       ]
     },
@@ -234,6 +253,20 @@
         "regex": "^(yes|no)$",
         "message": "Must select an option"
       }
+    },
+    {
+      "name": "documents",
+      "type": "object",
+      "required": true,
+      "fields": [
+        {
+          "name": "policeCertificate",
+          "type": "file",
+          "label": "Police Certificate of Character",
+          "required": true
+        }
+        
+      ]
     }
   ],
   "processors": [

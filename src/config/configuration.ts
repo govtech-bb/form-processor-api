@@ -58,6 +58,10 @@ export default () => ({
       default: process.env.EZPAY_API_KEY || 'your_ezpay_api_key',
     },
   },
+  slack: {
+    botToken: process.env.SLACK_BOT_TOKEN,
+    errorChannel: process.env.SLACK_ERROR_CHANNEL,
+  },
   opencrvs: {
     authBaseUrl:
       process.env.OPENCRVS_AUTH_URL || 'https://auth.barbados-qa.opencrvs.org',
