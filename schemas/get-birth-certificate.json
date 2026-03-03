@@ -322,7 +322,7 @@
               "name": "middleName",
               "type": "string",
               "label": "Father's middle name",
-              "required": true,
+              "required": false,
               "validations": {
                 "max": 100,
                 "message": "Middle name is required"
@@ -361,7 +361,7 @@
               "name": "middleName",
               "type": "string",
               "label": "Mother's middle name",
-              "required": true,
+              "required": false,
               "validations": {
                 "max": 100,
                 "message": "Middle name is required"
