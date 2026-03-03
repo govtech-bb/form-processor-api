@@ -265,16 +265,19 @@
     {
       "name": "birthDetails",
       "type": "object",
+      "required": true,
       "fields": [
         {
           "name": "dateOfBirth",
           "type": "date",
-          "label": "Date of birth"
+          "label": "Date of birth",
+          "required": true
         },
         {
           "name": "placeOfBirth",
           "type": "string",
           "label": "Place of birth",
+          "required": true,
           "validations": {
             "min": 2,
             "max": 200,
@@ -285,7 +288,7 @@
           "name": "placeOfBaptism",
           "type": "string",
           "label": "Place of baptism",
-          "required": false,
+          "required": true,
           "validations": {
             "min": 2,
             "max": 200,
