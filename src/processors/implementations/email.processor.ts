@@ -12,30 +12,33 @@ export class EmailProcessor implements IProcessor {
   async execute(
     config: Record<string, any>,
     context: ProcessorContext,
-  ): Promise<void> {
+  ): Promise<{ success: boolean; error?: string }> {
     this.logger.log(`Executing email processor for form: ${context.formId}`);
 
     const { to, from, subject, template, html, text } = config;
 
     if (!to) {
+      const error = `"to" field is missing in email config`;
       this.logger.warn(
-        `Email processor skipped: "to" field is missing in config for submission: ${context.submissionId}`,
+        `Email processor skipped: ${error} for submission: ${context.submissionId}`,
       );
-      return;
+      return { success: false, error };
     }
 
     if (!subject) {
+      const error = `"subject" field is missing in email config`;
       this.logger.warn(
-        `Email processor skipped: "subject" field is missing in config for submission: ${context.submissionId}`,
+        `Email processor skipped: ${error} for submission: ${context.submissionId}`,
       );
-      return;
+      return { success: false, error };
     }
 
     if (!template && !html && !text) {
+      const error = `"template", "html", or "text" field is missing in email config`;
       this.logger.warn(
-        `Email processor skipped: "template", "html", or "text" field is missing in config for submission: ${context.submissionId}`,
+        `Email processor skipped: ${error} for submission: ${context.submissionId}`,
       );
-      return;
+      return { success: false, error };
     }
 
     await this.emailService.sendEmail({
@@ -55,5 +58,7 @@ export class EmailProcessor implements IProcessor {
     this.logger.log(
       `Email sent successfully for submission: ${context.submissionId}`,
     );
+
+    return { success: true };
   }
 }

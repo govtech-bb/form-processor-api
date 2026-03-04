@@ -125,10 +125,13 @@ export class ProcessorPipelineService {
     if (result?.description) fields['Description'] = result?.description;
 
     return {
+      title: context.formName
+        ? `Processing Error: ${context.formName}`
+        : 'Processing Error',
       processor: processorType,
       formId: context.formId,
       submissionId: context.submissionId,
-      error: result.error ?? 'Processor returned failure',
+      error: result?.error ?? 'Processor returned failure',
       ...(Object.keys(fields).length > 0 && { fields }),
     };
   }
