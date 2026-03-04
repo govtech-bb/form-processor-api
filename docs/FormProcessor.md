@@ -2,7 +2,9 @@
 
 If you haven't, please read [Recipe Information](../schema_builder/docs/RecipeInformation.md).
 
-With an understanding that the final form schema will consist of only fields, we now need to determine the three key factors for form processing, these being how validation should be handled, what the submission payload should look like, and how any post-processors should be handled.
+With an understanding that the final form schema will consist of only fields, we now need to determine the three key factors for form processing.
+
+These being how validation should be handled, what the submission payload should look like, and how any post-processors should be handled.
 
 ## Validation
 
@@ -22,8 +24,8 @@ These will cover the following:
 * minLength (int): Typically for string fields such as text, determining the minimum number of characters an input field must have.
 * maxLength (int): Determines the maximum number of characters an input field must have.
 * pattern (string): These are regular expression based patterns, that the input must satisfy.
-* maxSize (string): For file fields only. This determines the maximum size of a file, based on meta information provided.
 * fileTypes (`list[string]`): For file fields only. This determines the valid MIME types for submitted files. This should check header information, instead of just checking for file extensions.
+* maxSize (string): For file fields only. This determines the maximum size of a file, based on meta information provided.
 * dateIsPast (bool): If true, the date must be in the past.
 * dateIsFuture (bool): Date fields only. If true, the date must be in the future.
 * dateIsPastOrToday (bool): If true, date must be in the past, or be the current date.

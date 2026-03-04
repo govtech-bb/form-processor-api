@@ -1,4 +1,4 @@
-# Form Builder
+# Schema Builder
 
 If you haven't, please refer to the [Recipe Information](./RecipeInformation.md) for context about what we're doing here.
 
@@ -60,11 +60,13 @@ elements:
      width: "short"
 ```
 
-Essentially, the process is to go from blocks -> components -> fields, applying any context variable substitutions.
+Essentially, the process is to go from blocks -> components -> fields, applying any context variable substitutions, and overriding values going down the chain.
 
 ## Handling IDs
 
-Field IDs are a curious sort, given their optionally generated nature. As such, we will need to have rules that govern how they are created, and accessed.
+Field IDs are a curious sort, given their optionally generated nature. 
+
+As such, we will need rules that govern how they are created, and accessed.
 
 Note: IDs should ALWAYS be camelCase.
 
@@ -148,9 +150,14 @@ elements:
     meta:
      id: ""
     content:
+      label: "ID Number"
 ```
 
-Since we explicitly pass an empty string as the meta.id value, we are essentially telling the builder to use a camel cased "ID Number" (that being idNumber) as the id for the field. However, ideally, we would want IDs to be implemented at the component level. For example:
+Since we explicitly pass an empty string as the meta.id value, we are essentially telling the builder to use a camel cased "ID Number" (that being idNumber) as the id for the field. 
+
+However, ideally, we would want IDs to be implemented at the component level.
+
+For example:
 
 ```yaml
 type: component
@@ -180,8 +187,9 @@ elements:
       label: "Last Name"
 ```
 
-In this case, we use the `userName` component, a component that wraps `fields/text`, and provides simple name validation rules, twice. As such, we explicitly defined the meta.id for each of the fields.
-However, generic validation components such as userName, should be defined as follows:
+In this case, we use the `userName` component, a component that wraps `fields/text` providing simple name validation rules, twice. As such, we explicitly defined the meta.id for each of the fields.
+
+Note: Generic validation components such as userName, should be defined as follows:
 
 ```yaml
 
@@ -193,7 +201,9 @@ validation:
   pattern: "^[a-zA-Z- ]$"
 ```
 
-Notice how id is set to an empty string. This means that when using the component, instead of explicitly defining the id and the label, we can only provide the label, and have the ID be generated for it. This turns our earlier example into:
+Notice how id is set to an empty string. This means that when using the component, instead of explicitly defining the id and the label, we can only provide the label, and have the ID be generated for it.
+
+This turns our earlier example into:
 
 ```yaml
 
@@ -214,7 +224,9 @@ Of course, this is only for schema building purposes, as once the schema is buil
 
 ### ID Prefixes
 
-In some cases, we may want to have multiple of the same block on the same page. I'm not sure of a usecase, but we will cover that possibility regardless.
+In some cases, we may want to have multiple of the same block on the same page. 
+
+I'm not yet sure of a use case, but we will cover that possibility regardless.
 
 Blocks will have support for an `idPrefix` field defined in their meta information.
 
@@ -237,11 +249,11 @@ elements:
 The field with id `myField`, will have its id value updated to be `idPrefix_id`, in this case, that will give us `sample_myField`.
 
 > [!NOTE]
-> idPrefixes should end with an underscore, to make it still reading friendly, and compatible with being the id of an HTML field.
+> idPrefixes should end with an underscore, to make it still reader friendly, and compatible with being the id of an HTML field.
 
-Now, as we will examine later, blocks and components are all flattened to be their `field` form, when the schema is created from the recipe.
+Now, as we have discussed in [Recipe Information](./RecipeInformation.md), blocks and components are all flattened to be their `field` form, when the schema is created from the recipe.
 
-However, it is to be noted, that this will require a payload to be sent as follows:
+However, it is to be noted, that by using block prefixes, this will require a payload to be sent as follows:
 
 ```json
 {
@@ -252,6 +264,8 @@ However, it is to be noted, that this will require a payload to be sent as follo
 ```
 
 The reason I choose this method, is because you currently cannot change the ID of a specific component when using a `ref` to a block.
+
+Refer to [Form Processor](/docs/FormProcessor.md) for more information on payloads.
 
 ## Context and Template Strings
 
@@ -264,7 +278,9 @@ There are currently three (3) types of these template strings.
 - Field
 - Processor
 
-Context template strings look like `{!Variable}`, uniquely identified by the presence of the `!` right after the `{`. These strings get their values from a `context` property provided to the block, component, or field.
+Context template strings look like `{!Variable}`, uniquely identified by the presence of the `!` right after the `{`. 
+
+These strings get their values from a `context` property provided to the block, component, or field.
 
 For example, a component defined as:
 
@@ -289,9 +305,9 @@ elements:
 
 On form schema generation, the `{!PERSON}` will be replaced with the provided value, setting the label to be "Your father's address". Context template strings will be resolved as soon as they appear.
 
-Field template strings contain values that will be replaced by the value of a property defined on the current object.
+Field template strings contain values that will be replaced by the value of a property defined on the current ingredient.
 
-As such, they will only be applied once the object is in its `field` form.
+As such, they will only be applied once the ingredient is in its `field` form.
 
 Field template strings are denoted with `{#Variable#}`. Note the enclosing `{##}`.
 
@@ -319,18 +335,20 @@ content:
 
 When the builder builds the component, into its field form, and then evaluates the field template string, then the `errorMessage` will become "ID Number only accepts digits."
 
+
 Lastly, Processor template strings are denoted with `{{}}`.
 
-Processor template strings gain access to communicating with pre-defined external interfaces, such as a database, along with accessing values from the submitted payload.
+Processor template strings gain access to communicating with predefined external interfaces, such as a database, along with accessing values from the submitted payload.
 
 As such, processor template strings are not evaluated at all, until a processor processes them.
-Similarly, they are only present in the `processors` part (section dedicated to form post-processors) of a form recipe.
+
+Similarly, they are only present in the `processors` section of a recipe, that is, the section dedicated to form post processors.
 
 ## Post Processors
 
-Once a form has been successfully submitted, and the data passes validation, post-processors are applied.
+Once a form has been successfully submitted, and the data passes validation, post processors are applied.
 
-These are additional functionality that can be performed once a submitted form's information is correct.
+These are additional functionality that can be performed once a submitted form's information is successfully validated.
 
 For example, sending an email to the applicant.
 
@@ -360,12 +378,12 @@ confirmation:
 
 ## Creating the Form Schema
 
-So far, we would have been working with Form Recipes, identifiable by keywords such as `ref` and `extends`.
+So far, we would have been working with Schema Recipes, identifiable by keywords such as `ref` and `extends`.
 
 However, this recipe is only for our convenience as form builders.
 We now need a schema that can actually be sent to a client, such that the client can implement it, and send us back a payload.
 
-The primary purpose of this Form Builder, is to turn a Recipe into a JSON schema, that can be shared.
+The primary purpose of this Schema Builder, is to turn a Recipe into a JSON schema, that can be shared.
 
 A Form Schema should only consist of fields, meaning that all components, and blocks will be evaluated down to their field forms.
 
@@ -396,6 +414,7 @@ The builder should turn it into the following JSON schema:
         "label": "First Name"
       },
       "validation": {
+        "required": true,
         "pattern": "^[a-Z]$"
       }
     },
@@ -486,7 +505,7 @@ npm run build-recipe -- <recipe-file> [options]
 
 Options:
 
-- `-o, --output <path>` - Output file path (default: stdout)
+- `-o, --output <path>` - Output file path (default: filename.json)
 - `-r, --registry <path>` - Registry directory path (default: ./registry)
 - `-v, --verbose` - Enable verbose output
 
