@@ -398,7 +398,18 @@ export class SchemaBuilderService {
     fieldType: string,
     required = true,
   ): any {
-    // Min/Max for strings
+    // Skip all validations for optional string fields with no value provided
+    if (fieldType === 'string' && !required) {
+      return schema.refine(
+        (val: string) =>
+          !val ||
+          val.length === 0 ||
+          this.validateStringValue(val, validations),
+        { message: validations.message || 'Validation failed' },
+      );
+    }
+
+    // Min/Max for strings (required fields)
     if (
       fieldType === 'string' &&
       (validations.min !== undefined || validations.max !== undefined)
@@ -466,6 +477,29 @@ export class SchemaBuilderService {
     }
 
     return schema;
+  }
+
+  private validateStringValue(
+    val: string,
+    validations: FieldValidation,
+  ): boolean {
+    if (validations.min !== undefined && val.length < validations.min) {
+      return false;
+    }
+    if (validations.max !== undefined && val.length > validations.max) {
+      return false;
+    }
+    if (validations.regex) {
+      try {
+        const regex = new RegExp(validations.regex);
+        if (!regex.test(val)) {
+          return false;
+        }
+      } catch {
+        return false;
+      }
+    }
+    return true;
   }
 
   private buildPrimitiveSchema(type: string): any {

@@ -265,19 +265,19 @@
     {
       "name": "birthDetails",
       "type": "object",
-      "required": false,
+      "required": true,
       "fields": [
         {
           "name": "dateOfBirth",
           "type": "date",
           "label": "Date of birth",
-          "required": false
+          "required": true
         },
         {
           "name": "placeOfBirth",
           "type": "string",
           "label": "Place of birth",
-          "required": false,
+          "required": true,
           "validations": {
             "min": 2,
             "max": 200,
@@ -288,7 +288,7 @@
           "name": "placeOfBaptism",
           "type": "string",
           "label": "Place of baptism",
-          "required": false,
+          "required": true,
           "validations": {
             "min": 2,
             "max": 200,
@@ -300,18 +300,18 @@
     {
       "name": "parents",
       "type": "object",
-      "required": false,
+      "required": true,
       "fields": [
         {
           "name": "father",
           "type": "object",
-          "required": false,
+          "required": true,
           "fields": [
             {
               "name": "firstName",
               "type": "string",
               "label": "Father's first name",
-              "required": false,
+              "required": true,
               "validations": {
                 "min": 1,
                 "max": 100,
@@ -332,7 +332,7 @@
               "name": "lastName",
               "type": "string",
               "label": "Father's last name",
-              "required": false,
+              "required": true,
               "validations": {
                 "min": 1,
                 "max": 100,
@@ -344,13 +344,13 @@
         {
           "name": "mother",
           "type": "object",
-          "required": false,
+          "required": true,
           "fields": [
             {
               "name": "firstName",
               "type": "string",
               "label": "Mother's first name",
-              "required": false,
+              "required": true,
               "validations": {
                 "min": 1,
                 "max": 100,
@@ -371,7 +371,7 @@
               "name": "lastName",
               "type": "string",
               "label": "Mother's last name",
-              "required": false,
+              "required": true,
               "validations": {
                 "min": 1,
                 "max": 100,
@@ -382,87 +382,7 @@
         }
       ]
     },
-    {
-      "name": "parentsOther",
-      "type": "object",
-      "required": false,
-      "fields": [
-        {
-          "name": "father",
-          "type": "object",
-          "required": false,
-          "fields": [
-            {
-              "name": "firstName",
-              "type": "string",
-              "label": "Father's first name",
-              "required": false,
-              "validations": {
-                "max": 100,
-                "message": "First name is required"
-              }
-            },
-            {
-              "name": "middleName",
-              "type": "string",
-              "label": "Father's middle name",
-              "required": false,
-              "validations": {
-                "max": 100,
-                "message": "Middle name is required"
-              }
-            },
-            {
-              "name": "lastName",
-              "type": "string",
-              "label": "Father's last name",
-              "required": false,
-              "validations": {
-                "max": 100,
-                "message": "Last name is required"
-              }
-            }
-          ]
-        },
-        {
-          "name": "mother",
-          "type": "object",
-          "required": false,
-          "fields": [
-            {
-              "name": "firstName",
-              "type": "string",
-              "label": "Mother's first name",
-              "required": false,
-              "validations": {
-                "max": 100,
-                "message": "First name is required"
-              }
-            },
-            {
-              "name": "middleName",
-              "type": "string",
-              "label": "Mother's middle name",
-              "required": false,
-              "validations": {
-                "max": 100,
-                "message": "Middle name is required"
-              }
-            },
-            {
-              "name": "lastName",
-              "type": "string",
-              "label": "Mother's last name",
-              "required": false,
-              "validations": {
-                "max": 100,
-                "message": "Last name is required"
-              }
-            }
-          ]
-        }
-      ]
-    },
+
     {
       "name": "order",
       "type": "object",
@@ -482,39 +402,39 @@
       ]
     }
   ],
-	"processors": [
-		{
-			"type": "payment",
-			"config": {
-				"provider": "ezpay",
-				"department": "oag_registration",
-				"paymentCode": "{{db:get-birth-certificate:payment_code}}",
-				"amount": "{{formData.order.numberOfCopies * ageDbSelect(formData.birthDetails.dateOfBirth, 60, db:get-birth-certificate:alternate_payment_amount, db:get-birth-certificate:payment_amount)}}",
-				"description": "Birth Certificate Processing Fee (per copy)",
-				"required": true,
-				"timing": "after_validation",
-				"responseData": {
-					"include": ["order.numberOfCopies"]
-				}
-			}
-		},
-		{
-			"type": "email",
-			"config": {
-				"to": "{{db:get-birth-certificate:admin_email}}",
-				"subject": "New Birth Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
-				"template": "birth-certificate",
-				"recipientType": "admin"
-			}
-		},
-		{
-			"type": "email",
-			"config": {
-				"to": "{{formData.applicant.email}}",
-				"subject": "Birth Certificate - Submission Received",
-				"template": "birth-certificate-receipt",
-				"recipientType": "user"
-			}
-		}
-	]
+  "processors": [
+    {
+      "type": "payment",
+      "config": {
+        "provider": "ezpay",
+        "department": "oag_registration",
+        "paymentCode": "{{db:get-birth-certificate:payment_code}}",
+        "amount": "{{formData.order.numberOfCopies * ageDbSelect(formData.birthDetails.dateOfBirth, 60, db:get-birth-certificate:alternate_payment_amount, db:get-birth-certificate:payment_amount)}}",
+        "description": "Birth Certificate Processing Fee (per copy)",
+        "required": true,
+        "timing": "after_validation",
+        "responseData": {
+          "include": ["order.numberOfCopies"]
+        }
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{db:get-birth-certificate:admin_email}}",
+        "subject": "New Birth Certificate Application - {{formData.applicant.firstName}} {{formData.applicant.lastName}}",
+        "template": "birth-certificate",
+        "recipientType": "admin"
+      }
+    },
+    {
+      "type": "email",
+      "config": {
+        "to": "{{formData.applicant.email}}",
+        "subject": "Birth Certificate - Submission Received",
+        "template": "birth-certificate-receipt",
+        "recipientType": "user"
+      }
+    }
+  ]
 }
