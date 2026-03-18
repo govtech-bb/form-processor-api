@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { FormConfig } from './entities';
+import { FormConfig, ServiceAccess } from './entities';
 import { dataSource } from './datasource';
 
 @Module({
@@ -11,7 +11,7 @@ import { dataSource } from './datasource';
       },
       dataSourceFactory: () => dataSource.initialize(),
     }),
-    TypeOrmModule.forFeature([FormConfig]),
+    TypeOrmModule.forFeature([FormConfig, ServiceAccess]),
   ],
   exports: [TypeOrmModule],
 })

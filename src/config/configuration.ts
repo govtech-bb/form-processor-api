@@ -86,4 +86,8 @@ export default () => ({
     namespace: process.env.METRICS_NAMESPACE || 'FormsProcessor/Submissions',
     environment: process.env.NODE_ENV || 'development',
   },
+  cognito: {
+    userPoolId: process.env.AWS_COGNITO_USER_POOL_ID,
+    clientId: process.env.AWS_COGNITO_CLIENT_ID,
+  },
 });

@@ -15,7 +15,7 @@ export interface ExpressionContext {
 export class ExpressionResolverService {
   private readonly logger = new Logger(ExpressionResolverService.name);
 
-  constructor(private readonly configService: ConfigService) { }
+  constructor(private readonly configService: ConfigService) {}
 
   /**
    * Resolve any expression with support for:
@@ -143,8 +143,9 @@ export class ExpressionResolverService {
         ? this.getNestedValue(context.formData, dateFieldPath)
         : undefined;
 
-      const ageInYears =
-        dateValue ? this.calculateAgeInYears(String(dateValue)) : NaN;
+      const ageInYears = dateValue
+        ? this.calculateAgeInYears(String(dateValue))
+        : NaN;
 
       // NaN comparisons are always false, so missing/invalid dates fall through to falseDbRef
       const selectedDbRef =
