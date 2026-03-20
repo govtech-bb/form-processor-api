@@ -27,9 +27,7 @@ export class ServicesController {
   async getAllServiceAccess() {
     const configs = await this.serviceAccessService.findAll();
     this.logger.log(
-      `GET /services → returning ${
-        configs.length
-      } service config(s): ${JSON.stringify(configs)}`,
+      `GET /services → returning ${configs.length} service config(s)`,
     );
     return ApiResponse.success(configs, 'Service access configs retrieved');
   }
@@ -50,7 +48,9 @@ export class ServicesController {
       );
     }
 
-    this.logger.log(`GET /services/${serviceSlug} → ${JSON.stringify(config)}`);
+    this.logger.log(
+      `GET /services/${serviceSlug} → returning service slug: ${serviceSlug}`,
+    );
     return ApiResponse.success(config, 'Service access config retrieved');
   }
 
