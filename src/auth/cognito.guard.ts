@@ -5,7 +5,7 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-import type { ConfigService } from '@nestjs/config';
+import { ConfigService } from '@nestjs/config';
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
 import type { Request } from 'express';
 
