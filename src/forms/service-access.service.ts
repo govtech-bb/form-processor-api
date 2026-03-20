@@ -168,15 +168,10 @@ export class ServiceAccessService {
     subpageSlug: string,
     isProtected: boolean,
   ): Promise<void> {
-    const existing = await repo.findOne({
-      where: { serviceSlug, subpageSlug },
-    });
-
-    if (existing) {
-      await repo.update(existing.id, { isProtected });
-    } else {
-      await repo.save(repo.create({ serviceSlug, subpageSlug, isProtected }));
-    }
+    await repo.upsert({ serviceSlug, subpageSlug, isProtected }, [
+      'serviceSlug',
+      'subpageSlug',
+    ]);
   }
 
   private toSummary(
