@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Not, type Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { type DataSource, Not, type Repository } from 'typeorm';
 import { ServiceAccess } from '../database/entities';
 import type { FeatureFlagDto } from './dto';
 
@@ -29,6 +29,8 @@ export class ServiceAccessService {
   constructor(
     @InjectRepository(ServiceAccess)
     private serviceAccessRepository: Repository<ServiceAccess>,
+    @InjectDataSource()
+    private dataSource: DataSource,
   ) {}
 
   /**
@@ -119,14 +121,16 @@ export class ServiceAccessService {
       ...(dto.subpageSlugs ?? []),
     ];
 
-    await Promise.all(
-      slugsToUpdate.map((subpageSlug) =>
-        this.upsertRow(serviceSlug, subpageSlug, dto.isProtected),
-      ),
-    );
+    const allRows = await this.dataSource.transaction(async (manager) => {
+      const repo = manager.getRepository(ServiceAccess);
 
-    const allRows = await this.serviceAccessRepository.find({
-      where: { serviceSlug },
+      await Promise.all(
+        slugsToUpdate.map((subpageSlug) =>
+          this.upsertRow(repo, serviceSlug, subpageSlug, dto.isProtected),
+        ),
+      );
+
+      return repo.find({ where: { serviceSlug } });
     });
 
     return this.toSummary(serviceSlug, allRows);
@@ -143,7 +147,12 @@ export class ServiceAccessService {
     subpageSlug: string,
     dto: FeatureFlagDto,
   ): Promise<ServiceAccessSummary> {
-    await this.upsertRow(serviceSlug, subpageSlug, dto.isProtected);
+    await this.upsertRow(
+      this.serviceAccessRepository,
+      serviceSlug,
+      subpageSlug,
+      dto.isProtected,
+    );
 
     const allRows = await this.serviceAccessRepository.find({
       where: { serviceSlug },
@@ -154,24 +163,19 @@ export class ServiceAccessService {
 
   /** Shared upsert logic used by both service-level and subpage-level toggles. */
   private async upsertRow(
+    repo: Repository<ServiceAccess>,
     serviceSlug: string,
     subpageSlug: string,
     isProtected: boolean,
   ): Promise<void> {
-    const existing = await this.serviceAccessRepository.findOne({
+    const existing = await repo.findOne({
       where: { serviceSlug, subpageSlug },
     });
 
     if (existing) {
-      await this.serviceAccessRepository.update(existing.id, { isProtected });
+      await repo.update(existing.id, { isProtected });
     } else {
-      await this.serviceAccessRepository.save(
-        this.serviceAccessRepository.create({
-          serviceSlug,
-          subpageSlug,
-          isProtected,
-        }),
-      );
+      await repo.save(repo.create({ serviceSlug, subpageSlug, isProtected }));
     }
   }
 
