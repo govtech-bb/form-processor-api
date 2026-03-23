@@ -150,7 +150,7 @@
       "name": "reasonForOrderingCertificate",
       "type": "string",
       "label": "Tell us why you're ordering a birth certificate",
-      "required": false,
+      "required": true,
       "validations": {
         "message": ""
       }
