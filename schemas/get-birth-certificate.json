@@ -358,13 +358,13 @@
               }
             },
             {
-              "name": "middleName",
+              "name": "maidenName",
               "type": "string",
-              "label": "Mother's middle name",
+              "label": "Mother's maiden name",
               "required": false,
               "validations": {
                 "max": 100,
-                "message": "Middle name is required"
+                "message": "Maiden name is required"
               }
             },
             {
