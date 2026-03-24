@@ -48,6 +48,9 @@ export interface FieldValidation {
   email?: boolean;
   regex?: string;
   message?: string; // Custom error message
+  /** Sibling field name (same object): parsed integer of this field must be >= parsed integer of sibling */
+  gteField?: string;
+  gteMessage?: string;
   condition?: {
     field: string; // Dependent field path
     operator?: 'equals' | 'not_equals' | 'in' | 'not_in'; // Default is 'equals'

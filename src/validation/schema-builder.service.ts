@@ -20,6 +20,10 @@ export class SchemaBuilderService {
 
     const { dynamicallyRequired, dynamicallyValidated } =
       this.collectConditionalFields(formSchema.fields);
+    const gteObjectRules = this.collectGteFieldRules(formSchema.fields);
+    const gteArrayRules = this.collectGteFieldRulesFromArrays(
+      formSchema.fields,
+    );
 
     return z.object(shape).superRefine((data, ctx) => {
       /* -----------------------------
@@ -76,6 +80,14 @@ export class SchemaBuilderService {
           }
         }
       }
+
+      for (const { endPath, startPath, message } of gteObjectRules) {
+        this.applyGteFieldRule(data, ctx, endPath, startPath, message);
+      }
+
+      for (const rule of gteArrayRules) {
+        this.applyGteFieldRuleForArrayItems(data, ctx, rule);
+      }
     });
   }
 
@@ -89,6 +101,170 @@ export class SchemaBuilderService {
 
   private getValueByPath(obj: any, path: string): any {
     return path.split('.').reduce((acc, key) => acc?.[key], obj);
+  }
+
+  private getValueByPathSegments(obj: any, segments: (string | number)[]): any {
+    return segments.reduce(
+      (acc, key) => (acc == null ? acc : acc[key as keyof typeof acc]),
+      obj,
+    );
+  }
+
+  private collectGteFieldRules(
+    fields: FormField[],
+    pathPrefix: string[] = [],
+  ): { endPath: string[]; startPath: string[]; message: string }[] {
+    const rules: {
+      endPath: string[];
+      startPath: string[];
+      message: string;
+    }[] = [];
+
+    for (const field of fields) {
+      const currentPath = [...pathPrefix, field.name];
+
+      if (field.type === 'object' && field.fields) {
+        rules.push(...this.collectGteFieldRules(field.fields, currentPath));
+      }
+
+      if (field.validations?.gteField) {
+        const startPath = [...pathPrefix, field.validations.gteField];
+        rules.push({
+          endPath: currentPath,
+          startPath,
+          message:
+            field.validations.gteMessage ??
+            'End year must be the same as or after start year',
+        });
+      }
+    }
+
+    return rules;
+  }
+
+  private collectGteFieldRulesFromArrays(
+    fields: FormField[],
+    pathPrefix: string[] = [],
+  ): {
+    arrayPath: string[];
+    endKey: string;
+    startKey: string;
+    message: string;
+  }[] {
+    const rules: {
+      arrayPath: string[];
+      endKey: string;
+      startKey: string;
+      message: string;
+    }[] = [];
+
+    for (const field of fields) {
+      const currentPath = [...pathPrefix, field.name];
+
+      if (field.type === 'object' && field.fields) {
+        rules.push(
+          ...this.collectGteFieldRulesFromArrays(field.fields, currentPath),
+        );
+      }
+
+      if (
+        field.type === 'array' &&
+        field.items?.type === 'object' &&
+        field.items.properties
+      ) {
+        for (const [propName, propDef] of Object.entries(
+          field.items.properties,
+        )) {
+          if (propDef.validations?.gteField) {
+            rules.push({
+              arrayPath: currentPath,
+              endKey: propName,
+              startKey: propDef.validations.gteField,
+              message:
+                propDef.validations.gteMessage ??
+                'End year must be the same as or after start year',
+            });
+          }
+        }
+      }
+    }
+
+    return rules;
+  }
+
+  private applyGteFieldRule(
+    data: unknown,
+    ctx: z.RefinementCtx,
+    endPath: string[],
+    startPath: string[],
+    message: string,
+  ): void {
+    const startVal = this.getValueByPathSegments(data, startPath);
+    const endVal = this.getValueByPathSegments(data, endPath);
+
+    if (typeof startVal !== 'string' || typeof endVal !== 'string') {
+      return;
+    }
+
+    if (!startVal.trim() || !endVal.trim()) {
+      return;
+    }
+
+    const start = Number.parseInt(startVal, 10);
+    const end = Number.parseInt(endVal, 10);
+
+    if (!Number.isNaN(start) && !Number.isNaN(end) && end < start) {
+      ctx.addIssue({
+        path: endPath,
+        message,
+        code: 'custom',
+      });
+    }
+  }
+
+  private applyGteFieldRuleForArrayItems(
+    data: unknown,
+    ctx: z.RefinementCtx,
+    rule: {
+      arrayPath: string[];
+      endKey: string;
+      startKey: string;
+      message: string;
+    },
+  ): void {
+    const arr = this.getValueByPathSegments(data, rule.arrayPath);
+    if (!Array.isArray(arr)) {
+      return;
+    }
+
+    for (let index = 0; index < arr.length; index++) {
+      const item = arr[index];
+      if (!item || typeof item !== 'object') {
+        continue;
+      }
+      const rec = item as Record<string, unknown>;
+      const startVal = rec[rule.startKey];
+      const endVal = rec[rule.endKey];
+
+      if (typeof startVal !== 'string' || typeof endVal !== 'string') {
+        continue;
+      }
+
+      if (!startVal.trim() || !endVal.trim()) {
+        continue;
+      }
+
+      const start = Number.parseInt(startVal, 10);
+      const end = Number.parseInt(endVal, 10);
+
+      if (!Number.isNaN(start) && !Number.isNaN(end) && end < start) {
+        ctx.addIssue({
+          path: [...rule.arrayPath, index, rule.endKey],
+          message: rule.message,
+          code: 'custom',
+        });
+      }
+    }
   }
 
   private evaluateRule(

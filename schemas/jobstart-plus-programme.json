@@ -340,7 +340,9 @@
           "validations": {
             "min": 4,
             "max": 4,
-            "message": "End year must be 4 characters"
+            "message": "End year must be 4 characters",
+            "gteField": "startYear",
+            "gteMessage": "End year must be the same as or after start year"
           }
         }
       ]
@@ -380,7 +382,9 @@
           "validations": {
             "min": 4,
             "max": 4,
-            "message": "End year must be 4 characters"
+            "message": "End year must be 4 characters",
+            "gteField": "startYear",
+            "gteMessage": "End year must be the same as or after start year"
           }
         }
       ]
@@ -402,11 +406,21 @@
           "coursesOrSubjects": {
             "type": "string"
           },
-          "startDate": {
-            "type": "string"
+          "startYear": {
+            "type": "string",
+            "validations": {
+              "regex": "^[0-9]{4}$",
+              "message": "Start year must be a valid year"
+            }
           },
-          "endDate": {
-            "type": "string"
+          "endYear": {
+            "type": "string",
+            "validations": {
+              "regex": "^[0-9]{4}$",
+              "message": "End year must be a valid year",
+              "gteField": "startYear",
+              "gteMessage": "End year must be the same as or after start year"
+            }
           }
         }
       }
