@@ -341,8 +341,11 @@
             "min": 4,
             "max": 4,
             "message": "End year must be 4 characters",
-            "gteField": "startYear",
-            "gteMessage": "End year must be the same as or after start year"
+            "operator": {
+              "condition": "gte",
+              "field": "startYear",
+              "message": "End year must be the same as or after start year"
+            }
           }
         }
       ]
@@ -383,8 +386,11 @@
             "min": 4,
             "max": 4,
             "message": "End year must be 4 characters",
-            "gteField": "startYear",
-            "gteMessage": "End year must be the same as or after start year"
+            "operator": {
+              "condition": "gte",
+              "field": "startYear",
+              "message": "End year must be the same as or after start year"
+            }
           }
         }
       ]
@@ -418,8 +424,11 @@
             "validations": {
               "regex": "^[0-9]{4}$",
               "message": "End year must be a valid year",
-              "gteField": "startYear",
-              "gteMessage": "End year must be the same as or after start year"
+              "operator": {
+                "condition": "gte",
+                "field": "startYear",
+                "message": "End year must be the same as or after start year"
+              }
             }
           }
         }

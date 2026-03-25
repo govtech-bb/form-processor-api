@@ -110,6 +110,22 @@ export class SchemaBuilderService {
     );
   }
 
+  private gteRuleFromValidations(
+    validations?: FieldValidation,
+  ): { field: string; message: string } | undefined {
+    const op = validations?.operator;
+    if (op?.condition !== 'gte' || typeof op.field !== 'string') {
+      return undefined;
+    }
+    return {
+      field: op.field,
+      message:
+        typeof op.message === 'string'
+          ? op.message
+          : 'End year must be the same as or after start year',
+    };
+  }
+
   private collectGteFieldRules(
     fields: FormField[],
     pathPrefix: string[] = [],
@@ -127,14 +143,13 @@ export class SchemaBuilderService {
         rules.push(...this.collectGteFieldRules(field.fields, currentPath));
       }
 
-      if (field.validations?.gteField) {
-        const startPath = [...pathPrefix, field.validations.gteField];
+      const gte = this.gteRuleFromValidations(field.validations);
+      if (gte) {
+        const startPath = [...pathPrefix, gte.field];
         rules.push({
           endPath: currentPath,
           startPath,
-          message:
-            field.validations.gteMessage ??
-            'End year must be the same as or after start year',
+          message: gte.message,
         });
       }
     }
@@ -175,14 +190,13 @@ export class SchemaBuilderService {
         for (const [propName, propDef] of Object.entries(
           field.items.properties,
         )) {
-          if (propDef.validations?.gteField) {
+          const gte = this.gteRuleFromValidations(propDef.validations);
+          if (gte) {
             rules.push({
               arrayPath: currentPath,
               endKey: propName,
-              startKey: propDef.validations.gteField,
-              message:
-                propDef.validations.gteMessage ??
-                'End year must be the same as or after start year',
+              startKey: gte.field,
+              message: gte.message,
             });
           }
         }
