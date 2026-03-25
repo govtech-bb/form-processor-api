@@ -329,11 +329,10 @@ describe('SchemaBuilderService', () => {
 
     it('in', () => {
       const schema = service.buildZodSchema(
-        requiredWhenOperatorFormSchema(
-          'in',
-          'Required when x is a or b',
-          ['a', 'b'],
-        ),
+        requiredWhenOperatorFormSchema('in', 'Required when x is a or b', [
+          'a',
+          'b',
+        ]),
       );
       const resultFail = service.validateData(schema, {
         x: 'a',

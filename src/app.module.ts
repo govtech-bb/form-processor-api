@@ -7,6 +7,7 @@ import { ProcessorsModule } from './processors/processors.module';
 import { EmailModule } from './email/email.module';
 import { FileModule } from './file/file.module';
 import { MetricsModule } from './metrics/metrics.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { MetricsModule } from './metrics/metrics.module';
     EmailModule,
     FileModule,
     MetricsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
