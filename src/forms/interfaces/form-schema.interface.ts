@@ -42,12 +42,20 @@ interface SubFieldValidation {
   message?: string;
 }
 
+/** Cross-field comparison vs a sibling (e.g. end year >= start year). */
+export interface FieldComparisonOperator {
+  condition: 'gte';
+  field: string;
+  message: string;
+}
+
 export interface FieldValidation {
   min?: number; // For numbers and string length
   max?: number; // For numbers and string length
   email?: boolean;
   regex?: string;
   message?: string; // Custom error message
+  operator?: FieldComparisonOperator;
   condition?: {
     field: string; // Dependent field path
     operator?: 'equals' | 'not_equals' | 'in' | 'not_in'; // Default is 'equals'
