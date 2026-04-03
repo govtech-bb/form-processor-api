@@ -4,8 +4,24 @@ import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters';
 import { DataSource } from 'typeorm';
+import { loadSecrets } from './config/secrets';
 
 async function bootstrap() {
+  // Load secrets from Secrets Manager before app initialization
+  if (
+    process.env.ENVIRONMENT === 'sandbox' ||
+    process.env.ENVIRONMENT === 'production'
+  ) {
+    try {
+      await loadSecrets();
+    } catch (error) {
+      console.warn(
+        'Secrets Manager loading failed, falling back to env vars:',
+        error.message,
+      );
+    }
+  }
+
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
 
