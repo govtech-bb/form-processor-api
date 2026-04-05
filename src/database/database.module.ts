@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FormConfig } from './entities';
-import { dataSource } from './datasource';
+import { createDataSource, dataSource } from './datasource';
+
+const useIamAuth = process.env.DB_USE_IAM_AUTH === 'true';
 
 @Module({
   imports: [
@@ -9,7 +11,13 @@ import { dataSource } from './datasource';
       useFactory: () => {
         return {};
       },
-      dataSourceFactory: () => dataSource.initialize(),
+      dataSourceFactory: async () => {
+        if (useIamAuth) {
+          const ds = await createDataSource();
+          return ds.initialize();
+        }
+        return dataSource.initialize();
+      },
     }),
     TypeOrmModule.forFeature([FormConfig]),
   ],
