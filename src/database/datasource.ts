@@ -40,7 +40,7 @@ export async function createDataSource(): Promise<DataSource> {
     ssl: isLocalDatabase
       ? false
       : {
-          rejectUnauthorized: true,
+          rejectUnauthorized: false,
         },
     // For IAM auth, tokens expire after 15 min. TypeORM reconnects automatically
     // and will call this password function on reconnect.
