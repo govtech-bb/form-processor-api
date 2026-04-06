@@ -12,13 +12,20 @@ const useIamAuth = process.env.DB_USE_IAM_AUTH === 'true' && !isLocalDatabase;
 
 async function getPassword(): Promise<string> {
   if (useIamAuth) {
+    const region = process.env.AWS_REGION || 'us-east-1';
+    const username = process.env.DB_USERNAME || 'iam_db_user';
+    console.log(
+      `IAM auth: generating token for ${username}@${dbHost}:5432 region=${region}`,
+    );
     const signer = new Signer({
       hostname: dbHost,
       port: 5432,
-      region: process.env.AWS_REGION || 'us-east-1',
-      username: process.env.DB_USERNAME || 'iam_db_user',
+      region,
+      username,
     });
-    return signer.getAuthToken();
+    const token = await signer.getAuthToken();
+    console.log(`IAM auth: token generated (length=${token.length})`);
+    return token;
   }
   return process.env.DB_PASSWORD || 'postgres';
 }
