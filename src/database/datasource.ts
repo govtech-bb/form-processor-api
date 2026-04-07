@@ -37,17 +37,20 @@ async function getPassword(): Promise<string> {
 
 /**
  * Creates a DataSource with IAM token auth when DB_USE_IAM_AUTH=true.
- * The password function reference is passed directly to TypeORM which
- * forwards it to the pg driver (supported since pg v7.12.0 / TypeORM PR #5673).
- * A fresh token is generated for each new connection automatically.
+ * The password callback is passed via `extra.password` so it reaches the
+ * pg driver directly (TypeORM spreads `extra` into the pg Pool config,
+ * overriding the base `password` field). A fresh 15-min token is generated
+ * for every new connection automatically.
  */
 export async function createDataSource(): Promise<DataSource> {
+  const initialPassword = await getPassword();
+
   return new DataSource({
     type: 'postgres',
     host: dbHost,
     port: parseInt(process.env.DB_PORT, 10) || 5432,
     username: process.env.DB_USERNAME || 'postgres',
-    password: useIamAuth ? getPassword : process.env.DB_PASSWORD || 'postgres',
+    password: initialPassword,
     database: process.env.DB_DATABASE || 'forms_processor_db',
     entities: [path.join(__dirname, './entities/*.entity{.ts,.js}')],
     migrations: [path.join(__dirname, './migrations/*{.ts,.js}')],
@@ -58,6 +61,11 @@ export async function createDataSource(): Promise<DataSource> {
       : {
           rejectUnauthorized: false,
         },
+    ...(useIamAuth && {
+      extra: {
+        password: () => getPassword(),
+      },
+    }),
   });
 }
 
