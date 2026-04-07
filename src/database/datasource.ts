@@ -2,6 +2,7 @@ import * as path from 'path';
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
 import { Signer } from '@aws-sdk/rds-signer';
+import { STSClient, GetCallerIdentityCommand } from '@aws-sdk/client-sts';
 
 // Load environment variables
 config();
@@ -9,6 +10,18 @@ config();
 const dbHost = process.env.DB_HOST || 'localhost';
 const isLocalDatabase = dbHost === 'localhost' || dbHost === '127.0.0.1';
 const useIamAuth = process.env.DB_USE_IAM_AUTH === 'true' && !isLocalDatabase;
+
+// Log IAM identity at startup for debugging
+if (useIamAuth) {
+  new STSClient({ region: process.env.AWS_REGION || 'us-east-1' })
+    .send(new GetCallerIdentityCommand({}))
+    .then((id) =>
+      console.log(
+        `IAM auth: caller identity ARN=${id.Arn} Account=${id.Account}`,
+      ),
+    )
+    .catch((err) => console.error(`IAM auth: STS GetCallerIdentity failed:`, err.message));
+}
 
 /**
  * Generate an IAM auth token for RDS.

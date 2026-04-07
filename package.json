@@ -33,6 +33,7 @@
     "@aws-sdk/client-secrets-manager": "^3.1024.0",
     "@aws-sdk/client-ses": "^3.933.0",
     "@aws-sdk/client-sesv2": "^3.933.0",
+    "@aws-sdk/client-sts": "^3.1025.0",
     "@aws-sdk/lib-storage": "^3.954.0",
     "@aws-sdk/rds-signer": "^3.1024.0",
     "@aws-sdk/s3-request-presigner": "^3.954.0",
