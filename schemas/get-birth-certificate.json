@@ -288,12 +288,8 @@
           "name": "placeOfBaptism",
           "type": "string",
           "label": "Place of baptism",
-          "required": true,
-          "validations": {
-            "min": 2,
-            "max": 200,
-            "message": "Place of baptism must be at least 2 characters"
-          }
+          "required": false,
+          "validations": {}
         }
       ]
     },
