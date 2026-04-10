@@ -307,33 +307,22 @@
               "name": "firstName",
               "type": "string",
               "label": "Father's first name",
-              "required": true,
-              "validations": {
-                "min": 1,
-                "max": 100,
-                "message": "First name is required"
-              }
+              "required": false,
+              "validations": {}
             },
             {
               "name": "middleName",
               "type": "string",
               "label": "Father's middle name",
               "required": false,
-              "validations": {
-                "max": 100,
-                "message": "Middle name is required"
-              }
+              "validations": {}
             },
             {
               "name": "lastName",
               "type": "string",
               "label": "Father's last name",
-              "required": true,
-              "validations": {
-                "min": 1,
-                "max": 100,
-                "message": "Last name is required"
-              }
+              "required": false,
+              "validations": {}
             }
           ]
         },
