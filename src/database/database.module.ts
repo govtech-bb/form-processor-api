@@ -3,7 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FormConfig } from './entities';
 import { createDataSource, dataSource } from './datasource';
 
-const useIamAuth = process.env.DB_IAM_AUTH === 'true';
+const useAsyncDataSource =
+  process.env.DB_IAM_AUTH === 'true' || !!process.env.DB_SECRET_ARN;
 
 @Module({
   imports: [
@@ -12,7 +13,7 @@ const useIamAuth = process.env.DB_IAM_AUTH === 'true';
         return {};
       },
       dataSourceFactory: async () => {
-        if (useIamAuth) {
+        if (useAsyncDataSource) {
           const ds = await createDataSource();
           return ds.initialize();
         }

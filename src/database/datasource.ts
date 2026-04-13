@@ -2,6 +2,10 @@ import * as path from 'path';
 import { DataSource } from 'typeorm';
 import { config } from 'dotenv';
 import { Signer } from '@aws-sdk/rds-signer';
+import {
+  SecretsManagerClient,
+  GetSecretValueCommand,
+} from '@aws-sdk/client-secrets-manager';
 
 // Load environment variables
 config();
@@ -28,28 +32,62 @@ async function generateRdsAuthToken(username: string): Promise<string> {
 }
 
 /**
+ * Fetch the database password from Secrets Manager (RDS managed master password).
+ * Fallback path used during migration from Secrets Manager to IAM auth.
+ */
+async function fetchDbPassword(): Promise<{ username: string; password: string }> {
+  const secretArn = process.env.DB_SECRET_ARN;
+  if (!secretArn) {
+    return {
+      username: process.env.DB_USERNAME || 'postgres',
+      password: process.env.DB_PASSWORD || 'postgres',
+    };
+  }
+
+  const client = new SecretsManagerClient({
+    region: process.env.AWS_REGION || 'us-east-1',
+  });
+  const response = await client.send(
+    new GetSecretValueCommand({ SecretId: secretArn }),
+  );
+  const secret = JSON.parse(response.SecretString);
+  console.log('DB auth: fetched credentials from Secrets Manager');
+  return { username: secret.username, password: secret.password };
+}
+
+/**
  * Creates a DataSource using IAM authentication when DB_IAM_AUTH is set,
- * or falls back to DB_PASSWORD / DB_USERNAME env vars for local dev.
- *
- * IAM auth tokens expire after 15 minutes but PostgreSQL only validates
- * the token at connection time — existing connections remain active.
+ * Secrets Manager when DB_SECRET_ARN is set, or falls back to env vars.
  */
 export async function createDataSource(): Promise<DataSource> {
-  const username = process.env.DB_IAM_USER || 'iam_db_user';
-  const token = await generateRdsAuthToken(username);
+  let username: string;
+  let password: string;
+
+  if (process.env.DB_IAM_AUTH === 'true') {
+    username = process.env.DB_IAM_USER || 'iam_db_user';
+    password = await generateRdsAuthToken(username);
+  } else {
+    const creds = await fetchDbPassword();
+    username = creds.username;
+    password = creds.password;
+  }
 
   return new DataSource({
     type: 'postgres',
     host: dbHost,
     port: dbPort,
     username,
-    password: token,
+    password,
     database: process.env.DB_DATABASE || 'forms_processor_db',
     entities: [path.join(__dirname, './entities/*.entity{.ts,.js}')],
     migrations: [path.join(__dirname, './migrations/*{.ts,.js}')],
     synchronize: false,
     logging: process.env.DB_LOGGING === 'true',
-    ssl: { rejectUnauthorized: false },
+    ssl: isLocalDatabase
+      ? false
+      : {
+          rejectUnauthorized: false,
+        },
   });
 }
 
