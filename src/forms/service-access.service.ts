@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { type DataSource, Not, type Repository } from 'typeorm';
+import {
+  type DataSource,
+  type EntityManager,
+  Not,
+  type Repository,
+} from 'typeorm';
 import { ServiceAccess } from '../database/entities';
 import type { FeatureFlagDto } from './dto';
 
@@ -115,6 +120,7 @@ export class ServiceAccessService {
   async upsertFeatureFlag(
     serviceSlug: string,
     dto: FeatureFlagDto,
+    performedBy: string,
   ): Promise<ServiceAccessSummary> {
     const slugsToUpdate = [
       ServiceAccessService.SERVICE_LEVEL_SLUG,
@@ -123,6 +129,7 @@ export class ServiceAccessService {
 
     const allRows = await this.dataSource.transaction(async (manager) => {
       const repo = manager.getRepository(ServiceAccess);
+      await this.setAuditActorForTransaction(manager, performedBy);
 
       await Promise.all(
         slugsToUpdate.map((subpageSlug) =>
@@ -146,16 +153,17 @@ export class ServiceAccessService {
     serviceSlug: string,
     subpageSlug: string,
     dto: FeatureFlagDto,
+    performedBy: string,
   ): Promise<ServiceAccessSummary> {
-    await this.upsertRow(
-      this.serviceAccessRepository,
-      serviceSlug,
-      subpageSlug,
-      dto.isProtected,
-    );
+    const allRows = await this.dataSource.transaction(async (manager) => {
+      const repo = manager.getRepository(ServiceAccess);
+      await this.setAuditActorForTransaction(manager, performedBy);
 
-    const allRows = await this.serviceAccessRepository.find({
-      where: { serviceSlug },
+      await this.upsertRow(repo, serviceSlug, subpageSlug, dto.isProtected);
+
+      return repo.find({
+        where: { serviceSlug },
+      });
     });
 
     return this.toSummary(serviceSlug, allRows);
@@ -171,6 +179,15 @@ export class ServiceAccessService {
     await repo.upsert({ serviceSlug, subpageSlug, isProtected }, [
       'serviceSlug',
       'subpageSlug',
+    ]);
+  }
+
+  private async setAuditActorForTransaction(
+    manager: EntityManager,
+    performedBy: string,
+  ): Promise<void> {
+    await manager.query(`SELECT set_config('app.audit_actor', $1, true)`, [
+      performedBy,
     ]);
   }
 

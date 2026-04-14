@@ -15,7 +15,7 @@ import {
  *
  * Absence of a row defaults to unprotected (fail open).
  */
-@Entity('service_access_configs')
+@Entity('feature_flags')
 @Index(['serviceSlug', 'subpageSlug'], { unique: true })
 export class ServiceAccess {
   @PrimaryGeneratedColumn('uuid')
