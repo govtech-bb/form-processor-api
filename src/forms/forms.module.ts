@@ -4,6 +4,8 @@ import { ValidationModule } from '../validation/validation.module';
 import { ProcessorsModule } from '../processors/processors.module';
 import { MetricsModule } from '../metrics/metrics.module';
 import { AuthModule } from '../auth/auth.module';
+import { AuditLogController } from './audit-log.controller';
+import { AuditLogService } from './audit-log.service';
 import { FormsController } from './forms.controller';
 import { FormsService } from './forms.service';
 import { FormUtilsService } from './form-utils.service';
@@ -19,8 +21,9 @@ import { ServicesController } from './services.controller';
     MetricsModule,
     AuthModule,
   ],
-  controllers: [FormsController, ServicesController],
+  controllers: [AuditLogController, FormsController, ServicesController],
   providers: [
+    AuditLogService,
     FormsService,
     FormUtilsService,
     ExpressionResolverService,
