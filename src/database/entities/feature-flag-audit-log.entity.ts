@@ -31,6 +31,10 @@ export class FeatureFlagAuditLog {
   @Column({ name: 'performed_by', type: 'varchar', length: 255 })
   performedBy: string;
 
+  /** Human-readable display name supplied by the client (from ID token profile). */
+  @Column({ name: 'performed_by_name', type: 'varchar', length: 255, nullable: true })
+  performedByName: string | null;
+
   @Index()
   @CreateDateColumn({ name: 'performed_at', type: 'timestamptz' })
   performedAt: Date;

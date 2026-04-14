@@ -37,6 +37,7 @@ export class AuditLogService {
       scope: dto.scope,
       action: dto.action,
       performedBy,
+      performedByName: dto.performedByName?.trim() ?? null,
     });
 
     return this.auditLogRepository.save(entry);

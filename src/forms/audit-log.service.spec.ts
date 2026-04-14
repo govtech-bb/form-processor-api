@@ -41,6 +41,7 @@ describe('AuditLogService', () => {
       scope: 'service',
       action: 'enable',
       performedBy: 'auditor@example.com',
+      performedByName: null,
     });
     expect(result).toBe(createdEntry);
   });
