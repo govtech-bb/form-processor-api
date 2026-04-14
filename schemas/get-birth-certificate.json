@@ -343,13 +343,11 @@
               }
             },
             {
-              "name": "maidenName",
+              "name": "otherNames",
               "type": "string",
-              "label": "Mother's maiden name",
               "required": false,
               "validations": {
-                "max": 100,
-                "message": "Maiden name is required"
+                "max": 100
               }
             },
             {
@@ -361,6 +359,14 @@
                 "min": 1,
                 "max": 100,
                 "message": "Last name is required"
+              }
+            },
+            {
+              "name": "maidenName",
+              "type": "string",
+              "required": false,
+              "validations": {
+                "max": 100
               }
             }
           ]
