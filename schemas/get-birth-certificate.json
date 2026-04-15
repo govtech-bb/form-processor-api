@@ -345,6 +345,7 @@
             {
               "name": "otherNames",
               "type": "string",
+              "label": "Mother's other names",
               "required": false,
               "validations": {
                 "max": 100
@@ -364,6 +365,7 @@
             {
               "name": "maidenName",
               "type": "string",
+              "label": "Mother's maiden name",
               "required": false,
               "validations": {
                 "max": 100
