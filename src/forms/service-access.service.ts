@@ -121,6 +121,7 @@ export class ServiceAccessService {
     serviceSlug: string,
     dto: FeatureFlagDto,
     performedBy: string,
+    performedByName: string | null,
   ): Promise<ServiceAccessSummary> {
     const slugsToUpdate = [
       ServiceAccessService.SERVICE_LEVEL_SLUG,
@@ -129,7 +130,7 @@ export class ServiceAccessService {
 
     const allRows = await this.dataSource.transaction(async (manager) => {
       const repo = manager.getRepository(ServiceAccess);
-      await this.setAuditActorForTransaction(manager, performedBy);
+      await this.setAuditActorForTransaction(manager, performedBy, performedByName);
 
       await Promise.all(
         slugsToUpdate.map((subpageSlug) =>
@@ -154,10 +155,11 @@ export class ServiceAccessService {
     subpageSlug: string,
     dto: FeatureFlagDto,
     performedBy: string,
+    performedByName: string | null,
   ): Promise<ServiceAccessSummary> {
     const allRows = await this.dataSource.transaction(async (manager) => {
       const repo = manager.getRepository(ServiceAccess);
-      await this.setAuditActorForTransaction(manager, performedBy);
+      await this.setAuditActorForTransaction(manager, performedBy, performedByName);
 
       await this.upsertRow(repo, serviceSlug, subpageSlug, dto.isProtected);
 
@@ -185,10 +187,15 @@ export class ServiceAccessService {
   private async setAuditActorForTransaction(
     manager: EntityManager,
     performedBy: string,
+    performedByName: string | null,
   ): Promise<void> {
     await manager.query(`SELECT set_config('app.audit_actor', $1, true)`, [
       performedBy,
     ]);
+    await manager.query(
+      `SELECT set_config('app.audit_actor_name', $1, true)`,
+      [performedByName ?? ''],
+    );
   }
 
   private toSummary(

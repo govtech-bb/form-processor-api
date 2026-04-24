@@ -10,12 +10,12 @@ import {
   Req,
   Query,
   ParseIntPipe,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { ApiResponse } from '../common/dto';
 import { CognitoGuard } from '../auth/cognito.guard';
+import { CognitoUserService } from '../auth/cognito-user.service';
 import { AuditLogService } from './audit-log.service';
 import { CreateAuditLogDto } from './dto';
 
@@ -24,13 +24,16 @@ import { CreateAuditLogDto } from './dto';
 export class AuditLogController {
   private readonly logger = new Logger(AuditLogController.name);
 
-  constructor(private readonly auditLogService: AuditLogService) {}
+  constructor(
+    private readonly auditLogService: AuditLogService,
+    private readonly cognitoUserService: CognitoUserService,
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() dto: CreateAuditLogDto, @Req() request: Request) {
-    const actor = this.resolveActorFromRequest(request);
-    const entry = await this.auditLogService.create(dto, actor);
+    const { actor, actorName } = await this.cognitoUserService.resolveActor(request);
+    const entry = await this.auditLogService.create(dto, actor, actorName);
 
     this.logger.log(
       `POST /audit-logs → ${dto.action} ${dto.scope} flag for ${dto.serviceSlug} by ${actor}`,
@@ -61,38 +64,4 @@ export class AuditLogController {
     return ApiResponse.success(result, 'Audit log entries retrieved');
   }
 
-  private resolveActorFromRequest(request: Request): string {
-    const claims = (
-      request as Request & { cognitoClaims?: Record<string, unknown> }
-    ).cognitoClaims;
-
-    if (!claims) {
-      throw new UnauthorizedException('Missing Cognito claims in request');
-    }
-
-    const actor =
-      this.readStringClaim(claims, 'email') ??
-      this.readStringClaim(claims, 'username') ??
-      this.readStringClaim(claims, 'cognito:username') ??
-      this.readStringClaim(claims, 'sub');
-
-    if (!actor) {
-      throw new UnauthorizedException('No usable actor claim found in token');
-    }
-
-    return actor;
-  }
-
-  private readStringClaim(
-    claims: Record<string, unknown>,
-    key: string,
-  ): string | null {
-    const value = claims[key];
-    if (typeof value !== 'string') {
-      return null;
-    }
-
-    const trimmed = value.trim();
-    return trimmed.length > 0 ? trimmed : null;
-  }
 }
