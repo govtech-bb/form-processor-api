@@ -9,13 +9,13 @@ import {
   Param,
   Patch,
   Req,
-  UnauthorizedException,
   UseGuards,
   BadRequestException,
 } from '@nestjs/common';
 import type { Request } from 'express';
 import { ApiResponse } from '../common/dto';
 import { CognitoGuard } from '../auth/cognito.guard';
+import { CognitoUserService } from '../auth/cognito-user.service';
 import { ServiceAccessService } from './service-access.service';
 import { FeatureFlagDto } from './dto';
 
@@ -23,7 +23,10 @@ import { FeatureFlagDto } from './dto';
 export class ServicesController {
   private readonly logger = new Logger(ServicesController.name);
 
-  constructor(private readonly serviceAccessService: ServiceAccessService) {}
+  constructor(
+    private readonly serviceAccessService: ServiceAccessService,
+    private readonly cognitoUserService: CognitoUserService,
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
@@ -71,11 +74,12 @@ export class ServicesController {
     @Body() dto: FeatureFlagDto,
     @Req() request: Request,
   ) {
-    const actor = this.resolveActorFromRequest(request);
+    const { actor, actorName } = await this.cognitoUserService.resolveActor(request);
     const updated = await this.serviceAccessService.upsertFeatureFlag(
       serviceSlug,
       dto,
       actor,
+      actorName,
     );
 
     this.logger.log(
@@ -104,12 +108,13 @@ export class ServicesController {
       throw new BadRequestException('subpageSlug must not be empty');
     }
 
-    const actor = this.resolveActorFromRequest(request);
+    const { actor, actorName } = await this.cognitoUserService.resolveActor(request);
     const updated = await this.serviceAccessService.upsertSubpageFeatureFlag(
       serviceSlug,
       subpageSlug,
       dto,
       actor,
+      actorName,
     );
 
     this.logger.log(
@@ -119,38 +124,4 @@ export class ServicesController {
     return ApiResponse.success(updated, 'Subpage feature flag updated');
   }
 
-  private resolveActorFromRequest(request: Request): string {
-    const claims = (
-      request as Request & { cognitoClaims?: Record<string, unknown> }
-    ).cognitoClaims;
-
-    if (!claims) {
-      throw new UnauthorizedException('Missing Cognito claims in request');
-    }
-
-    const actor =
-      this.readStringClaim(claims, 'email') ??
-      this.readStringClaim(claims, 'username') ??
-      this.readStringClaim(claims, 'cognito:username') ??
-      this.readStringClaim(claims, 'sub');
-
-    if (!actor) {
-      throw new UnauthorizedException('No usable actor claim found in token');
-    }
-
-    return actor;
-  }
-
-  private readStringClaim(
-    claims: Record<string, unknown>,
-    key: string,
-  ): string | null {
-    const value = claims[key];
-    if (typeof value !== 'string') {
-      return null;
-    }
-
-    const trimmed = value.trim();
-    return trimmed.length > 0 ? trimmed : null;
-  }
 }

@@ -28,6 +28,7 @@ export class AuditLogService {
   async create(
     dto: CreateAuditLogDto,
     performedBy: string,
+    performedByName: string | null,
   ): Promise<FeatureFlagAuditLog> {
     const normalizedSubpageSlug = this.resolveSubpageSlug(dto);
 
@@ -37,7 +38,7 @@ export class AuditLogService {
       scope: dto.scope,
       action: dto.action,
       performedBy,
-      performedByName: dto.performedByName?.trim() ?? null,
+      performedByName,
     });
 
     return this.auditLogRepository.save(entry);

@@ -23,17 +23,20 @@ export class CreateAuditLogDto {
   action: 'enable' | 'disable';
 
   /**
-   * Legacy client field.
-   * The backend ignores this and derives the authoritative actor from Cognito claims.
+   * Legacy client field — ignored by the backend.
+   * The authoritative actor is always derived from verified Cognito claims.
    */
   @IsOptional()
   @IsString()
   @IsNotEmpty()
   performedBy?: string;
 
-  /** Human-readable display name from the client's ID token profile. */
+  /**
+   * Accepted for backwards compatibility with existing clients but never used.
+   * The backend derives the display name from verified Cognito token claims.
+   * whitelist: true strips this before it reaches the controller.
+   */
   @IsOptional()
   @IsString()
-  @IsNotEmpty()
   performedByName?: string;
 }
