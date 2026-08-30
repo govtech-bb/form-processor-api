@@ -1,0 +1,131 @@
+---
+formId: conductorLicence
+title: Conductor Licence Application
+description: Conductor Licence Application
+pages:
+  - pageId: applicant
+    elements:
+      - ref: blocks/applicantInformation
+        meta:
+          exclude:
+            - sex
+            - country
+            - nationality
+  - pageId: contactDetails
+    pageTitle: Contact details
+    pageDescription: ''
+    elements:
+      - ref: blocks/address
+        meta:
+          exclude:
+            - country
+      - ref: fields/email
+        content:
+          label: Email address
+      - ref: components/telephoneNumber
+  - pageId: licenceHistory
+    pageTitle: Tell us about your licence history
+    elements:
+      - ref: fields/radio
+        meta:
+          id: hasPreviousLicence
+        content:
+          label: "Have you had a conductor's licence before?"
+      - ref: components/genericShortText
+        meta:
+          id: licenceNumber
+        content:
+          label: Provide your licence number
+        validation:
+          dependsOn: hasPreviousLicence
+          dependsIeq: yes
+      - ref: fields/date
+        meta:
+          id: dateOfIssue
+        content:
+          label: Date of Issue
+        validation:
+          dateIsPast: true
+          dependsOn: hasPreviousLicence
+          dependsIeq: yes
+  - pageId: endorsements
+    pageTitle: Tell us about any endorsements
+    pageDescription: "An endorsement is a record of an offence added to your conductor's or driving licence."
+    elements:
+      - ref: fields/radio
+        meta:
+          id: hasEndorsements
+        content:
+          label: Do you have any endorsements?
+  - pageId: endorsementDetails
+    pageTitle: Your endorsements
+    meta:
+      repeatable: true
+      maxItems: 10
+    elements:
+      - ref: components/genericShortText
+        content:
+          label: Type of licence
+      - ref: fields/date
+        content:
+          label: Date of endorsement
+        validation:
+          dateIsPastOrToday: true
+      - ref: components/genericShortText
+        meta:
+          id: duration
+        content:
+          label: How long did the endorsement appear on your licence.
+  - pageId: disqualifications
+    pageTitle: Tell us about your disqualifications
+    pageDescription: A disqualification is when a court has stopped you from getting or holding a licence.
+    elements:
+      - ref: fields/radio
+        meta:
+          id: hasDisqualifications
+        content:
+          label: Have you ever been disqualified?
+      - ref: components/genericShortText
+        content:
+          label: Court name
+        validation:
+          dependsOn: hasDisqualifications
+          dependsIeq: yes
+      - ref: components/genericShortText
+        meta:
+          id: reasonForDisqualification
+        content:
+          label: "Court's reason for disqualification"
+        validation:
+          dependsOn: hasDisqualifications
+          dependsIeq: yes
+      - ref: fields/date
+        content:
+          label: Date of disqualification
+        validation:
+          dependsOn: hasDisqualifications
+          dependsIeq: yes
+          dateIsPast: true
+      - ref: components/genericShortText
+        content:
+          label: Length of disqualification
+        validation:
+          dependsOn: hasDisqualifications
+          dependsIeq: yes
+  - pageId: convictions
+    elements:
+      - ref: blocks/criminalConvictions
+  - pageId: declaration
+    elements:
+      - ref: blocks/declaration
+processors:
+  - ref: processors/email
+    config:
+      to: '{{db:apply-for-conductor-licence:admin_email}}'
+      subject: 'Apply for conductor licence - {{formData.applicant.firstName}} {{formData.applicant.lastName}}'
+  - ref: processors/email
+    config:
+      to: '{{formData.contactDetails.email}}'
+      subject: 'Conductor Licence Application - Submission Received'
+confirmation:
+  description: Your information has been sent to the Barbados Transport Authority

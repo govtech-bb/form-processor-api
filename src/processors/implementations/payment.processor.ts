@@ -238,6 +238,11 @@ export class PaymentProcessor implements IProcessor {
       description: config.description,
     });
 
+    // Get the department and corresponding API key
+    const department = config.department || 'default';
+    const apiKey =
+      this.departmentMappingService.getApiKeyForDepartment(department);
+
     return {
       department,
       paymentCode,

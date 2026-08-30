@@ -1,0 +1,7 @@
+type: component
+meta:
+  extends: fields/select
+  componentName: country
+content:
+  label: 'Country'
+  options: constants/countries

@@ -27,6 +27,9 @@ export class FormSubmissionResponseDto {
   // Integration results
   integrations?: IntegrationsResult;
 
+  // Integration results
+  integrations?: IntegrationsResult;
+
   // Dynamic additional data
   [key: string]: unknown;
 

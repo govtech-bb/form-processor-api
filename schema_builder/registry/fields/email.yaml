@@ -1,0 +1,7 @@
+type: field
+meta:
+  htmlType: email
+validation:
+  required: true
+ui:
+  width: medium

@@ -1,0 +1,9 @@
+type: field
+meta:
+  htmlType: radio
+content:
+  options:
+    - Yes
+    - No
+validation:
+  required: true

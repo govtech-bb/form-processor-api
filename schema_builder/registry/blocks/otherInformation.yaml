@@ -1,0 +1,20 @@
+---
+type: block
+meta:
+  blockName: otherInformation
+  description: This block should be used to request information about someone other than the applicant
+content:
+  title: Tell us about {{PERSON}} # For example: Tell us about your father.
+elements:
+  - ref: blocks/nameInformation
+  - ref: components/idNumber
+  - ref: components/dateOfBirth
+  - ref: components/sex
+  - ref: components/relation
+  - ref: blocks/address
+  - ref: fields/email
+  - ref: components/telephoneNumber
+    meta:
+      id: contactNumber
+    content:
+      label: Contact number

@@ -1,0 +1,32 @@
+---
+type: block
+meta:
+  blockName: contact
+content:
+  title: '{!TARGET} Contact Information' # Variable! If not provided, will issue a warning.
+elements:
+  - ref: fields/email
+    meta:
+      id: email
+    content:
+      label: Email address
+  - ref: components/telephoneNumber
+    meta:
+      id: '' # Will use homeTelephone as the ID (Building from the label)
+    content:
+      label: 'Home telephone'
+  - ref: components/telephoneNumber
+    meta:
+      id: '' # Will use mobileTelephone as the ID (Building from the label)
+    content:
+      label: 'Mobile telephone'
+  - ref: components/telephoneNumber
+    meta:
+      id: '' # Will use workTelephone as the ID (Building from the label)
+    content:
+      label: 'Work telephone'
+  - ref: components/telephoneNumber
+    meta:
+      id: '' # Will use faxNumber as the ID (Building from the label)
+    content:
+      label: 'Fax number'

@@ -1,0 +1,8 @@
+type: field
+meta:
+  htmlType: textarea
+validation:
+  required: true
+  maxValue: 400
+ui:
+  width: long

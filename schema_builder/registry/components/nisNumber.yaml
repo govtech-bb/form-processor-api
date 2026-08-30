@@ -1,0 +1,8 @@
+type: component
+meta:
+  extends: fields/numericText
+  componentName: nisNumber
+content:
+  label: 'NIS Number'
+validation:
+  pattern: "^[0-9]{6}$"

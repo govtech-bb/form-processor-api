@@ -1,0 +1,14 @@
+---
+type: block
+meta:
+  blockName: criminalConvictions
+content:
+  title: Your criminal convictions
+  description: A conviction is when a court has found you guilty of a criminal offence.
+elements:
+  - ref: fields/radio
+    meta:
+      id: hasCriminalConvictions
+    content:
+      label: Have you ever had any criminal convictions?
+

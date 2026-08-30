@@ -1,0 +1,8 @@
+type: component
+meta:
+  extends: fields/numericText
+  componentName: passportNumber
+content:
+  label: 'Passport Number'
+validation:
+  minLength: 6

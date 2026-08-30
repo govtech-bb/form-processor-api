@@ -1,0 +1,8 @@
+type: component
+meta:
+  extends: fields/text
+  componentName: name
+content:
+  label: 'Name'
+validation:
+  pattern: "^[A-Za-zÀ-ÖØ-öø-ÿ](?:[A-Za-zÀ-ÖØ-öø-ÿ'-]*[A-Za-zÀ-ÖØ-öø-ÿ])?$"

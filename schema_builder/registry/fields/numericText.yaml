@@ -1,0 +1,10 @@
+type: field
+meta:
+  htmlType: text
+  description: Text field to hold only numbers.
+validation:
+  required: true
+  pattern: "^[0-9]*$"
+  errorMessage: "{#label#} only accepts digits."
+ui:
+  width: medium

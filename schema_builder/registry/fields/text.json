@@ -1,0 +1,13 @@
+{
+  "type": "field",
+  "meta": {
+    "htmlType": "text"
+  },
+  "validation": {
+    "required": true,
+    "maxLength": 200
+  },
+  "ui": {
+    "width": "medium"
+  }
+}

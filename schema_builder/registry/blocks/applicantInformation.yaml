@@ -1,0 +1,17 @@
+---
+type: block
+meta:
+  blockName: applicantInformation
+content:
+  title: Tell us about yourself
+elements:
+  - ref: components/title
+  - ref: blocks/nameInformation
+  - ref: components/dateOfBirth
+  - ref: components/sex
+  - ref: components/country
+    meta:
+      id: nationality
+    content:
+      label: Nationality / Citizenship
+

@@ -1,0 +1,8 @@
+---
+type: component
+meta:
+  componentName: title
+  extends: fields/select
+content:
+  label: Title
+  options: constants/titles

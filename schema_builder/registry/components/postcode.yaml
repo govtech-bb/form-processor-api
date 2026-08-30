@@ -1,0 +1,8 @@
+type: component
+meta:
+  extends: fields/text
+  componentName: postcode
+content:
+  label: 'Postcode'
+validation:
+  pattern: '^BB[0-9]{5}$'

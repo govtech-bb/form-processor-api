@@ -1,0 +1,8 @@
+type: component
+meta:
+  extends: fields/text
+  componentName: address
+content:
+  label: 'Address'
+validation:
+  minLength: 5

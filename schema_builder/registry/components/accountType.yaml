@@ -1,0 +1,9 @@
+type: component
+meta:
+  extends: fields/radio
+  componentName: accountType
+content:
+  label: 'Account Type'
+  options:
+    - 'Savings'
+    - 'Checkings'

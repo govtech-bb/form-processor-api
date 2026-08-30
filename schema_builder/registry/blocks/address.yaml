@@ -1,0 +1,27 @@
+---
+type: block
+meta:
+  blockName: address
+content:
+  title: '{!TARGET} Address Information'
+elements:
+  - ref: components/address
+    meta:
+      id: addressLine1
+    content:
+      label: Address line 1
+  - ref: components/address
+    meta:
+      id: addressLine2
+    content:
+      label: Address line 2
+    validation:
+      required: false
+  - ref: components/genericShortText
+    meta:
+      id: city
+    content:
+      label: City or town
+  - ref: components/parish
+  - ref: components/country
+  - ref: components/postcode

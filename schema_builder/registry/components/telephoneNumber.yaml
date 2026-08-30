@@ -1,0 +1,6 @@
+type: component
+meta:
+  extends: fields/tel
+  componentName: telephoneNumber
+content:
+  label: 'Telephone number'
